@@ -36,7 +36,7 @@ ggplate = function(attr, plate_no, plate_col, plate_row, type) {
     geom_raster(aes(fill=type)) +
     facet_wrap(~plate_no, scale="free") + theme_bw() +
     scale_fill_hue(na.value="white") +
-    geom_point() +
+    geom_point()
 }
 
 

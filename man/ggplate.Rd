@@ -4,7 +4,7 @@
 \alias{ggplate}
 \title{Plotting an attribute in the PCR plate design}
 \usage{
-ggplate(x, attr, coords, type)
+ggplate(attr, plate_no, plate_col, plate_row, type)
 }
 \arguments{
 \item{x}{a \code{\link{TODEFINE}} object}
@@ -16,12 +16,17 @@ a ggplot
 Plots an attribute of amplicons from a \code{\link{TODEFINE}} object in the correspondint PCR plate design
 }
 \details{
-To write
+TO WRITE
 }
 \examples{
 
 data(soil_euk)
-
+#plot number of reads per pcrs
+seqdepth = rowSums(soil_euk$reads)
+ggplate(attr = seqdepth, plate_no = soil_euk$pcrs$plate_no,
+                  plate_col = soil_euk$pcrs$plate_col,
+                  plate_row =  soil_euk$pcrs$plate_row,
+                  control_type = soil_euk$pcrs$Control_type)
 
 }
 \author{
