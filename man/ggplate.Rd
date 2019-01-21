@@ -2,33 +2,44 @@
 % Please edit documentation in R/m_ggplate.R
 \name{ggplate}
 \alias{ggplate}
-\title{Plotting an attribute in the PCR plate design}
+\title{Plotting an amplicon attribute in the PCR plate design}
 \usage{
-ggplate(attr, plate_no, plate_col, plate_row, type)
+ggplate(attr, plate_no, plate_col, plate_row, control_type)
 }
 \arguments{
-\item{x}{a \code{\link{TODEFINE}} object}
+\item{attr}{a numeric vector of the amplicon's attribute to be plotted}
+
+\item{plate_no}{a numeric vector of the plate id(s) where the amplicons were amplified}
+
+\item{plate_col}{a numeric vector of the plate's column where the amplicons were amplified}
+
+\item{plate_row}{a character vector of letters corresponding to the plate's row where the amplicons were amplified}
+
+\item{control_type}{a factor indicating the amplicon type (controls type, sample types, etc.)}
 }
 \value{
 a ggplot
 }
 \description{
-Plots an attribute of amplicons from a \code{\link{TODEFINE}} object in the correspondint PCR plate design
+Plots an attribute of amplicons from a \code{\link{TODEFINE}} object in the correspondint 96-well PCR plate design
 }
 \details{
-TO WRITE
+Vizualizing some attributes of the amplicon in its experimental context, here its location in one or a set of 96-well PCR plates, can be useful to identify potential set of samples that exhibit particular features (e.g. low amount of reads).
 }
 \examples{
 
 data(soil_euk)
 #plot number of reads per pcrs
 seqdepth = rowSums(soil_euk$reads)
-ggplate(attr = seqdepth, plate_no = soil_euk$pcrs$plate_no,
+p = ggplate(attr = seqdepth, plate_no = soil_euk$pcrs$plate_no,
                   plate_col = soil_euk$pcrs$plate_col,
                   plate_row =  soil_euk$pcrs$plate_row,
                   control_type = soil_euk$pcrs$Control_type)
+p + labs(size="# reads", fill="control type") +
+  scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
+                    na.value = "white")
 
 }
 \author{
-Fred Boyer, Lucie Zinger
+Lucie Zinger
 }
