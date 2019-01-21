@@ -24,7 +24,7 @@ a ggplot
 Plots an attribute of amplicons from a \code{\link{TODEFINE}} object in the correspondint 96-well PCR plate design
 }
 \details{
-Vizualizing some attributes of the amplicon in its experimental context, here its location in one or a set of 96-well PCR plates, can be useful to identify potential set of samples that exhibit particular features (e.g. low amount of reads).
+Vizualizing some attributes of the amplicon in its experimental context, here its location in one or a set of 96-well PCR plates, can be useful to identify potential problems (e.g. low amount of reads due to unfunctional primer set).
 }
 \examples{
 
