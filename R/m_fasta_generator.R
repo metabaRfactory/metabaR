@@ -1,18 +1,18 @@
 #' Generate a fasta file on a subset of sequences
 #'
-#' Generate a fasta file on a subset of sequences from a \code{\link{TODEFINE}} object.
+#' Generate a fasta file on a subset of OTUs from a \code{\link{TODEFINE}} object.
 #'
 #'
 #' @param file    path/name of the output
-#' @param id     a character vector containing the identifiants of the motus to export
-#' @param seq   a character vector containing the sequence corresponding to the motus id to export
+#' @param id     a character vector containing the identifiants of the OTUs of interest
+#' @param seq   a character vector containing the sequence of the OTUs of interest
 #'
 #' @name fasta_generator
 #'
 #' @return a fasta file
 #'
 #' @details
-#' Creates a fasta file from a set of sequences of interest. The header can be easily amended with further informations with e.g. \code{paste}
+#' Creates a fasta file from a set of sequences of interest. Obviously, \code{\param{id}} and \code{\param{seq}} vectors should be in agreement. The header can be easily amended with further informations with e.g. \code{paste}.
 #'
 #' @examples
 #'

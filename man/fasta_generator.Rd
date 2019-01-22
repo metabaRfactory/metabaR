@@ -9,18 +9,18 @@ fasta_generator(file, id, seq)
 \arguments{
 \item{file}{path/name of the output}
 
-\item{id}{a character vector containing the identifiants of the motus to export}
+\item{id}{a character vector containing the identifiants of the OTUs of interest}
 
-\item{seq}{a character vector containing the sequence corresponding to the motus id to export}
+\item{seq}{a character vector containing the sequence of the OTUs of interest}
 }
 \value{
 a fasta file
 }
 \description{
-Generate a fasta file on a subset of sequences from a \code{\link{TODEFINE}} object.
+Generate a fasta file on a subset of OTUs from a \code{\link{TODEFINE}} object.
 }
 \details{
-Creates a fasta file from a set of sequences of interest. The header can be easily amended with further informations with e.g. \code{paste}
+Creates a fasta file from a set of sequences of interest. Obviously, \code{\param{id}} and \code{\param{seq}} vectors should be in agreement. The header can be easily amended with further informations with e.g. \code{paste}.
 }
 \examples{
 
