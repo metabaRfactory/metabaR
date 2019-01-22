@@ -12,7 +12,7 @@
 #' @return a fasta file
 #'
 #' @details
-#' Creates a fasta file from a set of sequences of interest. Obviously, \code{\param{id}} and \code{\param{seq}} vectors should be in agreement. The header can be easily amended with further informations with e.g. \code{paste}.
+#' Creates a fasta file from a set of sequences of interest. Obviously, \code{id} and \code{seq} vectors should be in agreement. The header can be easily amended with further informations with e.g. \code{paste}.
 #'
 #' @examples
 #'
