@@ -34,6 +34,8 @@ samples$plate_row = gsub("[0-9]", "", sapply(strsplit(gsub("F @ position=|;", ""
 
 samp = samples[match(rownames(reads), rownames(samples)),]
 
+rownames(samp) = gsub("_", "-", rownames(samp))
+rownames(reads) = gsub("_", "-", rownames(reads))
 
 soil_euk = list(reads = reads,
                 motus = motus,
