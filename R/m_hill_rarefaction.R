@@ -35,6 +35,7 @@
 #' @import ggplot2
 #' @import reshape2
 #' @export hill_rarefaction
+#' @export gghill_rarefaction
 
 hill_rarefaction = function(x, boot = 10) {
   require(vegan)
