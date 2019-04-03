@@ -1,10 +1,12 @@
-#obitab output
-tmp = read.csv("litiere_euk_cl97_agg_filt_tax.tab", h=T, sep="\t")
+# import obitab output
+tmp = read.csv("data-raw/litiere_euk_cl97_agg_filt_tax.tab", h=T, sep="\t")
 
+# Get reads table
 reads = t(tmp[,grep("sample\\.", colnames(tmp))])
 rownames(reads) = gsub("sample\\.", "", rownames(reads))
 colnames(reads) = tmp$id
 
+# Get motus table
 motus = tmp[,grep("sample\\.", colnames(tmp), invert = T)]
 rownames(motus) = motus$id
 motus = motus[,c("count", "GC_content", "seq_length",
@@ -15,8 +17,19 @@ motus = motus[,c("count", "GC_content", "seq_length",
                  "rank", "scientific_name", "path",
                  "sequence")]
 
-#samples characteristics
-samples = read.table("Litiere_sample_list.txt", h=T, row.names=1, sep="\t")
+# Get samples table and make it as an input table for the import data function
+tmp = read.table("data-raw/Litiere_sample_list.txt", h=T, row.names=1, sep="\t")
+#format to obtain only samples description
+samples = unique(tmp[,1:8])
+#remove controls
+samples = samples[which(is.na(samples$Control_type)),-c(9:10)]
+#rename samples table
+rownames(samples) = substr(rownames(samples), 1, nchar(rownames(samples))-3)
+samples = data.frame(sample_id = rownames(samples), samples)
+#export table
+write.table(samples, file = "data-raw/litiere_euk_samples.txt",
+            sep="\t", quote=F, row.names = F)
+
 
 #plate locations in ngsfilter
 ngsfilt = read.table("ngsfilter_GWM-768.new.txt", h=F, sep="\t")
