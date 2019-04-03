@@ -46,6 +46,13 @@ metabarlist_generator = function(file_reads, file_motus, file_pcrs, file_samples
   samples = read.table(file_samples, row.names=1, h=T, sep=files_sep,
                        check.names = F, stringsAsFactors = F)
 
+  if(!all(rownames(reads) %in% rownames(pcrs)))
+    stop("cannot continue, rownames in reads are not part of rownames of pcrs")
+
+  reads = reads[match(rownames(pcrs), rownames(reads)),]
+  reads[is.na(reads)] = 0
+  rownames(reads) = rownames(pcrs)
+
   out = list(reads = reads,
              motus = motus,
              pcrs = pcrs,
