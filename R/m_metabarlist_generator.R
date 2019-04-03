@@ -37,10 +37,14 @@ metabarlist_generator = function(file_reads, file_motus, file_pcrs, file_samples
     stop("file samples does not exist")
 
 
-  reads = as.matrix(read.csv2(file_reads, row.names=1, h=T, sep=files_sep, check.names = F))
-  motus = read.table(file_motus, row.names=1, h=T, sep=files_sep, check.names = F)
-  pcrs = read.table(file_pcrs, row.names=1, h=T, sep=files_sep, check.names = F)
-  samples = read.table(file_samples, row.names=1, h=T, sep=files_sep, check.names = F)
+  reads = as.matrix(read.csv2(file_reads, row.names=1, h=T, sep=files_sep,
+                              check.names = F, stringsAsFactors = F))
+  motus = read.table(file_motus, row.names=1, h=T, sep=files_sep,
+                     check.names = F, stringsAsFactors = F)
+  pcrs = read.table(file_pcrs, row.names=1, h=T, sep=files_sep,
+                    check.names = F, stringsAsFactors = F)
+  samples = read.table(file_samples, row.names=1, h=T, sep=files_sep,
+                       check.names = F, stringsAsFactors = F)
 
   out = list(reads = reads,
              motus = motus,
