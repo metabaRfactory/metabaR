@@ -7,10 +7,10 @@
 check_metabarlist(metabarlist)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{TODEFINE}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 }
 \value{
-TRUE or throws an error
+TRUE or throws an stop
 }
 \description{
 Test that the provided list is a well formed metabaRffe list
@@ -20,10 +20,19 @@ Check for the properties awaited for a well formed metabaRffe list:
 \itemize{
 \item {is a list with three attributes named `reads`, `motus` and `pcrs`}
 \item {`reads` is a numeric matrix}
-\item {`motus` and `pcrs` are data.frame}
-\item {`motus` and `pcrs` have mandatory columns, i.e. tag_fwd, tag_rev, primer_fwd, primer_rev, plate_no, plate_col and plate_row for `pcrs`
+\item {`motus`, `pcrs` and `samples` are of type `data.frame`}
+\item {`reads` have the exact same row names and columns as rownames of `motus` and `pcrs` (same order also)}
+\item {`pcrs` have mandatory columns, i.e.  `sample_id`, `type` and `control_type`}
+\item {values in `type` are properly defined, i.e. `sample` or `control`}
+\item {values in and `Control_type` are properly defined, i.e. `sequencing`, `pcr`, `extraction`, `positive`}
+
+
+\item {issue warnings if}
+\item {`motus` and `pcrs` have not mandatory columns for design description, i.e. tag_fwd, tag_rev, primer_fwd, primer_rev, plate_no, plate_col and plate_row for `pcrs`
   and sequence for `motus`}
 }
+
+\item {issue an stop if these informations are not well recorded}
 
 Moreover, the function issues a warning if any sample or OTU is associated to a count of 0
 }
