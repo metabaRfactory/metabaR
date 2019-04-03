@@ -27,15 +27,16 @@ reads = as.matrix(read.csv2("data-raw/litiere_euk_reads.txt", row.names=1, h=T, 
 #write.table(motus, file = "data-raw/litiere_euk_motus.txt",
 #             sep="\t", quote=F, row.names = F)
 
-motus = read.table("data-raw/litiere_euk_motus.txt", row.names=1, h=T, sep="\t")
+motus = read.table("data-raw/litiere_euk_motus.txt", row.names=1, h=T, sep="\t",
+                   check.names = F)
 
 
 all(colnames(reads) == rownames(motus))
 
 
 # Get pcr table
-pcrs = read.table("data-raw/litiere_euk_pcrs.txt", sep="\t", h=T)
-rownames(pcrs) = as.vector(pcrs$pcr_id)
+pcrs = read.table("data-raw/litiere_euk_pcrs.txt", sep="\t", h=T, row.names=1,
+                  check.names = F)
 
 all(rownames(reads) %in% rownames(pcrs))
 
@@ -79,5 +80,7 @@ soil_euk = list(reads = reads,
                 motus = motus,
                 pcrs = pcrs,
                 samples = samples)
+
+attr(soil_euk, 'class') = "metabarlist"
 
 devtools::use_data(soil_euk)
