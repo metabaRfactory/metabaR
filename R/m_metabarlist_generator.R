@@ -22,7 +22,7 @@
 #'
 #' @seealso \code{\link{check_metabarlist}}
 #'
-#' @author Lucie Zinger & Clément Lionnet
+#' @author Lucie Zinger & Clément Lionnet & Frédéric boyer
 #' @export metabarlist_generator
 #'
 
