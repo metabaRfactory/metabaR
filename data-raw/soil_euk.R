@@ -1,15 +1,17 @@
 # import obitab output
-# tmp = read.csv("data-raw/litiere_euk_cl97_agg_filt_tax.tab", h=T, sep="\t")
+tmp = read.csv("data-raw/litiere_euk_cl97_agg_filt_tax.tab", h=T, sep="\t", check.names = F)
 
 # #Get reads table
-# reads = t(tmp[,grep("sample\\.", colnames(tmp))])
-# rownames(reads) = gsub("sample\\.", "", rownames(reads))
+# reads = t(tmp[,grep("sample\\:", colnames(tmp))])
+# rownames(reads) = gsub("sample\\:", "", rownames(reads))
 # colnames(reads) = tmp$id
-# reads = data.frame(pcr_id = rownames(reads), reads)
+# reads = cbind(rownames(reads), reads)
+# colnames(reads)[1] = "pcr_id"
 # write.table(reads, file = "data-raw/litiere_euk_reads.txt",
-#             sep="\t", quote=F, row.names = F)
+#              sep="\t", quote=F, row.names = F)
 
-reads = read.table("data-raw/litiere_euk_reads.txt", row.names=1, h=T, sep="\t")
+reads = as.matrix(read.csv2("data-raw/litiere_euk_reads.txt", row.names=1, h=T, sep="\t",
+                             check.names = F))
 
 
 # Get motus table
@@ -25,6 +27,21 @@ reads = read.table("data-raw/litiere_euk_reads.txt", row.names=1, h=T, sep="\t")
 #write.table(motus, file = "data-raw/litiere_euk_motus.txt",
 #             sep="\t", quote=F, row.names = F)
 
+motus = read.table("data-raw/litiere_euk_motus.txt", row.names=1, h=T, sep="\t")
+
+
+all(colnames(reads) == rownames(motus))
+
+
+# Get pcr table
+pcrs = read.table("data-raw/PCR_information.tsv", sep="\t", h=T)
+rownames(pcrs) = as.vector(pcrs$pcr_id)
+
+all(rownames(reads) %in% rownames(pcrs))
+
+reads = reads[match(rownames(pcrs), rownames(reads)),]
+reads[is.na(reads)] = 0
+rownames(reads) = rownames(pcrs)
 
 # Get samples table and make it as an input table for the import data function
 # tmp = read.table("data-raw/Litiere_sample_list.txt", h=T, row.names=1, sep="\t")
@@ -40,28 +57,22 @@ reads = read.table("data-raw/litiere_euk_reads.txt", row.names=1, h=T, sep="\t")
 #             sep="\t", quote=F, row.names = F)
 #
 
-samples = read.table("data-raw/litiere_euk_samples.txt", h=T, sep="\t")
+samples = read.table("data-raw/litiere_euk_samples.txt", h=T, row.names = 1, sep="\t")
 
-#plate locations in ngsfilter
-ngsfilt = read.table("ngsfilter_GWM-768.new.txt", h=F, sep="\t")
-colnames(ngsfilt) = c("project", "amplicon", "tagcombo", "primerF", "primerR", "info")
+all(rownames(samples) %in% pcrs$sample_id)
 
-idx = match(rownames(samples), gsub("-", "_", as.vector(ngsfilt$amplicon)))
-samples$project = ngsfilt[idx,"project"]
-samples$tag_fwd = sapply(strsplit(as.vector(ngsfilt[idx,"tagcombo"]), "\\:"), "[[", 1)
-samples$tag_rev = sapply(strsplit(as.vector(ngsfilt[idx,"tagcombo"]), "\\:"), "[[", 2)
-samples$primer_fwd = ngsfilt[idx,"primerF"]
-samples$primer_rev = ngsfilt[idx,"primerR"]
-samples$plate_no = sapply(strsplit(gsub("F @ position=|;", "", ngsfilt[idx,"info"]), "_"), "[[", 1)
-samples$plate_col = gsub("[A-Z]", "", sapply(strsplit(gsub("F @ position=|;", "", ngsfilt[idx,"info"]), "_"), "[[", 2))
-samples$plate_row = gsub("[0-9]", "", sapply(strsplit(gsub("F @ position=|;", "", ngsfilt[idx,"info"]), "_"), "[[", 2))
+dim(motus)
+dim(reads)
+dim(pcrs)
+dim(samples)
+nlevels(droplevels(pcrs$sample_id[pcrs$type=="sample"]))
+all(rownames(reads) == rownames(pcrs))
+all(colnames(reads) == rownames(motus))
 
-samp = samples[match(rownames(reads), rownames(samples)),]
-
-rownames(samp) = gsub("_", "-", rownames(samp))
-rownames(reads) = gsub("_", "-", rownames(reads))
 
 soil_euk = list(reads = reads,
                 motus = motus,
-                pcrs = samp)
+                pcrs = pcrs,
+                samples = samples)
+
 devtools::use_data(soil_euk)
