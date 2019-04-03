@@ -39,6 +39,11 @@ rownames(pcrs) = as.vector(pcrs$pcr_id)
 
 all(rownames(reads) %in% rownames(pcrs))
 
+pcrs = pcrs[,-match("pcr_id", colnames(pcrs))]
+pcrs = data.frame(pcr_id = rownames(pcrs), pcrs)
+write.table(pcrs, file = "data-raw/litiere_euk_pcrs.txt",
+                         sep="\t", quote=F, row.names = F)
+
 reads = reads[match(rownames(pcrs), rownames(reads)),]
 reads[is.na(reads)] = 0
 rownames(reads) = rownames(pcrs)
