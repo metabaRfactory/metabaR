@@ -111,20 +111,20 @@ if ( ! (all(pcrs_mandatory_cols %in% colnames(metabarlist$pcrs)))) {
   stop("metabarlist$pcrs have mandatory columns: 'sample_id', 'type','control_type'")
 }
 
-if ( ! (sort(unique(metabarlist$pcrs$Type), na.last = T) == c('control','sample'))) {
+if ( ! all(sort(unique(metabarlist$pcrs$type), na.last = T) == c('control','sample'))) {
   stop("metabarlist$pcrs$Type must contain only 'control' and 'sample' values")
 }
 
-if ( ! (is.na(metabarlist$reads$Control_type) == (metabarlist$reads$Type=='sample'))) {
+if ( ! all(is.na(metabarlist$pcrs$control_type) == (metabarlist$pcrs$type=='sample'))) {
   stop("metabarlist$reads$Control_type must have 'NA' values for samples")
 }
 
-if ( ! (is.na(metabarlist$reads$Sample_id) != (metabarlist$reads$Type=='sample'))) {
+if ( ! all(is.na(metabarlist$pcrs$sample_id) != (metabarlist$pcrss$type=='sample'))) {
   stop("metabarlist$reads$Control_type must no have 'NA' values for controls")
 }
 
-if ( ! (sort(unique(metabarlist$reads$Control_type[!is.na(metabarlist$reads$Control_type)])) == c('extraction', 'pcr',  'positive', 'sequencing'))) {
-  stop("metabarlist$reads$Control_type must no be either 'extraction', 'pcr',  'positive' or 'sequencing' for controls")
+if ( ! all(sort(unique(metabarlist$pcrs$control_type[!is.na(metabarlist$pcrs$control_type)])) == c('extraction', 'pcr',  'positive', 'sequencing'))) {
+  stop("metabarlist$pcrs$control_type must no be either 'extraction', 'pcr',  'positive' or 'sequencing' for controls")
 }
 
 
@@ -136,9 +136,8 @@ if(any(duplicated(colnames(metabarlist$samples)))) stop("metabarlist$samples has
 if(any(duplicated(rownames(metabarlist$samples)))) stop("metabarlist$samples has duplicated row names")
 
 
-
-if ( ! (all(unique(metabarlist$reads$Sample_id[!is.na(metabarlist$reads$Sample_id)]) == rownames(metabarlist$samples)))) {
-  stop('All values in metabarlist$reads$Sample_id should have a corresponding entry in metabarlist$samples')
+if ( ! (all(unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type=='sample']) %in% rownames(metabarlist$samples)))) {
+  stop('All values in metabarlist$pcrs$sample_id should have a corresponding entry in metabarlist$samples')
 }
 
 
@@ -147,7 +146,7 @@ if (! all(cols_plate_design %in% colnames(metabarlist$pcrs))) {
   warning(paste0("No properly recorded plate design: ", paste(cols_plate_design[! cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '), " missing !"))
 }
 else {
-  if (all(c('plate_no', 'plate_col', 'plate_row') %in% metabarlist$pcrs)) {
+  if (all(c('plate_no', 'plate_col', 'plate_row') %in% colnames(metabarlist$pcrs))) {
     if ( ! (is.numeric(metabarlist$pcrs$plate_no))) {
       stop("metabarlist$pcrs$plate_no must be numeric")
     }
@@ -156,7 +155,7 @@ else {
       stop("metabarlist$pcrs$plate_col must correspond to numbers to 1:12")
     }
 
-    if ( ! (all(metabarlist$pcrs$plate_row) %in% c('A','B','C','D','E','F','G','H'))) {
+    if ( ! (all(metabarlist$pcrs$plate_row %in% c('A','B','C','D','E','F','G','H')))) {
       stop("metabarlist$pcrs$plate_row must be letters from A to H")
     }
 
@@ -168,12 +167,12 @@ else {
                   ")"))
     }
   }
-  if (all(c('primer_fwd', 'primer_rev') %in% metabarlist$pcrs)) {
+  if (all(c('primer_fwd', 'primer_rev') %in% colnames(metabarlist$pcrs))) {
     if (nrow(unique(metabarlist$pcrs[,c('primer_fwd', 'primer_rev')]))>1) {
       warning('Several primer pairs described in metabarlist$pcrs')
     }
   }
-  if (all(c('tag_fwd', 'tag_rev') %in% metabarlist$pcrs)) {
+  if (all(c('tag_fwd', 'tag_rev') %in% colnames(metabarlist$pcrs))) {
     if (! nrow(unique(metabarlist$pcrs[,c('tag_fwd', 'tag_rev')]))==nrow(metabarlist$pcrs)) {
       combi <- table(apply(metabarlist$pcrs[,c('tag_fwd', 'tag_rev')], MARGIN=1, FUN=function(x) paste(x, collapse=" ")))
 
@@ -182,6 +181,7 @@ else {
     }
   }
 }
+
 
 if (any(rowSums(metabarlist$reads)==0)) {
   warning("Some samples have a count of zero !")
