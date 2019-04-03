@@ -82,8 +82,8 @@ if(any(duplicated(rownames(metabarlist$motus))))
   stop("metabarlist$motus has duplicated row names")
 
 
-if ( ! ((length(rownames(metabarlist$reads)) == length(rownames(metabarlist$motus))) && (all(rownames(metabarlist$reads) == rownames(metabarlist$motus))))) {
-  stop("lines of metabarlist$reads must correspond exactly to lines of metabarlist$motus")
+if ( ! ((length(colnames(metabarlist$reads)) == length(rownames(metabarlist$motus))) && (all(colnames(metabarlist$reads) == rownames(metabarlist$motus))))) {
+  stop("columns of metabarlist$reads must correspond exactly to rows of metabarlist$motus")
 }
 
 if(any(colnames(metabarlist$pcrs) %in% ""))
@@ -98,8 +98,8 @@ if(any(duplicated(rownames(metabarlist$pcrs))))
 
 
 
-if ( ! ((length(colnames(metabarlist$reads)) == length(rownames(metabarlist$pcrs)))  && (all(colnames(metabarlist$reads) == rownames(metabarlist$pcrs))))) {
-  stop("columns of metabarlist$reads must correspond exactly to lines of metabarlist$pcrs")
+if ( ! ((length(rownames(metabarlist$reads)) == length(rownames(metabarlist$pcrs)))  && (all(rownames(metabarlist$reads) == rownames(metabarlist$pcrs))))) {
+  stop("rows of metabarlist$reads must correspond exactly to rows of metabarlist$pcrs")
 }
 
 if ( ! ('sequence' %in% colnames(metabarlist$motus) && is.character(metabarlist$motus$sequence) && all(! is.na(metabarlist$motus$sequence)))) {
