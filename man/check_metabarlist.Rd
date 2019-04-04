@@ -32,7 +32,7 @@ Check for the properties awaited for a well formed metabaRffe list:
   and sequence for `motus`}
 }
 
-\item {issue an stop if these informations are not well recorded}
+The function issues a stop if these informations are not well recorded
 
 Moreover, the function issues a warning if any sample or OTU is associated to a count of 0
 }
