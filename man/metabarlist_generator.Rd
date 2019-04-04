@@ -34,5 +34,5 @@ This function aims at importing data into \R to create a \code{\link{metabarlist
 \code{\link{check_metabarlist}}
 }
 \author{
-Lucie Zinger & Clément Lionnet
+Lucie Zinger & Clément Lionnet & Frédéric boyer
 }
