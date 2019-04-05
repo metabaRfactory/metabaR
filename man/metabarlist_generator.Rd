@@ -29,6 +29,13 @@ This function aims at importing data into \R to create a \code{\link{metabarlist
 }
 \examples{
 
+\dontrun{
+mymetabarlist = metabarlist_generator(file_reads = "data-raw/litiere_euk_reads.txt",
+                                      file_motus = "data-raw/litiere_euk_motus.txt",
+                                      file_pcrs = "data-raw/litiere_euk_pcrs.txt",
+                                      file_samples = "data-raw/litiere_euk_samples.txt")
+}
+
 }
 \seealso{
 \code{\link{check_metabarlist}}
