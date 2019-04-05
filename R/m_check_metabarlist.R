@@ -31,7 +31,7 @@
 #' }
 #'
 #'
-#' Moreover, the function issues a warning if any sample or OTU is associated to a count of 0
+#' Moreover, the function issues a warning if any sample or MOTU is associated to a count of 0
 #'
 #' @examples
 #'
@@ -116,7 +116,7 @@ if ( ! (all(pcrs_mandatory_cols %in% colnames(metabarlist$pcrs)))) {
 }
 
 if ( ! all(sort(unique(metabarlist$pcrs$type), na.last = T) == c('control','sample'))) {
-  stop("metabarlist$pcrs$Type must contain only 'control' and 'sample' values")
+  stop("metabarlist$pcrs$type must contain only 'control' and 'sample' values")
 }
 
 if ( ! all(is.na(metabarlist$pcrs$control_type) == (metabarlist$pcrs$type=='sample'))) {
@@ -156,7 +156,7 @@ else {
     }
 
     if ( ! (all(as.numeric(metabarlist$pcrs$plate_col) %in% 1:12))) {
-      stop("metabarlist$pcrs$plate_col must correspond to numbers to 1:12")
+      stop("metabarlist$pcrs$plate_col must correspond to numbers from 1 to 12")
     }
 
     if ( ! (all(metabarlist$pcrs$plate_row %in% c('A','B','C','D','E','F','G','H')))) {
@@ -166,7 +166,7 @@ else {
 
     if ( ! (nrow(metabarlist$pcrs) == nrow(unique(metabarlist$pcrs[,c('plate_no', 'plate_col', 'plate_row')])))) {
       combi <- table(apply(metabarlist$pcrs[,c('plate_no', 'plate_col', 'plate_row')], MARGIN=1, FUN=function(x) paste(x, collapse=" ")))
-      stop(paste0("the same combination of 'plate_no', 'plate_col', 'plate_row' found several times in metabarlist$pcrs (",
+      stop(paste0("Same combination of 'plate_no', 'plate_col', 'plate_row' found several times in metabarlist$pcrs (",
                   paste(names(combi)[combi>1],collapse=", "),
                   ")"))
     }
@@ -188,10 +188,10 @@ else {
 
 
 if (any(rowSums(metabarlist$reads)==0)) {
-  warning("Some samples have a count of zero !")
+  warning("Some pcrs have a number of reads of zero !")
 }
 if (any(colSums(metabarlist$reads)==0)) {
-  warning('Some OTUs have a count of zero !')
+  warning('Some MOTUs have a number of reads of zero !')
 }
 TRUE
 
