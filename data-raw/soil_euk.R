@@ -28,7 +28,7 @@ reads = as.matrix(read.csv2("data-raw/litiere_euk_reads.txt", row.names=1, h=T, 
 #             sep="\t", quote=F, row.names = F)
 
 motus = read.table("data-raw/litiere_euk_motus.txt", row.names=1, h=T, sep="\t",
-                   check.names = F)
+                   check.names = F, stringsAsFactors = F)
 
 
 all(colnames(reads) == rownames(motus))
