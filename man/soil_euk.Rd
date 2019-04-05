@@ -4,9 +4,9 @@
 \name{soil_euk}
 \alias{soil_euk}
 \title{Soil eukaryote DNA metabarcoding data from French Guiana}
-\format{An object of class \code{TODEFINE}; see \code{\link[metabaRffe]{TODEFINE}}.}
+\format{An object of class \code{metabarlist}; see \code{\link[metabaRffe]{metabarlist}}.}
 \source{
-\href{TO DEFINE}{DNA metabarcoding data archive}
+\href{LINK WEB TO DEFINE}{DNA metabarcoding data archive}
 }
 \usage{
 data(soil_euk)
@@ -28,7 +28,7 @@ For each sampling points, two types of compartments:
   \item{}{=>A total of 64 DNA extracts + 4 extraction blank controls (1 per site and compartment)}
 }
 For each DNA extracts, a short region of the 18S rRNA (Taberlet et al. 2018) was
-amplfied by PCR in quadruplicate, following the protocol described in Zinger et al. 2018.
+amplfied by PCR in quadruplicate, following the protocol described in Zinger et al. 2019.
 The resulting amplicons were pooled and sequenced on a Illumina HiSeq plateform, using the
 the paired-end technology.
 
@@ -43,6 +43,16 @@ The total experiment hence includes the following amplicon types:
 }
 
 The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining ones were clustered into operational taxonomic units (OTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each OTU (most abundant one) was assigned to taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010).
+
+
+The data `soil_euk` is a \code{metabarlist} containing four tables
+
+\itemize{
+\item{}{`reads`: a numeric matrix containing the MOTUs abundances (expressed as a number of reads) for each pcr (i.e. technical replicates of both biological samples and positive and negative controls)}
+\item{}{`motus`: a dataframe containing the MOTUs characteristics (e.g. taxonomy, sequence) for each MOTUs)}
+\item{}{`pcrs`: a dataframe containing information on each pcr (e.g. control type, pcr wells, etc.)}
+\item{}{`samples`: a dataframe containing information on each environmental sample (e.g. habitat type, etc.)}
+}
 }
 \examples{
 data(soil_euk)
@@ -57,6 +67,6 @@ Mercier, C., Boyer, F., Bonin, A., & Coissac, E. (2013, November). SUMATRA and S
 
 Taberlet, P., Bonin, A., Zinger, L., & Coissac, E. (2018). Environmental DNA: For Biodiversity Research and Monitoring. Oxford University Press.
 
-Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... & Chave, J. (2018). Body size determines soil community assembly in a tropical forest. Molecular ecology.
+Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... & Chave, J. (2019). Body size determines soil community assembly in a tropical forest. Molecular ecology, 28(3), 528-543.
 }
 \keyword{dataset}
