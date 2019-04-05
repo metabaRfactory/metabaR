@@ -37,7 +37,7 @@ The function issue warnings if some tables lacks of non mandatory columns for th
 }
 
 
-Moreover, the function issues a warning if any sample or OTU is associated to a count of 0
+Moreover, the function issues a warning if any sample or MOTU is associated to a count of 0
 }
 \examples{
 
