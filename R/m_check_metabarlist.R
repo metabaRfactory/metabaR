@@ -156,7 +156,7 @@ if ( ! (all(unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type=='sample']) 
 
 cols_plate_design = c('tag_fwd', 'tag_rev', 'primer_fwd', 'primer_rev', 'plate_no', 'plate_col', 'plate_row')
 if (! all(cols_plate_design %in% colnames(metabarlist$pcrs))) {
-  warning(paste0("No properly recorded plate design: ", paste(cols_plate_design[! cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '), " missing !"))
+  warning(paste0("PCR plate design not properly recorded: ", paste(cols_plate_design[! cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '), " missing !\n"))
 }
 else {
   if (all(c('plate_no', 'plate_col', 'plate_row') %in% colnames(metabarlist$pcrs))) {
