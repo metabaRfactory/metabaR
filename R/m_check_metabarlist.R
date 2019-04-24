@@ -58,7 +58,9 @@ check_metabarlist <- function(metabarlist) {
   }
 
 
-  if ( ! (is.matrix(metabarlist$reads) && is.numeric(metabarlist$reads) && ! any(is.na(metabarlist$reads) && all(metabarlist$reads>=0)))) {
+  if ( ! (is.matrix(metabarlist$reads) &&
+          is.numeric(metabarlist$reads) &&
+          ! any(is.na(metabarlist$reads) && all(metabarlist$reads>=0)))) {
     stop("metabarlist$reads must be a positive numeric matrix with no NA values")
   }
 
@@ -72,9 +74,12 @@ if(any(duplicated(rownames(metabarlist$reads))))
   stop("metabarlist$reads has duplicated row names")
 
 
-if ( ! (is.data.frame(metabarlist$motus) && is.data.frame(metabarlist$pcrs) && is.data.frame(metabarlist$samples))) {
+if ( ! (is.data.frame(metabarlist$motus) &&
+        is.data.frame(metabarlist$pcrs) &&
+        is.data.frame(metabarlist$samples))) {
   stop("metabarlist$motus, metabarlist$pcrs and metabarlist$samples must be data.frames")
 }
+
 
 if(any(colnames(metabarlist$motus) %in% ""))
   stop("metabarlist$motus has empty column names")
@@ -86,9 +91,11 @@ if(any(duplicated(rownames(metabarlist$motus))))
   stop("metabarlist$motus has duplicated row names")
 
 
-if ( ! ((length(colnames(metabarlist$reads)) == length(rownames(metabarlist$motus))) && (all(colnames(metabarlist$reads) == rownames(metabarlist$motus))))) {
+if ( ! ((length(colnames(metabarlist$reads)) == length(rownames(metabarlist$motus))) &&
+        (all(colnames(metabarlist$reads) == rownames(metabarlist$motus))))) {
   stop("columns of metabarlist$reads must correspond exactly to rows of metabarlist$motus")
 }
+
 
 if(any(colnames(metabarlist$pcrs) %in% ""))
   stop("metabarlist$pcrs has empty column names")
@@ -101,13 +108,15 @@ if(any(duplicated(rownames(metabarlist$pcrs))))
 
 
 
-
-if ( ! ((length(rownames(metabarlist$reads)) == length(rownames(metabarlist$pcrs)))  && (all(rownames(metabarlist$reads) == rownames(metabarlist$pcrs))))) {
+if ( ! ((length(rownames(metabarlist$reads)) == length(rownames(metabarlist$pcrs))) &&
+        (all(rownames(metabarlist$reads) == rownames(metabarlist$pcrs))))) {
   stop("rows of metabarlist$reads must correspond exactly to rows of metabarlist$pcrs")
 }
 
-if ( ! ('sequence' %in% colnames(metabarlist$motus) && is.character(metabarlist$motus$sequence) && all(! is.na(metabarlist$motus$sequence)))) {
-  stop('metabarlist$motus$sequence must be defined and be exclusively character values')
+if ( ! ('sequence' %in% colnames(metabarlist$motus) &&
+        is.character(metabarlist$motus$sequence) &&
+        all(! is.na(metabarlist$motus$sequence)))) {
+  stop('metabarlist$motus$sequence must be defined and be exclusively characters')
 }
 
 pcrs_mandatory_cols = c('sample_id', 'type','control_type')
@@ -115,20 +124,20 @@ if ( ! (all(pcrs_mandatory_cols %in% colnames(metabarlist$pcrs)))) {
   stop("metabarlist$pcrs have mandatory columns: 'sample_id', 'type','control_type'")
 }
 
-if ( ! all(sort(unique(metabarlist$pcrs$type), na.last = T) == c('control','sample'))) {
+if ( ! all(sort(unique(metabarlist$pcrs$type), na.last = T) %in% c('control','sample'))) {
   stop("metabarlist$pcrs$type must contain only 'control' and 'sample' values")
 }
 
 if ( ! all(is.na(metabarlist$pcrs$control_type) == (metabarlist$pcrs$type=='sample'))) {
-  stop("metabarlist$reads$Control_type must have 'NA' values for samples")
+  stop("metabarlist$reads$control_type must have 'NA' values for samples")
 }
 
 if ( ! all(is.na(metabarlist$pcrs$sample_id) != (metabarlist$pcrss$type=='sample'))) {
-  stop("metabarlist$reads$Control_type must no have 'NA' values for controls")
+  stop("metabarlist$reads$control_type must no have 'NA' values for controls")
 }
 
-if ( ! all(sort(unique(metabarlist$pcrs$control_type[!is.na(metabarlist$pcrs$control_type)])) == c('extraction', 'pcr',  'positive', 'sequencing'))) {
-  stop("metabarlist$pcrs$control_type must no be either 'extraction', 'pcr',  'positive' or 'sequencing' for controls")
+if ( ! all(sort(unique(metabarlist$pcrs$control_type[!is.na(metabarlist$pcrs$control_type)])) %in% c('extraction', 'pcr',  'positive', 'sequencing'))) {
+  stop("metabarlist$pcrs$control_type must be either 'extraction', 'pcr', 'positive' or 'sequencing' for controls")
 }
 
 
