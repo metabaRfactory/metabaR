@@ -14,7 +14,7 @@ tabfiles_to_metabarlist(file_reads, file_motus, file_pcrs, file_samples,
 
 \item{file_pcrs}{path for the pcrs characteristics table (e.g. tags, primers, plate wells, etc.). Mandatory fields: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e. the type of pcr; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be: `NA` for samples, `extraction` for extraction negative controls, `pcr` for pcr negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), and `positive` for positive controls. The first column of this table should correspond to the names of the pcrs.}
 
-\item{file_samples}{the path for the sample characteristics table. The first column of this table shuld contain the sample names.}
+\item{file_samples}{path for the sample characteristics table. The first column of this table should contain the sample names.}
 
 \item{files_sep}{separator used to read the different tables. Should be the same in all tables. Default is tabulation.}
 }
@@ -38,7 +38,7 @@ soil_euk = tabfiles_to_metabarlist(file_reads = "data-raw/litiere_euk_reads.txt"
 
 }
 \seealso{
-\code{\link{check_metabarlist}}
+\code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
 }
 \author{
 Lucie Zinger & Clément Lionnet & Frédéric boyer
