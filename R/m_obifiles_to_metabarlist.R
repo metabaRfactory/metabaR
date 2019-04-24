@@ -1,0 +1,80 @@
+#' Import OBITools and associated files to create a metabarlist object
+#'
+#' Importing and formatting OBITools and associated files (i.e. an \code{obitab} output file,
+#' a \code{ngsfilter} file and table of samples characteristics respectively) to create
+#' a \code{\link{metabarlist}} object (see Boyer et al. 2016).
+#'
+#'
+#' @param file_obitab       path for the \code{obitab} output file. Rows of the table correspond to MOTUs, and columns correspond to MOTUs characteristics and counts across PCRs. Mandatory fields: `sequence`; should be printed when using \code{obitab}.
+#' @param file_ngsfilter    path for the \code{ngsfilter} file. Rows of the table correspond to PCRs, and the columns to their characteristics. Mandatory fields in the additional information: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e. the type of pcr; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be: `NA` for samples, `extraction` for extraction negative controls, `pcr` for pcr negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), and `positive` for positive controls. The first column of this table should correspond to the names of the pcrs.
+#' @param file_samples      path for the sample characteristics table. The first column of this table should contain the sample names.
+#' @param ...               other arguments to be pasted from \code{read.table}
+#'
+#'
+#' @name obifiles_to_metabarlist
+#'
+#' @return a \code{\link{metabarlist}} object
+#'
+#' @details
+#'
+#' This function aims at importing OBITools outputs and related files into \R to create a \code{\link{metabarlist}} object. The three files required are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+#'
+#' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular ecology resources, 16(1), 176-182.
+#'
+#' @examples
+#'
+#' \dontrun{
+#' soil_euk = obifiles_to_metabarlist(file_obitab = "data-raw/litiere_euk_cl97_agg_filt_tax.tab",
+#'                                    file_ngsfilter = "data-raw/ngsfilter_GWM-768.new_2.txt",
+#'                                    file_samples = "data-raw/Litiere_sample_list_2.txt",
+#'                                    sep = "\t")
+#'}
+#'
+#' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
+#'
+#' @author Lucie Zinger
+#' @export obifiles_to_metabarlist
+#'
+
+obifiles_to_metabarlist = function(file_obitab, file_ngsfilter, file_samples, ...) {
+  if(!file.exists(file_obitab))
+    stop("obitab file does not exist")
+  if(!file.exists(file_ngsfilter))
+    stop("ngsfilter file does not exist")
+  if(!file.exists(file_samples))
+    stop("file samples does not exist")
+
+  obi = read.csv2(file_obitab, h=T, check.names = F, stringsAsFactors = F, ...)
+
+  #reads
+  reads = t(obi[,grep("sample\\:", colnames(obi))])
+  rownames(reads) = gsub("sample\\:", "", rownames(reads))
+  colnames(reads) = obi$id
+
+  #motus
+  motus = obi[,grep("sample\\:", colnames(obi), invert = T)]
+  rownames(motus) = motus$id
+  motus = motus[,-match("id", colnames(motus))]
+
+  #pcrs
+  pcrs = read_ngsfilter(file = file_ngsfilter, additional.sep = "=", ...)
+  rownames(pcrs) = pcrs$pcr_id
+  pcrs = pcrs[,-match("pcr_id", colnames(pcrs))]
+
+
+  #samples
+  samples = read.csv2(file_samples, row.names=1, h=T, check.names = F, stringsAsFactors = F, ...)
+
+  #check pcrs in reads present in pcrs table
+  if(!all(rownames(reads) %in% rownames(pcrs)))
+    stop("cannot continue, rownames in reads are not part of rownames of pcrs")
+
+  #Add null lines for missing pcrs in reads
+  reads = reads[match(rownames(pcrs), rownames(reads)),]
+  reads[is.na(reads)] = 0
+  rownames(reads) = rownames(pcrs)
+
+  out = metabarlist_generator(reads, motus, pcrs, samples)
+
+  return(out)
+}
