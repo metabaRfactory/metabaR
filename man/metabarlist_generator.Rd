@@ -2,39 +2,59 @@
 % Please edit documentation in R/m_metabarlist_generator.R
 \name{metabarlist_generator}
 \alias{metabarlist_generator}
-\title{Import data to create a metabarlist object}
+\title{Create a metabarlist object}
 \usage{
-metabarlist_generator(file_reads, file_motus, file_pcrs, file_samples,
-  files_sep = "\\t")
+metabarlist_generator(reads, motus, pcrs, samples)
 }
 \arguments{
-\item{file_reads}{the path for the MOTU abundance table. Rows of the table should correspond to pcrs, and the columns to MOTUs. The first column of this table should correspond to the names of the pcrs.}
+\item{reads}{MOTUs abundance table. Rows and rownames of the table should correspond to PCRs and their names respectively. Columns and colnames should correspond to MOTUs and their names. Rownames this table should correspond to the PCRs names respectively.}
 
-\item{file_motus}{the path for the MOTU characteristics table (e.g. taxonomy, sequence, etc.). Rows of the table should correspond to MOTUs, and the columns to their characteristics. The first column of this table should contain MOTUs names. Mandatory fields: `sequence`, i.e. the most abundant sequence of the MOTU.}
+\item{motus}{MOTUs characteristics table (e.g. taxonomy, sequence, etc.). Rows and rownames of the table should correspond to MOTUs and their names respectively, and the columns to their characteristics. Mandatory fields: `sequence`, i.e. the sequence representative of the MOTU.}
 
-\item{file_pcrs}{the path for the pcrs characteristics table (e.g. tags, primers, plate wells, etc.). Mandatory fields: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e. the type of pcr; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be: `NA` for samples, `extraction` for extraction negative controls, `pcr` for pcr negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), and `positive` for positive controls.}
+\item{pcrs}{PCRs characteristics table (e.g. tags, primers, plate wells, etc.). Rows and rownames of the table should correspond to PCRs and their names respectively, and the columns to their characteristics. Mandatory fields: (i) `sample_id`, i.e. the name of each biological sample. (ii) `type`, i.e. the type of PCR; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be either: `NA` for samples, `extraction` for extraction negative controls, `pcr` for PCR negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), or `positive` for positive controls.}
 
-\item{file_samples}{the path for the sample characteristics table. The first column of this table shuld contain the sample names.}
-
-\item{files_sep}{separator used to read the different tables. Should be the same in all tables. Default is tabulation.}
+\item{samples}{Samples characteristics table. Rows and rownames of the table should correspond to biological samples and their names respectively, and the columns to their environnemental characteristics.}
 }
 \value{
 a \code{\link{metabarlist}} object
 }
 \description{
-Importing and formatting files to create a \code{\link{metabarlist}} object.
+Formatting R tables to create a \code{\link{metabarlist}} object.
 }
 \details{
-This function aims at importing data into \R to create a \code{\link{metabarlist}} object. The four files required are imported in \R, included into a list of class \code{\link{metabarlist}}, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+This function aims at formating R tables to create a \code{\link{metabarlist}} object. The four objects required are included into a list of class \code{\link{metabarlist}}. Congruencies between all tables are tested internally with the \code{\link{check_metabarlist}} function.
 }
 \examples{
 
-\dontrun{
-soil_euk = metabarlist_generator(file_reads = "data-raw/litiere_euk_reads.txt",
-                                      file_motus = "data-raw/litiere_euk_motus.txt",
-                                      file_pcrs = "data-raw/litiere_euk_pcrs.txt",
-                                      file_samples = "data-raw/litiere_euk_samples.txt")
-}
+#Create fake data
+##MOTUs abundance table
+
+reads = matrix(sample(1:1000, 200, replace = TRUE), nrow = 10, ncol = 20)
+rownames(reads) = paste(c(rep(c("A", "B", "C"), each=2), "ex", "pcr", "seq", "pos"),
+                        c(rep(c("r1", "r2"), 3), rep(0,4)), sep="_")
+colnames(reads) = sprintf("MOTU_\%03d", 1:ncol(reads))
+
+##MOTUs characteristics table
+motus = data.frame(fake_taxon = sample(letters, ncol(reads), replace = T),
+                   sequence = sapply(1:ncol(reads),
+                                     function(x) paste(sample(c("a", "t", "c", "g"), 20, TRUE), collapse="")),
+                   row.names = colnames(reads), stringsAsFactors = FALSE)
+
+ ##PCR characteristics table
+ pcrs = data.frame(sample_id = sapply(strsplit(rownames(reads), "_"), "[[", 1),
+                   type = c(rep("sample", 6), rep("control", 4)),
+                   control_type = c(rep(NA, 6), "extraction", "pcr", "sequencing", "positive"),
+                   fake_pcrplate = sample(c(1,2), nrow(reads), replace=T),
+                   row.names = rownames(reads))
+
+ ##Sample characteristics table
+ samples = data.frame(fake_latitude = 1:3, fake_longitude = 1:3,
+                     row.names = unique(pcrs$sample_id[is.na(pcrs$control_type)]))
+
+ #Generate the metabarlist object
+
+ test = metabarlist_generator(reads = reads, motus = motus, pcrs = pcrs, samples = samples)
+ ##Warnings are returned because the PCR design (i.e. tags, primers, plate coordinates) is not defined in this toy example.
 
 }
 \seealso{
