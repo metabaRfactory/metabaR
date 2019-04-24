@@ -2,38 +2,75 @@
 % Please edit documentation in R/m_hill_rarefaction.R
 \name{hill_rarefaction}
 \alias{hill_rarefaction}
-\title{Generate rarefaction curves using the hill numbers}
+\alias{gghill_rarefaction}
+\title{Generating rarefaction curves using Hill numbers}
 \usage{
-hill_rarefaction(x, boot = 10)
+hill_rarefaction(metabarlist, nboot = 10, nsteps = 10)
+
+gghill_rarefaction(hill_rar, group = NULL)
 }
 \arguments{
-\item{x}{a community matrix from a \code{\link{TODEFINE}}}
+\item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{boot}{nb of resampling to estimate Dq at a given sequencing depth}
+\item{nboot}{number of resamplings to estimate \eqn{^{q}D} at a given sequencing depth.}
+
+\item{nsteps}{number of steps between sample sizes for the rarefaction curves. Default is 10 steps.}
+
+\item{hill_rar}{an object of class \code{"hill_rarefaction"}.}
+
+\item{group}{a vector or factor giving the grouping of each pcr included in the \code{"hill_rarefaction"} object. Missing values will be treated as another group and a warning will be given. The names of each elements should be defined and correspond to the non duplicated names of pcr included in the hill_rar object. Default is `NULL` for no grouping.}
 }
 \value{
-a table of data rarefied at different sequencing depth
+Function \code{hill_rarefaction} returns an object of class \code{"hill_rarefaction"}, which corresponds to a table of diversity indices for each pcr rarefied at each `nsteps`  sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
 }
 \description{
-Generate rarefaction curves from a \code{\link{TODEFINE}} object using hill numbers diversity indices, as well as the Good's coverage index.
+These functions generates and plot rarefaction curves from a \code{\link{metabarlist}} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as the Good's coverage index.
 }
 \details{
-Build a rarefaction analysis of amplicons in a \code{\link{TODEFINE}} object using Hill numbers for q={0,1,2}. These indices are equivalents to richness (q=0), exponential Shannon (q->1), and inverse simpson (q=2). The function also returns the Good's coverage index. But note that this index should be interpreted carefully, as it is based on singletons in each amplicons, some of them being filtered during the bioinformatic process (filtering of absolute singeltons).
+\code{\link{hill_rarefaction}} builds a rarefaction analysis for each pcr of a \code{\link{metabarlist}} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalents to :
+\itemize{
+\item{Richness, for q=0}
+\item{Exponential of the Shannon entropy, for q->1}
+\item{Inverse of the Simpson index, for q=2}
 }
+
+The function also returns the Good's coverage index (1-singletons/#reads). Note however that this index should be interpreted carefully in metabarcoding data:
+#' \itemize{
+\item{absolute singletons (across the whole metabarcoding dataset) are usually filtered out during the bioinformatic process (which is the case for the \code{\link{soil_euk}} data). The Good's coverage estimate returned here is only based on the amount of singletons per pcr after this filtering process, so the true amount of singeltons is here underestimated.}
+\item{This coverage index gives an assessment of the coverage of the amplicon diversity within a pcr: it includes remaining errors, etc.. The coverage of the genuine DNA fragment diversity in the biological sample is likely to be misestimated with this index.}
+}
+}
+\section{Functions}{
+\itemize{
+\item \code{hill_rarefaction}: Compute hill_rarefaction curves on a \code{\link{metabarlist}} object.
+
+\item \code{gghill_rarefaction}: Plot a object of class \code{"hill_rarefaction"}
+}}
+
 \examples{
 
 data(soil_euk)
 
-#create subset
-idx = c(grep("-J", soil_euk$pcr$point_id), which(is.na(soil_euk$pcr$Control_type)==F))
-soil_euk_raref.s = hill_rarefaction(soil_euk$reads[idx,], boot=10)
+#Create a subset of pcrs: only a subset of samples from the H20 plot
 
-#create a vector differenciating samples of different type matching with \\code{hill_rarefaction} output
-soil_euk$pcr$sample_type = as.vector(soil_euk$pcr$Control_type)
-soil_euk$pcr$sample_type[is.na(soil_euk$pcr$sample_type)] = "Biological samples"
-vectype = soil_euk$pcr$sample_type[match(soil_euk_raref.s$sample, rownames(soil_euk$pcr))]
+h20_id = rownames(soil_euk$pcrs)[grep("H20-[A-B]", rownames(soil_euk$pcrs))]
+soil_euk_h20 = subset_metabarlist(soil_euk, table = "pcrs", indices = h20_id)
 
-gghill_rarefaction(soil_euk_raref.s, vectype)
+#run rarefaction (use boot = 20 to limit computation time, should be more)
+soil_euk_h20.raref = hill_rarefaction(soil_euk_h20, nboot=20, nsteps=10)
+
+#plot the results
+gghill_rarefaction(soil_euk_h20.raref)
+
+#plot the results while differenciating litter vs. soil samples
+material = setNames(soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))],
+                 rownames(soil_euk_h20$pcrs))
+p = gghill_rarefaction(soil_euk_h20.raref, group=material)
+p
+p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
+   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
+   labs(color="Material type")
+
 
 }
 \references{
