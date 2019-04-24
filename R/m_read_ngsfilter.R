@@ -27,7 +27,7 @@
 
 read_ngsfilter = function(file, additional.sep = "=", ...) {
 
-  input = read.csv2(file, check.names = F, stringsAsFactors = F, ...)
+  input = read.csv2(file, h=F, check.names = F, stringsAsFactors = F, ...)
   colnames(input) = c("experiment", "pcr_id", "tag_combo", "primerF", "primerR", "additional")
 
   tags = do.call("rbind", strsplit(as.vector(input$tag_combo), "\\:"))
