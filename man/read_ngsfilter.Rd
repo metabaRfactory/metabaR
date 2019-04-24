@@ -7,23 +7,32 @@
 read_ngsfilter(file, additional.sep = "=", ...)
 }
 \arguments{
-\item{file}{path/name of the input}
+\item{file}{path/name of the input ngsfilter txt file}
 
-\item{additional.sep}{character indicating the field separator in the additional info colum in ngsfilter}
+\item{additional.sep}{character indicating the field separator in the additional info column in the ngsfilter filter file.}
 
 \item{...}{other arguments to be pasted from \code{read.table}}
 }
 \value{
-a table
+a data.frame
 }
 \description{
-Import a ngsfilter file formatted for the \code{OBITools} package.
+Import a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 }
 \details{
-Creates a sample table from a ngsfilter file formatted for the \code{OBITools} package.
+The function \code{read_ngsfilter} creates a sample table from a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 }
 \examples{
 
+\dontrun{
+
+ngsfilter = read_ngsfilter(file = "data-raw/ngsfilter_GWM-768.new.txt", sep="\\t", additional.sep = "=")
+
+}
+
+}
+\references{
+Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular ecology resources, 16(1), 176-182.
 }
 \author{
 Lucie Zinger

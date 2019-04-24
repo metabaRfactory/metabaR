@@ -1,25 +1,34 @@
 #' Import a ngsfilter file
 #'
-#' Import a ngsfilter file formatted for the \code{OBITools} package.
+#' Import a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 #'
 #'
-#' @param file    path/name of the input
-#' @param additional.sep character indicating the field separator in the additional info colum in ngsfilter
+#' @param file    path/name of the input ngsfilter txt file
+#' @param additional.sep character indicating the field separator in the additional info column in the ngsfilter filter file.
 #' @param ...    other arguments to be pasted from \code{read.table}
 #' @name read_ngsfilter
 #'
-#' @return a table
+#' @return a data.frame
 #'
 #' @details
-#' Creates a sample table from a ngsfilter file formatted for the \code{OBITools} package.
+#' The function \code{read_ngsfilter} creates a sample table from a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
+#'
+#' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular ecology resources, 16(1), 176-182.
 #'
 #' @examples
+#'
+#' \dontrun{
+#'
+#' ngsfilter = read_ngsfilter(file = "data-raw/ngsfilter_GWM-768.new.txt", sep="\t", additional.sep = "=")
+#'
+#' }
 #'
 #' @author Lucie Zinger
 
 read_ngsfilter = function(file, additional.sep = "=", ...) {
+
   input = read.table(file, ...)
-  colnames(input) = c("experiment", "pcr", "tag_combo", "primerF", "primerR", "additional")
+  colnames(input) = c("experiment", "pcr_id", "tag_combo", "primerF", "primerR", "additional")
 
   tags = do.call("rbind", strsplit(as.vector(input$tag_combo), "\\:"))
   colnames(tags) = c("tagF", "tagR")
@@ -46,6 +55,6 @@ read_ngsfilter = function(file, additional.sep = "=", ...) {
     if(ncol(d)==1) {d = d2} else {d = data.frame(d2, d[,-grep("^position$", colnames(d))])}
   }
 
-  out = data.frame(input[,c("experiment", "pcr", "primerF", "primerR")], tags, d)
+  out = data.frame(input[,c("experiment", "pcr_id", "primerF", "primerR")], tags, d)
   return(out)
 }
