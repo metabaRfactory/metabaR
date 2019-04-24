@@ -2,42 +2,47 @@
 % Please edit documentation in R/m_ggpcrplate.R
 \name{ggpcrplate}
 \alias{ggpcrplate}
-\title{Plotting an amplicon attribute in the PCR plate design}
+\title{Plotting a PCR attribute in the PCR plate design}
 \usage{
-ggpcrplate(attr, plate_no, plate_col, plate_row, control_type)
+ggpcrplate(metabarlist, table, index)
 }
 \arguments{
-\item{attr}{a numeric vector of the amplicon's attribute to be plotted}
+\item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{plate_no}{a numeric vector of the plate id(s) where the amplicons were amplified}
+\item{table}{the table where the information on which the plotting is based. Can be only `reads`,  or `pcrs`.}
 
-\item{plate_col}{a numeric vector of the plate's column where the amplicons were amplified}
-
-\item{plate_row}{a character vector of letters corresponding to the plate's row where the amplicons were amplified}
-
-\item{control_type}{a factor indicating the amplicon type (controls type, sample types, etc.)}
+\item{index}{the name of the column name containing the information to be plotted. This information should be a numeric vector.}
 }
 \value{
 a ggplot
 }
 \description{
-Plots an attribute of amplicons from a \code{\link{TODEFINE}} object in the correspondint 96-well PCR plate design
+Plots an attribute of PCRs from a \code{\link{metabarlist}} object in the correspondint 96-well PCR plates design
 }
 \details{
-Vizualizing some attributes of the amplicon in its experimental context, here its location in one or a set of 96-well PCR plates, can be useful to identify potential problems (e.g. low amount of reads due to unfunctional primer set).
+Vizualizing some attributes of the PCRs in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer sets).
 }
 \examples{
 
 data(soil_euk)
-#plot number of reads per pcrs
-seqdepth = rowSums(soil_euk$reads)
-p = ggpcrplate(attr = seqdepth, plate_no = soil_euk$pcrs$plate_no,
-                  plate_col = soil_euk$pcrs$plate_col,
-                  plate_row =  soil_euk$pcrs$plate_row,
-                  control_type = soil_euk$pcrs$Control_type)
-p + labs(size="# reads", fill="control type") +
-  scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
-                    na.value = "white")
+
+#Plot the number of reads per pcrs
+
+##Store the number of reads per pcrs in the pcrs table
+soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
+
+##Plot the results
+ggpcrplate(soil_euk, table = "pcrs", index = "seq_depth")
+
+
+#Plot the number of reads of the most abundant MOTU
+
+##Get the name of the most abundant MOTU
+id = colnames(soil_euk$reads)[which.max(colSums(soil_euk$reads))]
+
+##Plot the results
+ggpcrplate(soil_euk, table = "reads", index = id) + labs(size="#reads of most\\nabundant MOTU")
+
 
 }
 \author{
