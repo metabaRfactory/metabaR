@@ -28,10 +28,10 @@
 read_ngsfilter = function(file, additional.sep = "=", ...) {
 
   input = read.csv2(file, h=F, check.names = F, stringsAsFactors = F, ...)
-  colnames(input) = c("experiment", "pcr_id", "tag_combo", "primerF", "primerR", "additional")
+  colnames(input) = c("experiment", "pcr_id", "tag_combo", "primer_fwd", "primer_rev", "additional")
 
   tags = do.call("rbind", strsplit(as.vector(input$tag_combo), "\\:"))
-  colnames(tags) = c("tagF", "tagR")
+  colnames(tags) = c("tag_fwd", "tag_rev")
 
   additional = gsub("F @ ", "", as.vector(input$additional))
   tmp = strsplit(additional, ";")
@@ -49,12 +49,12 @@ read_ngsfilter = function(file, additional.sep = "=", ...) {
   }
 
   if("position" %in% colnames(d)) {
-    d2 = data.frame(plate_no = sapply(strsplit(d$position, "_"), "[[", 1),
+    d2 = data.frame(plate_no = as.numeric(sapply(strsplit(d$position, "_"), "[[", 1)),
                     plate_col = gsub("[A-Z]", "", sapply(strsplit(d$position, "_"), "[[", 2)),
                     plate_row = gsub("[0-9]", "", sapply(strsplit(d$position, "_"), "[[", 2)))
     if(ncol(d)==1) {d = d2} else {d = data.frame(d2, d[,-grep("^position$", colnames(d))])}
   }
 
-  out = data.frame(input[,c("experiment", "pcr_id", "primerF", "primerR")], tags, d)
+  out = data.frame(input[,c("experiment", "pcr_id", "primer_fwd", "primer_rev")], tags, d)
   return(out)
 }
