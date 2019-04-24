@@ -137,7 +137,8 @@ if ( ! all(is.na(metabarlist$pcrs$sample_id) != (metabarlist$pcrss$type=='sample
 }
 
 if ( ! all(sort(unique(metabarlist$pcrs$control_type[!is.na(metabarlist$pcrs$control_type)])) %in% c('extraction', 'pcr',  'positive', 'sequencing'))) {
-  stop("metabarlist$pcrs$control_type must be either 'extraction', 'pcr', 'positive' or 'sequencing' for controls")
+  stop("metabarlist$pcrs$control_type must be either 'extraction', 'pcr', 'positive' or
+       'sequencing' for controls")
 }
 
 
@@ -149,16 +150,18 @@ if(any(duplicated(colnames(metabarlist$samples)))) stop("metabarlist$samples has
 if(any(duplicated(rownames(metabarlist$samples)))) stop("metabarlist$samples has duplicated row names")
 
 
-if ( ! (all(unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type=='sample']) %in% rownames(metabarlist$samples)))) {
+if ( ! (all(unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type=='sample']) %in%
+            rownames(metabarlist$samples)))) {
   stop('All values in metabarlist$pcrs$sample_id should have a corresponding entry in metabarlist$samples')
 }
 
 
-cols_plate_design = c('tag_fwd', 'tag_rev', 'primer_fwd', 'primer_rev', 'plate_no', 'plate_col', 'plate_row')
+cols_plate_design = c('tag_fwd', 'tag_rev', 'primer_fwd', 'primer_rev',
+                      'plate_no', 'plate_col', 'plate_row')
+
 if (! all(cols_plate_design %in% colnames(metabarlist$pcrs))) {
-  warning(paste0("PCR plate design not properly recorded: ", paste(cols_plate_design[! cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '), " missing !\n"))
-}
-else {
+  warning(paste0("PCR plate design not properly provided: ", paste(cols_plate_design[! cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '), " missing !\n"))
+} else {
   if (all(c('plate_no', 'plate_col', 'plate_row') %in% colnames(metabarlist$pcrs))) {
     if ( ! (is.numeric(metabarlist$pcrs$plate_no))) {
       stop("metabarlist$pcrs$plate_no must be numeric")
@@ -173,9 +176,12 @@ else {
     }
 
 
-    if ( ! (nrow(metabarlist$pcrs) == nrow(unique(metabarlist$pcrs[,c('plate_no', 'plate_col', 'plate_row')])))) {
-      combi <- table(apply(metabarlist$pcrs[,c('plate_no', 'plate_col', 'plate_row')], MARGIN=1, FUN=function(x) paste(x, collapse=" ")))
-      stop(paste0("Same combination of 'plate_no', 'plate_col', 'plate_row' found several times in metabarlist$pcrs (",
+    if ( ! (nrow(metabarlist$pcrs) ==
+            nrow(unique(metabarlist$pcrs[,c('plate_no', 'plate_col', 'plate_row')])))) {
+      combi <- table(apply(metabarlist$pcrs[,c('plate_no', 'plate_col', 'plate_row')],
+                           MARGIN=1, FUN=function(x) paste(x, collapse=" ")))
+      stop(paste0("Same combination of 'plate_no', 'plate_col', 'plate_row' found
+                  several times in metabarlist$pcrs (",
                   paste(names(combi)[combi>1],collapse=", "),
                   ")"))
     }
@@ -187,9 +193,10 @@ else {
   }
   if (all(c('tag_fwd', 'tag_rev') %in% colnames(metabarlist$pcrs))) {
     if (! nrow(unique(metabarlist$pcrs[,c('tag_fwd', 'tag_rev')]))==nrow(metabarlist$pcrs)) {
-      combi <- table(apply(metabarlist$pcrs[,c('tag_fwd', 'tag_rev')], MARGIN=1, FUN=function(x) paste(x, collapse=" ")))
+      combi <- table(apply(metabarlist$pcrs[,c('tag_fwd', 'tag_rev')],
+                           MARGIN=1, FUN=function(x) paste(x, collapse=" ")))
 
-      warning('Several tag pairs are non unique in metabarlist$pcrs (',
+      warning('Several tag pairs are not unique in metabarlist$pcrs (',
               paste(names(combi)[combi>1],collapse=", "),')')
     }
   }
@@ -197,7 +204,7 @@ else {
 
 
 if (any(rowSums(metabarlist$reads)==0)) {
-  warning("Some pcrs have a number of reads of zero !")
+  warning("Some PCRs have a number of reads of zero !")
 }
 if (any(colSums(metabarlist$reads)==0)) {
   warning('Some MOTUs have a number of reads of zero !')
