@@ -20,7 +20,7 @@ a ggplot
 Plots an attribute of PCRs from a \code{\link{metabarlist}} object in the correspondint 96-well PCR plates design
 }
 \details{
-Vizualizing some attributes of the PCRs in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer sets).
+Vizualizing some attributes of the PCRs in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful to identify potential problems (e.g. high amount of reads in one control due to cross contaminations with neighboring samples).
 }
 \examples{
 
