@@ -4,12 +4,13 @@
 \alias{summary_metabarlist}
 \title{Metabarlist summary}
 \usage{
-summary_metabarlist(metabarlist, method, table = NULL, index = NULL)
+summary_metabarlist(metabarlist, method = "dataset", table = NULL,
+  index = NULL)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{method}{type of summary to provided. Should match to "dataset" or "type". If "type", parameters `table` and `index` should be provided}
+\item{method}{type of summary to provided. Should match to "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".}
 
 \item{table}{the table where the information on which the aggregation is based. Can be only `motus`, `pcrs`, or `samples`. Default is NULL}
 

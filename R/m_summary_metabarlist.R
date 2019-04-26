@@ -4,7 +4,7 @@
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
-#' @param method        type of summary to provided. Should match to "dataset" or "type". If "type", parameters `table` and `index` should be provided
+#' @param method        type of summary to provided. Should match to "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".
 #' @param table         the table where the information on which the aggregation is based. Can be only `motus`, `pcrs`, or `samples`. Default is NULL
 #' @param index         a character indicating the name of the element, i.e. columns name on which the aggregation is based. Default is NULL
 
@@ -38,7 +38,7 @@
 #' @author Lucie Zinger
 #' @export summary_metabarlist
 
-summary_metabarlist = function(metabarlist, method, table=NULL, index=NULL) {
+summary_metabarlist = function(metabarlist, method="dataset", table=NULL, index=NULL) {
 
   if(suppressWarnings(check_metabarlist(metabarlist))) {
 
