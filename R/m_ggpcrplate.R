@@ -53,8 +53,8 @@ ggpcrplate = function(metabarlist, legend_title="well_values", FUN = function(me
            paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '),
            " missing !\n")
 
-    plate_design_levels <- c(levels(plate_design$control_type, "sample"))
     plate_design <- metabarlist$pcrs[,c("plate_no", "plate_col", "plate_row", "control_type")]
+    plate_design_levels <- c(levels(plate_design$control_type), "sample")
     plate_design$control_type <- factor(plate_design$control_type, levels=plate_design_levels)
     plate_design$control_type[is.na(plate_design$control_type)] <- "sample"
     plate_design$control_type <- factor(plate_design$control_type,
@@ -69,7 +69,7 @@ ggpcrplate = function(metabarlist, legend_title="well_values", FUN = function(me
       scale_y_reverse(breaks = 1:8, labels=LETTERS[1:8]) +
       scale_x_continuous(breaks = 1:12) +
       scale_fill_manual(values=c("brown", "red", "pink", "cyan4", "white")) +
-      geom_point() +
+      geom_point(na.rm=TRUE) +
       labs(x=NULL, y=NULL, size=legend_title)
   }
 }
