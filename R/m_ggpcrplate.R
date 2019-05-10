@@ -19,19 +19,13 @@
 #' data(soil_euk)
 #'
 #' #Plot the number of reads per pcrs
-#'
-#'
-#' ##Plot the number of reads per pcrs
 #' ggpcrplate(soil_euk, FUN=function(m){rowSums(m$reads)})
 #'
 #'
 #' #Plot the number of reads of the most abundant MOTU
-#'
-#' ##Get the name of the most abundant MOTU
-#' id = colnames(soil_euk$reads)[which.max(colSums(soil_euk$reads))]
-#'
-#' ##Plot the results
-#' ggpcrplate(soil_euk, table = "reads", index = id) + labs(size="#reads of most\nabundant MOTU")
+#' library(ggplot2)
+#' ggpcrplate(soil_euk, FUN=function(m){m$reads[,which.max(colSums(m$reads))]})) +
+#' labs(size="#reads of most\nabundant MOTU")
 #'
 #'
 #' @author Lucie Zinger
@@ -39,8 +33,7 @@
 #' @export ggpcrplate
 
 
-
-ggpcrplate = function(metabarlist, FUN = function(metabarlist) {rowSums(metabarlist$reads)}) {
+ggpcrplate = function(metabarlist, legend_title="well_values", FUN = function(metabarlist) {rowSums(metabarlist$reads)}) {
 
   if(suppressWarnings(check_metabarlist(metabarlist))) {
 
@@ -75,6 +68,6 @@ ggpcrplate = function(metabarlist, FUN = function(metabarlist) {rowSums(metabarl
       scale_x_continuous(breaks = 1:12) +
       scale_fill_manual(values=c("brown", "red", "pink", "cyan4", "white")) +
       geom_point() +
-      labs(x=NULL, y=NULL, size="well_values")
+      labs(x=NULL, y=NULL, size=legend_title)
   }
 }
