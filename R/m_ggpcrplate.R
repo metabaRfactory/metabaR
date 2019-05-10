@@ -20,11 +20,9 @@
 #'
 #' #Plot the number of reads per pcrs
 #'
-#' ##Store the number of reads per pcrs in the pcrs table
-#' soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
 #'
-#' ##Plot the results
-#' ggpcrplate(soil_euk, table = "pcrs", index = "seq_depth")
+#' ##Plot the number of reads per pcrs
+#' ggpcrplate(soil_euk, FUN=function(m){rowSums(m$reads)})
 #'
 #'
 #' #Plot the number of reads of the most abundant MOTU
@@ -40,9 +38,20 @@
 #' @import ggplot2
 #' @export ggpcrplate
 
-ggpcrplate = function(metabarlist, table, index) {
+
+
+ggpcrplate = function(metabarlist, FUN = function(metabarlist) {rowSums(metabarlist$reads)}) {
 
   if(suppressWarnings(check_metabarlist(metabarlist))) {
+
+    function_values <- FUN(metabarlist)
+
+    if (length(function_values) != nrow(metabarlist$pcrs)) {
+      stop('provided information should have the length of pcrs')
+    }
+
+    if(!is.numeric(function_values))
+      stop("provided information should be numeric")
 
     cols_plate_design = c('plate_no', 'plate_col', 'plate_row')
 
@@ -51,35 +60,21 @@ ggpcrplate = function(metabarlist, table, index) {
            paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '),
            " missing !\n")
 
-    extract_table_methods = c("reads", "pcrs")
-    tab = match.arg(table, extract_table_methods)
-
-    if(!index %in% colnames(metabarlist[[tab]]))
-      stop("index is not in table")
-
-    if(!is.numeric(metabarlist[[tab]][,index]))
-      stop("selected information should be numeric")
 
     plate_design = metabarlist$pcrs[,c("plate_no", "plate_col", "plate_row", "control_type")]
     plate_design$control_type = factor(plate_design$control_type,
                                        levels=c("extraction", "pcr", "sequencing", "positive", NA))
 
-    plate_design[index] = metabarlist[[tab]][,index]
+    plate_design$well_values = function_values
+    plate_design$well_values[plate_design$well_values==0] = NA
 
-    plate_design[index][plate_design[index]==0] = NA
-
-    ggplot(plate_design, aes(y=match(plate_row, LETTERS[1:8]), x=plate_col, size=get(index))) +
+    ggplot(plate_design, aes(y=match(plate_row, LETTERS[1:8]), x=plate_col, size=well_values)) +
       geom_raster(aes(fill=control_type)) +
       facet_wrap(~plate_no, scale="free") + theme_bw() +
       scale_y_reverse(breaks = 1:8, labels=LETTERS[1:8]) +
       scale_x_continuous(breaks = 1:12) +
       scale_fill_manual(values=c("brown", "red", "pink", "cyan4", "white")) +
       geom_point() +
-      labs(x=NULL, y=NULL, size=index)
-
+      labs(x=NULL, y=NULL, size="well_values")
   }
 }
-
-
-
-
