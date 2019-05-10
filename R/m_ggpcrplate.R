@@ -46,20 +46,22 @@ ggpcrplate = function(metabarlist, legend_title="well_values", FUN = function(me
     if(!is.numeric(function_values))
       stop("provided information should be numeric")
 
-    cols_plate_design = c('plate_no', 'plate_col', 'plate_row')
+    cols_plate_design <- c('plate_no', 'plate_col', 'plate_row')
 
     if (!all(cols_plate_design %in% colnames(metabarlist$pcrs)))
       stop("PCR plate design not properly provided: ",
            paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '),
            " missing !\n")
 
+    plate_design_levels <- c(levels(plate_design$control_type, "sample"))
+    plate_design <- metabarlist$pcrs[,c("plate_no", "plate_col", "plate_row", "control_type")]
+    plate_design$control_type <- factor(plate_design$control_type, levels=plate_design_levels)
+    plate_design$control_type[is.na(plate_design$control_type)] <- "sample"
+    plate_design$control_type <- factor(plate_design$control_type,
+                                       levels=c("extraction", "pcr", "sequencing", "positive", "sample"))
 
-    plate_design = metabarlist$pcrs[,c("plate_no", "plate_col", "plate_row", "control_type")]
-    plate_design$control_type = factor(plate_design$control_type,
-                                       levels=c("extraction", "pcr", "sequencing", "positive", NA))
-
-    plate_design$well_values = function_values
-    plate_design$well_values[plate_design$well_values==0] = NA
+    plate_design$well_values <- function_values
+    plate_design$well_values[plate_design$well_values==0] <- NA
 
     ggplot(plate_design, aes(y=match(plate_row, LETTERS[1:8]), x=plate_col, size=well_values)) +
       geom_raster(aes(fill=control_type)) +
