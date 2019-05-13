@@ -1,10 +1,10 @@
 #' Plotting a PCR attribute in the PCR plate design
 #'
-#' Plots an attribute of PCRs from a \code{\link{metabarlist}} object in the correspondint 96-well PCR plates design
+#' Plots an attribute of PCRs from a \code{\link{metabarlist}} object into the corresponding 96-well PCR plate design
 #'
 #'
 #' @param metabarlist    a \code{\link{metabarlist}} object
-#' @param table          the table where the information on which the plotting is based. Can be only `reads`,  or `pcrs`.
+#' @param table          the table containing the information used for plotting. Can be either `reads`,  or `pcrs`.
 #' @param index          the name of the column name containing the information to be plotted. This information should be a numeric vector.
 #'
 #' @name ggpcrplate
@@ -18,9 +18,9 @@
 #'
 #' data(soil_euk)
 #'
-#' #Plot the number of reads per pcrs
+#' #Plot the number of reads per pcr
 #'
-#' ##Store the number of reads per pcrs in the pcrs table
+#' ##Store the number of reads per pcr in the pcrs table
 #' soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
 #'
 #' ##Plot the results

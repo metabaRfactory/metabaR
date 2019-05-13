@@ -4,8 +4,8 @@
 #'
 #'
 #' @param metabarlist    a \code{\link{metabarlist}} object
-#' @param table          the table where the information on which the plotting is based. Can be only `reads`,  or `pcrs`.
-#' @param index          the name of the column name containing the information to be plotted. This information should be a numeric vector.
+#' @param table          the table containing the information used for plotting. Can be either `reads`,  or `pcrs`.
+#' @param index          the column name of the column containing the information to be plotted. This information should be a numeric vector.
 #' @param taglist        a character vector corresponding to the full list of tags ordered as they are used in the PCR plate scheme
 #'
 #' @name ggpcrtag
@@ -13,7 +13,7 @@
 #' @return a ggplot
 #'
 #' @details
-#' Vizualizing some attributes of the PCRs in their tag pair design context, i.e. according to the tag combination used. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer/tag sets).
+#' Vizualizing attributes of the PCRs in their tag pair design context, i.e. according to the tag combination used. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer/tag sets).
 #'
 #' @examples
 #'
@@ -28,9 +28,9 @@
 #'             "agcacagt", "tagctagt", "agtgctac", "cgtataca", "cgagtcgt",
 #'             "cacatgat")
 #'
-#' #Plot the number of reads per pcrs
+#' #Plot the number of reads per pcr
 #'
-#' ##Store the number of reads per pcrs in the pcrs table
+#' ##Store the number of reads per pcr in the pcrs table
 #' soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
 #'
 #' ##Plot the results

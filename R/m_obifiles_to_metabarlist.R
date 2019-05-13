@@ -5,7 +5,7 @@
 #' a \code{\link{metabarlist}} object (see Boyer et al. 2016).
 #'
 #'
-#' @param file_obitab       path for the \code{obitab} output file. Rows of the table correspond to MOTUs, and columns correspond to MOTUs characteristics and counts across PCRs. Mandatory fields: `sequence`; should be printed when using \code{obitab}.
+#' @param file_obitab       path for the \code{obitab} output file. Rows of the table correspond to MOTUs, and columns correspond to MOTU characteristics and counts across PCRs. Mandatory fields: `sequence`; should be printed when using \code{obitab}.
 #' @param file_ngsfilter    path for the \code{ngsfilter} file. Rows of the table correspond to PCRs, and the columns to their characteristics. Mandatory fields in the additional information: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e. the type of pcr; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be: `NA` for samples, `extraction` for extraction negative controls, `pcr` for pcr negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), and `positive` for positive controls. The first column of this table should correspond to the names of the pcrs.
 #' @param file_samples      path for the sample characteristics table. The first column of this table should contain the sample names.
 #' @param ...               other arguments to be pasted from \code{read.table}
@@ -17,7 +17,7 @@
 #'
 #' @details
 #'
-#' This function aims at importing OBITools outputs and related files into \R to create a \code{\link{metabarlist}} object. The three files required are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+#' This function imports OBITools outputs and related files into \R to create a \code{\link{metabarlist}} object. The three files required are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 #'
 #' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular ecology resources, 16(1), 176-182.
 #'

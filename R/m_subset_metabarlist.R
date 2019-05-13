@@ -4,15 +4,15 @@
 #'
 #'
 #' @param metabarlist       a \code{\link{metabarlist}} object to be subsetted
-#' @param table             the table where the information on which the subsetting is based. Can be only `reads`, `motus`, `pcrs`, or `samples`.
-#' @param indices           a vector of names indicating the elements, i.e. rows or columns names to keep in the selected table.
+#' @param table             the table where the information on which the subsetting is based. Can one of `reads`, `motus`, `pcrs`, or `samples`.
+#' @param indices           a vector of names indicating the elements, i.e. row or column names to keep in the selected table.
 #'
 #' @name subset_metabarlist
 #'
 #' @return a \code{metabarlist} object that contains only the selected elements.
 #'
 #' @details
-#' The subsetting will select particular rows from each table. Factor levels that are unused after selection are dropped.
+#' This subsetting will select specific rows from each table. Factor levels that are unused after selection are dropped.
 #' \itemize{
 #' \item {If the selection is done on `reads`, `pcrs` or `samples`, the MOTUs not occurring in the selection (i.e. those having a total number of reads of 0) are dropped too.}
 #' \item { If the selection is done on `motus`, the pcrs and samples where none of the selected MOTUs are found are kept.}
@@ -25,7 +25,7 @@
 #' data(soil_euk)
 #'
 #'
-#' #Create a subset of soil_euk containing only annelids MOTUs
+#' #Create a subset of soil_euk containing only annelid MOTUs
 #' ## get motus names assigned to annelids
 #' annelids_motus = rownames(soil_euk$motus)[grep("Annelida", soil_euk$motus$path)]
 #' ## create the metabarlist object

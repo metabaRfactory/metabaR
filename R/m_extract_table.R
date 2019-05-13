@@ -4,7 +4,7 @@
 #'
 #'
 #' @param metabarlist       a \code{\link{metabarlist}} object
-#' @param table             the table that ones want to extract. Can be only `reads`, `motus`, `pcrs`, or `samples`
+#' @param table             the table required for extraction. Can be one of `reads`, `motus`, `pcrs`, or `samples`
 #'
 #' @name extract_table
 #'

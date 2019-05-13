@@ -4,9 +4,9 @@
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
-#' @param method        type of summary to provided. Should match to "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".
-#' @param table         the table where the information on which the aggregation is based. Can be only `motus`, `pcrs`, or `samples`. Default is NULL
-#' @param index         a character indicating the name of the element, i.e. columns name on which the aggregation is based. Default is NULL
+#' @param method        type of summary to provide. Should match with "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".
+#' @param table         the table where the information on which the aggregation is based. Can be one of `motus`, `pcrs`, or `samples`. Default is NULL
+#' @param index         a character indicating the name of the element, i.e. column names on which the aggregation is based. Default is NULL
 
 
 #'
@@ -15,7 +15,7 @@
 #' @details
 #' \code{summary_metabarlist} returns basic summary statistics of a \code{\link{metabarlist}} object. The summary returned depends on the `method` used :
 #' \itemize{
-#' \item{"dataset"}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per samples}
+#' \item{"dataset"}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
 #' \item{"type"}{returns a data.frame similar to the dataset_statistics described above}
 #' }
 #'

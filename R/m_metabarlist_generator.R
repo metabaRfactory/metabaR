@@ -3,9 +3,9 @@
 #' Formatting R tables to create a \code{\link{metabarlist}} object.
 #'
 #'
-#' @param reads     MOTUs abundance table. Rows and rownames of the table should correspond to PCRs and their names respectively. Columns and colnames should correspond to MOTUs and their names. Rownames this table should correspond to the PCRs names respectively.
-#' @param motus     MOTUs characteristics table (e.g. taxonomy, sequence, etc.). Rows and rownames of the table should correspond to MOTUs and their names respectively, and the columns to their characteristics. Mandatory fields: `sequence`, i.e. the sequence representative of the MOTU.
-#' @param pcrs      PCRs characteristics table (e.g. tags, primers, plate wells, etc.). Rows and rownames of the table should correspond to PCRs and their names respectively, and the columns to their characteristics. Mandatory fields: (i) `sample_id`, i.e. the name of each biological sample. (ii) `type`, i.e. the type of PCR; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be either: `NA` for samples, `extraction` for extraction negative controls, `pcr` for PCR negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), or `positive` for positive controls.
+#' @param reads     MOTU abundance table. Rows and rownames of the table should correspond to PCRs and their names respectively. Columns and colnames should correspond to MOTUs and their names. Rownames in this table should correspond to PCR names respectively.
+#' @param motus     MOTU characteristics table (e.g. taxonomy, sequence, etc.). Rows and rownames of the table should correspond to MOTUs and their names respectively, and the columns to their characteristics. Mandatory fields: `sequence`, i.e. the sequence representative of the MOTU.
+#' @param pcrs      PCR characteristics table (e.g. tags, primers, plate wells, etc.). Rows and rownames of the table should correspond to PCRs and their names respectively, and the columns to their characteristics. Mandatory fields: (i) `sample_id`, i.e. the name of each biological sample. (ii) `type`, i.e. the type of PCR; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be either: `NA` for samples, `extraction` for extraction negative controls, `pcr` for PCR negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), or `positive` for positive controls.
 #' @param samples   Samples characteristics table. Rows and rownames of the table should correspond to biological samples and their names respectively, and the columns to their environnemental characteristics.
 #'
 #'
@@ -15,7 +15,7 @@
 #'
 #' @details
 #'
-#' This function aims at formating R tables to create a \code{\link{metabarlist}} object. The four objects required are included into a list of class \code{\link{metabarlist}}. Congruencies between all tables are tested internally with the \code{\link{check_metabarlist}} function.
+#' This function formats R tables to create a \code{\link{metabarlist}} object. The four objects required are incorporated into a list of class \code{\link{metabarlist}}. Congruencies between all tables are tested internally with the \code{\link{check_metabarlist}} function.
 #'
 #' @examples
 #'
@@ -47,7 +47,7 @@
 #'  #Generate the metabarlist object
 #'
 #'  test = metabarlist_generator(reads = reads, motus = motus, pcrs = pcrs, samples = samples)
-#'  ##Warnings are returned because the PCR design (i.e. tags, primers, plate coordinates) is not defined in this toy example.
+#'  ##Warnings are returned because the PCR design (i.e. tags, primers, plate coordinates) is not defined in this example.
 #'
 #' @seealso \code{\link{check_metabarlist}}
 #'

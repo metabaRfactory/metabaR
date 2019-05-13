@@ -1,16 +1,16 @@
 #' Generating rarefaction curves using Hill numbers
 #'
-#' These functions generates and plot rarefaction curves from a \code{\link{metabarlist}} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as the Good's coverage index.
+#' These functions generate and plot rarefaction curves from a \code{\link{metabarlist}} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as Good's coverage index.
 #'
 #'
 #' @param metabarlist       a \code{\link{metabarlist}} object
-#' @param nboot              number of resamplings to estimate \eqn{^{q}D} at a given sequencing depth.
+#' @param nboot              number of resampling events to estimate \eqn{^{q}D} at a given sequencing depth.
 #' @param nsteps             number of steps between sample sizes for the rarefaction curves. Default is 10 steps.
 #'
 #' @return Function \code{hill_rarefaction} returns an object of class \code{"hill_rarefaction"}, which corresponds to a table of diversity indices for each pcr rarefied at each `nsteps`  sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
 #'
 #' @details
-#' \code{\link{hill_rarefaction}} builds a rarefaction analysis for each pcr of a \code{\link{metabarlist}} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalents to :
+#' \code{\link{hill_rarefaction}} builds a rarefaction analysis for each pcr of a \code{\link{metabarlist}} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalent to :
 #' \itemize{
 #' \item{Richness, for q=0}
 #' \item{Exponential of the Shannon entropy, for q->1}
@@ -19,7 +19,7 @@
 #'
 #' The function also returns the Good's coverage index (1-singletons/#reads). Note however that this index should be interpreted carefully in metabarcoding data:
 #' #' \itemize{
-#' \item{absolute singletons (across the whole metabarcoding dataset) are usually filtered out during the bioinformatic process (which is the case for the \code{\link{soil_euk}} data). The Good's coverage estimate returned here is only based on the amount of singletons per pcr after this filtering process, so the true amount of singeltons is here underestimated.}
+#' \item{absolute singletons (across the whole metabarcoding dataset) are usually filtered out during the bioinformatic process (which is the case for the \code{\link{soil_euk}} data). The Good's coverage estimate returned here is only based on the number of singletons per pcr after this filtering process, so the true number of singletons is underestimated here.}
 #' \item{This coverage index gives an assessment of the coverage of the amplicon diversity within a pcr: it includes remaining errors, etc.. The coverage of the genuine DNA fragment diversity in the biological sample is likely to be misestimated with this index.}
 #' }
 #'

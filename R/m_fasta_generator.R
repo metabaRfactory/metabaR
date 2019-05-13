@@ -4,15 +4,15 @@
 #'
 #'
 #' @param file    path/name of the output
-#' @param id     a character vector containing the identifiants of the OTUs of interest
-#' @param seq   a character vector containing the sequence of the OTUs of interest
+#' @param id     a character vector containing identifiers for the OTUs of interest
+#' @param seq   a character vector containing sequences for the OTUs of interest
 #'
 #' @name fasta_generator
 #'
 #' @return a fasta file
 #'
 #' @details
-#' Creates a fasta file from a set of sequences of interest. Obviously, \code{id} and \code{seq} vectors should be in agreement. The header can be easily amended with further informations with e.g. \code{paste}.
+#' Creates a fasta file from a set of sequences of interest. Obviously, \code{id} and \code{seq} vectors should be in agreement. The header can easily be amended with further information with e.g. \code{paste}.
 #'
 #' @examples
 #'
