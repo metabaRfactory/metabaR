@@ -1,6 +1,6 @@
 #' Detecting contaminants in metabarcoding data using negative controls
 #'
-#' Uses negative controls to detect contaminants OTUs in a \code{\link{TODEFINE}} object.
+#' Uses negative controls to detect contaminant OTUs in a \code{\link{TODEFINE}} object.
 #'
 #'
 #' @param x           a \code{\link{TODEFINE}} object
@@ -12,9 +12,9 @@
 #' @return a vector containing the names of OTUs identified as contaminants
 #'
 #' @details
-#' In negative controls, a contaminant should be preferentially amplified as there is no competing DNA. \code{\link{contaslayer}} relies on this assumption and detects OTUs of which relative abundance across the whole dataset is maximum in negative controls.
-#' \code{method = "max"} returns OTU names for which frequencies across the entire dataset are maximum in at least one negative control
-#' \code{method = "all"} returns OTU names for which the frequency across all negative controls is greater than that across all samples
+#' In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. \code{\link{contaslayer}} relies on this assumption and detects OTUs whose relative abundance across the whole dataset is maximum in negative controls.
+#' \code{method = "max"} returns the names of OTUs whose frequencies across the entire dataset are maximum in at least one negative control
+#' \code{method = "all"} returns the names of OTUs whose frequencies across all negative controls is greater than that across all samples
 #'
 #' @examples
 #'
@@ -25,7 +25,7 @@
 #' contaminant = contaslayer(soil_euk$reads, controls = pcr.controls)
 #' head(soil_euk$motus[contaminant,])
 #'
-#' #Distribution of the most abundance contaminant in the PCR plate design
+#' #Distribution of the most abundant contaminants in the PCR plate design
 #' max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
 #' p = ggpcrplate(attr = soil_euk$reads[,max.conta], plate_no = soil_euk$pcrs$plate_no,
 #'                   plate_col = soil_euk$pcrs$plate_col,
