@@ -170,7 +170,7 @@ Obiously, we expect to find no or only few reads in extraction and PCR negative 
 Another way to vizualise this is in its PCR design context, e.g. by showing the number of reads in the PCR plates, if this information has been recorded in the `pcrs` file. This vizualisation is quite useful to   highlight some potential issues at the PCR step. For example, low read abundances in real samples throughout one line or column of the PCR plate could mean that a primer was dysfunctional or that the mix deposition was not good, hence resulting in low amplicon yields. Let's see how it is in the `soil_euk` data:   
 
 ```{r ggpcrplate, warning=F, message=F, cache=T, fig.width=7, fig.height=5}
-ggpcrplate(soil_euk, table = "pcrs", index = "nb_reads")
+ggpcrplate(soil_euk)
 ```
 
 The plot above shows, amongst others, two features:    
