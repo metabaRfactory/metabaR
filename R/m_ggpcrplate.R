@@ -19,7 +19,7 @@
 #' data(soil_euk)
 #'
 #' #Plot the number of reads per pcrs
-#' ggpcrplate(soil_euk, FUN=function(m){rowSums(m$reads)})
+#' ggpcrplate(soil_euk)
 #'
 #'
 #' #Plot the number of reads of the most abundant MOTU
