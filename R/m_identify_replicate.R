@@ -160,6 +160,3 @@ identify_replicate <- function(metabarlist,
     return(subset_data)
   }
 }
-
-# tt <- table(table(subset_data[!subset_data$non_replicating, 'replicates']))
-# barplot(tt, main = '#kept replicates')
