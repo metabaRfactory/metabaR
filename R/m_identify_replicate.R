@@ -40,7 +40,7 @@
 #' @export identify_replicate
 
 
-# recursive function to find the non replicating sample
+# recursive function to find the non replicating samples or controls
 filter_replicat <- function(sub_matrix, threshold) {
   replicat_to_remove <- c()
   if (any(sub_matrix > threshold)) {
@@ -63,7 +63,7 @@ distance_function <- function(reads) {
   return(distance_matrix)
 }
 
-# main function of this script
+# main function
 identify_replicate <- function(metabarlist,
                                FUN = distance_function,
                                groups = metabarlist$pcrs$sample_id,
@@ -82,9 +82,11 @@ identify_replicate <- function(metabarlist,
       iteration <- iteration+1
       print(paste('Iteration', iteration))
 
+      # get only the read for the samples or controls replicating
       matrix_with_replicate <- metabarlist$reads[
         rownames(subset_data), ][subset_data$replicating, ]
 
+      # calculate matrix dist
       function_result <- FUN(matrix_with_replicate)
 
       if (class(function_result) != 'dist'){
