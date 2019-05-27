@@ -3,42 +3,41 @@
 \name{identify_replicate}
 \alias{identify_replicate}
 \alias{filter_replicat}
-\title{Check that a list of tables is a well formed metabarlist}
+\title{Identifying the replicate that doesn't replicating}
 \usage{
 filter_replicat(sub_matrix, threshold)
 }
 \arguments{
 \item{metabarlist}{a \code{metabarlist} object}
+
+\item{FUN}{a function returning a distance matrix. The distance matrix should be a object `dist` which has the same length of table `reads`.}
+
+\item{groups}{a vector containing the identifier of replicate. The vector must has the same length of the table `PCRs` from a \code{\link{metabarlist}} object. Default = metabarlist$pcrs$sample_id}
+
+\item{graphics}{a boolean value to plot the distances densities for each iteration. Default = FALSE}
 }
 \value{
-data frame with the replicats groups and replicating column or throws a stop
+data frame with the replicats groups and a column `replicating` or throws a stop
 }
 \description{
-Test that a list of tables containing information on MOTUs abundances, MOTUs characteristics, pcrs characteristics, and sample characteristics form a congruent \code{\link{metabarlist}}
+Identifying the non-replicating samples or controls in the table PCRs from a \code{\link{metabarlist}} object.
+Process many iteration to compare the density for distance within replicate and between replicate.
 }
 \details{
-Check for the properties awaited for a well formed \code{metabarlist} object:
+This function identify the non-replicating samples or controls.
 
-\itemize{
-\item {is a list with four attributes named `reads`, `motus`, `pcrs` and `samples`}
-\item {`reads` is a numeric matrix}
-\item {`motus`, `pcrs` and `samples` are of type `data.frame`}
-\item {`reads` have the exact same row names and columns as rownames of `motus` and `pcrs` (same order also)}
-\item {`pcrs` have mandatory columns, i.e.  `sample_id`, `type` and `control_type`}
-\item {values in `type` are properly defined, i.e. `sample` or `control`}
-\item {values in and `control_type` are properly defined, i.e. `sequencing`, `pcr`, `extraction`, `positive`}
+The parameter `groups` defined the groups of replicates. The vector should be sorted like the table `PCRs` from the \code{\link{metabarlist}}.
+Note: if the distance within replicate is too higher than the distance between replicate function cannot return result because all replicates are removed.
+The parameter `FUN` define the function used to compute the distance matrix. The function must return a object of class `dist` with the same length that its input table.
+The default function use the function `dudi.coa` of package `ade4` to perform a correspondance analysis of the square root of \code{\link{metabarlist}} table `reads`, and return a matrix distance from the principal components.
+Default function detail:
+distance_function <- function(reads) {
+  correspondence_analysis <- ade4::dudi.coa(sqrt(reads), scannf=FALSE, nf=2)
+  distance_matrix <- dist(correspondence_analysis$li)
+  return(distance_matrix)
 }
 
-The function issues a stop if these informations are not well recorded
-
-The function issue warnings if some tables lacks of non mandatory columns for the \code{metabaRffe} package to run, but mandatory for particular functions (e.g., \code{ggpcrplate})
-\itemize{
-\item {the column `sequence` for the `motus` table}
-\item {the columns `tag_fwd`, `tag_rev`, `primer_fwd`, `primer_rev`, `plate_no`, `plate_col`, and `plate_row` for the `pcrs` table}
-}
-
-
-Moreover, the function issues a warning if any sample or MOTU is associated to a count of 0
+When the parameter `graphics` is True, a graphic is plotted with the density of distance within replicate and between replicate. The threshold is also plotted like a vertical line at the intersection of two densities.
 }
 \examples{
 
