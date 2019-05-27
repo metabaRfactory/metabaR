@@ -4,7 +4,7 @@
 \alias{pcrslayer}
 \title{Detecting dysfunctional PCRs}
 \usage{
-pcrslayer(x, replicates, thresh.method, plot = T)
+pcrslayer(x, replicates, thresh.method = "intersect", plot = T)
 }
 \arguments{
 \item{x}{a reads matrix from a \code{\link{TODEFINE}} object}

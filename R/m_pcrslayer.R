@@ -60,7 +60,7 @@
 #' @export check_pcr_repl
 #'
 
-pcrslayer = function(x, replicates, thresh.method, plot=T) {
+pcrslayer = function(x, replicates, thresh.method="intersect", plot=T) {
 
   if(nrow(x)!=length(replicates))
     stop("x and replicates must have the same length")
