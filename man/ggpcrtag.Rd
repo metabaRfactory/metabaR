@@ -4,14 +4,15 @@
 \alias{ggpcrtag}
 \title{Plotting a PCR attribute in the tag pair design}
 \usage{
-ggpcrtag(metabarlist, table, index, taglist)
+ggpcrtag(metabarlist, legend_title = "well_values",
+  FUN = function(metabarlist) {     rowSums(metabarlist$reads) },
+  taglist = as.character(unique(soil_euk$pcrs$tag_rev)))
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{\link{metabarlist}} object
+@param FUN            a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.}
 
-\item{table}{the table where the information on which the plotting is based. Can be only `reads`,  or `pcrs`.}
-
-\item{index}{the name of the column name containing the information to be plotted. This information should be a numeric vector.}
+\item{legend_title}{the title of legend containing the plotted information.}
 
 \item{taglist}{a character vector corresponding to the full list of tags ordered as they are used in the PCR plate scheme}
 }
