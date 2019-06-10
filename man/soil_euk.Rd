@@ -12,24 +12,24 @@
 data(soil_euk)
 }
 \description{
-Data from a DNA metabarcoding experiment aiming at assessing the diversity of soil eukaryotes in two tropical forests of French Guiana.
+Data from a DNA metabarcoding experiment assessing the diversity of soil eukaryotes in two tropical forests in French Guiana.
 }
 \details{
-Samples were collected in 2 sampling sites in contrasting habitats:
+Samples were collected at 2 sample sites in contrasting habitats:
 \itemize{
-  \item{}{The Mana site located in a white sand forest, characterized highly oligotrophic soils and particular tree species adaptated to the local harsh conditions.}
-  \item{}{The Petit Plateau site is located in the pristine rainforest (Nouragues natural reserve) characterized by soils richer in clay and organic matter.}
+  \item{}{The Mana site located in a white sand forest, characterized highly oligotrophic soils and tree species adaptated to the local harsh conditions.}
+  \item{}{The Petit Plateau site is located in pristine rainforest (Nouragues natural reserve) characterized by soils richer in clay and organic matter.}
  }
-At each sites, 16 samples (mesh grid size of 20 m) were collected in 1 plot of 1 ha.
-For each sampling points, two types of compartments:
+At each site, 16 samples (mesh grid size of 20 m) were collected in from a 1 ha plot.
+For each sampling point, two types of substrate were collected:
 \itemize{
   \item{}{Soil: composite sample of 5 soil cores}
   \item{}{Litter: sampling of XXXX m3 of litter}
   \item{}{=>A total of 64 DNA extracts + 4 extraction blank controls (1 per site and compartment)}
 }
-For each DNA extracts, a short region of the 18S rRNA (Taberlet et al. 2018) was
+For each DNA extract, a short region of the 18S rRNA (Taberlet et al. 2018) was
 amplfied by PCR in quadruplicate, following the protocol described in Zinger et al. 2019.
-The resulting amplicons were pooled and sequenced on a Illumina HiSeq plateform, using the
+The resulting amplicons were pooled and sequenced on an Illumina HiSeq platform, using
 the paired-end technology.
 
 The total experiment hence includes the following amplicon types:
@@ -42,14 +42,14 @@ The total experiment hence includes the following amplicon types:
   \item{}{=> 384 amplicons in total}
 }
 
-The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining ones were clustered into operational taxonomic units (OTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each OTU (most abundant one) was assigned to taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010).
+The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining sequences were clustered into operational taxonomic units (OTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each OTU (the most abundant one) was assigned a taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010).
 
 
 The data `soil_euk` is a \code{metabarlist} containing four tables
 
 \itemize{
-\item{}{`reads`: a numeric matrix containing the MOTUs abundances (expressed as a number of reads) for each pcr (i.e. technical replicates of both biological samples and positive and negative controls)}
-\item{}{`motus`: a dataframe containing the MOTUs characteristics (e.g. taxonomy, sequence) for each MOTUs)}
+\item{}{`reads`: a numeric matrix containing MOTU abundances (expressed as a number of reads) for each pcr (i.e. technical replicates of both biological samples and positive and negative controls)}
+\item{}{`motus`: a dataframe containing MOTU characteristics (e.g. taxonomy, sequence) for each MOTU)}
 \item{}{`pcrs`: a dataframe containing information on each pcr (e.g. control type, pcr wells, etc.)}
 \item{}{`samples`: a dataframe containing information on each environmental sample (e.g. habitat type, etc.)}
 }

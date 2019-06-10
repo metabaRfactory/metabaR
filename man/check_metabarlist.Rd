@@ -2,7 +2,7 @@
 % Please edit documentation in R/m_check_metabarlist.R
 \name{check_metabarlist}
 \alias{check_metabarlist}
-\title{Check that a list of tables is a well formed metabarlist}
+\title{Check that a list of tables is in the correct format as a metabarlist}
 \usage{
 check_metabarlist(metabarlist)
 }
@@ -13,31 +13,31 @@ check_metabarlist(metabarlist)
 TRUE or throws a stop
 }
 \description{
-Test that a list of tables containing information on MOTUs abundances, MOTUs characteristics, pcrs characteristics, and sample characteristics form a congruent \code{\link{metabarlist}}
+Test that a list of tables containing information on MOTU abundances, MOTU characteristics, pcr characteristics, and sample characteristics form a congruent \code{\link{metabarlist}}
 }
 \details{
-Check for the properties awaited for a well formed \code{metabarlist} object:
+Checks for the properties required for a well formed \code{metabarlist} object:
 
 \itemize{
 \item {is a list with four attributes named `reads`, `motus`, `pcrs` and `samples`}
 \item {`reads` is a numeric matrix}
 \item {`motus`, `pcrs` and `samples` are of type `data.frame`}
-\item {`reads` have the exact same row names and columns as rownames of `motus` and `pcrs` (same order also)}
+\item {`reads` must have the exact same row names and columns as the row names of `motus` and `pcrs` (in the same order)}
 \item {`pcrs` have mandatory columns, i.e.  `sample_id`, `type` and `control_type`}
 \item {values in `type` are properly defined, i.e. `sample` or `control`}
 \item {values in and `control_type` are properly defined, i.e. `sequencing`, `pcr`, `extraction`, `positive`}
 }
 
-The function issues a stop if these informations are not well recorded
+The function will stop if these basic criteria are not met.
 
-The function issue warnings if some tables lacks of non mandatory columns for the \code{metabaRffe} package to run, but mandatory for particular functions (e.g., \code{ggpcrplate})
+The function will issue warnings if tables lack columns which are non-mandatory for the \code{metabaRffe} package to run, but which are mandatory for specific functions (e.g., \code{ggpcrplate})
 \itemize{
 \item {the column `sequence` for the `motus` table}
 \item {the columns `tag_fwd`, `tag_rev`, `primer_fwd`, `primer_rev`, `plate_no`, `plate_col`, and `plate_row` for the `pcrs` table}
 }
 
 
-Moreover, the function issues a warning if any sample or MOTU is associated to a count of 0
+In addition, the function issues a warning if any sample or MOTU is has a count of 0
 }
 \examples{
 

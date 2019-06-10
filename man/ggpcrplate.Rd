@@ -9,7 +9,7 @@ ggpcrplate(metabarlist, table, index)
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{table}{the table where the information on which the plotting is based. Can be only `reads`,  or `pcrs`.}
+\item{table}{the table containing the information used for plotting. Can be either `reads`,  or `pcrs`.}
 
 \item{index}{the name of the column name containing the information to be plotted. This information should be a numeric vector.}
 }
@@ -17,7 +17,7 @@ ggpcrplate(metabarlist, table, index)
 a ggplot
 }
 \description{
-Plots an attribute of PCRs from a \code{\link{metabarlist}} object in the correspondint 96-well PCR plates design
+Plots an attribute of PCRs from a \code{\link{metabarlist}} object into the corresponding 96-well PCR plate design
 }
 \details{
 Vizualizing some attributes of the PCRs in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful to identify potential problems (e.g. high amount of reads in one control due to cross contaminations with neighboring samples).
@@ -26,9 +26,9 @@ Vizualizing some attributes of the PCRs in their plate design context, i.e. thei
 
 data(soil_euk)
 
-#Plot the number of reads per pcrs
+#Plot the number of reads per pcr
 
-##Store the number of reads per pcrs in the pcrs table
+##Store the number of reads per pcr in the pcrs table
 soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
 
 ##Plot the results
