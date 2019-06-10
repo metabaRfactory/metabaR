@@ -1,9 +1,9 @@
 #' Filtering potential tag jumps in metabarcoding data
 #'
-#' Removes reads of potential tagjumps in a \code{\link{TODEFINE}} object.
+#' Removes reads of potential tagjumps in a \code{\link{metabarlist}} object.
 #'
 #'
-#' @param x           a \code{\link{TODEFINE}} object
+#' @param x           a \code{\link{metabarlist}} object
 #' @param threshold   an OTU relative abundance value below which the OTU is considered to be absent
 #'
 #' @name tagjumpslayer
@@ -62,7 +62,13 @@ tagjumpslayer = function(x,threshold=0.03) {
     } else {
       threshold2 = threshold
     }
-    out.tmp = 1-cum < threshold2
+    out.tmp = 1-cum < threshold2 & #get OTUs in the threshold part of the distribution
+      c(cum[1], diff(cum)) < threshold2 #cum abund diff between OTUs necessarily above threshold
+    #cases if 1 occurrence (i.e. threshold2 = 1) => cum all FALSE but all other counts are null
+        #=> single occurrence kept and counts unaffected because already ok
+    #cases if cum[1] > 1-threshold (above is a particular case)
+        #=> occurrence with highest abundance kept. Rational is that if it is largely detected in one sample, then its occurrence elsewhere is most likely a tagjump.
+    #plot(cum, col=ifelse(out.tmp==F, "green", "red"), pch=19)
     out = out.tmp[rownames(x)]
     new[out==T,y] = 0
   }
