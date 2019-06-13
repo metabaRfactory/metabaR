@@ -23,9 +23,8 @@
 #'
 #'
 #' #Plot the number of reads of the most abundant MOTU
-#' library(ggplot2)
 #' ggpcrplate(soil_euk, legend_title = "#reads of most\nabundant MOTU",
-#'            FUN = function(m){m$reads[,which.max(colSums(m$reads))]}))
+#'            FUN = function(m){m$reads[,which.max(colSums(m$reads))]})
 #'
 #'
 #' @author Lucie Zinger
