@@ -33,7 +33,7 @@
 
 ggpcrtag = function(metabarlist, legend_title = "well_values",
                     FUN = function(metabarlist) {rowSums(metabarlist$reads)},
-                    taglist=as.character(unique(soil_euk$pcrs$tag_rev))) {
+                    taglist=as.character(unique(metabarlist$pcrs$tag_rev))) {
 
   if(suppressWarnings(check_metabarlist(metabarlist))) {
 
