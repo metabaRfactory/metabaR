@@ -44,7 +44,7 @@ data(soil_euk)
 #define replicate factor
 soil_euk$pcrs$Replicate_ori = gsub("-r[1-4]", "", rownames(soil_euk$pcrs))
 #Consider only biological samples
-idx = which(soil_euk$pcr$Control=="sample")
+idx = which(soil_euk$pcr$type=="sample")
 
 #first visualization
 comp1 = pcr_within_between(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx])

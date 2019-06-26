@@ -6,7 +6,7 @@
 \usage{
 ggpcrtag(metabarlist, legend_title = "well_values",
   FUN = function(metabarlist) {     rowSums(metabarlist$reads) },
-  taglist = as.character(unique(soil_euk$pcrs$tag_rev)))
+  taglist = as.character(unique(metabarlist$pcrs$tag_rev)))
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object
@@ -29,31 +29,12 @@ Vizualizing some attributes of the PCRs in their tag pair design context, i.e. a
 
 data(soil_euk)
 
-taglist = c("acacacac", "acagcaca", "gtgtacat", "tatgtcag", "tagtcgca",
-            "tactatac", "actagatc", "gatcgcga", "cgctctcg", "gtcgtaga",
-            "gtcacgtc", "gactgatg", "agactatg", "gcgtcagc", "tgacatca",
-            "acatgtgt", "gtacgact", "atgatcgc", "acgacgag", "catcagtc",
-            "atcagtca", "tctactga", "gatgatct", "ctgcgtac", "agcgacta",
-            "tcagtgtc", "actctgct", "atatagcg", "ctatgcta", "tcgcgctg",
-            "agcacagt", "tagctagt", "agtgctac", "cgtataca", "cgagtcgt",
-            "cacatgat")
-
 #Plot the number of reads per pcrs
-
-##Store the number of reads per pcrs in the pcrs table
-soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
-
-##Plot the results
-ggpcrtag(soil_euk, table = "pcrs", index = "seq_depth", taglist = taglist)
-
+ggpcrtag(soil_euk)
 
 #Plot the number of reads of the most abundant MOTU
-
-##Get the name of the most abundant MOTU
-id = colnames(soil_euk$reads)[which.max(colSums(soil_euk$reads))]
-
-##Plot the results
-ggpcrtag(soil_euk, table = "reads", index = id, taglist = taglist)
+ggpcrtag(soil_euk, legend_title = "#reads of most\\nabundant MOTU",
+           FUN = function(m){m$reads[,which.max(colSums(m$reads))]})
 
 
 }
