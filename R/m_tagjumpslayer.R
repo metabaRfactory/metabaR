@@ -23,32 +23,21 @@
 #' @examples
 #'
 #' data(soil_euk)
-#' soil_euk_clean = tagjumpslayer(soil_euk$reads, 0.03)
+#' soil_euk_clean <- tagjumpslayer(soil_euk$reads, 0.03)
 #'
 #' #identify occurrence of the most abundant OTU
-#' idx = which.max(soil_euk$motus$count)
-#' p1 = ggpcrplate(attr = soil_euk$reads[,idx],
-#'                plate_no = soil_euk$pcrs$plate_no,
-#'                plate_col = soil_euk$pcrs$plate_col,
-#'                plate_row =  soil_euk$pcrs$plate_row,
-#'                control_type = soil_euk$pcrs$Control_type)
+#' idx <- which.max(soil_euk$motus$count)
+#' p1 <- ggpcrplate(soil_euk, legend_title = "# reads",
+#'            FUN = function(m){m$reads[,idx]})
 #' p1 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-#'      labs(size="# reads", fill="control type") +
-#'      scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
-#'                        na.value = "white") +
 #'      ggtitle("Distribution of the most abundant OTU")
 #'
 #'#same on clean data
-#'p2 = ggpcrplate(attr = soil_euk_clean[,idx],
-#'                plate_no = soil_euk$pcrs$plate_no,
-#'                plate_col = soil_euk$pcrs$plate_col,
-#'                plate_row =  soil_euk$pcrs$plate_row,
-#'                control_type = soil_euk$pcrs$Control_type)
+#'p2 <- ggpcrplate(soil_euk, legend_title = "# reads",
+#'            FUN = function(m){soil_euk_clean[,idx]})
 #'p2 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-#'     labs(size="# reads", fill="control type") +
-#'     scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
-#'                        na.value = "white") +
 #'     ggtitle("Distribution of the most abundant OTU after curation")
+#'
 #' @author Lucie Zinger
 #' @export tagjumpslayer
 
