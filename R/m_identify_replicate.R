@@ -37,6 +37,7 @@
 #' identify_replicate(sample_subset)
 #'
 #' @author Frédéric Boyer & Clément Lionnet
+#' @import ade4
 #' @export identify_replicate
 
 
@@ -58,7 +59,7 @@ filter_replicat <- function(sub_matrix, threshold) {
 
 # distance function
 distance_function <- function(reads) {
-  correspondence_analysis <- ade4::dudi.coa(sqrt(reads), scannf=FALSE, nf=2)
+  correspondence_analysis <- dudi.coa(sqrt(reads), scannf=FALSE, nf=2)
   distance_matrix <- dist(correspondence_analysis$li)
   return(distance_matrix)
 }
@@ -76,6 +77,8 @@ identify_replicate <- function(metabarlist,
 
     subset_data <- data.frame(groups=groups, replicating=TRUE,
                              row.names=rownames(metabarlist$pcrs))
+
+    subset_data[which(rowSums(metabarlist$reads)==0),"replicating"] <- FALSE
 
     iteration <- 0
     repeat {
