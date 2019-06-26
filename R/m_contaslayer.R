@@ -21,20 +21,16 @@
 #' data(soil_euk)
 #'
 #' #finds contaminants from PCR amplification
-#' pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$Control_type=="PCR")]
+#' pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="pcr")]
 #' contaminant = contaslayer(soil_euk$reads, controls = pcr.controls)
 #' head(soil_euk$motus[contaminant,])
 #'
 #' #Distribution of the most abundance contaminant in the PCR plate design
 #' max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
-#' p = ggpcrplate(attr = soil_euk$reads[,max.conta], plate_no = soil_euk$pcrs$plate_no,
-#'                   plate_col = soil_euk$pcrs$plate_col,
-#'                   plate_row =  soil_euk$pcrs$plate_row,
-#'                   control_type = soil_euk$pcrs$Control_type)
+#'
+#' p <- ggpcrplate(soil_euk, legend_title = "# reads",
+#'            FUN = function(m){m$reads[,max.conta]})
 #' p + scale_size(limits=c(1,max(soil_euk$reads[,max.conta]))) +
-#'      labs(size="# reads", fill="control type") +
-#'      scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
-#'                        na.value = "white") +
 #'      ggtitle("Distribution of the most abundant contaminant")
 #'
 #' @author Lucie Zinger
