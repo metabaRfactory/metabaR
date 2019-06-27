@@ -12,13 +12,7 @@ ggpcrtag(metabarlist, legend_title = "well_values",
 \item{metabarlist}{a \code{\link{metabarlist}} object
 @param FUN            a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.}
 
-<<<<<<< HEAD
 \item{legend_title}{the title of legend containing the plotted information.}
-=======
-\item{table}{the table containing the information used for plotting. Can be either `reads`,  or `pcrs`.}
-
-\item{index}{the column name of the column containing the information to be plotted. This information should be a numeric vector.}
->>>>>>> 55486647798b8c099130fd3e5c1e38c0dee2d2f7
 
 \item{taglist}{a character vector corresponding to the full list of tags ordered as they are used in the PCR plate scheme}
 }
@@ -35,28 +29,8 @@ Vizualizing attributes of the PCRs in their tag pair design context, i.e. accord
 
 data(soil_euk)
 
-<<<<<<< HEAD
 #Plot the number of reads per pcrs
 ggpcrtag(soil_euk)
-=======
-taglist = c("acacacac", "acagcaca", "gtgtacat", "tatgtcag", "tagtcgca",
-            "tactatac", "actagatc", "gatcgcga", "cgctctcg", "gtcgtaga",
-            "gtcacgtc", "gactgatg", "agactatg", "gcgtcagc", "tgacatca",
-            "acatgtgt", "gtacgact", "atgatcgc", "acgacgag", "catcagtc",
-            "atcagtca", "tctactga", "gatgatct", "ctgcgtac", "agcgacta",
-            "tcagtgtc", "actctgct", "atatagcg", "ctatgcta", "tcgcgctg",
-            "agcacagt", "tagctagt", "agtgctac", "cgtataca", "cgagtcgt",
-            "cacatgat")
-
-#Plot the number of reads per pcr
-
-##Store the number of reads per pcr in the pcrs table
-soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
-
-##Plot the results
-ggpcrtag(soil_euk, table = "pcrs", index = "seq_depth", taglist = taglist)
-
->>>>>>> 55486647798b8c099130fd3e5c1e38c0dee2d2f7
 
 #Plot the number of reads of the most abundant MOTU
 ggpcrtag(soil_euk, legend_title = "#reads of most\\nabundant MOTU",

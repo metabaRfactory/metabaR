@@ -10,11 +10,7 @@ ggpcrplate(metabarlist, legend_title = "well_values",
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object.}
 
-<<<<<<< HEAD
 \item{legend_title}{the title of legend containing the plotted information.}
-=======
-\item{table}{the table containing the information used for plotting. Can be either `reads`,  or `pcrs`.}
->>>>>>> 55486647798b8c099130fd3e5c1e38c0dee2d2f7
 
 \item{FUN}{a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.}
 }
@@ -31,18 +27,8 @@ Vizualizing some attributes of the PCRs in their plate design context, i.e. thei
 
 data(soil_euk)
 
-<<<<<<< HEAD
 #Plot the number of reads per pcrs
 ggpcrplate(soil_euk)
-=======
-#Plot the number of reads per pcr
-
-##Store the number of reads per pcr in the pcrs table
-soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
-
-##Plot the results
-ggpcrplate(soil_euk, table = "pcrs", index = "seq_depth")
->>>>>>> 55486647798b8c099130fd3e5c1e38c0dee2d2f7
 
 
 #Plot the number of reads of the most abundant MOTU
