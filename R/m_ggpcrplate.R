@@ -3,9 +3,15 @@
 #' Plots an attribute of PCRs from a \code{\link{metabarlist}} object into the corresponding 96-well PCR plate design
 #'
 #'
+<<<<<<< HEAD
 #' @param metabarlist    a \code{\link{metabarlist}} object
 #' @param table          the table containing the information used for plotting. Can be either `reads`,  or `pcrs`.
 #' @param index          the name of the column name containing the information to be plotted. This information should be a numeric vector.
+=======
+#' @param metabarlist    a \code{\link{metabarlist}} object.
+#' @param FUN            a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.
+#' @param legend_title   the title of legend containing the plotted information.
+>>>>>>> clement_branch
 #'
 #' @name ggpcrplate
 #'
@@ -18,6 +24,7 @@
 #'
 #' data(soil_euk)
 #'
+<<<<<<< HEAD
 #' #Plot the number of reads per pcr
 #'
 #' ##Store the number of reads per pcr in the pcrs table
@@ -25,61 +32,60 @@
 #'
 #' ##Plot the results
 #' ggpcrplate(soil_euk, table = "pcrs", index = "seq_depth")
+=======
+#' #Plot the number of reads per pcrs
+#' ggpcrplate(soil_euk)
+>>>>>>> clement_branch
 #'
 #'
 #' #Plot the number of reads of the most abundant MOTU
-#'
-#' ##Get the name of the most abundant MOTU
-#' id = colnames(soil_euk$reads)[which.max(colSums(soil_euk$reads))]
-#'
-#' ##Plot the results
-#' ggpcrplate(soil_euk, table = "reads", index = id) + labs(size="#reads of most\nabundant MOTU")
+#' ggpcrplate(soil_euk, legend_title = "#reads of most\nabundant MOTU",
+#'            FUN = function(m){m$reads[,which.max(colSums(m$reads))]})
 #'
 #'
 #' @author Lucie Zinger
 #' @import ggplot2
 #' @export ggpcrplate
 
-ggpcrplate = function(metabarlist, table, index) {
+
+ggpcrplate = function(metabarlist, legend_title = "well_values",
+                      FUN = function(metabarlist) {rowSums(metabarlist$reads)}) {
 
   if(suppressWarnings(check_metabarlist(metabarlist))) {
 
-    cols_plate_design = c('plate_no', 'plate_col', 'plate_row')
+    function_values <- FUN(metabarlist)
+
+    if (length(function_values) != nrow(metabarlist$pcrs)) {
+      stop('provided information should have the length of pcrs')
+    }
+
+    if(!is.numeric(function_values))
+      stop("provided information should be numeric")
+
+    cols_plate_design <- c('plate_no', 'plate_col', 'plate_row')
 
     if (!all(cols_plate_design %in% colnames(metabarlist$pcrs)))
       stop("PCR plate design not properly provided: ",
-           paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep=', '),
+           paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep = ', '),
            " missing !\n")
 
-    extract_table_methods = c("reads", "pcrs")
-    tab = match.arg(table, extract_table_methods)
+    # create a fictive dataframe to plot data with ggplot
+    plate_design <- metabarlist$pcrs[, c("plate_no", "plate_col", "plate_row", "control_type")]
+    # define factor level order for the legend
+    plate_design_levels <- c("extraction", "pcr", "sequencing", "positive")
+    plate_design$control_type <- factor(plate_design$control_type, levels = plate_design_levels)
 
-    if(!index %in% colnames(metabarlist[[tab]]))
-      stop("index is not in table")
+    # add values of parameter's function to the fictive dataframe
+    plate_design$well_values <- function_values
+    plate_design$well_values[plate_design$well_values == 0] <- NA
 
-    if(!is.numeric(metabarlist[[tab]][,index]))
-      stop("selected information should be numeric")
-
-    plate_design = metabarlist$pcrs[,c("plate_no", "plate_col", "plate_row", "control_type")]
-    plate_design$control_type = factor(plate_design$control_type,
-                                       levels=c("extraction", "pcr", "sequencing", "positive", NA))
-
-    plate_design[index] = metabarlist[[tab]][,index]
-
-    plate_design[index][plate_design[index]==0] = NA
-
-    ggplot(plate_design, aes(y=match(plate_row, LETTERS[1:8]), x=plate_col, size=get(index))) +
-      geom_raster(aes(fill=control_type)) +
-      facet_wrap(~plate_no, scale="free") + theme_bw() +
-      scale_y_reverse(breaks = 1:8, labels=LETTERS[1:8]) +
+    ggplot(plate_design, aes(y = match(plate_row, LETTERS[1:8]), x = plate_col, size = well_values)) +
+      geom_raster(aes(fill = control_type), na.rm = TRUE) +
+      facet_wrap(~plate_no, scale = "free") + theme_bw() +
+      scale_y_reverse(breaks = 1:8, labels = LETTERS[1:8]) +
       scale_x_continuous(breaks = 1:12) +
-      scale_fill_manual(values=c("brown", "red", "pink", "cyan4", "white")) +
-      geom_point() +
-      labs(x=NULL, y=NULL, size=index)
-
+      scale_fill_manual(values = c("brown", "red", "pink", "cyan4"), na.translate = FALSE) +
+      geom_point(na.rm = TRUE) +
+      labs(x = NULL, y = NULL, size = legend_title)
   }
 }
-
-
-
-

@@ -31,7 +31,7 @@
 #' #define replicate factor
 #' soil_euk$pcrs$Replicate_ori = gsub("-r[1-4]", "", rownames(soil_euk$pcrs))
 #' #Consider only biological samples
-#' idx = which(soil_euk$pcr$Control=="sample")
+#' idx = which(soil_euk$pcr$type=="sample")
 #'
 #' #first visualization
 #' comp1 = pcr_within_between(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx])
@@ -60,7 +60,7 @@
 #' @export check_pcr_repl
 #'
 
-pcrslayer = function(x, replicates, thresh.method, plot=T) {
+pcrslayer = function(x, replicates, thresh.method="intersect", plot=T) {
 
   if(nrow(x)!=length(replicates))
     stop("x and replicates must have the same length")

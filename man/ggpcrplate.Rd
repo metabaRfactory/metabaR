@@ -4,14 +4,15 @@
 \alias{ggpcrplate}
 \title{Plotting a PCR attribute in the PCR plate design}
 \usage{
-ggpcrplate(metabarlist, table, index)
+ggpcrplate(metabarlist, legend_title = "well_values",
+  FUN = function(metabarlist) {     rowSums(metabarlist$reads) })
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{\link{metabarlist}} object.}
 
-\item{table}{the table where the information on which the plotting is based. Can be only `reads`,  or `pcrs`.}
+\item{legend_title}{the title of legend containing the plotted information.}
 
-\item{index}{the name of the column name containing the information to be plotted. This information should be a numeric vector.}
+\item{FUN}{a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.}
 }
 \value{
 a ggplot
@@ -27,21 +28,12 @@ Vizualizing some attributes of the PCRs in their plate design context, i.e. thei
 data(soil_euk)
 
 #Plot the number of reads per pcrs
-
-##Store the number of reads per pcrs in the pcrs table
-soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
-
-##Plot the results
-ggpcrplate(soil_euk, table = "pcrs", index = "seq_depth")
+ggpcrplate(soil_euk)
 
 
 #Plot the number of reads of the most abundant MOTU
-
-##Get the name of the most abundant MOTU
-id = colnames(soil_euk$reads)[which.max(colSums(soil_euk$reads))]
-
-##Plot the results
-ggpcrplate(soil_euk, table = "reads", index = id) + labs(size="#reads of most\\nabundant MOTU")
+ggpcrplate(soil_euk, legend_title = "#reads of most\\nabundant MOTU",
+           FUN = function(m){m$reads[,which.max(colSums(m$reads))]})
 
 
 }

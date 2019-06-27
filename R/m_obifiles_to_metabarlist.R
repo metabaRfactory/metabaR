@@ -61,7 +61,6 @@ obifiles_to_metabarlist = function(file_obitab, file_ngsfilter, file_samples, ..
   rownames(pcrs) = pcrs$pcr_id
   pcrs = pcrs[,-match("pcr_id", colnames(pcrs))]
 
-
   #samples
   samples = read.csv2(file_samples, row.names=1, h=T, check.names = F, stringsAsFactors = F, ...)
 

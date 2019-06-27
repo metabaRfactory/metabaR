@@ -101,7 +101,7 @@ subset_metabarlist = function(metabarlist, table, indices) {
 
     } else {
       samples = droplevels(samples[indices,,drop=F])
-      pcrs = droplevels(pcrs[match(rownames(samples), pcrs$sample_id),,drop=F])
+      pcrs = droplevels(pcrs[which(pcrs$sample_id %in% rownames(samples)),,drop=F])
       reads = reads[rownames(pcrs),,drop=F]
       reads = reads[,colSums(reads)>0]
       motus = droplevels(motus[colnames(reads),,drop=F])
