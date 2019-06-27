@@ -9,9 +9,9 @@ fasta_generator(file, id, seq)
 \arguments{
 \item{file}{path/name of the output}
 
-\item{id}{a character vector containing the identifiants of the OTUs of interest}
+\item{id}{a character vector containing identifiers for the OTUs of interest}
 
-\item{seq}{a character vector containing the sequence of the OTUs of interest}
+\item{seq}{a character vector containing sequences for the OTUs of interest}
 }
 \value{
 a fasta file
@@ -20,7 +20,7 @@ a fasta file
 Generate a fasta file on a subset of OTUs from a \code{\link{TODEFINE}} object.
 }
 \details{
-Creates a fasta file from a set of sequences of interest. Obviously, \code{id} and \code{seq} vectors should be in agreement. The header can be easily amended with further informations with e.g. \code{paste}.
+Creates a fasta file from a set of sequences of interest. Obviously, \code{id} and \code{seq} vectors should be in agreement. The header can easily be amended with further information with e.g. \code{paste}.
 }
 \examples{
 

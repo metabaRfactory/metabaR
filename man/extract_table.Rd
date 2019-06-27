@@ -9,7 +9,7 @@ extract_table(metabarlist, table = extract_table_methods)
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{table}{the table that ones want to extract. Can be only `reads`, `motus`, `pcrs`, or `samples`}
+\item{table}{the table required for extraction. Can be one of `reads`, `motus`, `pcrs`, or `samples`}
 }
 \value{
 a numeric matrix `reads` or a dataframe `motus`, `pcrs`, or `samples`

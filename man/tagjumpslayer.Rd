@@ -7,7 +7,7 @@
 tagjumpslayer(x, threshold = 0.03)
 }
 \arguments{
-\item{x}{a \code{\link{TODEFINE}} object}
+\item{x}{a \code{\link{metabarlist}} object}
 
 \item{threshold}{an OTU relative abundance value below which the OTU is considered to be absent}
 }
@@ -15,10 +15,10 @@ tagjumpslayer(x, threshold = 0.03)
 a transformed reads count matrix
 }
 \description{
-Sets to zero abundances of potential tagjumps in a \code{\link{TODEFINE}} object.
+Removes reads of potential tagjumps in a \code{\link{metabarlist}} object.
 }
 \details{
-Tagjumps are an important bias that lead to the presence of potentially high amounts of false positive in DNA metabarcoding data. The origin of this bias is not well known yet, and currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Uncomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine OTU, but its tag combination is artifactual. This bias is also frequence-dependant, i.e. abundant genuine OTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each OTU separately and set to 0 any abundance representing < 0.03% of the total OTU abundance in the entire dataset.
+Tagjumps are an important bias that lead to the presence of potentially high numbers of false positives in DNA metabarcoding data. The origin of this bias is not well known yet, although currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Incomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine OTU, but its tag combination is artifactual. This bias is also frequency-dependant, i.e. abundant genuine OTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each OTU separately and setting to 0 any abundance representing < 0.03% of the total OTU abundance in the entire dataset.
 }
 \examples{
 

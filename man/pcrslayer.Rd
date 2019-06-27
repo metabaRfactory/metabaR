@@ -9,13 +9,13 @@ pcrslayer(x, replicates, thresh.method = "intersect", plot = T)
 \arguments{
 \item{x}{a reads matrix from a \code{\link{TODEFINE}} object}
 
-\item{replicates}{a factor of sample names to which replicates belongs to (i.e. should be a prefix/suffix of pcr replicates names)}
+\item{replicates}{a factor of sample names within which replicates belong (i.e. should be a prefix/suffix of pcr replicate names)}
 
-\item{thresh.method}{a character indicating what method should be used to define the filtering threshold.}
+\item{thresh.method}{a character indicating which method should be used to define the filtering threshold.}
 
-\item{plot}{a boolean indicating weither dissimilarity distribution should be plotted. Default is \code{TRUE}}
+\item{plot}{a boolean indicating whether dissimilarity distribution should be plotted. Default is \code{TRUE}}
 
-\item{control}{a character vector indicating the names of experimental controls against which PCRs replicates are to be compared.}
+\item{control}{a character vector indicating the names of experimental controls against which PCR replicates are to be compared.}
 
 \item{wthn.btwn}{an ouput from \code{pcr_within_between}}
 
@@ -30,11 +30,11 @@ a vector of dysfunctional PCRs
 Detecting dysfunctional PCRs based on PCR replicates.
 }
 \details{
-The \code{pcrslayer} function aims at identifying potential non-functional PCR reactions by comparing the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological sample (\emph{dw} < \emph{db}). More specifically, the function consists in first constructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered to be too distant from its associated average OTU community and should are exclude from the analysis. The whole process is repeated iteratively until no more PCR are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
+The \code{pcrslayer} function identifies potential non-functional PCR reactions by comparing the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). More specifically, the function consists in first constructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered to be too distant from its associated average OTU community and are excluded from the analysis. The whole process is repeated iteratively until no more PCR are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
 
 The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Or it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
 
-Function \code{check_pcr_thresh} allows visualizing \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} allows visualizing PCR replicates dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
+Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 
 Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 }
@@ -63,7 +63,7 @@ nmds = check_pcr_repl(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_
                               dyspcr = bad.pcrs)
 nmds + labs(fill="sample type")
 
-#identify PCRs too close from negative controls ### TO FINISH
+#identify PCRs too close to negative controls ### TO FINISH
 
 }
 \author{

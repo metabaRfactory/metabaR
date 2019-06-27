@@ -17,12 +17,12 @@ contaslayer(x, controls, method = "max")
 a vector containing the names of OTUs identified as contaminants
 }
 \description{
-Uses negative controls to detect contaminants OTUs in a \code{\link{TODEFINE}} object.
+Uses negative controls to detect contaminant OTUs in a \code{\link{TODEFINE}} object.
 }
 \details{
-In negative controls, a contaminant should be preferentially amplified as there is no competing DNA. \code{\link{contaslayer}} relies on this assumption and detects OTUs of which relative abundance across the whole dataset is maximum in negative controls.
-\code{method = "max"} returns OTU names for which frequencies across the entire dataset are maximum in at least one negative control
-\code{method = "all"} returns OTU names for which the frequency across all negative controls is greater than that across all samples
+In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. \code{\link{contaslayer}} relies on this assumption and detects OTUs whose relative abundance across the whole dataset is maximum in negative controls.
+\code{method = "max"} returns the names of OTUs whose frequencies across the entire dataset are maximum in at least one negative control
+\code{method = "all"} returns the names of OTUs whose frequencies across all negative controls is greater than that across all samples
 }
 \examples{
 
@@ -33,7 +33,7 @@ pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="pcr")]
 contaminant = contaslayer(soil_euk$reads, controls = pcr.controls)
 head(soil_euk$motus[contaminant,])
 
-#Distribution of the most abundance contaminant in the PCR plate design
+#Distribution of the most abundant contaminants in the PCR plate design
 max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
 
 p <- ggpcrplate(soil_euk, legend_title = "# reads",
