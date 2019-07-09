@@ -29,7 +29,7 @@
 #'
 #' data(soil_euk)
 #' #define replicate factor
-#' soil_euk$pcrs$Replicate_ori = gsub("-r[1-4]", "", rownames(soil_euk$pcrs))
+#' soil_euk$pcrs$Replicate_ori = gsub("_r[1-4]", "", rownames(soil_euk$pcrs))
 #' #Consider only biological samples
 #' idx = which(soil_euk$pcr$type=="sample")
 #'
