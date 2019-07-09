@@ -47,7 +47,7 @@
 #'
 #' @author Lucie Zinger
 #' @import ggplot2
-#' @import igraph
+#' @importFrom igraph graph V
 #' @export ggtaxplot
 
 ggtaxplot = function(metabarlist, taxo, sep.level=NULL, sep.info=NULL, thresh=NULL) {
