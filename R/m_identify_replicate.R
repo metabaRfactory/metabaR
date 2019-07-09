@@ -19,15 +19,16 @@
 #' The parameter `groups` defined the groups of replicates. The vector should be sorted like the table `PCRs` from the \code{\link{metabarlist}}.
 #' Note: if the distance within replicate is too higher than the distance between replicate function cannot return result because all replicates are removed.
 #' The parameter `FUN` define the function used to compute the distance matrix. The function must return a object of class `dist` with the same length that its input table.
-#' The default function use the function `dudi.coa` of package `ade4` to perform a correspondance analysis of the square root of \code{\link{metabarlist}} table `reads`, and return a matrix distance from the principal components.
+#' The default function use the function `decostand` and `vegdist` of package `vegan` to perform a correspondance analysis of \code{\link{metabarlist}} table `reads`, and return a matrix distance.
 #' Default function detail:
-#' distance_function <- function(reads) {
-#'   correspondence_analysis <- ade4::dudi.coa(sqrt(reads), scannf=FALSE, nf=2)
-#'   distance_matrix <- dist(correspondence_analysis$li)
+#' bray_function <- function(reads) {
+#'   distance_matrix <- vegdist(decostand(reads, method = 'total'), method='bray')
 #'   return(distance_matrix)
 #' }
 #'
 #' When the parameter `graphics` is True, a graphic is plotted with the density of distance within replicate and between replicate. The threshold is also plotted like a vertical line at the intersection of two densities.
+#'
+#' Note: when many projects are pulled in the same plate, you must process this function for each project. If you execute this function on many project the variability between projects can be disturbed the calcul of density and then removed all samples for one project.
 #'
 #' @examples
 #'
@@ -38,6 +39,7 @@
 #'
 #' @author Frédéric Boyer & Clément Lionnet
 #' @import ade4
+#' @import vegan
 #' @export identify_replicate
 
 
@@ -57,16 +59,22 @@ filter_replicat <- function(sub_matrix, threshold) {
   return(replicat_to_remove)
 }
 
-# distance function
-distance_function <- function(reads) {
+# distance function with ade4 package and coa analysis
+coa_function <- function(reads) {
   correspondence_analysis <- dudi.coa(sqrt(reads), scannf=FALSE, nf=2)
   distance_matrix <- dist(correspondence_analysis$li)
   return(distance_matrix)
 }
 
+# distance function with vegan package and Bray-Curtis distance
+bray_function <- function(reads) {
+  distance_matrix <- vegdist(decostand(reads, method = 'total'), method='bray')
+  return(distance_matrix)
+}
+
 # main function
 identify_replicate <- function(metabarlist,
-                               FUN = distance_function,
+                               FUN = bray_function,
                                groups = metabarlist$pcrs$sample_id,
                                graphics = FALSE) {
 
@@ -161,6 +169,11 @@ identify_replicate <- function(metabarlist,
       else {
         break;
       }
+    }
+
+    #### warning if more than 20% of replicates are removed
+    if(dim(subset_data[subset_data$replicating==F,])[1]/dim(subset_data)[1] > 0.2){
+      warning('More than 20% of replicates are removed !')
     }
     return(subset_data)
   }
