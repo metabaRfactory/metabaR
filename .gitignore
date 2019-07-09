@@ -4,3 +4,5 @@
 .Ruserdata
 .DS_Store
 inst/doc
+vignettes/metabaRF-vignette_cache/*
+vignettes/metabaRF-vignette.log
