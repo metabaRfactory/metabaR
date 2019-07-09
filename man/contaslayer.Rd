@@ -4,14 +4,16 @@
 \alias{contaslayer}
 \title{Detecting contaminants in metabarcoding data using negative controls}
 \usage{
-contaslayer(x, controls, method = "max")
+contaslayer(metabarlist,
+  controls = rownames(metabarlist$pcrs)[which(metabarlist$pcrs$control_type
+  == "pcr")], method = "max")
 }
 \arguments{
-\item{x}{a \code{\link{TODEFINE}} object}
-
 \item{controls}{a vector of amplicon names corresponding to negative controls.}
 
 \item{method}{a character string specifying the detection method to be used. Default is \code{"max"}}
+
+\item{x}{a \code{\link{metabarlist}} object}
 }
 \value{
 a vector containing the names of OTUs identified as contaminants
@@ -29,8 +31,7 @@ In negative controls, a contaminant should be preferentially amplified since the
 data(soil_euk)
 
 #finds contaminants from PCR amplification
-pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="pcr")]
-contaminant = contaslayer(soil_euk$reads, controls = pcr.controls)
+contaminant = contaslayer(soil_euk)
 head(soil_euk$motus[contaminant,])
 
 #Distribution of the most abundant contaminants in the PCR plate design
