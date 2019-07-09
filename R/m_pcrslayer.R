@@ -28,30 +28,35 @@
 #' @examples
 #'
 #' data(soil_euk)
-#' #define replicate factor
-#' soil_euk$pcrs$Replicate_ori = gsub("_r[1-4]", "", rownames(soil_euk$pcrs))
-#' #Consider only biological samples
-#' idx = which(soil_euk$pcr$type=="sample")
+#' # define replicate factor
+#' soil_euk$pcrs$Replicate_ori <- gsub("_r[1-4]", "", rownames(soil_euk$pcrs))
+#' # Consider only biological samples
+#' idx <- which(soil_euk$pcr$type == "sample")
 #'
-#' #first visualization
-#' comp1 = pcr_within_between(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx])
-#' check_pcr_thresh(comp1, thresh.pcr=NULL)
-#' #visualization of replicates through NMDS
-#' nmds = check_pcr_repl(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx],
-#'                       colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep="|")[idx])
-#' nmds + labs(fill="sample type")
+#' # first visualization
+#' comp1 <- pcr_within_between(soil_euk$reads[idx, ], replicates = soil_euk$pcr$Replicate_ori[idx])
+#' check_pcr_thresh(comp1, thresh.pcr = NULL)
+#' # visualization of replicates through NMDS
+#' nmds <- check_pcr_repl(soil_euk$reads[idx, ],
+#'   replicates = soil_euk$pcr$Replicate_ori[idx],
+#'   colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep = "|")[idx]
+#' )
+#' nmds + labs(fill = "sample type")
 #'
-#' #identify dysfunctional PCRs
-#' bad.pcrs = pcrslayer(soil_euk$reads[idx,],thresh.method="intersect",
-#'                      replicates = soil_euk$pcr$Replicate_ori[idx])
+#' # identify dysfunctional PCRs
+#' bad.pcrs <- pcrslayer(soil_euk$reads[idx, ],
+#'   thresh.method = "intersect",
+#'   replicates = soil_euk$pcr$Replicate_ori[idx]
+#' )
 #'
-#' nmds = check_pcr_repl(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx],
-#'                               colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep="|")[idx],
-#'                               dyspcr = bad.pcrs)
-#' nmds + labs(fill="sample type")
+#' nmds <- check_pcr_repl(soil_euk$reads[idx, ],
+#'   replicates = soil_euk$pcr$Replicate_ori[idx],
+#'   colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep = "|")[idx],
+#'   dyspcr = bad.pcrs
+#' )
+#' nmds + labs(fill = "sample type")
 #'
-#' #identify PCRs too close to negative controls ### TO FINISH
-#'
+#' # identify PCRs too close to negative controls ### TO FINISH
 #' @author Lucie Zinger
 #' @importFrom vegan decostand vegdist metaMDS
 #' @export pcrslayer
@@ -60,78 +65,82 @@
 #' @export check_pcr_repl
 #'
 
-pcrslayer = function(x, replicates, thresh.method="intersect", plot=T) {
-
-  if(nrow(x)!=length(replicates))
+pcrslayer <- function(x, replicates, thresh.method = "intersect", plot = T) {
+  if (nrow(x) != length(replicates)) {
     stop("x and replicates must have the same length")
-
-  if(thresh.method!= "intersect" & thresh.method != "mode")
-    stop('thresh.method should be one of "intersect" or "mode"')
-
-  #identify empty pcrs
-  empty.pcr = NULL
-  if(length(which(rowSums(x)==0))!=0) {
-    idx = which(rowSums(x)==0)
-    empty.pcr = rownames(x)[idx]
-    replicates = replicates[-idx]
-    x = x[-idx,]
   }
 
-  #within between object
-  #first round
-  wthn.btwn = pcr_within_between(x, replicates)
-  thresh.pcr = pcr_threshold_estimate(wthn.btwn, thresh.method)
-  if(plot==T) {
+  if (thresh.method != "intersect" & thresh.method != "mode") {
+    stop('thresh.method should be one of "intersect" or "mode"')
+  }
+
+  # identify empty pcrs
+  empty.pcr <- NULL
+  if (length(which(rowSums(x) == 0)) != 0) {
+    idx <- which(rowSums(x) == 0)
+    empty.pcr <- rownames(x)[idx]
+    replicates <- replicates[-idx]
+    x <- x[-idx, ]
+  }
+
+  # within between object
+  # first round
+  wthn.btwn <- pcr_within_between(x, replicates)
+  thresh.pcr <- pcr_threshold_estimate(wthn.btwn, thresh.method)
+  if (plot == T) {
     check_pcr_thresh(wthn.btwn, thresh.pcr)
   }
-  bad.pcr = NULL
-  nb.bad.pcr = length(bad.pcr)
+  bad.pcr <- NULL
+  nb.bad.pcr <- length(bad.pcr)
 
   # Combine les arguments bad.pcr avec
-  # vire de la liste les samples dont la valeur (dist par rapport au barycentre) est supÈrieure au thresh.pcr
-  #  ET dont la valeur est Ègale ‡ la valeur max des rÈplicats
-  bad.pcr = c(bad.pcr, unname(unlist(lapply(wthn.btwn$pcr.intradist, function(y){
-                names(which(y>thresh.pcr & y==max(y)))
-              }))))
+  # vire de la liste les samples dont la valeur (dist par rapport au barycentre) est supérieure au thresh.pcr
+  #  ET dont la valeur est Ègale à la valeur max des réplicats
+  bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn$pcr.intradist, function(y) {
+    names(which(y > thresh.pcr & y == max(y)))
+  }))))
 
-  #in case of samples with only one pcr
-  # dans les cas ou on n'a qu'un seul rÈplicat, on ajoute a bad.pcr les rownames du replicat
-  if(length(which(table(as.vector(replicates)[-match(bad.pcr, rownames(x.n))])<2))!=0) {
-    singletons = sapply(names(which(table(as.vector(replicates)[-match(bad.pcr, rownames(x.n))])<2)),
-                        function(x) grep(x, rownames(x.n)[-match(bad.pcr, rownames(x.n))]))
-    bad.pcr = c(bad.pcr, rownames(x.n)[-match(bad.pcr, rownames(x.n))][unname(singletons)])
-    }
+  # in case of samples with only one pcr
+  # dans les cas ou on n'a qu'un seul réplicat, on ajoute a bad.pcr les rownames du replicat
+  if (length(which(table(as.vector(replicates)[-match(bad.pcr, rownames(x))]) < 2)) != 0) {
+    singletons <- sapply(
+      names(which(table(as.vector(replicates)[-match(bad.pcr, rownames(x))]) < 2)),
+      function(x) grep(x, rownames(x.n)[-match(bad.pcr, rownames(x.n))])
+    )
+    bad.pcr <- c(bad.pcr, rownames(x.n)[-match(bad.pcr, rownames(x.n))][unname(singletons)])
+  }
 
-  if(length(bad.pcr)!=0) {
-    n = length(bad.pcr)
+  if (length(bad.pcr) != 0) {
+    n <- length(bad.pcr)
 
-    while(nb.bad.pcr[length(nb.bad.pcr)] < n) {
-      #n0 = n
-      nb.bad.pcr = c(nb.bad.pcr, n)
-      idx = match(bad.pcr, rownames(x.n))
-      x.n2 = x.n[-idx,]
-      replicates2 = as.factor(as.vector(replicates)[-idx])
-      wthn.btwn2 = pcr_within_between(x.n2, replicates2)
-      thresh.pcr2 = pcr_threshold_estimate(wthn.btwn2, thresh.method)
-      if(plot==T) {
+    while (nb.bad.pcr[length(nb.bad.pcr)] < n) {
+      # n0 = n
+      nb.bad.pcr <- c(nb.bad.pcr, n)
+      idx <- match(bad.pcr, rownames(x.n))
+      x.n2 <- x.n[-idx, ]
+      replicates2 <- as.factor(as.vector(replicates)[-idx])
+      wthn.btwn2 <- pcr_within_between(x.n2, replicates2)
+      thresh.pcr2 <- pcr_threshold_estimate(wthn.btwn2, thresh.method)
+      if (plot == T) {
         check_pcr_thresh(wthn.btwn2, thresh.pcr2)
       }
-      bad.pcr = c(bad.pcr, unname(unlist(lapply(wthn.btwn2$pcr.intradist, function(y){
-        names(which(y>thresh.pcr2 & y==max(y)))
+      bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn2$pcr.intradist, function(y) {
+        names(which(y > thresh.pcr2 & y == max(y)))
       }))))
 
 
       # VS mod : Redefinir replicates2 avant le if :
-      idx1 = match(bad.pcr, rownames(x.n))
-      x.n2.1 = x.n[-idx1,]
-      replicates3 = as.factor(as.vector(replicates)[-idx1])
+      idx1 <- match(bad.pcr, rownames(x.n))
+      x.n2.1 <- x.n[-idx1, ]
+      replicates3 <- as.factor(as.vector(replicates)[-idx1])
       # END VS mod
-      if(length(which(table(as.vector(replicates3))<2))!=0) {
-        singletons = sapply(names(which(table(as.vector(replicates3))<2)), function(x) {
-          grep(x, rownames(x.n2.1))})
-        bad.pcr = c(bad.pcr, rownames(x.n2.1)[unname(singletons)])
+      if (length(which(table(as.vector(replicates3)) < 2)) != 0) {
+        singletons <- sapply(names(which(table(as.vector(replicates3)) < 2)), function(x) {
+          grep(x, rownames(x.n2.1))
+        })
+        bad.pcr <- c(bad.pcr, rownames(x.n2.1)[unname(singletons)])
       }
-      n = length(bad.pcr)
+      n <- length(bad.pcr)
     }
   }
 
@@ -166,106 +175,117 @@ pcrslayer = function(x, replicates, thresh.method="intersect", plot=T) {
 # }
 
 
-pcr_within_between = function(x, replicates){
-  #barycentre calculation and intradist function
+pcr_within_between <- function(x, replicates) {
+  # barycentre calculation and intradist function
 
-  #data standardization
-  x.n = decostand(x, MARGIN = 1, "total")
+  # data standardization
+  x.n <- decostand(x, MARGIN = 1, "total")
 
-  bar = t(sapply(by(x.n,as.vector(replicates),colMeans),identity))
+  bar <- t(sapply(by(x.n, as.vector(replicates), colMeans), identity))
 
-  #between barycentre distances
-  bar.dist = vegdist(bar, "bray")
+  # between barycentre distances
+  bar.dist <- vegdist(bar, "bray")
 
-  #within replicates distances
-  pcr.intradist = lapply(1:nrow(bar), function(x){
-    ind = which(replicates==rownames(bar)[x])
+  # within replicates distances
+  pcr.intradist <- lapply(1:nrow(bar), function(x) {
+    ind <- which(replicates == rownames(bar)[x])
     sapply(ind, function(y) {
-      out = vegdist(rbind(bar[x,], x.n[y,]), "bray")
-      names(out) = rownames(x.n)[y]
+      out <- vegdist(rbind(bar[x, ], x.n[y, ]), "bray")
+      names(out) <- rownames(x.n)[y]
       out
     })
   })
-  names(pcr.intradist) = rownames(bar)
-  return(list(bar.dist=bar.dist, pcr.intradist=pcr.intradist))
+  names(pcr.intradist) <- rownames(bar)
+  return(list(bar.dist = bar.dist, pcr.intradist = pcr.intradist))
 }
 
-pcr_threshold_estimate = function(wthn.btwn, thresh.method="intersect") {
-  dinter.max  = max(wthn.btwn$bar.dist)
-  ddinter = density(wthn.btwn$bar.dist, from=0, to=1)
-  ddintra = density(unlist(wthn.btwn$pcr.intradist), from=0, to=1)
+pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
+  dinter.max <- max(wthn.btwn$bar.dist)
+  ddinter <- density(wthn.btwn$bar.dist, from = 0, to = 1)
+  ddintra <- density(unlist(wthn.btwn$pcr.intradist), from = 0, to = 1)
 
-  #assumption that each of them have a "unimodal" distribution
-  dintra.mode = ddintra$x[which.max(ddintra$y)]
-  dinter.mode = ddinter$x[which.max(ddinter$y)]
+  # assumption that each of them have a "unimodal" distribution
+  dintra.mode <- ddintra$x[which.max(ddintra$y)]
+  dinter.mode <- ddinter$x[which.max(ddinter$y)]
 
-  #get the mixed distrib within both mode intervals and find intersection between the two
-  #inter.y=ddinter$y[which(ddinter$x>dintra.mode & ddinter$x<dinter.mode & ddinter$y>ddintra$y)]
-  #intra.y=ddintra$y[which(ddintra$x>dintra.mode & ddintra$x<dinter.mode & ddintra$y>ddinter$y)]
-  #x = ddinter$x[which(ddinter$x>dintra.mode & ddinter$x<dinter.mode)]
-  #s = c(intra.y, inter.y)
-  #return(x[which.min(s)[1]])
+  # get the mixed distrib within both mode intervals and find intersection between the two
+  # inter.y=ddinter$y[which(ddinter$x>dintra.mode & ddinter$x<dinter.mode & ddinter$y>ddintra$y)]
+  # intra.y=ddintra$y[which(ddintra$x>dintra.mode & ddintra$x<dinter.mode & ddintra$y>ddinter$y)]
+  # x = ddinter$x[which(ddinter$x>dintra.mode & ddinter$x<dinter.mode)]
+  # s = c(intra.y, inter.y)
+  # return(x[which.min(s)[1]])
 
-  if(thresh.method=="intersect") {
-  p = which(ddintra$y-ddinter$y>0 & ddinter$y > dintra.mode)
-  out = ddinter$x[p[length(p)]]
+  if (thresh.method == "intersect") {
+    p <- which(ddintra$y - ddinter$y > 0 & ddinter$y > dintra.mode)
+    out <- ddinter$x[p[length(p)]]
   } else {
-    out = dinter.mode
+    out <- dinter.mode
   }
   return(out)
 }
 
-check_pcr_thresh = function(wthn.btwn, thresh.pcr) {
-  d.bar = density(wthn.btwn$bar.dist)
-  d.intra = density(unlist(wthn.btwn$pcr.intradist))
-  plot(d.bar, lwd=2, main="Distances density")
-  lines(d.intra, col="green", lwd=2)
-  legend("topright", c("btwn samples", "wthn samples"), col=c("black", "green"), lwd=2)
-  abline(v=thresh.pcr)
+check_pcr_thresh <- function(wthn.btwn, thresh.pcr) {
+  d.bar <- density(wthn.btwn$bar.dist)
+  d.intra <- density(unlist(wthn.btwn$pcr.intradist))
+  plot(d.bar, lwd = 2, main = "Distances density")
+  lines(d.intra, col = "green", lwd = 2)
+  legend("topright", c("btwn samples", "wthn samples"),
+    col = c("black", "green"), lwd = 2
+  )
+  abline(v = thresh.pcr)
 }
 
+check_pcr_repl <- function(x, replicates, colvec = NULL, dyspcr = NULL) {
+  x.n <- decostand(x, "total")
+  bar <- t(sapply(by(x.n, as.vector(replicates), colMeans), identity))
+  all <- rbind(x.n, bar)
 
-check_pcr_repl = function(x, replicates, colvec=NULL, dyspcr = NULL) {
-  x.n = decostand(x, "total")
-  bar = t(sapply(by(x.n,as.vector(replicates),colMeans),identity))
-  all = rbind(x.n, bar)
+  mds <- metaMDS(all)
+  d <- data.frame(scores(mds, display = "sites"))
+  d$points <- ifelse(rownames(d) %in% rownames(bar), "bary", "samp")
+  dsub <- d[d$points == "bary", ]
+  d$NMDS1bary <- d$NMDS2bary <- NA
+  d$NMDS1bary[d$points != "bary"] <- dsub$NMDS1[match(replicates, rownames(dsub))]
+  d$NMDS2bary[d$points != "bary"] <- dsub$NMDS2[match(replicates, rownames(dsub))]
 
-  mds = metaMDS(all)
-  d = data.frame(scores(mds, display = "sites"))
-  d$points = ifelse(rownames(d) %in% rownames(bar), "bary", "samp")
-  dsub = d[d$points=="bary",]
-  d$NMDS1bary = d$NMDS2bary = NA
-  d$NMDS1bary[d$points!="bary"] = dsub$NMDS1[match(replicates, rownames(dsub))]
-  d$NMDS2bary[d$points!="bary"] = dsub$NMDS2[match(replicates, rownames(dsub))]
-
-  d2 = d[d$points!="bary",]
-  if(is.null(colvec) & is.null(dyspcr)) {
-    ggplot(d2, aes(x=NMDS1, y=NMDS2)) +
-      geom_point(shape=21) + theme_bw() +
-      geom_segment(data=d, aes(x=NMDS1bary, y=NMDS2bary, xend=NMDS1, yend=NMDS2), colour="grey")
-
-  } else if (!is.null(colvec) & is.null(dyspcr)){
-    d$col = NA
-    d2$col = colvec
-    ggplot(d2, aes(x=NMDS1, y=NMDS2, fill=col)) +
-      geom_point(shape=21) + theme_bw() +
-      geom_segment(data=d, aes(x=NMDS1bary, y=NMDS2bary, xend=NMDS1, yend=NMDS2), colour="grey")
-
-  } else if(is.null(colvec) & !is.null(dyspcr)){
-    d$dyspcr = NA
-    d2$dyspcr = ifelse(rownames(d2) %in% dyspcr, "dysfunctional", "functional")
-    ggplot(d2, aes(x=NMDS1, y=NMDS2)) +
-      geom_point(aes(shape=dyspcr)) + theme_bw() +
-      geom_segment(data=d, aes(x=NMDS1bary, y=NMDS2bary, xend=NMDS1, yend=NMDS2), colour="grey") +
-      scale_shape_manual(values=c(4,21))
+  d2 <- d[d$points != "bary", ]
+  if (is.null(colvec) & is.null(dyspcr)) {
+    ggplot(d2, aes(x = NMDS1, y = NMDS2)) +
+      geom_point(shape = 21) + theme_bw() +
+      geom_segment(data = d, aes(
+        x = NMDS1bary, y = NMDS2bary,
+        xend = NMDS1, yend = NMDS2
+      ), colour = "grey")
+  } else if (!is.null(colvec) & is.null(dyspcr)) {
+    d$col <- NA
+    d2$col <- colvec
+    ggplot(d2, aes(x = NMDS1, y = NMDS2, fill = col)) +
+      geom_point(shape = 21) + theme_bw() +
+      geom_segment(data = d, aes(
+        x = NMDS1bary, y = NMDS2bary,
+        xend = NMDS1, yend = NMDS2
+      ), colour = "grey")
+  } else if (is.null(colvec) & !is.null(dyspcr)) {
+    d$dyspcr <- NA
+    d2$dyspcr <- ifelse(rownames(d2) %in% dyspcr, "dysfunctional", "functional")
+    ggplot(d2, aes(x = NMDS1, y = NMDS2)) +
+      geom_point(aes(shape = dyspcr)) + theme_bw() +
+      geom_segment(data = d, aes(
+        x = NMDS1bary, y = NMDS2bary,
+        xend = NMDS1, yend = NMDS2
+      ), colour = "grey") +
+      scale_shape_manual(values = c(4, 21))
   } else {
-    d$col = NA
-    d2$col = colvec
-    d$dyspcr = NA
-    d2$dyspcr = ifelse(rownames(d2) %in% dyspcr, "dysfunctional", "functional")
-    ggplot(d2, aes(x=NMDS1, y=NMDS2, fill=col)) +
-      geom_point(aes(shape=dyspcr)) + theme_bw() +
-      geom_segment(data=d, aes(x=NMDS1bary, y=NMDS2bary, xend=NMDS1, yend=NMDS2), colour="grey") +
-      scale_shape_manual(values=c(4,21))
-    }
+    d$col <- NA
+    d2$col <- colvec
+    d$dyspcr <- NA
+    d2$dyspcr <- ifelse(rownames(d2) %in% dyspcr, "dysfunctional", "functional")
+    ggplot(d2, aes(x = NMDS1, y = NMDS2, fill = col)) +
+      geom_point(aes(shape = dyspcr)) + theme_bw() +
+      geom_segment(data = d, aes(
+        x = NMDS1bary, y = NMDS2bary,
+        xend = NMDS1, yend = NMDS2
+      ), colour = "grey") +
+      scale_shape_manual(values = c(4, 21))
+  }
 }
