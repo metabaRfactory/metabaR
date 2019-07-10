@@ -105,21 +105,21 @@ pcrslayer <- function(x, replicates, thresh.method = "intersect", plot = T) {
   if (length(which(table(as.vector(replicates)[-match(bad.pcr, rownames(x))]) < 2)) != 0) {
     singletons <- sapply(
       names(which(table(as.vector(replicates)[-match(bad.pcr, rownames(x))]) < 2)),
-      function(x) grep(x, rownames(x.n)[-match(bad.pcr, rownames(x.n))])
+      function(x) grep(x, rownames(x)[-match(bad.pcr, rownames(x))])
     )
-    bad.pcr <- c(bad.pcr, rownames(x.n)[-match(bad.pcr, rownames(x.n))][unname(singletons)])
+    bad.pcr <- c(bad.pcr, rownames(x)[-match(bad.pcr, rownames(x))][unname(singletons)])
   }
 
   if (length(bad.pcr) != 0) {
     n <- length(bad.pcr)
 
     while (nb.bad.pcr[length(nb.bad.pcr)] < n) {
-      # n0 = n
+      # n0 <- n
       nb.bad.pcr <- c(nb.bad.pcr, n)
-      idx <- match(bad.pcr, rownames(x.n))
-      x.n2 <- x.n[-idx, ]
+      idx <- match(bad.pcr, rownames(x))
+      x.n <- x[-idx, ]
       replicates2 <- as.factor(as.vector(replicates)[-idx])
-      wthn.btwn2 <- pcr_within_between(x.n2, replicates2)
+      wthn.btwn2 <- pcr_within_between(x.n, replicates2)
       thresh.pcr2 <- pcr_threshold_estimate(wthn.btwn2, thresh.method)
       if (plot == T) {
         check_pcr_thresh(wthn.btwn2, thresh.pcr2)
@@ -130,15 +130,15 @@ pcrslayer <- function(x, replicates, thresh.method = "intersect", plot = T) {
 
 
       # VS mod : Redefinir replicates2 avant le if :
-      idx1 <- match(bad.pcr, rownames(x.n))
-      x.n2.1 <- x.n[-idx1, ]
+      idx1 <- match(bad.pcr, rownames(x))
+      x.n2 <- x[-idx1, ]
       replicates3 <- as.factor(as.vector(replicates)[-idx1])
       # END VS mod
       if (length(which(table(as.vector(replicates3)) < 2)) != 0) {
         singletons <- sapply(names(which(table(as.vector(replicates3)) < 2)), function(x) {
-          grep(x, rownames(x.n2.1))
+          grep(x, rownames(x.n2))
         })
-        bad.pcr <- c(bad.pcr, rownames(x.n2.1)[unname(singletons)])
+        bad.pcr <- c(bad.pcr, rownames(x.n2)[unname(singletons)])
       }
       n <- length(bad.pcr)
     }
