@@ -318,10 +318,81 @@ Potentially caused index library switch
 Tagjump slayer
 Are sequences in sequencing controls not max in samples?
 
+Tagjumps are an important bias that lead to the presence of potentially high numbers of false positives in DNA metabarcoding data. The origin of this bias is not well known yet, although currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Incomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine OTU, but its tag combination is artifactual. This bias is also frequency-dependant, i.e. abundant genuine OTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each OTU separately and setting to 0 any abundance representing < 0.03% of the total OTU abundance in the entire dataset.
+
+```{r contaslayer2, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+#Distribution of the most abundant contaminants in the PCR plate design
+
+data(soil_euk)
+soil_euk_clean = tagjumpslayer(soil_euk$reads, 0.03)
+
+#identify occurrence of the most abundant OTU
+idx = which.max(soil_euk$motus$count)
+p1 = ggpcrplate(attr = soil_euk$reads[,idx],
+                plate_no = soil_euk$pcrs$plate_no,
+                plate_col = soil_euk$pcrs$plate_col,
+                plate_row =  soil_euk$pcrs$plate_row,
+                control_type = soil_euk$pcrs$Control_type)
+p1 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
+      labs(size="# reads", fill="control type") +
+      scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
+                        na.value = "white") +
+      ggtitle("Distribution of the most abundant OTU")
+
+#same on clean data
+p2 = ggpcrplate(attr = soil_euk_clean[,idx],
+                plate_no = soil_euk$pcrs$plate_no,
+                plate_col = soil_euk$pcrs$plate_col,
+                plate_row =  soil_euk$pcrs$plate_row,
+                control_type = soil_euk$pcrs$Control_type)
+p2 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
+     labs(size="# reads", fill="control type") +
+     scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
+                        na.value = "white") +
+     ggtitle("Distribution of the most abundant OTU after curation")
+```
+
+
+#'
+
 #Dysfunctional PCRs
 
 ##PCRs with too low amounts of reads
 PCR slayer
+The \code{pcrslayer} function identifies potential non-functional PCR reactions by comparing the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). More specifically, the function consists in first constructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered to be too distant from its associated average OTU community and are excluded from the analysis. The whole process is repeated iteratively until no more PCR are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
+
+The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Or it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
+
+Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
+
+Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
+
+```{r contaslayer2, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+data(soil_euk)
+#define replicate factor
+soil_euk$pcrs$Replicate_ori = gsub("-r[1-4]", "", rownames(soil_euk$pcrs))
+#Consider only biological samples
+idx = which(soil_euk$pcr$Control=="sample")
+
+#first visualization
+comp1 = pcr_within_between(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx])
+check_pcr_thresh(comp1, thresh.pcr=NULL)
+#visualization of replicates through NMDS
+nmds = check_pcr_repl(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx],
+                      colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep="|")[idx])
+ nmds + labs(fill="sample type")
+ 
+#identify dysfunctional PCRs
+bad.pcrs = pcrslayer(soil_euk$reads[idx,],thresh.method="intersect",
+                      replicates = soil_euk$pcr$Replicate_ori[idx])
+
+nmds = check_pcr_repl(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx],
+#'                               colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep="|")[idx],
+#'                               dyspcr = bad.pcrs)
+#' nmds + labs(fill="sample type")
+#'
+#' #identify PCRs too close to negative controls
+```
 
 ##Outlier replicate PCRs
 Done on samples cleaned (no conta) excluding positive and negative controls (maximize between dist?)
