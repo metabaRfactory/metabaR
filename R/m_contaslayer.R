@@ -3,7 +3,7 @@
 #' Uses negative controls to detect contaminant OTUs in a \code{\link{TODEFINE}} object.
 #'
 #'
-#' @param x           a \code{\link{TODEFINE}} object
+#' @param metabarlist a \code{\link{metabarlist}} object
 #' @param controls    a vector of amplicon names corresponding to negative controls.
 #' @param method      a character string specifying the detection method to be used. Default is \code{"max"}
 #'
@@ -20,43 +20,53 @@
 #'
 #' data(soil_euk)
 #'
-#' #finds contaminants from PCR amplification
-#' pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="pcr")]
-#' contaminant = contaslayer(soil_euk$reads, controls = pcr.controls)
-#' head(soil_euk$motus[contaminant,])
+#' # finds contaminants from PCR amplification
+#' contaminant <- contaslayer(soil_euk)
+#' head(soil_euk$motus[contaminant, ])
 #'
-#' #Distribution of the most abundant contaminants in the PCR plate design
-#' max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
+#' # Distribution of the most abundant contaminants in the PCR plate design
+#' max.conta <- contaminant[which.max(soil_euk$motus[contaminant, "count"])]
 #'
-#' p <- ggpcrplate(soil_euk, legend_title = "# reads",
-#'            FUN = function(m){m$reads[,max.conta]})
-#' p + scale_size(limits=c(1,max(soil_euk$reads[,max.conta]))) +
-#'      ggtitle("Distribution of the most abundant contaminant")
-#'
+#' p <- ggpcrplate(soil_euk,
+#'   legend_title = "# reads",
+#'   FUN = function(m) {
+#'     m$reads[, max.conta]
+#'   }
+#' )
+#' p + scale_size(limits = c(1, max(soil_euk$reads[, max.conta]))) +
+#'   ggtitle("Distribution of the most abundant contaminant")
 #' @author Lucie Zinger
 #' @importFrom vegan decostand
 #' @export contaslayer
 
-contaslayer = function(x, controls, method="max"){
+contaslayer <- function(metabarlist,
+                        controls = rownames(metabarlist$pcrs)[which(metabarlist$pcrs$control_type == "pcr")],
+                        method = "max") {
+  if (suppressWarnings(check_metabarlist(metabarlist))) {
+    reads_matrix <- metabarlist$reads
+    # transform reads count to frequencies by column (for each reads)
+    reads_matrix.fcol <- decostand(reads_matrix, method = "total", MARGIN = 2)
 
-  x.fcol = decostand(x, method='total', MARGIN = 2)
-
-  x.max = NULL
-  for (i in 1:ncol(x.fcol)) {
-    #print(i)
-    x.max[i] = rownames(x.fcol)[which.max(x.fcol[,i])]
-  }
-  conta = colnames(x)[!is.na(match(x.max,controls))]
-
-  if(method == "max") {
-    return(conta)
-  } else {
-    idx = NULL
-    for (i in 1:length(conta)) {
-      y = conta[i]
-      idx[i] = sum(x.fcol[controls,y]) > sum(x.fcol[-match(controls, rownames(x)),y])
+    # get the name of samples having the maximal frequency for each reads id
+    reads_matrix.max <- NULL
+    for (i in 1:ncol(reads_matrix.fcol)) {
+      reads_matrix.max[i] <- rownames(reads_matrix.fcol)[which.max(reads_matrix.fcol[, i])]
     }
-    return(conta[idx])
+    contaminants <- colnames(reads_matrix)[!is.na(match(reads_matrix.max, controls))]
+
+    if (method == "max") {
+      return(contaminants)
+    } else if (method == "all") {
+      idx <- NULL
+      for (i in 1:length(contaminants)) {
+        reads_id <- contaminants[i]
+        controls_sum <- sum(reads_matrix.fcol[controls, reads_id])
+        samples_sum <- sum(reads_matrix.fcol[-match(controls, rownames(reads_matrix)), reads_id])
+        idx[i] <- controls_sum > samples_sum
+      }
+      return(contaminants[idx])
+    } else {
+      stop("The method must be 'max' or 'all'")
+    }
   }
 }
-
