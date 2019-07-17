@@ -26,6 +26,7 @@
 #' head(soil_euk$motus[contaminant,])
 #'
 #' #Distribution of the most abundant contaminants in the PCR plate design
+#' ###THIS NEEDS RE-DOING###
 #' max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
 #' p = ggpcrplate(attr = soil_euk$reads[,max.conta], plate_no = soil_euk$pcrs$plate_no,
 #'                   plate_col = soil_euk$pcrs$plate_col,
