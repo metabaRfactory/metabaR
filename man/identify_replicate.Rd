@@ -29,15 +29,16 @@ This function identify the non-replicating samples or controls.
 The parameter `groups` defined the groups of replicates. The vector should be sorted like the table `PCRs` from the \code{\link{metabarlist}}.
 Note: if the distance within replicate is too higher than the distance between replicate function cannot return result because all replicates are removed.
 The parameter `FUN` define the function used to compute the distance matrix. The function must return a object of class `dist` with the same length that its input table.
-The default function use the function `dudi.coa` of package `ade4` to perform a correspondance analysis of the square root of \code{\link{metabarlist}} table `reads`, and return a matrix distance from the principal components.
+The default function use the function `decostand` and `vegdist` of package `vegan` to perform a correspondance analysis of \code{\link{metabarlist}} table `reads`, and return a matrix distance.
 Default function detail:
-distance_function <- function(reads) {
-  correspondence_analysis <- ade4::dudi.coa(sqrt(reads), scannf=FALSE, nf=2)
-  distance_matrix <- dist(correspondence_analysis$li)
+bray_function <- function(reads) {
+  distance_matrix <- vegdist(decostand(reads, method = 'total'), method='bray')
   return(distance_matrix)
 }
 
 When the parameter `graphics` is True, a graphic is plotted with the density of distance within replicate and between replicate. The threshold is also plotted like a vertical line at the intersection of two densities.
+
+Note: when many projects are pulled in the same plate, you must process this function for each project. If you execute this function on many project the variability between projects can be disturbed the calcul of density and then removed all samples for one project.
 }
 \examples{
 

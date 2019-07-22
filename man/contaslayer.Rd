@@ -9,11 +9,11 @@ contaslayer(metabarlist,
   == "pcr")], method = "max")
 }
 \arguments{
+\item{metabarlist}{a \code{\link{metabarlist}} object}
+
 \item{controls}{a vector of amplicon names corresponding to negative controls.}
 
 \item{method}{a character string specifying the detection method to be used. Default is \code{"max"}}
-
-\item{x}{a \code{\link{metabarlist}} object}
 }
 \value{
 a vector containing the names of OTUs identified as contaminants
@@ -30,18 +30,21 @@ In negative controls, a contaminant should be preferentially amplified since the
 
 data(soil_euk)
 
-#finds contaminants from PCR amplification
-contaminant = contaslayer(soil_euk)
-head(soil_euk$motus[contaminant,])
+# finds contaminants from PCR amplification
+contaminant <- contaslayer(soil_euk)
+head(soil_euk$motus[contaminant, ])
 
-#Distribution of the most abundant contaminants in the PCR plate design
-max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
+# Distribution of the most abundant contaminants in the PCR plate design
+max.conta <- contaminant[which.max(soil_euk$motus[contaminant, "count"])]
 
-p <- ggpcrplate(soil_euk, legend_title = "# reads",
-           FUN = function(m){m$reads[,max.conta]})
-p + scale_size(limits=c(1,max(soil_euk$reads[,max.conta]))) +
-     ggtitle("Distribution of the most abundant contaminant")
-
+p <- ggpcrplate(soil_euk,
+  legend_title = "# reads",
+  FUN = function(m) {
+    m$reads[, max.conta]
+  }
+)
+p + scale_size(limits = c(1, max(soil_euk$reads[, max.conta]))) +
+  ggtitle("Distribution of the most abundant contaminant")
 }
 \author{
 Lucie Zinger
