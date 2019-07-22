@@ -61,7 +61,7 @@
 
 hill_rarefaction = function(metabarlist, nboot = 10, nsteps=10) {
 
-  if(check_metabarlist(metabarlist)) {
+  if(suppressWarnings(check_metabarlist(metabarlist))) {
 
     reads = metabarlist$reads
 
