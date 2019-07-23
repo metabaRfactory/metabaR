@@ -18,32 +18,39 @@
 #'
 #' data(soil_euk)
 #'
-#' #export in fasta the 10 most abundant MOTUs
-#' idx = order(soil_euk$motus$count, decreasing=T)[1:10]
-#' fasta_generator("Dominants.fasta", rownames(soil_euk$motus)[idx],
-#'                 soil_euk$motus$sequence[idx])
+#' # export in fasta the 10 most abundant MOTUs
+#' idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
+#' fasta_generator(
+#'   "Dominants.fasta", rownames(soil_euk$motus)[idx],
+#'   soil_euk$motus$sequence[idx]
+#' )
 #'
-#' #export in fasta the 10 most abundant MOTUs and their abundance
-#' idx = order(soil_euk$motus$count, decreasing=T)[1:10]
-#' headers = paste(rownames(soil_euk$motus)[idx],
-#'                 "abundance=", soil_euk$motus$count[idx],
-#'                 sep="")
-#' fasta_generator("Dominants.fasta", headers,
-#'                 soil_euk$motus$sequence[idx])
-
+#' # export in fasta the 10 most abundant MOTUs and their abundance
+#' idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
+#' headers <- paste(rownames(soil_euk$motus)[idx],
+#'   "abundance=", soil_euk$motus$count[idx],
+#'   sep = ""
+#' )
+#' fasta_generator(
+#'   "Dominants.fasta", headers,
+#'   soil_euk$motus$sequence[idx]
+#' )
 #' @author Lucie Zinger
 #' @export fasta_generator
 
-fasta_generator = function(file, id, seq) {
-  if(length(id) != length(seq))
+fasta_generator <- function(file, id, seq) {
+  if (length(id) != length(seq)) {
     stop("id and seq should be of the same length")
+  }
 
-  if (file.exists(file))
+  if (file.exists(file)) {
     file.remove(file)
-    file.create(file)
+  }
+  file.create(file)
 
   for (i in 1:length(id)) {
-    cat(paste(">", id[i], "\n", seq[i], "\n", sep=""),
-        file = file, append=T)
+    cat(paste(">", id[i], "\n", seq[i], "\n", sep = ""),
+      file = file, append = T
+    )
   }
 }
