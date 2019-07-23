@@ -2,10 +2,11 @@
 #'
 #' Generate a fasta file on a subset of OTUs from a \code{\link{TODEFINE}} object.
 #'
-#'
-#' @param file    path/name of the output
-#' @param id     a character vector containing identifiers for the OTUs of interest
-#' @param seq   a character vector containing sequences for the OTUs of interest
+#' @param metabarlist   a \code{\link{metabarlist}} object (Required)
+#' @param id            a character vector containing identifiers for the OTUs of interest. Default: rownames(metabarlist$motus)
+#' @param output_file   the path/name of the output file. (Required)
+#' @param annotation    a dataframe containing the additional information adding in the header. Each row name is an OTU identifiers and each column header is the information key (correspond to "key=" in the fasta header). Default: NULL
+#' @param annot_sep     the annotation separator. Default: " "
 #'
 #' @name fasta_generator
 #'

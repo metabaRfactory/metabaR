@@ -4,14 +4,19 @@
 \alias{fasta_generator}
 \title{Generate a fasta file on a subset of sequences}
 \usage{
-fasta_generator(file, id, seq)
+fasta_generator(metabarlist, id = rownames(metabarlist$motus),
+  output_file = NULL, annotation = NULL, annot_sep = " ")
 }
 \arguments{
-\item{file}{path/name of the output}
+\item{metabarlist}{a \code{\link{metabarlist}} object (Required)}
 
-\item{id}{a character vector containing identifiers for the OTUs of interest}
+\item{id}{a character vector containing identifiers for the OTUs of interest. Default: rownames(metabarlist$motus)}
 
-\item{seq}{a character vector containing sequences for the OTUs of interest}
+\item{output_file}{the path/name of the output file. (Required)}
+
+\item{annotation}{a dataframe containing the additional information adding in the header. Each row name is an OTU identifiers and each column header is the information key (correspond to "key=" in the fasta header). Default: NULL}
+
+\item{annot_sep}{the annotation separator. Default: " "}
 }
 \value{
 a fasta file
@@ -26,18 +31,24 @@ Creates a fasta file from a set of sequences of interest. Obviously, \code{id} a
 
 data(soil_euk)
 
-#export in fasta the 10 most abundant MOTUs
-idx = order(soil_euk$motus$count, decreasing=T)[1:10]
-fasta_generator("Dominants.fasta", rownames(soil_euk$motus)[idx],
-                soil_euk$motus$sequence[idx])
+# export in fasta the 10 most abundant MOTUs
+idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
+fasta_generator(
+  soil_euk, rownames(soil_euk$motus)[idx],
+  "Dominants.fasta"
+)
 
-#export in fasta the 10 most abundant MOTUs and their abundance
-idx = order(soil_euk$motus$count, decreasing=T)[1:10]
-headers = paste(rownames(soil_euk$motus)[idx],
-                "abundance=", soil_euk$motus$count[idx],
-                sep="")
-fasta_generator("Dominants.fasta", headers,
-                soil_euk$motus$sequence[idx])
+# export in fasta the 10 most abundant MOTUs and their abundance
+idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
+annotation <- data.frame(
+  abundance = soil_euk$motus$count[idx],
+  row.names = rownames(soil_euk$motus)[idx]
+)
+fasta_generator(
+  soil_euk, rownames(soil_euk$motus)[idx],
+  "Dominants.fasta",
+  annotation
+)
 }
 \author{
 Lucie Zinger
