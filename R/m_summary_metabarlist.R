@@ -23,92 +23,112 @@
 #'
 #' data(soil_euk)
 #'
-#' #dataset summary
+#' # dataset summary
 #' summary_metabarlist(soil_euk, method = "dataset")
 #'
-#' #data summary per control type (NA = samples)
-#' summary_metabarlist(soil_euk, method = "type", table="pcrs", index="control_type")
+#' # data summary per control type (NA = samples)
+#' summary_metabarlist(soil_euk, method = "type", table = "pcrs", index = "control_type")
 #'
-#' #data summary per phyla
-#' summary_metabarlist(soil_euk, method = "type", table="motus", index="phylum_name")
+#' # data summary per phyla
+#' summary_metabarlist(soil_euk, method = "type", table = "motus", index = "phylum_name")
 #'
-#' #data summary per Habitat
-#' summary_metabarlist(soil_euk, method = "type", table="samples", index="Habitat")
-#'
+#' # data summary per Habitat
+#' summary_metabarlist(soil_euk, method = "type", table = "samples", index = "Habitat")
 #' @author Lucie Zinger
 #' @export summary_metabarlist
 
-summary_metabarlist = function(metabarlist, method="dataset", table=NULL, index=NULL) {
+summary_metabarlist <- function(metabarlist, method = "dataset", table = NULL, index = NULL) {
+  if (suppressWarnings(check_metabarlist(metabarlist))) {
+    extract_type_methods <- c("dataset", "type")
+    method <- match.arg(method, extract_type_methods)
 
-  if(suppressWarnings(check_metabarlist(metabarlist))) {
+    if (method == "dataset") {
+      dataset_dimension <- data.frame(t(sapply(metabarlist, dim)))
+      colnames(dataset_dimension) <- c("n_row", "n_col")
 
-    extract_type_methods = c("dataset", "type")
-    method = match.arg(method, extract_type_methods)
-
-    if(method == "dataset") {
-    dataset_dimension = data.frame(t(sapply(metabarlist, dim)))
-    colnames(dataset_dimension) = c("n_row", "n_col")
-
-    idx = which(metabarlist$pcrs$type=="sample")
-    size = rowSums(metabarlist$reads)
-    rich = rowSums(metabarlist$reads>0)
-    dataset_statistics = data.frame(nb_reads = c(sum(metabarlist$reads), sum(metabarlist$reads[idx,])),
-                                    nb_motus = c(sum(colSums(metabarlist$reads)>0),
-                                                 sum(colSums(metabarlist$reads[idx,])>0)),
-                                    avg_reads = c(mean(size),mean(size[idx])),
-                                    sd_reads = c(sd(size),sd(size[idx])),
-                                    avg_motus = c(mean(rich),mean(rich[idx])),
-                                    sd_motus = c(sd(rich),sd(rich[idx])),
-                                    row.names = c("pcrs", "samples"))
-      return(list(dataset_dimension = dataset_dimension,
-                  dataset_statistics = dataset_statistics))
+      idx <- which(metabarlist$pcrs$type == "sample")
+      size <- rowSums(metabarlist$reads)
+      rich <- rowSums(metabarlist$reads > 0)
+      dataset_statistics <- data.frame(
+        nb_reads = c(sum(metabarlist$reads), sum(metabarlist$reads[idx, ])),
+        nb_motus = c(
+          sum(colSums(metabarlist$reads) > 0),
+          sum(colSums(metabarlist$reads[idx, ]) > 0)
+        ),
+        avg_reads = c(mean(size), mean(size[idx])),
+        sd_reads = c(sd(size), sd(size[idx])),
+        avg_motus = c(mean(rich), mean(rich[idx])),
+        sd_motus = c(sd(rich), sd(rich[idx])),
+        row.names = c("pcrs", "samples")
+      )
+      return(list(
+        dataset_dimension = dataset_dimension,
+        dataset_statistics = dataset_statistics
+      ))
     } else {
+      extract_table_methods <- c("motus", "pcrs", "samples")
+      tab <- match.arg(table, extract_table_methods)
 
-      extract_table_methods = c("motus", "pcrs", "samples")
-      tab = match.arg(table, extract_table_methods)
-
-      if(length(index)==0 | is.character(index)==F)
+      if (length(index) == 0 | is.character(index) == F) {
         stop("character index of the element to select (i.e. column or row name) should be provided")
+      }
 
-      idx = ifelse(is.na(as.vector(metabarlist[[tab]][,index])),
-                   "NA", as.vector(metabarlist[[tab]][,index]))
+      idx <- ifelse(is.na(as.vector(metabarlist[[tab]][, index])),
+        "NA", as.vector(metabarlist[[tab]][, index])
+      )
 
-      if(tab == "pcrs" | tab == "motus") {
+      if (tab == "pcrs" | tab == "motus") {
+        size <- if (tab == "pcrs") {
+          rowSums(metabarlist$reads)
+        } else {
+          colSums(metabarlist$reads)
+        }
+        rich <- if (tab == "pcrs") {
+          rowSums(metabarlist$reads > 0)
+        } else {
+          colSums(metabarlist$reads > 0)
+        }
 
-        size = if(tab=="pcrs") {rowSums(metabarlist$reads)} else {colSums(metabarlist$reads)}
-        rich = if(tab=="pcrs") {rowSums(metabarlist$reads>0)} else {colSums(metabarlist$reads>0)}
-
-        dataset_statistics = data.frame(nb_elements = if(tab == "pcrs") {as.vector(table(idx))} else {NA},
-                                       nb_reads = as.vector(xtabs(size~idx)),
-                                       nb_motus = if(tab == "pcrs") {as.vector(xtabs(rich~idx))
-                                         } else {as.vector(table(idx))},
-                                       avg_reads = aggregate(size, list(idx), mean)$x,
-                                       sd_reads = aggregate(size, list(idx), sd)$x,
-                                       avg_motus = aggregate(rich, list(idx), mean)$x,
-                                       sd_motus = aggregate(rich, list(idx), sd)$x,
-                                       row.names = levels(factor(idx)))
-      if(tab == "pcrs") {return(dataset_statistics)} else {return(dataset_statistics[,-1])}
-
+        dataset_statistics <- data.frame(
+          nb_elements = if (tab == "pcrs") {
+            as.vector(table(idx))
+          } else {
+            NA
+          },
+          nb_reads = as.vector(xtabs(size ~ idx)),
+          nb_motus = if (tab == "pcrs") {
+            as.vector(xtabs(rich ~ idx))
+          } else {
+            as.vector(table(idx))
+          },
+          avg_reads = aggregate(size, list(idx), mean)$x,
+          sd_reads = aggregate(size, list(idx), sd)$x,
+          avg_motus = aggregate(rich, list(idx), mean)$x,
+          sd_motus = aggregate(rich, list(idx), sd)$x,
+          row.names = levels(factor(idx))
+        )
+        if (tab == "pcrs") {
+          return(dataset_statistics)
+        } else {
+          return(dataset_statistics[, -1])
+        }
       } else {
+        idx1 <- match(metabarlist$pcrs$sample_id, rownames(metabarlist$samples), nomatch = 0)
+        size <- rowSums(metabarlist$reads[idx1, ])
+        rich <- rowSums(metabarlist$reads[idx1, ] > 0)
 
-        idx1 = match(metabarlist$pcrs$sample_id, rownames(metabarlist$samples), nomatch=0)
-        size = rowSums(metabarlist$reads[idx1,])
-        rich = rowSums(metabarlist$reads[idx1,]>0)
-
-        dataset_statistics = data.frame(nb_pcrs = as.vector(table(idx[idx1])),
-                                       nb_reads = as.vector(xtabs(size~idx[idx1])),
-                                       nb_motus = as.vector(xtabs(rich~idx[idx1])),
-                                       avg_reads = aggregate(size[idx1], list(idx[idx1]), mean)$x,
-                                       sd_reads = aggregate(size[idx1], list(idx[idx1]), sd)$x,
-                                       avg_motus = aggregate(rich[idx1], list(idx[idx1]), mean)$x,
-                                       sd_motus = aggregate(rich[idx1], list(idx[idx1]), sd)$x,
-                                       row.names = levels(factor(idx)))
+        dataset_statistics <- data.frame(
+          nb_pcrs = as.vector(table(idx[idx1])),
+          nb_reads = as.vector(xtabs(size ~ idx[idx1])),
+          nb_motus = as.vector(xtabs(rich ~ idx[idx1])),
+          avg_reads = aggregate(size[idx1], list(idx[idx1]), mean)$x,
+          sd_reads = aggregate(size[idx1], list(idx[idx1]), sd)$x,
+          avg_motus = aggregate(rich[idx1], list(idx[idx1]), mean)$x,
+          sd_motus = aggregate(rich[idx1], list(idx[idx1]), sd)$x,
+          row.names = levels(factor(idx))
+        )
         return(dataset_statistics)
       }
     }
   }
 }
-
-
-
-

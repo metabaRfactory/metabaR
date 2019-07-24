@@ -25,41 +25,48 @@
 #' data(soil_euk)
 #' soil_euk_clean <- tagjumpslayer(soil_euk, 0.03)
 #'
-#' #identify occurrence of the most abundant OTU
+#' # identify occurrence of the most abundant OTU
 #' idx <- which.max(soil_euk$motus$count)
-#' p1 <- ggpcrplate(soil_euk, legend_title = "# reads",
-#'            FUN = function(m){m$reads[,idx]})
-#' p1 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-#'      ggtitle("Distribution of the most abundant OTU")
+#' p1 <- ggpcrplate(soil_euk,
+#'   legend_title = "# reads",
+#'   FUN = function(m) {
+#'     m$reads[, idx]
+#'   }
+#' )
+#' p1 + scale_size(limits = c(1, max(soil_euk$reads[, idx]))) +
+#'   ggtitle("Distribution of the most abundant OTU")
 #'
-#'#same on clean data
-#'p2 <- ggpcrplate(soil_euk, legend_title = "# reads",
-#'            FUN = function(m){m$reads[,idx]})
-#'p2 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-#'     ggtitle("Distribution of the most abundant OTU after curation")
-#'
+#' # same on clean data
+#' p2 <- ggpcrplate(soil_euk,
+#'   legend_title = "# reads",
+#'   FUN = function(m) {
+#'     m$reads[, idx]
+#'   }
+#' )
+#' p2 + scale_size(limits = c(1, max(soil_euk$reads[, idx]))) +
+#'   ggtitle("Distribution of the most abundant OTU after curation")
 #' @author Lucie Zinger
 #' @export tagjumpslayer
 
-tagjumpslayer = function(metabarlist,threshold=0.03) {
+tagjumpslayer <- function(metabarlist, threshold = 0.03) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     new <- metabarlist$reads
-    for(y in 1:ncol(x)) {
-      cum = cumsum(sort(x[,y,drop=T], decreasing=T))/sum(x[,y])
-      if(cum[1]>=(1-threshold)){
-        threshold2 = 1-cum[1]
+    for (y in 1:ncol(x)) {
+      cum <- cumsum(sort(x[, y, drop = T], decreasing = T)) / sum(x[, y])
+      if (cum[1] >= (1 - threshold)) {
+        threshold2 <- 1 - cum[1]
       } else {
-        threshold2 = threshold
+        threshold2 <- threshold
       }
-      out.tmp = 1-cum < threshold2 & #get OTUs in the threshold part of the distribution
-        c(cum[1], diff(cum)) < threshold2 #cum abund diff between OTUs necessarily above threshold
-      #cases if 1 occurrence (i.e. threshold2 = 1) => cum all FALSE but all other counts are null
-          #=> single occurrence kept and counts unaffected because already ok
-      #cases if cum[1] > 1-threshold (above is a particular case)
-          #=> occurrence with highest abundance kept. Rational is that if it is largely detected in one sample, then its occurrence elsewhere is most likely a tagjump.
-      #plot(cum, col=ifelse(out.tmp==F, "green", "red"), pch=19)
-      out = out.tmp[rownames(x)]
-      new[out==T,y] = 0
+      out.tmp <- 1 - cum < threshold2 & # get OTUs in the threshold part of the distribution
+        c(cum[1], diff(cum)) < threshold2 # cum abund diff between OTUs necessarily above threshold
+      # cases if 1 occurrence (i.e. threshold2 = 1) => cum all FALSE but all other counts are null
+      # => single occurrence kept and counts unaffected because already ok
+      # cases if cum[1] > 1-threshold (above is a particular case)
+      # => occurrence with highest abundance kept. Rational is that if it is largely detected in one sample, then its occurrence elsewhere is most likely a tagjump.
+      # plot(cum, col=ifelse(out.tmp==F, "green", "red"), pch=19)
+      out <- out.tmp[rownames(x)]
+      new[out == T, y] <- 0
     }
     metabarlist$reads <- new
     return(metabarlist)
