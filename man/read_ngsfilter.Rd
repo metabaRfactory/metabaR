@@ -26,8 +26,7 @@ The function \code{read_ngsfilter} creates a sample table from a ngsfilter file 
 
 \dontrun{
 
-ngsfilter = read_ngsfilter(file = "data-raw/ngsfilter_GWM-768.new_2.txt", sep="\\t", additional.sep = "=")
-
+ngsfilter <- read_ngsfilter(file = "data-raw/ngsfilter_GWM-768.new_2.txt", sep = "\\t", additional.sep = "=")
 }
 
 }

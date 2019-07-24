@@ -25,19 +25,26 @@ Tagjumps are an important bias that lead to the presence of potentially high num
 data(soil_euk)
 soil_euk_clean <- tagjumpslayer(soil_euk, 0.03)
 
-#identify occurrence of the most abundant OTU
+# identify occurrence of the most abundant OTU
 idx <- which.max(soil_euk$motus$count)
-p1 <- ggpcrplate(soil_euk, legend_title = "# reads",
-           FUN = function(m){m$reads[,idx]})
-p1 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-     ggtitle("Distribution of the most abundant OTU")
+p1 <- ggpcrplate(soil_euk,
+  legend_title = "# reads",
+  FUN = function(m) {
+    m$reads[, idx]
+  }
+)
+p1 + scale_size(limits = c(1, max(soil_euk$reads[, idx]))) +
+  ggtitle("Distribution of the most abundant OTU")
 
-#same on clean data
-p2 <- ggpcrplate(soil_euk, legend_title = "# reads",
-           FUN = function(m){m$reads[,idx]})
-p2 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-    ggtitle("Distribution of the most abundant OTU after curation")
-
+# same on clean data
+p2 <- ggpcrplate(soil_euk,
+  legend_title = "# reads",
+  FUN = function(m) {
+    m$reads[, idx]
+  }
+)
+p2 + scale_size(limits = c(1, max(soil_euk$reads[, idx]))) +
+  ggtitle("Distribution of the most abundant OTU after curation")
 }
 \references{
 Carlsen, T., Aas, A. B., Lindner, D., Vrålstad, T., Schumacher, T., & Kauserud, H. (2012). Don't make a mista (g) ke: is tag switching an overlooked source of error in amplicon pyrosequencing studies?. Fungal Ecology, 5(6), 747-749.

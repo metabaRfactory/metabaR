@@ -33,29 +33,31 @@ data(soil_euk)
 
 # Using a taxonomic path
 
-##on all data. can take a while
-ggtaxplot(soil_euk, "path", sep.level=":", sep.info="@")
+## on all data. can take a while
+ggtaxplot(soil_euk, "path", sep.level = ":", sep.info = "@")
 
-##show only taxonomic labels if taxon has a relative abundance > 1e-3
-ggtaxplot(soil_euk, "path", sep.level=":", sep.info="@", thresh=1e-3)
+## show only taxonomic labels if taxon has a relative abundance > 1e-3
+ggtaxplot(soil_euk, "path", sep.level = ":", sep.info = "@", thresh = 1e-3)
 
-##run on a particular clade e.g. here arthropoda, otherwise difficult to read
+## run on a particular clade e.g. here arthropoda, otherwise difficult to read
 ## get motus names assigned to annelids
-arthropoda_motus = rownames(soil_euk$motus)[grep("Arthropoda", soil_euk$motus$path)]
+arthropoda_motus <- rownames(soil_euk$motus)[grep("Arthropoda", soil_euk$motus$path)]
 ## create the metabarlist object
-arthropoda = subset_metabarlist(soil_euk, table = "motus",
-                              indices = arthropoda_motus)
+arthropoda <- subset_metabarlist(soil_euk,
+  table = "motus",
+  indices = arthropoda_motus
+)
 
 ### plot
-ggtaxplot(arthropoda, "path", sep.level=":", sep.info="@")
+ggtaxplot(arthropoda, "path", sep.level = ":", sep.info = "@")
 
 
 # Using a taxonomic table
-taxo.col =  c("phylum_name", "class_name", "order_name",
-          "family_name", "genus_name", "species_name")
+taxo.col <- c(
+  "phylum_name", "class_name", "order_name",
+  "family_name", "genus_name", "species_name"
+)
 ggtaxplot(arthropoda, taxo.col)
-
-
 }
 \author{
 Lucie Zinger

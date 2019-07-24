@@ -33,18 +33,17 @@ summary_metabarlist is a generic function used to produce summary statistics of 
 
 data(soil_euk)
 
-#dataset summary
+# dataset summary
 summary_metabarlist(soil_euk, method = "dataset")
 
-#data summary per control type (NA = samples)
-summary_metabarlist(soil_euk, method = "type", table="pcrs", index="control_type")
+# data summary per control type (NA = samples)
+summary_metabarlist(soil_euk, method = "type", table = "pcrs", index = "control_type")
 
-#data summary per phyla
-summary_metabarlist(soil_euk, method = "type", table="motus", index="phylum_name")
+# data summary per phyla
+summary_metabarlist(soil_euk, method = "type", table = "motus", index = "phylum_name")
 
-#data summary per Habitat
-summary_metabarlist(soil_euk, method = "type", table="samples", index="Habitat")
-
+# data summary per Habitat
+summary_metabarlist(soil_euk, method = "type", table = "samples", index = "Habitat")
 }
 \author{
 Lucie Zinger

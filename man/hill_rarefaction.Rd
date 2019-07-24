@@ -51,27 +51,27 @@ The function also returns the Good's coverage index (1-singletons/#reads). Note 
 
 data(soil_euk)
 
-#Create a subset of pcrs: only a subset of samples from the H20 plot
+# Create a subset of pcrs: only a subset of samples from the H20 plot
 
-h20_id = rownames(soil_euk$pcrs)[grep("H20-[A-B]", rownames(soil_euk$pcrs))]
-soil_euk_h20 = subset_metabarlist(soil_euk, table = "pcrs", indices = h20_id)
+h20_id <- rownames(soil_euk$pcrs)[grep("H20-[A-B]", rownames(soil_euk$pcrs))]
+soil_euk_h20 <- subset_metabarlist(soil_euk, table = "pcrs", indices = h20_id)
 
-#run rarefaction (use boot = 20 to limit computation time, should be more)
-soil_euk_h20.raref = hill_rarefaction(soil_euk_h20, nboot=20, nsteps=10)
+# run rarefaction (use boot = 20 to limit computation time, should be more)
+soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
 
-#plot the results
+# plot the results
 gghill_rarefaction(soil_euk_h20.raref)
 
-#plot the results while differenciating litter vs. soil samples
-material = setNames(soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))],
-                 rownames(soil_euk_h20$pcrs))
-p = gghill_rarefaction(soil_euk_h20.raref, group=material)
+# plot the results while differenciating litter vs. soil samples
+material <- setNames(
+  soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))],
+  rownames(soil_euk_h20$pcrs)
+)
+p <- gghill_rarefaction(soil_euk_h20.raref, group = material)
 p
 p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
-   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
-   labs(color="Material type")
-
-
+  scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
+  labs(color = "Material type")
 }
 \references{
 Chao, A., Chiu, C. H., & Jost, L. (2014). Unifying species diversity, phylogenetic diversity, functional diversity, and related similarity and differentiation measures through Hill numbers. Annual review of ecology, evolution, and systematics, 45, 297-324.

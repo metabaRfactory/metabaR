@@ -44,7 +44,6 @@ In addition, the function issues a warning if any sample or MOTU is has a count 
 data(soil_euk)
 
 check_metabarlist(soil_euk)
-
 }
 \author{
 Clément Lionnet & Frédéric Boyer & Lucie Zinger

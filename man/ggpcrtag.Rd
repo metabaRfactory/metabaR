@@ -30,14 +30,16 @@ Vizualizing attributes of the PCRs in their tag pair design context, i.e. accord
 
 data(soil_euk)
 
-#Plot the number of reads per pcrs
+# Plot the number of reads per pcrs
 ggpcrtag(soil_euk)
 
-#Plot the number of reads of the most abundant MOTU
-ggpcrtag(soil_euk, legend_title = "#reads of most\\nabundant MOTU",
-           FUN = function(m){m$reads[,which.max(colSums(m$reads))]})
-
-
+# Plot the number of reads of the most abundant MOTU
+ggpcrtag(soil_euk,
+  legend_title = "#reads of most\\nabundant MOTU",
+  FUN = function(m) {
+    m$reads[, which.max(colSums(m$reads))]
+  }
+)
 }
 \author{
 Lucie Zinger

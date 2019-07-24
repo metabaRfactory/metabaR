@@ -26,36 +26,45 @@ This function formats R tables to create a \code{\link{metabarlist}} object. The
 }
 \examples{
 
-#Create fake data
-##MOTUs abundance table
+# Create fake data
+## MOTUs abundance table
 
-reads = matrix(sample(1:1000, 200, replace = TRUE), nrow = 10, ncol = 20)
-rownames(reads) = paste(c(rep(c("A", "B", "C"), each=2), "ex", "pcr", "seq", "pos"),
-                        c(rep(c("r1", "r2"), 3), rep(0,4)), sep="_")
-colnames(reads) = sprintf("MOTU_\%03d", 1:ncol(reads))
+reads <- matrix(sample(1:1000, 200, replace = TRUE), nrow = 10, ncol = 20)
+rownames(reads) <- paste(c(rep(c("A", "B", "C"), each = 2), "ex", "pcr", "seq", "pos"),
+  c(rep(c("r1", "r2"), 3), rep(0, 4)),
+  sep = "_"
+)
+colnames(reads) <- sprintf("MOTU_\%03d", 1:ncol(reads))
 
-##MOTUs characteristics table
-motus = data.frame(fake_taxon = sample(letters, ncol(reads), replace = T),
-                   sequence = sapply(1:ncol(reads),
-                                     function(x) paste(sample(c("a", "t", "c", "g"), 20, TRUE), collapse="")),
-                   row.names = colnames(reads), stringsAsFactors = FALSE)
+## MOTUs characteristics table
+motus <- data.frame(
+  fake_taxon = sample(letters, ncol(reads), replace = T),
+  sequence = sapply(
+    1:ncol(reads),
+    function(x) paste(sample(c("a", "t", "c", "g"), 20, TRUE), collapse = "")
+  ),
+  row.names = colnames(reads), stringsAsFactors = FALSE
+)
 
- ##PCR characteristics table
- pcrs = data.frame(sample_id = sapply(strsplit(rownames(reads), "_"), "[[", 1),
-                   type = c(rep("sample", 6), rep("control", 4)),
-                   control_type = c(rep(NA, 6), "extraction", "pcr", "sequencing", "positive"),
-                   fake_pcrplate = sample(c(1,2), nrow(reads), replace=T),
-                   row.names = rownames(reads))
+## PCR characteristics table
+pcrs <- data.frame(
+  sample_id = sapply(strsplit(rownames(reads), "_"), "[[", 1),
+  type = c(rep("sample", 6), rep("control", 4)),
+  control_type = c(rep(NA, 6), "extraction", "pcr", "sequencing", "positive"),
+  fake_pcrplate = sample(c(1, 2), nrow(reads), replace = T),
+  row.names = rownames(reads)
+)
 
- ##Sample characteristics table
- samples = data.frame(fake_latitude = 1:3, fake_longitude = 1:3,
-                     row.names = unique(pcrs$sample_id[is.na(pcrs$control_type)]))
+## Sample characteristics table
+samples <- data.frame(
+  fake_latitude = 1:3, fake_longitude = 1:3,
+  row.names = unique(pcrs$sample_id[is.na(pcrs$control_type)])
+)
 
- #Generate the metabarlist object
+# Generate the metabarlist object
 
- test = metabarlist_generator(reads = reads, motus = motus, pcrs = pcrs, samples = samples)
- ##Warnings are returned because the PCR design (i.e. tags, primers, plate coordinates) is not defined in this example.
-
+test <- metabarlist_generator(reads = reads, motus = motus, pcrs = pcrs, samples = samples)
+## Warnings are returned because the PCR design (i.e. tags, primers, plate coordinates) is not defined in this example.
 }
 \seealso{
 \code{\link{check_metabarlist}}
