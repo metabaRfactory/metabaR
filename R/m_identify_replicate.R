@@ -39,7 +39,9 @@
 #' @author Frédéric Boyer & Clément Lionnet
 #' @import ade4
 #' @import vegan
-#' @export identify_replicate
+#' @export pcr_outlayer
+#' @export coa_function
+#' @export bray_function
 
 
 # recursive function to find the non replicating samples or controls
@@ -78,7 +80,7 @@ bray_function <- function(reads) {
 }
 
 # main function
-identify_replicate <- function(metabarlist,
+pcr_outlayer <- function(metabarlist,
                                FUN = bray_function,
                                groups = metabarlist$pcrs$sample_id,
                                graphics = FALSE) {
