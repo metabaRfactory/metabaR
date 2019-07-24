@@ -178,18 +178,18 @@ ggtaxplot <- function(metabarlist, taxo, sep.level = NULL, sep.info = NULL, thre
 
     gp <-
       ggplot(data = vdf, aes(x = x, y = y, size = motus * 100, colour = reads * 100)) +
-        geom_segment(
-          data = edf,
-          aes(
-            x = from.x, xend = to.x,
-            y = from.y, yend = to.y
-          ), size = 0.2, colour = "grey"
-        ) +
-        geom_point() +
-        scale_color_viridis_c() +
-        theme_void() +
-        theme(legend.position = "bottom", legend.direction = "horizontal") +
-        labs(color = "%reads", size = "%motus")
+      geom_segment(
+        data = edf,
+        aes(
+          x = from.x, xend = to.x,
+          y = from.y, yend = to.y
+        ), size = 0.2, colour = "grey"
+      ) +
+      geom_point() +
+      scale_color_viridis_c() +
+      theme_void() +
+      theme(legend.position = "bottom", legend.direction = "horizontal") +
+      labs(color = "%reads", size = "%motus")
 
     if (is.null(thresh)) {
       gp <- gp + geom_text(aes(label = name2), color = "darkgrey", show.legend = FALSE)
