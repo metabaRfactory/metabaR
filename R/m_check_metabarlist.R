@@ -158,8 +158,12 @@ check_metabarlist <- function(metabarlist) {
   if (any(rownames(metabarlist$samples) %in% "")) {
     stop("metabarlist$samples has empty row names")
   }
-  if (any(duplicated(colnames(metabarlist$samples)))) stop("metabarlist$samples has duplicated column names")
-  if (any(duplicated(rownames(metabarlist$samples)))) stop("metabarlist$samples has duplicated row names")
+  if (any(duplicated(colnames(metabarlist$samples)))) {
+    stop("metabarlist$samples has duplicated column names")
+  }
+  if (any(duplicated(rownames(metabarlist$samples)))) {
+    stop("metabarlist$samples has duplicated row names")
+  }
 
 
   if (!(all(unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type == "sample"]) %in%
