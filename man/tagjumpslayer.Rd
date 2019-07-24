@@ -4,15 +4,15 @@
 \alias{tagjumpslayer}
 \title{Filtering potential tag jumps in metabarcoding data}
 \usage{
-tagjumpslayer(x, threshold = 0.03)
+tagjumpslayer(metabarlist, threshold = 0.03)
 }
 \arguments{
-\item{x}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{\link{metabarlist}} object}
 
 \item{threshold}{an OTU relative abundance value below which the OTU is considered to be absent}
 }
 \value{
-a transformed reads count matrix
+a \code{\link{metabarlist}} object with the transformed reads count matrix
 }
 \description{
 Removes reads of potential tagjumps in a \code{\link{metabarlist}} object.
@@ -23,7 +23,7 @@ Tagjumps are an important bias that lead to the presence of potentially high num
 \examples{
 
 data(soil_euk)
-soil_euk_clean <- tagjumpslayer(soil_euk$reads, 0.03)
+soil_euk_clean <- tagjumpslayer(soil_euk, 0.03)
 
 #identify occurrence of the most abundant OTU
 idx <- which.max(soil_euk$motus$count)
@@ -34,7 +34,7 @@ p1 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
 
 #same on clean data
 p2 <- ggpcrplate(soil_euk, legend_title = "# reads",
-           FUN = function(m){soil_euk_clean[,idx]})
+           FUN = function(m){m$reads[,idx]})
 p2 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
     ggtitle("Distribution of the most abundant OTU after curation")
 

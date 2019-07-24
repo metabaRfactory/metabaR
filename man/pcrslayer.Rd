@@ -4,10 +4,11 @@
 \alias{pcrslayer}
 \title{Detecting dysfunctional PCRs}
 \usage{
-pcrslayer(x, replicates, thresh.method = "intersect", plot = T)
+pcrslayer(metabarlist, replicates, thresh.method = "intersect",
+  plot = T)
 }
 \arguments{
-\item{x}{a reads matrix from a \code{\link{TODEFINE}} object}
+\item{metabarlist}{a \code{\link{metabarlist}} object}
 
 \item{replicates}{a factor of sample names within which replicates belong (i.e. should be a prefix/suffix of pcr replicate names)}
 
@@ -39,32 +40,36 @@ Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db
 Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 }
 \examples{
-
+library(ggplot2)
 data(soil_euk)
-#define replicate factor
-soil_euk$pcrs$Replicate_ori = gsub("-r[1-4]", "", rownames(soil_euk$pcrs))
-#Consider only biological samples
-idx = which(soil_euk$pcr$type=="sample")
+# define replicate factor
+# Consider only biological samples
+sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type=='sample')])
 
-#first visualization
-comp1 = pcr_within_between(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx])
-check_pcr_thresh(comp1, thresh.pcr=NULL)
-#visualization of replicates through NMDS
-nmds = check_pcr_repl(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx],
-                      colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep="|")[idx])
-nmds + labs(fill="sample type")
+# first visualization
+comp1 <- pcr_within_between(sample_subset$reads, replicates = sample_subset$pcrs$sample_id)
+check_pcr_thresh(comp1, thresh.pcr = NULL)
+# visualization of replicates through NMDS
+nmds <- check_pcr_repl(sample_subset$reads,
+  replicates = sample_subset$pcrs$sample_id,
+  colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|")
+)
+nmds + labs(fill = "sample type")
 
-#identify dysfunctional PCRs
-bad.pcrs = pcrslayer(soil_euk$reads[idx,],thresh.method="intersect",
-                     replicates = soil_euk$pcr$Replicate_ori[idx])
+# identify dysfunctional PCRs
+bad.pcrs <- pcrslayer(sample_subset,
+  thresh.method = "intersect",
+  replicates = sample_subset$pcrs$sample_id
+)
 
-nmds = check_pcr_repl(soil_euk$reads[idx,], replicates = soil_euk$pcr$Replicate_ori[idx],
-                              colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep="|")[idx],
-                              dyspcr = bad.pcrs)
-nmds + labs(fill="sample type")
+nmds <- check_pcr_repl(sample_subset$reads,
+  replicates = sample_subset$pcrs$sample_id,
+  colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|"),
+  dyspcr = bad.pcrs
+)
+nmds + labs(fill = "sample type")
 
-#identify PCRs too close to negative controls ### TO FINISH
-
+# identify PCRs too close to negative controls ### TO FINISH
 }
 \author{
 Lucie Zinger
