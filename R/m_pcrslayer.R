@@ -107,7 +107,7 @@ pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot
     if (length(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)) != 0) {
       singletons <- sapply(
         names(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)),
-        function(x) grep(x, rownames(x)[-match(bad.pcr, rownames(x))])
+        function(x) grep(x, rownames(reads_table)[-match(bad.pcr, rownames(reads_table))])
       )
       bad.pcr <- c(bad.pcr, rownames(reads_table)[-match(bad.pcr, rownames(reads_table))][unname(singletons)])
     }
