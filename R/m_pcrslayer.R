@@ -64,7 +64,7 @@
 #' @export check_pcr_repl
 #'
 
-pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot = T) {
+pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thresh.method = "intersect", plot = T) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     reads_table <- metabarlist$reads
 
