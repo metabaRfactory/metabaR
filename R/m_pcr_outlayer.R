@@ -154,8 +154,7 @@ identify_replicate <- function(metabarlist,
       if (graphics) {
         plot(within_replicate_density$x, within_replicate_density$y,
           type = "l", xlab = "Distances", ylab = "Density",
-          main = paste("Distances densities
-Iteration", iteration)
+          main = paste("Distances densities iteration", iteration)
         )
         lines(between_replicate_density, col = "blue")
         abline(v = threshold_distance, col = "red")
