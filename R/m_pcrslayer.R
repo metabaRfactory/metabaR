@@ -119,6 +119,7 @@ pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thre
         reads_table <- reads_table[-singleton_ids, ]
         replicates <- as.factor(as.vector(replicates)[-singleton_ids])
       }
+
       # stop the loop when none of replicat is added to the vector bad_pcr
       if (length(bad_pcr) == nb_bad_pcr) {
         break
