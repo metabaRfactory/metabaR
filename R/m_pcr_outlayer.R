@@ -78,7 +78,7 @@ bray_function <- function(reads) {
 }
 
 # main function
-identify_replicate <- function(metabarlist,
+pcr_outlayer <- function(metabarlist,
                                FUN = bray_function,
                                groups = metabarlist$pcrs$sample_id,
                                graphics = FALSE) {
