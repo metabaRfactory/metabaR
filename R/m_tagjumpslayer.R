@@ -50,25 +50,24 @@
 
 tagjumpslayer <- function(metabarlist, threshold = 0.03) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
-    new <- metabarlist$reads
-    for (y in 1:ncol(x)) {
-      cum <- cumsum(sort(x[, y, drop = T], decreasing = T)) / sum(x[, y])
+    reads_table <- metabarlist$reads
+    for (y in 1:ncol(reads_table)) {
+      cum <- cumsum(sort(reads_table[, y, drop = T], decreasing = T)) / sum(reads_table[, y])
       if (cum[1] >= (1 - threshold)) {
         threshold2 <- 1 - cum[1]
       } else {
         threshold2 <- threshold
       }
-      out.tmp <- 1 - cum < threshold2 & # get OTUs in the threshold part of the distribution
+      out_tmp <- 1 - cum < threshold2 & # get OTUs in the threshold part of the distribution
         c(cum[1], diff(cum)) < threshold2 # cum abund diff between OTUs necessarily above threshold
       # cases if 1 occurrence (i.e. threshold2 = 1) => cum all FALSE but all other counts are null
       # => single occurrence kept and counts unaffected because already ok
       # cases if cum[1] > 1-threshold (above is a particular case)
       # => occurrence with highest abundance kept. Rational is that if it is largely detected in one sample, then its occurrence elsewhere is most likely a tagjump.
       # plot(cum, col=ifelse(out.tmp==F, "green", "red"), pch=19)
-      out <- out.tmp[rownames(x)]
-      new[out == T, y] <- 0
+      out <- out_tmp[rownames(reads_table)]
+      metabarlist$reads[out == T, y] <- 0
     }
-    metabarlist$reads <- new
     return(metabarlist)
   }
 }
