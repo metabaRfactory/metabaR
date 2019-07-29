@@ -8,7 +8,7 @@
 #' @param groups a vector containing the identifier of replicate. The vector must has the same length of the table `PCRs` from a \code{\link{metabarlist}} object. Default = metabarlist$pcrs$sample_id
 #' @param graphics a boolean value to plot the distances densities for each iteration. Default = FALSE
 #'
-#' @name identify_replicate
+#' @name pcr_outlayer
 #'
 #' @return data frame with the replicats groups and a column `replicating` or throws a stop
 #'
@@ -35,11 +35,11 @@
 #' data(soil_euk)
 #'
 #' sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
-#' identify_replicate(sample_subset)
+#' pcr_outlayer(sample_subset)
 #' @author Frédéric Boyer & Clément Lionnet
 #' @import ade4
 #' @import vegan
-#' @export identify_replicate
+#' @export pcr_outlayer
 
 
 # recursive function to find the non replicating samples or controls
