@@ -102,7 +102,6 @@ pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thre
       bad_pcr <- c(bad_pcr, unname(unlist(lapply(wthn_btwn$pcr_intradist, function(y) {
         names(which(y > thresh_pcr & y == max(y)))
       }))))
-<<<<<<< HEAD
 
       # recherche les singletons dans la nouvelle matrice de reads
       idx <- !(rownames(reads_table) %in% bad_pcr)
@@ -121,25 +120,6 @@ pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thre
         replicates <- as.factor(as.vector(replicates)[-singleton_ids])
       }
 
-=======
-
-      # recherche les singletons dans la nouvelle matrice de reads
-      idx <- !(rownames(reads_table) %in% bad_pcr)
-      reads_table <- reads_table[idx, ]
-      replicates <- as.factor(as.vector(replicates)[idx])
-      # dans le cas où l'on n'a qu'un seul réplicat, on ajoute a bad_pcr les rownames du réplicat
-      if (length(which(table(as.vector(replicates)) < 2)) != 0) {
-        singletons <- sapply(
-          names(which(table(as.vector(replicates)) < 2)),
-          function(x) grep(x, rownames(reads_table))
-        )
-        singleton_ids <- unname(singletons)
-        bad_pcr <- c(bad_pcr, rownames(reads_table)[singleton_ids])
-        # remove singletons in the reads table and in the replicates vector
-        reads_table <- reads_table[-singleton_ids, ]
-        replicates <- as.factor(as.vector(replicates)[-singleton_ids])
-      }
->>>>>>> 16b8d7608551d3c795c4d70bd8eaf7cb601f4d76
       # stop the loop when none of replicat is added to the vector bad_pcr
       if (length(bad_pcr) == nb_bad_pcr) {
         break
