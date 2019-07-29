@@ -40,6 +40,8 @@
 #' @import ade4
 #' @import vegan
 #' @export pcr_outlayer
+#' @export coa_function
+#' @export bray_function
 
 
 # recursive function to find the non replicating samples or controls
