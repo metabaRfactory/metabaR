@@ -168,6 +168,11 @@ check_metabarlist <- function(metabarlist) {
 
   if (!(all(unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type == "sample"]) %in%
     rownames(metabarlist$samples)))) {
+    v <- unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type == "sample"])
+    message(paste(v[!v %in% rownames(metabarlist$samples)],
+      "from metabarlist$pcrs$sample_id not found in rownames(metabarlist$samples)",
+      collapse = ""
+    ))
     stop("All values in metabarlist$pcrs$sample_id should have a corresponding entry in metabarlist$samples")
   }
 
