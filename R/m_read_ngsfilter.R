@@ -57,7 +57,7 @@ read_ngsfilter <- function(file, additional.sep = "=", ...) {
     if (ncol(d) == 1) {
       d <- d2
     } else {
-      d <- data.frame(d2, d[, -grep("^position$", colnames(d))])
+      d <- data.frame(d2, d[, colnames(d) != "position", drop=F])
     }
   }
 
