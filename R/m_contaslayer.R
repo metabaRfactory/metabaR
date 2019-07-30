@@ -3,9 +3,10 @@
 #' Uses negative controls to detect contaminant OTUs in a \code{\link{TODEFINE}} object.
 #'
 #'
-#' @param metabarlist a \code{\link{metabarlist}} object
-#' @param controls    a vector of amplicon names corresponding to negative controls.
-#' @param method      a character string specifying the detection method to be used. Default is \code{"max"}
+#' @param metabarlist   a \code{\link{metabarlist}} object
+#' @param method        a character string specifying the detection method to be used. Default: \code{"max"}
+#' @param control_types a vector of control types containing in the column control_type of metabarlist$pcrs. This parameter is not used when the parameter controls is specified. Default: c("pcr", "extraction")
+#' @param controls      a vector of amplicon names corresponding to negative controls.
 #'
 #' @name contaslayer
 #'
@@ -15,6 +16,7 @@
 #' In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. \code{\link{contaslayer}} relies on this assumption and detects OTUs whose relative abundance across the whole dataset is maximum in negative controls.
 #' \code{method = "max"} returns the names of OTUs whose frequencies across the entire dataset are maximum in at least one negative control
 #' \code{method = "all"} returns the names of OTUs whose frequencies across all negative controls is greater than that across all samples
+#'
 #'
 #' @examples
 #'
@@ -35,14 +37,27 @@
 #' )
 #' p + scale_size(limits = c(1, max(soil_euk$reads[, max.conta]))) +
 #'   ggtitle("Distribution of the most abundant contaminant")
+#'
 #' @author Lucie Zinger
 #' @importFrom vegan decostand
 #' @export contaslayer
 
 contaslayer <- function(metabarlist,
-                        controls = rownames(metabarlist$pcrs)[which(metabarlist$pcrs$control_type == "pcr")],
-                        method = "max") {
+                        method = "max",
+                        control_types = c("pcr", "extraction"),
+                        controls = NULL) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
+    if (is.null(controls)) {
+      controls <- rownames(metabarlist$pcrs)[which(metabarlist$pcrs$control_type %in% control_types )]
+    }
+    else if (!all(controls %in% rownames(metabarlist$reads))) {
+      v <- unique(controls)
+      message(paste(v[!v %in% rownames(metabarlist$reads)],
+                    "from controls not found in rownames(metabarlist$reads)",
+                    collapse = ""
+      ))
+      stop("All values in the vector controls should have a corresponding entry in metabarlist$reads")
+    }
     reads_matrix <- metabarlist$reads
     # transform reads count to frequencies by column (for each reads)
     reads_matrix.fcol <- decostand(reads_matrix, method = "total", MARGIN = 2)

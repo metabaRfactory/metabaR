@@ -4,16 +4,17 @@
 \alias{contaslayer}
 \title{Detecting contaminants in metabarcoding data using negative controls}
 \usage{
-contaslayer(metabarlist,
-  controls = rownames(metabarlist$pcrs)[which(metabarlist$pcrs$control_type
-  == "pcr")], method = "max")
+contaslayer(metabarlist, method = "max", control_types = c("pcr",
+  "extraction"), controls = NULL)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{controls}{a vector of amplicon names corresponding to negative controls.}
+\item{method}{a character string specifying the detection method to be used. Default: \code{"max"}}
 
-\item{method}{a character string specifying the detection method to be used. Default is \code{"max"}}
+\item{control_types}{a vector of control types containing in the column control_type of metabarlist$pcrs. This parameter is not used when the parameter controls is specified. Default: c("pcr", "extraction")}
+
+\item{controls}{a vector of amplicon names corresponding to negative controls.}
 }
 \value{
 a vector containing the names of OTUs identified as contaminants
