@@ -29,7 +29,7 @@
 #' # Distribution of the most abundant contaminants in the PCR plate design
 #' max.conta <- contaminant[which.max(soil_euk$motus[contaminant, "count"])]
 #'
-<<<<<<< HEAD
+#'<<<<<<< HEAD
 #' p <- ggpcrplate(soil_euk,
 #'   legend_title = "# reads",
 #'   FUN = function(m) {
@@ -38,7 +38,7 @@
 #' )
 #' p + scale_size(limits = c(1, max(soil_euk$reads[, max.conta]))) +
 #'   ggtitle("Distribution of the most abundant contaminant")
-=======
+#'=======
 #' #Distribution of the most abundant contaminants in the PCR plate design
 #' ###THIS NEEDS RE-DOING###
 #' max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
@@ -51,7 +51,7 @@
 #'      scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
 #'                        na.value = "white") +
 #'      ggtitle("Distribution of the most abundant contaminant")
->>>>>>> Julian_vignette
+#'>>>>>>> Julian_vignette
 #'
 #' @author Lucie Zinger
 #' @importFrom vegan decostand

@@ -24,7 +24,7 @@ At each site, 16 samples (mesh grid size of 20 m) were collected in from a 1 ha 
 For each sampling point, two types of substrate were collected:
 \itemize{
   \item{}{Soil: composite sample of 5 soil cores}
-  \item{}{Litter: sampling of XXXX m3 of litter}
+  \item{}{Litter: sampling of 1 m2 of surface leaf litter}
   \item{}{=>A total of 64 DNA extracts + 4 extraction blank controls (1 per site and compartment)}
 }
 For each DNA extract, a short region of the 18S rRNA (Taberlet et al. 2018) was

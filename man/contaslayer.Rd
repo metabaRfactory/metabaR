@@ -38,6 +38,7 @@ head(soil_euk$motus[contaminant, ])
 # Distribution of the most abundant contaminants in the PCR plate design
 max.conta <- contaminant[which.max(soil_euk$motus[contaminant, "count"])]
 
+<<<<<<< HEAD
 p <- ggpcrplate(soil_euk,
   legend_title = "# reads",
   FUN = function(m) {
@@ -46,6 +47,20 @@ p <- ggpcrplate(soil_euk,
 )
 p + scale_size(limits = c(1, max(soil_euk$reads[, max.conta]))) +
   ggtitle("Distribution of the most abundant contaminant")
+=======
+#Distribution of the most abundant contaminants in the PCR plate design
+###THIS NEEDS RE-DOING###
+max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
+p = ggpcrplate(attr = soil_euk$reads[,max.conta], plate_no = soil_euk$pcrs$plate_no,
+                  plate_col = soil_euk$pcrs$plate_col,
+                  plate_row =  soil_euk$pcrs$plate_row,
+                  control_type = soil_euk$pcrs$Control_type)
+p + scale_size(limits=c(1,max(soil_euk$reads[,max.conta]))) +
+     labs(size="# reads", fill="control type") +
+     scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
+                       na.value = "white") +
+     ggtitle("Distribution of the most abundant contaminant")
+>>>>>>> Julian_vignette
 
 }
 \author{
