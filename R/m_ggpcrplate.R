@@ -18,40 +18,46 @@
 #'
 #' data(soil_euk)
 #'
-#' #Plot the number of reads per pcrs
+#' # Plot the number of reads per pcrs
 #' ggpcrplate(soil_euk)
 #'
 #'
-#' #Plot the number of reads of the most abundant MOTU
-#' ggpcrplate(soil_euk, legend_title = "#reads of most\nabundant MOTU",
-#'            FUN = function(m){m$reads[,which.max(colSums(m$reads))]})
-#'
-#'
+#' # Plot the number of reads of the most abundant MOTU
+#' ggpcrplate(soil_euk,
+#'   legend_title = "#reads of most \nabundant MOTU",
+#'   FUN = function(m) {
+#'     m$reads[, which.max(colSums(m$reads))]
+#'   }
+#' )
 #' @author Lucie Zinger
 #' @import ggplot2
 #' @export ggpcrplate
 
 
-ggpcrplate = function(metabarlist, legend_title = "well_values",
-                      FUN = function(metabarlist) {rowSums(metabarlist$reads)}) {
-
-  if(suppressWarnings(check_metabarlist(metabarlist))) {
-
+ggpcrplate <- function(metabarlist, legend_title = "well_values",
+                       FUN = function(metabarlist) {
+                         rowSums(metabarlist$reads)
+                       }) {
+  if (suppressWarnings(check_metabarlist(metabarlist))) {
     function_values <- FUN(metabarlist)
 
     if (length(function_values) != nrow(metabarlist$pcrs)) {
-      stop('provided information should have the length of pcrs')
+      stop("provided information should have the length of pcrs")
     }
 
-    if(!is.numeric(function_values))
+    if (!is.numeric(function_values)) {
       stop("provided information should be numeric")
+    }
 
-    cols_plate_design <- c('plate_no', 'plate_col', 'plate_row')
+    cols_plate_design <- c("plate_no", "plate_col", "plate_row")
 
-    if (!all(cols_plate_design %in% colnames(metabarlist$pcrs)))
-      stop("PCR plate design not properly provided: ",
-           paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep = ', '),
-           " missing !\n")
+    if (!all(cols_plate_design %in% colnames(metabarlist$pcrs))) {
+      stop(
+        "PCR plate design not properly provided: ",
+        paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep = ", "),
+        " missing !\n"
+      )
+    }
 
     # create a fictive dataframe to plot data with ggplot
     plate_design <- metabarlist$pcrs[, c("plate_no", "plate_col", "plate_row", "control_type")]

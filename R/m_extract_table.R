@@ -17,36 +17,29 @@
 #'
 #' data(soil_euk)
 #'
-#' reads = extract_table(soil_euk, "reads")
-#' motus = extract_table(soil_euk, "motus")
+#' reads <- extract_table(soil_euk, "reads")
+#' motus <- extract_table(soil_euk, "motus")
 #'
 #' all(colnames(reads) == rownames(motus))
 #' is.matrix(reads)
 #' is.data.frame(motus)
-#'
-#'
 #' @author Lucie Zinger
 #'
 #' @export extract_table
 
-extract_table = function(metabarlist, table = extract_table_methods) {
-  if(check_metabarlist(metabarlist)) {
+extract_table <- function(metabarlist, table = extract_table_methods) {
+  if (check_metabarlist(metabarlist)) {
+    extract_table_methods <- c("reads", "motus", "pcrs", "samples")
+    tab <- match.arg(table, extract_table_methods)
 
-    extract_table_methods = c("reads", "motus", "pcrs", "samples")
-    tab = match.arg(table, extract_table_methods)
-
-    if(tab == "reads") {
+    if (tab == "reads") {
       return(metabarlist$reads)
-    } else if(tab == "motus") {
+    } else if (tab == "motus") {
       return(metabarlist$motus)
-    } else if(tab == "pcrs") {
+    } else if (tab == "pcrs") {
       return(metabarlist$pcrs)
     } else {
       return(metabarlist$samples)
     }
   }
 }
-
-
-
-

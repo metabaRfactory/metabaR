@@ -44,9 +44,8 @@ Note: when many projects are pulled in the same plate, you must process this fun
 
 data(soil_euk)
 
-sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type=='sample')])
+sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 identify_replicate(sample_subset)
-
 }
 \author{
 Frédéric Boyer & Clément Lionnet

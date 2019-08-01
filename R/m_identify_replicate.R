@@ -34,9 +34,8 @@
 #'
 #' data(soil_euk)
 #'
-#' sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type=='sample')])
+#' sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 #' identify_replicate(sample_subset)
-#'
 #' @author Frédéric Boyer & Clément Lionnet
 #' @import ade4
 #' @import vegan
@@ -50,10 +49,16 @@ filter_replicat <- function(sub_matrix, threshold) {
     if (nrow(sub_matrix) == 2) {
       replicat_to_remove <- c(replicat_to_remove, rownames(sub_matrix))
     } else {
-      replicat_to_remove <- c(colnames(sub_matrix)[which.max(colSums(sub_matrix))],
-                              filter_replicat(sub_matrix[-which.max(colSums(sub_matrix)),
-                                                         -which.max(colSums(sub_matrix))],
-                                              threshold))
+      replicat_to_remove <- c(
+        colnames(sub_matrix)[which.max(colSums(sub_matrix))],
+        filter_replicat(
+          sub_matrix[
+            -which.max(colSums(sub_matrix)),
+            -which.max(colSums(sub_matrix))
+          ],
+          threshold
+        )
+      )
     }
   }
   return(replicat_to_remove)
@@ -61,14 +66,14 @@ filter_replicat <- function(sub_matrix, threshold) {
 
 # distance function with ade4 package and coa analysis
 coa_function <- function(reads) {
-  correspondence_analysis <- dudi.coa(sqrt(reads), scannf=FALSE, nf=2)
+  correspondence_analysis <- dudi.coa(sqrt(reads), scannf = FALSE, nf = 2)
   distance_matrix <- dist(correspondence_analysis$li)
   return(distance_matrix)
 }
 
 # distance function with vegan package and Bray-Curtis distance
 bray_function <- function(reads) {
-  distance_matrix <- vegdist(decostand(reads, method = 'total'), method='bray')
+  distance_matrix <- vegdist(decostand(reads, method = "total"), method = "bray")
   return(distance_matrix)
 }
 
@@ -77,103 +82,119 @@ identify_replicate <- function(metabarlist,
                                FUN = bray_function,
                                groups = metabarlist$pcrs$sample_id,
                                graphics = FALSE) {
+  if (suppressWarnings(check_metabarlist(metabarlist))) {
+    if (length(groups) != nrow(metabarlist$pcrs)) {
+      stop("provided groups should have the length of pcrs")
+    }
 
-  if(suppressWarnings(check_metabarlist(metabarlist))) {
+    subset_data <- data.frame(
+      groups = groups, replicating = TRUE,
+      row.names = rownames(metabarlist$pcrs)
+    )
 
-    if (length(groups) != nrow(metabarlist$pcrs))
-      stop('provided groups should have the length of pcrs')
-
-    subset_data <- data.frame(groups=groups, replicating=TRUE,
-                             row.names=rownames(metabarlist$pcrs))
-
-    subset_data[which(rowSums(metabarlist$reads)==0),"replicating"] <- FALSE
+    subset_data[which(rowSums(metabarlist$reads) == 0), "replicating"] <- FALSE
 
     iteration <- 0
     repeat {
-      iteration <- iteration+1
-      print(paste('Iteration', iteration))
+      iteration <- iteration + 1
+      print(paste("Iteration", iteration))
 
       # get only the read for the samples or controls replicating
       matrix_with_replicate <- metabarlist$reads[
-        rownames(subset_data), ][subset_data$replicating, ]
+        rownames(subset_data),
+      ][subset_data$replicating, ]
 
       # calculate matrix dist
       function_result <- FUN(matrix_with_replicate)
 
-      if (class(function_result) != 'dist'){
+      if (class(function_result) != "dist") {
         stop("The result of provided function is not correct! The function must return object 'dist'!")
       }
 
-      if(length(labels(function_result)) != length(rownames(matrix_with_replicate))){
+      if (length(labels(function_result)) != length(rownames(matrix_with_replicate))) {
         stop("The result of provided function is not correct! The dimension of function result is not correct!")
       }
 
-      if(!all(labels(function_result) %in% rownames(matrix_with_replicate))){
+      if (!all(labels(function_result) %in% rownames(matrix_with_replicate))) {
         stop("The result of provided function is not correct! The labels of function results not correspond to the data!")
       }
 
       distance_matrix <- as.matrix(function_result)
 
-      replicates <- subset_data[rownames(distance_matrix), 'groups']
+      replicates <- subset_data[rownames(distance_matrix), "groups"]
       within_replicates <- outer(replicates,
-                                 replicates,
-                                 FUN = "==") & upper.tri(distance_matrix)
+        replicates,
+        FUN = "=="
+      ) & upper.tri(distance_matrix)
       between_replicates <- outer(replicates,
-                                  replicates,
-                                  FUN="!=") & upper.tri(distance_matrix)
+        replicates,
+        FUN = "!="
+      ) & upper.tri(distance_matrix)
 
-      if(length(distance_matrix[within_replicates]) < 2){
-        stop('Too many replicates have been remove!')
+      if (length(distance_matrix[within_replicates]) < 2) {
+        stop("Too many replicates have been remove!")
       }
       within_replicate_density <- density(distance_matrix[within_replicates],
-                                          from = 0, to = max(distance_matrix),
-                                          n = 1000)
+        from = 0, to = max(distance_matrix),
+        n = 1000
+      )
 
-      if(length(distance_matrix[between_replicates]) < 2){
-        stop('Too many replicates have been remove!')
+      if (length(distance_matrix[between_replicates]) < 2) {
+        stop("Too many replicates have been remove!")
       }
       between_replicate_density <- density(distance_matrix[between_replicates],
-                                           from = 0, to = max(distance_matrix),
-                                           n = 1000)
+        from = 0, to = max(distance_matrix),
+        n = 1000
+      )
 
       threshold_distance <- between_replicate_density$x[
-        min(which(within_replicate_density$y < between_replicate_density$y))]
+        min(which(within_replicate_density$y < between_replicate_density$y))
+      ]
 
       if (graphics) {
         plot(within_replicate_density$x, within_replicate_density$y,
-             type = 'l', xlab = 'Distances', ylab = 'Density',
-             main = paste('Distances densities\nIteration', iteration))
-        lines(between_replicate_density, col = 'blue')
-        abline(v = threshold_distance, col = 'red')
+          type = "l", xlab = "Distances", ylab = "Density",
+          main = paste("Distances densities
+Iteration", iteration)
+        )
+        lines(between_replicate_density, col = "blue")
+        abline(v = threshold_distance, col = "red")
       }
 
       need_to_be_checked <- unique(subset_data[
         rownames(which(
           (distance_matrix > threshold_distance) & within_replicates,
-          arr.ind = T)),
-        'groups'])
+          arr.ind = T
+        )),
+        "groups"
+      ])
       if (length(need_to_be_checked) > 0) {
         for (group in need_to_be_checked) {
           sub_matrix <-
-            distance_matrix[subset_data[rownames(distance_matrix), 'groups'] == group &
-                              subset_data[rownames(distance_matrix), 'replicating'],
-                            subset_data[rownames(distance_matrix), 'groups'] == group &
-                              subset_data[rownames(distance_matrix), 'replicating']]
+            distance_matrix[
+              subset_data[rownames(distance_matrix), "groups"] == group &
+                subset_data[rownames(distance_matrix), "replicating"],
+              subset_data[rownames(distance_matrix), "groups"] == group &
+                subset_data[rownames(distance_matrix), "replicating"]
+            ]
 
-          non_replicating <- filter_replicat(sub_matrix,
-                                             threshold_distance)
+          non_replicating <- filter_replicat(
+            sub_matrix,
+            threshold_distance
+          )
           subset_data$replicating[
-            rownames(subset_data) %in% non_replicating] <- FALSE
+            rownames(subset_data) %in% non_replicating
+          ] <- FALSE
         }
       }
       else {
-        break;
+        break
       }
     }
 
     #### warning if more than 20% of replicates are removed
-    if(dim(subset_data[subset_data$replicating==F,])[1]/dim(subset_data)[1] > 0.2){
-      warning('More than 20% of replicates are removed !')
+    if (dim(subset_data[subset_data$replicating == F, ])[1] / dim(subset_data)[1] > 0.2) {
+      warning("More than 20% of replicates are removed !")
     }
     return(subset_data)
   }

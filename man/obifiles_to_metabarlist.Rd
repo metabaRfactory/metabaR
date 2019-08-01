@@ -29,10 +29,12 @@ This function imports OBITools outputs and related files into \R to create a \co
 \examples{
 
 \dontrun{
-soil_euk = obifiles_to_metabarlist(file_obitab = "data-raw/litiere_euk_cl97_agg_filt_tax.tab",
-                                   file_ngsfilter = "data-raw/ngsfilter_GWM-768.new_2.txt",
-                                   file_samples = "data-raw/Litiere_sample_list_2.txt",
-                                   sep = "\\t")
+soil_euk <- obifiles_to_metabarlist(
+  file_obitab = "data-raw/litiere_euk_cl97_agg_filt_tax.tab",
+  file_ngsfilter = "data-raw/ngsfilter_GWM-768.new_2.txt",
+  file_samples = "data-raw/Litiere_sample_list_2.txt",
+  sep = "\\t"
+)
 }
 
 }

@@ -4,17 +4,17 @@
 \alias{silva_annotator}
 \title{Integrating SILVANgs pipeline taxonomic annotations}
 \usage{
-silva_annotator(motus, silva.path, clust.path)
+silva_annotator(metabarlist, silva.path, clust.path)
 }
 \arguments{
+\item{metabarlist}{a \code{metabarlist} object}
+
 \item{silva.path}{path to a table from the SILVANgs pipeline, typically zipfile>ssu>exports>xxx---ssu---otus.csv}
 
 \item{clust.path}{path to a file from the SilvaNgs pipeline indicating otu cluster membership zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr}
-
-\item{x}{a motus dataframe from a \code{\link{TODEFINE}} object}
 }
 \value{
-a motus dataframe for a \code{\link{TODEFINE}} object including the taxonomic assignemnts from silva
+a \code{metabarlist} object with a dataframe motus including the taxonomic assignemnts from silva
 }
 \description{
 Importing and formatting SILVANgs pipeline taxonomic annotation for a \code{\link{TODEFINE}} object.

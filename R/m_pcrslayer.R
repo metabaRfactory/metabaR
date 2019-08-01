@@ -3,14 +3,14 @@
 #' Detecting dysfunctional PCRs based on PCR replicates.
 #'
 #'
-#' @param x           a reads matrix from a \code{\link{TODEFINE}} object
-#' @param replicates   a factor of sample names within which replicates belong (i.e. should be a prefix/suffix of pcr replicate names)
-#' @param control   a character vector indicating the names of experimental controls against which PCR replicates are to be compared.
-#' @param thresh.method   a character indicating which method should be used to define the filtering threshold.
-#' @param plot    a boolean indicating whether dissimilarity distribution should be plotted. Default is \code{TRUE}
-#' @param wthn.btwn an ouput from \code{pcr_within_between}
-#' @param colvec  a grouping factor for coloring PCR replicates in \code{check_pcr_repl}
-#' @param dyspcr  a character vector of the dysfunctional PCR identified by \code{pcrslayer}
+#' @param metabarlist   a \code{\link{metabarlist}} object
+#' @param replicates    a factor of sample names within which replicates belong (i.e. should be a prefix/suffix of pcr replicate names)
+#' @param control       a character vector indicating the names of experimental controls against which PCR replicates are to be compared.
+#' @param thresh.method a character indicating which method should be used to define the filtering threshold.
+#' @param plot          a boolean indicating whether dissimilarity distribution should be plotted. Default is \code{TRUE}
+#' @param wthn.btwn     an ouput from \code{pcr_within_between}
+#' @param colvec        a grouping factor for coloring PCR replicates in \code{check_pcr_repl}
+#' @param dyspcr        a character vector of the dysfunctional PCR identified by \code{pcrslayer}
 #' @name pcrslayer
 #'
 #' @return a vector of dysfunctional PCRs
@@ -26,32 +26,31 @@
 #' Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 #'
 #' @examples
-#'
+#' library(ggplot2)
 #' data(soil_euk)
 #' # define replicate factor
-#' soil_euk$pcrs$Replicate_ori <- gsub("_r[1-4]", "", rownames(soil_euk$pcrs))
 #' # Consider only biological samples
-#' idx <- which(soil_euk$pcr$type == "sample")
+#' sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 #'
 #' # first visualization
-#' comp1 <- pcr_within_between(soil_euk$reads[idx, ], replicates = soil_euk$pcr$Replicate_ori[idx])
+#' comp1 <- pcr_within_between(sample_subset$reads, replicates = sample_subset$pcrs$sample_id)
 #' check_pcr_thresh(comp1, thresh.pcr = NULL)
 #' # visualization of replicates through NMDS
-#' nmds <- check_pcr_repl(soil_euk$reads[idx, ],
-#'   replicates = soil_euk$pcr$Replicate_ori[idx],
-#'   colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep = "|")[idx]
+#' nmds <- check_pcr_repl(sample_subset$reads,
+#'   replicates = sample_subset$pcrs$sample_id,
+#'   colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|")
 #' )
 #' nmds + labs(fill = "sample type")
 #'
 #' # identify dysfunctional PCRs
-#' bad.pcrs <- pcrslayer(soil_euk$reads[idx, ],
+#' bad.pcrs <- pcrslayer(sample_subset,
 #'   thresh.method = "intersect",
-#'   replicates = soil_euk$pcr$Replicate_ori[idx]
+#'   replicates = sample_subset$pcrs$sample_id
 #' )
 #'
-#' nmds <- check_pcr_repl(soil_euk$reads[idx, ],
-#'   replicates = soil_euk$pcr$Replicate_ori[idx],
-#'   colvec = paste(soil_euk$pcrs$Habitat, soil_euk$pcrs$Material, sep = "|")[idx],
+#' nmds <- check_pcr_repl(sample_subset$reads,
+#'   replicates = sample_subset$pcrs$sample_id,
+#'   colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|"),
 #'   dyspcr = bad.pcrs
 #' )
 #' nmds + labs(fill = "sample type")
@@ -65,87 +64,90 @@
 #' @export check_pcr_repl
 #'
 
-pcrslayer <- function(reads_table, replicates, thresh.method = "intersect", plot = T) {
-  if (nrow(reads_table) != length(replicates)) {
-    stop("reads table and replicates must have the same length")
-  }
+pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot = T) {
+  if (suppressWarnings(check_metabarlist(metabarlist))) {
+    reads_table <- metabarlist$reads
 
-  if (thresh.method != "intersect" & thresh.method != "mode") {
-    stop('thresh.method should be one of "intersect" or "mode"')
-  }
-
-  # identify empty pcrs
-  empty.pcr <- NULL
-  if (length(which(rowSums(reads_table) == 0)) != 0) {
-    idx <- which(rowSums(reads_table) == 0)
-    empty.pcr <- rownames(reads_table)[idx]
-    replicates <- replicates[-idx]
-    reads_table <- reads_table[-idx, ]
-  }
-
-  # within between object
-  # first round
-  wthn.btwn <- pcr_within_between(reads_table, replicates)
-  thresh.pcr <- pcr_threshold_estimate(wthn.btwn, thresh.method)
-  if (plot == T) {
-    check_pcr_thresh(wthn.btwn, thresh.pcr)
-  }
-  bad.pcr <- NULL
-  nb.bad.pcr <- length(bad.pcr)
-
-  # Combine les arguments bad.pcr avec
-  # vire de la liste les samples dont la valeur (dist par rapport au barycentre) est supérieure au thresh.pcr
-  # Et dont la valeur est Ègale à la valeur max des réplicats
-  bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn$pcr.intradist, function(y) {
-    names(which(y > thresh.pcr & y == max(y)))
-  }))))
-
-  # in case of samples with only one pcr
-  # dans les cas ou on n'a qu'un seul réplicat, on ajoute a bad.pcr les rownames du replicat
-  if (length(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)) != 0) {
-    singletons <- sapply(
-      names(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)),
-      function(x) grep(x, rownames(x)[-match(bad.pcr, rownames(x))])
-    )
-    bad.pcr <- c(bad.pcr, rownames(reads_table)[-match(bad.pcr, rownames(reads_table))][unname(singletons)])
-  }
-
-
-  if (length(bad.pcr) != 0) {
-    n <- length(bad.pcr)
-
-    while (nb.bad.pcr[length(nb.bad.pcr)] < n) {
-      # n0 <- n
-      nb.bad.pcr <- c(nb.bad.pcr, n)
-      idx <- match(bad.pcr, rownames(reads_table))
-      sub_matrix <- reads_table[-idx, ]
-      sub_replicates <- as.factor(as.vector(replicates)[-idx])
-      wthn.btwn2 <- pcr_within_between(sub_matrix, sub_replicates)
-      thresh.pcr2 <- pcr_threshold_estimate(wthn.btwn2, thresh.method)
-      if (plot == T) {
-        check_pcr_thresh(wthn.btwn2, thresh.pcr2)
-      }
-      bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn2$pcr.intradist, function(y) {
-        names(which(y > thresh.pcr2 & y == max(y)))
-      }))))
-
-
-      # VS mod : Redefinir sub_replicates avant le if :
-      idx1 <- match(bad.pcr, rownames(reads_table))
-      x.n2 <- reads_table[-idx1, ]
-      replicates3 <- as.factor(as.vector(replicates)[-idx1])
-      # END VS mod
-      if (length(which(table(as.vector(replicates3)) < 2)) != 0) {
-        singletons <- sapply(names(which(table(as.vector(replicates3)) < 2)), function(x) {
-          grep(x, rownames(x.n2))
-        })
-        bad.pcr <- c(bad.pcr, rownames(x.n2)[unname(singletons)])
-      }
-      n <- length(bad.pcr)
+    if (nrow(reads_table) != length(replicates)) {
+      stop("reads table and replicates must have the same length")
     }
-  }
 
-  return(c(empty.pcr, bad.pcr))
+    if (thresh.method != "intersect" & thresh.method != "mode") {
+      stop('thresh.method should be one of "intersect" or "mode"')
+    }
+
+    # identify empty pcrs
+    empty.pcr <- NULL
+    if (length(which(rowSums(reads_table) == 0)) != 0) {
+      idx <- which(rowSums(reads_table) == 0)
+      empty.pcr <- rownames(reads_table)[idx]
+      replicates <- replicates[-idx]
+      reads_table <- reads_table[-idx, ]
+    }
+
+    # within between object
+    # first round
+    wthn.btwn <- pcr_within_between(reads_table, replicates)
+    thresh.pcr <- pcr_threshold_estimate(wthn.btwn, thresh.method)
+    if (plot == T) {
+      check_pcr_thresh(wthn.btwn, thresh.pcr)
+    }
+    bad.pcr <- NULL
+    nb.bad.pcr <- length(bad.pcr)
+
+    # Combine les arguments bad.pcr avec
+    # vire de la liste les samples dont la valeur (dist par rapport au barycentre) est supérieure au thresh.pcr
+    # Et dont la valeur est Ègale à la valeur max des réplicats
+    bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn$pcr.intradist, function(y) {
+      names(which(y > thresh.pcr & y == max(y)))
+    }))))
+
+    # in case of samples with only one pcr
+    # dans les cas ou on n'a qu'un seul réplicat, on ajoute a bad.pcr les rownames du replicat
+    if (length(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)) != 0) {
+      singletons <- sapply(
+        names(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)),
+        function(x) grep(x, rownames(reads_table)[-match(bad.pcr, rownames(reads_table))])
+      )
+      bad.pcr <- c(bad.pcr, rownames(reads_table)[-match(bad.pcr, rownames(reads_table))][unname(singletons)])
+    }
+
+
+    if (length(bad.pcr) != 0) {
+      n <- length(bad.pcr)
+
+      while (nb.bad.pcr[length(nb.bad.pcr)] < n) {
+        # n0 <- n
+        nb.bad.pcr <- c(nb.bad.pcr, n)
+        idx <- match(bad.pcr, rownames(reads_table))
+        sub_matrix <- reads_table[-idx, ]
+        sub_replicates <- as.factor(as.vector(replicates)[-idx])
+        wthn.btwn2 <- pcr_within_between(sub_matrix, sub_replicates)
+        thresh.pcr2 <- pcr_threshold_estimate(wthn.btwn2, thresh.method)
+        if (plot == T) {
+          check_pcr_thresh(wthn.btwn2, thresh.pcr2)
+        }
+        bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn2$pcr.intradist, function(y) {
+          names(which(y > thresh.pcr2 & y == max(y)))
+        }))))
+
+
+        # VS mod : Redefinir sub_replicates avant le if :
+        idx1 <- match(bad.pcr, rownames(reads_table))
+        x.n2 <- reads_table[-idx1, ]
+        replicates3 <- as.factor(as.vector(replicates)[-idx1])
+        # END VS mod
+        if (length(which(table(as.vector(replicates3)) < 2)) != 0) {
+          singletons <- sapply(names(which(table(as.vector(replicates3)) < 2)), function(x) {
+            grep(x, rownames(x.n2))
+          })
+          bad.pcr <- c(bad.pcr, rownames(x.n2)[unname(singletons)])
+        }
+        n <- length(bad.pcr)
+      }
+    }
+    return(c(empty.pcr, bad.pcr))
+  }
 }
 
 

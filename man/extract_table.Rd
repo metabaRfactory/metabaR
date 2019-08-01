@@ -24,14 +24,12 @@ All \code{metabarlist} objects are composed of four different tables that can be
 
 data(soil_euk)
 
-reads = extract_table(soil_euk, "reads")
-motus = extract_table(soil_euk, "motus")
+reads <- extract_table(soil_euk, "reads")
+motus <- extract_table(soil_euk, "motus")
 
 all(colnames(reads) == rownames(motus))
 is.matrix(reads)
 is.data.frame(motus)
-
-
 }
 \author{
 Lucie Zinger

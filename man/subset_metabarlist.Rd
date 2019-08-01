@@ -31,30 +31,35 @@ This subsetting will select specific rows from each table. Factor levels that ar
 data(soil_euk)
 
 
-#Create a subset of soil_euk containing only annelid MOTUs
+# Create a subset of soil_euk containing only annelid MOTUs
 ## get motus names assigned to annelids
-annelids_motus = rownames(soil_euk$motus)[grep("Annelida", soil_euk$motus$path)]
+annelids_motus <- rownames(soil_euk$motus)[grep("Annelida", soil_euk$motus$path)]
 ## create the metabarlist object
-annelids = subset_metabarlist(metabarlist, table = "motus",
-                              indices = annelids_motus)
+annelids <- subset_metabarlist(metabarlist,
+  table = "motus",
+  indices = annelids_motus
+)
 lapply(annelids, dim)
 
-#Create a subset of soil_euk containing only pcrs conducted in plate 1
+# Create a subset of soil_euk containing only pcrs conducted in plate 1
 ## get pcrs names from plate 1
-plate1_pcrs = rownames(soil_euk$pcrs)[which(metabarlist$pcrs$plate_no == 1)]
-plate1 = subset_metabarlist(metabarlist, table = "pcrs",
-                            indices = plate1_pcrs)
+plate1_pcrs <- rownames(soil_euk$pcrs)[which(metabarlist$pcrs$plate_no == 1)]
+plate1 <- subset_metabarlist(metabarlist,
+  table = "pcrs",
+  indices = plate1_pcrs
+)
 
 lapply(plate1, dim)
 
-#Create a subset of soil_euk containing only positive controls
+# Create a subset of soil_euk containing only positive controls
 ## get pcrs names corresponding to positive controls
-poscontrol_pcrs = rownames(soil_euk$pcrs)[which(metabarlist$pcrs$control_type == "positive")]
-poscontrols = subset_metabarlist(metabarlist, table = "pcrs",
-                            indices = poscontrol_pcrs)
+poscontrol_pcrs <- rownames(soil_euk$pcrs)[which(metabarlist$pcrs$control_type == "positive")]
+poscontrols <- subset_metabarlist(metabarlist,
+  table = "pcrs",
+  indices = poscontrol_pcrs
+)
 
 lapply(poscontrols, dim)
-
 }
 \author{
 Lucie Zinger
