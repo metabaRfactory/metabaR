@@ -173,20 +173,20 @@ Although we would hope / expect to find no or only few reads in extraction and P
 
 Another way to vizualise this is from the perspective of its PCR design context, e.g. by showing the number of reads in the PCR plates, if this information has been recorded in the `pcrs` file. This vizualisation can highlight potential issues which may have occured during the PCR stage of sample processing. For example, low read abundances in real samples throughout one line or column of the PCR plate could mean that a primer was dysfunctional or that the mix deposition was inconsistent, resulting in low amplicon yields. Let's see how it appears for the `soil_euk` data:   
 
-<<<<<<< HEAD
-```{r ggpcrplate, warning=F, message=F, cache=T, fig.width=7, fig.height=5, eval = F}
-ggpcrplate(soil_euk, table = "pcrs", index = "nb_reads")
-=======
+
 ```{r ggpcrplate, warning=F, message=F, cache=T, fig.width=7, fig.height=5}
-ggpcrplate(soil_euk)
->>>>>>> master
+ggpcrplate(soil_euk, 
+           FUN = function(m){
+             rowSums(m$reads)
+           },
+           legend_title = "# of reads per PCR")
 ```
 
+The above commandline shows how the number of reads per PCR can be represented using `ggpcrplate`. This operation is the default when using this function, and can be obtained with the basic call as below.
 
-<span style="color:red">I get the following Warning messages:
-1: Removed 256 rows containing missing values (geom_raster). 
-2: Removed 11 rows containing missing values (geom_point).
-Should we make it clear that these are to be expected??</span>
+```{r ggpcrplate2, warning=F, message=F, cache=T, fig.width=7, fig.height=5, eval=F}
+ggpcrplate(soil_euk)
+```
 
 In addition to patterns of general interest, the plot above shows two key features:    
 - Sequencing negative controls (i.e. wells where no PCR amplification was conducted) have low or null read numbers. This means that "tag-jumps" <span style="color:red">ref</span> are relatively limited in this experiment.   
@@ -195,36 +195,30 @@ In addition to patterns of general interest, the plot above shows two key featur
 
 If the user has defined the PCR design using a combination of tags (i.e. 2 different tags in the 5' of each PCR primer), and that this information is available in the `pcrs` table, it is possible to determine if one of the tag introduced some biases in PCR amplicon yields with another function : 
 
-<<<<<<< HEAD
-```{r ggpcrtag, warning=F, message=F, cache=T, fig.width=7, fig.height=7, eval = F}
-ggpcrtag(soil_euk, table = "pcrs", index = "nb_reads", 
-          taglist = c("acacacac", "acagcaca", "gtgtacat", "tatgtcag", "tagtcgca",
-                      "tactatac", "actagatc", "gatcgcga", "cgctctcg", "gtcgtaga",
-                      "gtcacgtc", "gactgatg", "agactatg", "gcgtcagc", "tgacatca",
-                      "acatgtgt", "gtacgact", "atgatcgc", "acgacgag", "catcagtc",
-                      "atcagtca", "tctactga", "gatgatct", "ctgcgtac", "agcgacta",
-                      "tcagtgtc", "actctgct", "atatagcg", "ctatgcta", "tcgcgctg",
-                      "agcacagt", "tagctagt", "agtgctac", "cgtataca", "cgagtcgt",
-                      "cacatgat"))
-=======
-```{r ggpcrtag, warning=F, message=F, cache=T, fig.width=7, fig.height=7}
-ggpcrtag(soil_euk)
->>>>>>> master
-```
 
-<span style="color:red">I know it's shitty here to provide the taglist in the order of use, but I could not find a way to plot these correctly without any *a priori* on the pcr design and just from the basic info we ask, i.e. tag_fwd, tag_rev, plate_no, plate_row, plate_col</span>
+```{r ggpcrtag, warning=F, message=F, cache=T, fig.width=7, fig.height=7}
+
+ggpcrtag(soil_euk, legend_title = "# of reads per PCR",
+                     FUN = function(m) {
+                       rowSums(m$reads)
+                     },
+                     taglist = as.character(unique(soil_euk$pcrs$tag_rev))) 
+
+#This is also called with the base fuction 
+# ggpcrtag(soil_euk)
+```
 
 This plot shows the number of reads in their full PCR design. The Boxplots above and to the right show the distribution of the number of reads obtained for each tag-primer. Although the central plot obtained with `ggpcrtag` is equivalent to the one produced with `ggpcrplate`, this kind of plot can prove useful when looking for tags which may yield low read numbers in larger scale experiments.
 
 Another useful tool to determine PCR success is the production of rarefaction curves, which will indicate whether the diversity of each PCR amplification is well covered by sequencing. 
-<span style="color:red">A bit more info on what a curve tells us? E.G. Typically, a curve which reaches asymptote / levels off is indicative of good coverage. </span>    
 
-In *MetabaR-F* <span style="color:red"> in order to take into account rarity of OTUs, </span>     this analysis is done for different diversity indices, and not only for richness. These indices correspond to Hill numbers where $q=\left\{0,1,2\right\}$ (Chao, Chiu, & Jost, 2014). These are equivalent to richness ($q=0$), the exponential of the Shannon index ($q\to1$), and the inverse of the Simpson index ($q=2$). The function also returns Good's coverage index ($G=1-\frac{n_{singletons}}{N}$, where $n_{singletons}$ is the number of singletons, and $N$ is the total number of reads. Note that this latter index should be interpreted carefully, as it is based on singletons in each amplicon, some of which will have already been filtered during the bioinformatic process (filtering of absolute singletons).
-<span style="color:red">here again, not sure we should copy paste the help page.. </span>  
+In *MetabaR-F* this analysis is done for different diversity indices, and not only for richness. These indices correspond to Hill numbers where $q=\left\{0,1,2\right\}$ (Chao, Chiu, & Jost, 2014). These are equivalent to richness ($q=0$), the exponential of the Shannon index ($q\to1$), and the inverse of the Simpson index ($q=2$). The rationale for calculating these different indices is to give more or less weight to rare species, since these may correspond to molecular artifacts.
+
+The function also returns Good's coverage index ($G=1-\frac{n_{singletons}}{N}$, where $n_{singletons}$ is the number of singletons, and $N$ is the total number of reads. Note that this latter index should be interpreted carefully, as it is based on singletons in each amplicon, some of which will have already been filtered during the bioinformatic process (filtering of absolute singletons).
 
 Since this analysis can take a while in R, we will only conduct it on a subset of PCRs (in this case by keeping only samples from the H20 plot of the Petit Plateau). This subsetting can be done as follows:  
 
-```{r subset, message=F, warning=F, cache=T, eval = F}
+```{r subset, message=F, warning=F, cache=T}
 #get the samples names from the H20 plot
 h20_id = rownames(soil_euk$pcrs)[grep("H20-[A-B]", rownames(soil_euk$pcrs))]
 
@@ -236,24 +230,25 @@ summary_metabarlist(soil_euk_h20)
 
 Note that subsetting can be done using any criterion (i.e. based on MOTUs, PCRs, or sample characteristics).  
 
-Now lets conduct the rarefaction analysis. The diversity value is estimated through a certain number of data rarefactions (defined by the `nboot` argument), at each sequencing depth (defined by the `nsteps` argument, which correspond to the number of sequencing depth levels used for analysis). The `nboot` is low here to limit the computing time. It should be higher <span style="color:red">HOW HIGH???. </span>    
+Now lets conduct the rarefaction analysis. The diversity value is estimated through a certain number of data rarefactions (defined by the `nboot` argument), at each sequencing depth (defined by the `nsteps` argument, which correspond to the number of sequencing depth levels used for analysis). The `nboot` is low here to limit the computing time. It should be higher (e.g. nboot = 100) although this depends on sample or pcr diversity.
 
-```{r hillraref, message=F, warning=F, cache=T, eval = F}
+```{r hillraref, message=F, warning=F, cache=T}
 soil_euk_h20.raref = hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
 head(soil_euk_h20.raref$hill_table)
 ```
 
 The `hill_rarefaction` function produces an object from which the first element is a table indicating the pcr_id, the sequencing depth at which the PCR was resampled, and the corresponding pool of diversity / coverage indices. These can now be used to draw rarefaction curves.
 
-```{r gghill, message=F, warning=F, cache=T, fig.width=7, fig.height=2, eval = F}
+```{r gghill, message=F, warning=F, cache=T, fig.width=7, fig.height=2}
 gghill_rarefaction(soil_euk_h20.raref)
 ```
 
 You may also need to differenciate different types of samples, for example soil vs. litter samples (information which stored in the "Material" column of the `samples` table). This can be achieved as follows:  
 
-```{r gghill2, message=F, warning=F, cache=T, fig.width=7, fig.height=2.5, eval = F}
+```{r gghill2, message=F, warning=F, cache=T, fig.width=7, fig.height=2.5}
 #define a vector containing the Material info for each pcrs designated by their pcr names
-material = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id,rownames(soil_euk_h20$samples))]
+material = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id,
+                                               rownames(soil_euk_h20$samples))]
 material = setNames(material,rownames(soil_euk_h20$pcrs))
 
 #plot
@@ -263,30 +258,43 @@ p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
     labs(color="Material type")
 ```
 
-A final vizualization consists in determining how the number of MOTUs and reads correlate. This information can help identify the sequencing depth below which a PCR might be not reliable. <span style="color:red">We need to explain why. And I wonder actually whether this plot should not be done at the end, to define the threshold below which one consider a PCR as dysfunctional </span>. 
+The generated curves tell us a couple of things about our samples.      
+ - The less we take rare species into account (increasing the hill number), the quicker that our curves reach saturation.    
+ - Litter samples in general tend to be less diverse than soil samples    
+ - The PCRs do not contain the same number of reads, although this is a normal feature of DNA metabarcoding data.    
+ - The coverage plot suggests that the diversity is adequately sampled, given they all plateau at close to 1.    
+ 
+
+A final vizualization consists in determining how the number of MOTUs and reads correlate. This information can help identify the sequencing depth below which a PCR might not be reliable.     
 
 ```{r readsMOTUs, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval = F}
+library(vegan)
+#First, calculate the number of reads and MOTUs per sample
+soil_euk$pcrs$nb_reads = rowSums(soil_euk$reads)
+soil_euk$pcrs$nb_motus = specnumber(soil_euk$reads)
+
+#Now plot these values against one another
 ggplot(soil_euk$pcrs, aes(x=nb_reads, y=nb_motus, color = control_type)) + 
   geom_point() + theme_bw() + 
   scale_y_log10() + scale_x_log10() + 
   scale_color_manual(values = c("brown", "red", "cyan4","pink"), na.value = "darkgrey")
 ```
 
-<span style="color:red">to comment </span>
-In general, the plot demonstrates a consistent overall positive correlation between the number of reads a sample may contain and the number of MOTUs these represent. The number of reads and MOTUs is highest for true sample pcrs, putting these up in the top-right hand corner of the plot, with positive, extraction and pcr controls also containing a high number of reads and a lower but nevertheless important number of MOTUs. The next steps in this tutorial will be use the inforation provided by these controls to remove any potential contaminants or spurious sequences from our true sample pools.
+<span style="color:red">We need to explain why. And I wonder actually whether this plot should not be done at the end, to define the threshold below which one consider a PCR as dysfunctional.
+
+The more that the number of reads correlates with the number of motus the more likely that the dataset contains errors.... 
+
+In general, the plot demonstrates a consistent overall positive correlation between the number of reads a sample may contain and the number of MOTUs these represent. The number of reads and MOTUs is highest for true sample pcrs, putting these up in the top-right hand corner of the plot, with positive, extraction and pcr controls also containing a high number of reads and a lower but nevertheless important number of MOTUs. </span>.
+
+The next steps in this tutorial will be use the inforation provided by these controls to remove any potential contaminants or spurious sequences from our true sample pools.
 
 ### Contaslayer
 During PCR amplification of sequences, the introduction of contaminants can result in the presence of sequences which do not come from your biological samples. Contamination can occur at multiple stages, firstly during DNA extraction, and next during PCR amplification. Detecting these contaminants can be done through the use of control samples at each stage, as is the case for our example dataset. In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. The function contaslayer relies on this assumption and detects OTUs whose relative abundance across the whole dataset is maximum in negative controls.
 
 It then tags those sequences within the soil_euk table, making their removal possible at subsequent stages.
 
-<<<<<<< HEAD
 ```{r contaslayer, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval = F}
-=======
-```{r contaslayer, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
->>>>>>> master
-#finds contaminants from PCR amplification
-library(vegan)
+#Define a vector containing the control names
 pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="pcr")]
 contaminant_PCR = contaslayer(soil_euk$reads, controls = pcr.controls)
 head(soil_euk$motus[contaminant_PCR,])
