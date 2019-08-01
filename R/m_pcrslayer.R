@@ -89,44 +89,42 @@ pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thre
       iteration <- iteration + 1
       print(paste("Iteration", iteration))
 
-      matrix_with_replicate <- reads_table[
+      reads_table <- reads_table[
         rownames(subset_data[subset_data$replicating, ]),
       ]
 
-      replicates <- subset_data[rownames(matrix_with_replicate), "groups"]
+      replicates <- subset_data[rownames(reads_table), "groups"]
 
-      nb_bad_pcr <- length(rownames(matrix_with_replicate))
-      wthn_btwn <- pcr_within_between(matrix_with_replicate, replicates)
+      nb_bad_pcr <- length(rownames(subset_data[subset_data$replicating==F, ]))
+      wthn_btwn <- pcr_within_between(reads_table, replicates)
       thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
       if (plot == T) {
         check_pcr_thresh(wthn_btwn, thresh_pcr)
       }
       # ajoute à la liste les samples dont la valeur (dist par rapport au barycentre) est supérieure au thresh_pcr
       # et dont la valeur est égale à la valeur max des réplicats
-      subset_data$replicating[
-        rownames(subset_data) %in% unname(unlist(lapply(wthn_btwn$pcr_intradist, function(y) {
-          names(which(y > thresh_pcr & y == max(y)))
-        })))
-      ] <- FALSE
+      to_flag <- unname(unlist(lapply(wthn_btwn$pcr_intradist, function(y) {
+        names(which(y > thresh_pcr & y == max(y)))
+      })))
+      subset_data[to_flag, "replicating"] <- FALSE
 
       # recherche les singletons dans la nouvelle matrice de reads
-      matrix_with_replicate <- matrix_with_replicate[
+      reads_table <- reads_table[
         rownames(subset_data[subset_data$replicating, ]),
       ]
-      replicates <- subset_data[rownames(matrix_with_replicate), "groups"]
+      replicates <- subset_data[rownames(reads_table), "groups"]
       # dans le cas où l'on n'a qu'un seul réplicat, on ajoute a bad_pcr les rownames du réplicat
       if (length(which(table(as.vector(replicates)) < 2)) != 0) {
         singletons <- sapply(
           names(which(table(as.vector(replicates)) < 2)),
-          function(x) grep(x, rownames(matrix_with_replicate))
+          function(x) grep(x, rownames(reads_table))
         )
-        subset_data$replicating[
-          rownames(subset_data) %in% unname(singletons)
-        ] <- FALSE
+        singletons_ids <- rownames(reads_table)[unname(singletons)]
+        subset_data[singletons_ids, "replicating"] <- FALSE
       }
 
       # stop the loop when none of replicat is added to the vector bad_pcr
-      if (length(rownames(matrix_with_replicate)) == nb_bad_pcr) {
+      if (length(rownames(subset_data[subset_data$replicating==F,])) == nb_bad_pcr) {
         break
       }
     }
