@@ -46,6 +46,7 @@ p <- ggpcrplate(soil_euk,
 )
 p + scale_size(limits = c(1, max(soil_euk$reads[, max.conta]))) +
   ggtitle("Distribution of the most abundant contaminant")
+
 }
 \author{
 Lucie Zinger

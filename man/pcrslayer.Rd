@@ -72,5 +72,5 @@ nmds + labs(fill = "sample type")
 # identify PCRs too close to negative controls ### TO FINISH
 }
 \author{
-Lucie Zinger
+Lucie Zinger, Clement Lionnet
 }
