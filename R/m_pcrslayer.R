@@ -56,7 +56,7 @@
 #' nmds + labs(fill = "sample type")
 #'
 #' # identify PCRs too close to negative controls ### TO FINISH
-#' @author Lucie Zinger
+#' @author Lucie Zinger, Clement Lionnet
 #' @importFrom vegan decostand vegdist metaMDS
 #' @export pcrslayer
 #' @export pcr_within_between
