@@ -173,8 +173,13 @@ Although we would hope / expect to find no or only few reads in extraction and P
 
 Another way to vizualise this is from the perspective of its PCR design context, e.g. by showing the number of reads in the PCR plates, if this information has been recorded in the `pcrs` file. This vizualisation can highlight potential issues which may have occured during the PCR stage of sample processing. For example, low read abundances in real samples throughout one line or column of the PCR plate could mean that a primer was dysfunctional or that the mix deposition was inconsistent, resulting in low amplicon yields. Let's see how it appears for the `soil_euk` data:   
 
+<<<<<<< HEAD
 ```{r ggpcrplate, warning=F, message=F, cache=T, fig.width=7, fig.height=5, eval = F}
 ggpcrplate(soil_euk, table = "pcrs", index = "nb_reads")
+=======
+```{r ggpcrplate, warning=F, message=F, cache=T, fig.width=7, fig.height=5}
+ggpcrplate(soil_euk)
+>>>>>>> master
 ```
 
 
@@ -190,6 +195,7 @@ In addition to patterns of general interest, the plot above shows two key featur
 
 If the user has defined the PCR design using a combination of tags (i.e. 2 different tags in the 5' of each PCR primer), and that this information is available in the `pcrs` table, it is possible to determine if one of the tag introduced some biases in PCR amplicon yields with another function : 
 
+<<<<<<< HEAD
 ```{r ggpcrtag, warning=F, message=F, cache=T, fig.width=7, fig.height=7, eval = F}
 ggpcrtag(soil_euk, table = "pcrs", index = "nb_reads", 
           taglist = c("acacacac", "acagcaca", "gtgtacat", "tatgtcag", "tagtcgca",
@@ -200,6 +206,10 @@ ggpcrtag(soil_euk, table = "pcrs", index = "nb_reads",
                       "tcagtgtc", "actctgct", "atatagcg", "ctatgcta", "tcgcgctg",
                       "agcacagt", "tagctagt", "agtgctac", "cgtataca", "cgagtcgt",
                       "cacatgat"))
+=======
+```{r ggpcrtag, warning=F, message=F, cache=T, fig.width=7, fig.height=7}
+ggpcrtag(soil_euk)
+>>>>>>> master
 ```
 
 <span style="color:red">I know it's shitty here to provide the taglist in the order of use, but I could not find a way to plot these correctly without any *a priori* on the pcr design and just from the basic info we ask, i.e. tag_fwd, tag_rev, plate_no, plate_row, plate_col</span>
@@ -270,7 +280,11 @@ During PCR amplification of sequences, the introduction of contaminants can resu
 
 It then tags those sequences within the soil_euk table, making their removal possible at subsequent stages.
 
+<<<<<<< HEAD
 ```{r contaslayer, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval = F}
+=======
+```{r contaslayer, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+>>>>>>> master
 #finds contaminants from PCR amplification
 library(vegan)
 pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="pcr")]
@@ -280,7 +294,11 @@ head(soil_euk$motus[contaminant_PCR,])
 
 Visualisation of where MOTUs identified as contaminants can help clarify whether their presence is widespread across samples. 
 
+<<<<<<< HEAD
 ```{r contaslayer2, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval = F}
+=======
+```{r contaslayer2, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+>>>>>>> master
 #Distribution of the most abundant contaminants in the PCR plate design
 max.conta = contaminant_PCR[which.max(soil_euk$motus[contaminant_PCR, "count"])]
 
@@ -291,7 +309,11 @@ p = ggpcrplate(soil_euk, table = "reads", index = max.conta)+
 
 In this case, the most abundant contaminant seems to be most prevalent in the pcr controls, but it appears in all samples. This tool can also be used to see whether contamination occurs during sequencing by using the same approach for the extraction controls.
 
+<<<<<<< HEAD
 ```{r contaslayer3, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval = F}
+=======
+```{r contaslayer3, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+>>>>>>> master
 #finds contaminants from sequencing step
 pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="extraction")]
 contaminant_Ext = contaslayer(soil_euk$reads, controls = pcr.controls)
@@ -318,8 +340,12 @@ Tagjumps are an important bias that lead to the presence of potentially high num
 
 not sure how to do this, this uses old format of ggpcrplate??? 
 
+<<<<<<< HEAD
 ```{r tagjump, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval=F, eval = F}
 
+=======
+```{r tagjump, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+>>>>>>> master
 #Distribution of the most abundant contaminants in the PCR plate design
 
 data(soil_euk)
@@ -387,7 +413,11 @@ Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db
 
 Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 
+<<<<<<< HEAD
 ```{r pcrslayer, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval = F, eval = F}
+=======
+```{r pcrslayer, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+>>>>>>> master
 data(soil_euk)
 #define replicate factor
 soil_euk$pcrs$Replicate_ori = gsub("-r[1-4]", "", rownames(soil_euk$pcrs))

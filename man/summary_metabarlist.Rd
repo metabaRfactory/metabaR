@@ -10,11 +10,11 @@ summary_metabarlist(metabarlist, method = "dataset", table = NULL,
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{method}{type of summary to provided. Should match to "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".}
+\item{method}{type of summary to provide. Should match with "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".}
 
-\item{table}{the table where the information on which the aggregation is based. Can be only `motus`, `pcrs`, or `samples`. Default is NULL}
+\item{table}{the table where the information on which the aggregation is based. Can be one of `motus`, `pcrs`, or `samples`. Default is NULL}
 
-\item{index}{a character indicating the name of the element, i.e. columns name on which the aggregation is based. Default is NULL}
+\item{index}{a character indicating the name of the element, i.e. column names on which the aggregation is based. Default is NULL}
 }
 \value{
 Function \code{summary_metabarlist} returns basic summary statistics (nb of elements, reads and MOTUs in total or on average per pcrs) of a \code{\link{metabarlist}} object. The format of the value returned depends on the method used.
@@ -25,7 +25,7 @@ summary_metabarlist is a generic function used to produce summary statistics of 
 \details{
 \code{summary_metabarlist} returns basic summary statistics of a \code{\link{metabarlist}} object. The summary returned depends on the `method` used :
 \itemize{
-\item{"dataset"}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per samples}
+\item{"dataset"}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
 \item{"type"}{returns a data.frame similar to the dataset_statistics described above}
 }
 }
@@ -33,18 +33,17 @@ summary_metabarlist is a generic function used to produce summary statistics of 
 
 data(soil_euk)
 
-#dataset summary
+# dataset summary
 summary_metabarlist(soil_euk, method = "dataset")
 
-#data summary per control type (NA = samples)
-summary_metabarlist(soil_euk, method = "type", table="pcrs", index="control_type")
+# data summary per control type (NA = samples)
+summary_metabarlist(soil_euk, method = "type", table = "pcrs", index = "control_type")
 
-#data summary per phyla
-summary_metabarlist(soil_euk, method = "type", table="motus", index="phylum_name")
+# data summary per phyla
+summary_metabarlist(soil_euk, method = "type", table = "motus", index = "phylum_name")
 
-#data summary per Habitat
-summary_metabarlist(soil_euk, method = "type", table="samples", index="Habitat")
-
+# data summary per Habitat
+summary_metabarlist(soil_euk, method = "type", table = "samples", index = "Habitat")
 }
 \author{
 Lucie Zinger

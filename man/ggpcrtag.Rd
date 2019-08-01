@@ -4,14 +4,16 @@
 \alias{ggpcrtag}
 \title{Plotting a PCR attribute in the tag pair design}
 \usage{
-ggpcrtag(metabarlist, table, index, taglist)
+ggpcrtag(metabarlist, legend_title = "well_values",
+  FUN = function(metabarlist) {     rowSums(metabarlist$reads) },
+  taglist = as.character(unique(metabarlist$pcrs$tag_rev)))
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{table}{the table where the information on which the plotting is based. Can be only `reads`,  or `pcrs`.}
+\item{legend_title}{the title of legend containing the plotted information.}
 
-\item{index}{the name of the column name containing the information to be plotted. This information should be a numeric vector.}
+\item{FUN}{a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.}
 
 \item{taglist}{a character vector corresponding to the full list of tags ordered as they are used in the PCR plate scheme}
 }
@@ -22,39 +24,22 @@ a ggplot
 Plots an attribute of PCRs from a \code{\link{metabarlist}} object in the tag pair design
 }
 \details{
-Vizualizing some attributes of the PCRs in their tag pair design context, i.e. according to the tag combination used. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer/tag sets).
+Vizualizing attributes of the PCRs in their tag pair design context, i.e. according to the tag combination used. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer/tag sets).
 }
 \examples{
 
 data(soil_euk)
 
-taglist = c("acacacac", "acagcaca", "gtgtacat", "tatgtcag", "tagtcgca",
-            "tactatac", "actagatc", "gatcgcga", "cgctctcg", "gtcgtaga",
-            "gtcacgtc", "gactgatg", "agactatg", "gcgtcagc", "tgacatca",
-            "acatgtgt", "gtacgact", "atgatcgc", "acgacgag", "catcagtc",
-            "atcagtca", "tctactga", "gatgatct", "ctgcgtac", "agcgacta",
-            "tcagtgtc", "actctgct", "atatagcg", "ctatgcta", "tcgcgctg",
-            "agcacagt", "tagctagt", "agtgctac", "cgtataca", "cgagtcgt",
-            "cacatgat")
+# Plot the number of reads per pcrs
+ggpcrtag(soil_euk)
 
-#Plot the number of reads per pcrs
-
-##Store the number of reads per pcrs in the pcrs table
-soil_euk$pcrs$seq_depth = rowSums(soil_euk$reads)
-
-##Plot the results
-ggpcrtag(soil_euk, table = "pcrs", index = "seq_depth", taglist = taglist)
-
-
-#Plot the number of reads of the most abundant MOTU
-
-##Get the name of the most abundant MOTU
-id = colnames(soil_euk$reads)[which.max(colSums(soil_euk$reads))]
-
-##Plot the results
-ggpcrtag(soil_euk, table = "reads", index = id, taglist = taglist)
-
-
+# Plot the number of reads of the most abundant MOTU
+ggpcrtag(soil_euk,
+  legend_title = "#reads of most\\nabundant MOTU",
+  FUN = function(m) {
+    m$reads[, which.max(colSums(m$reads))]
+  }
+)
 }
 \author{
 Lucie Zinger

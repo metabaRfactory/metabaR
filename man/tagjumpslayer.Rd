@@ -4,51 +4,47 @@
 \alias{tagjumpslayer}
 \title{Filtering potential tag jumps in metabarcoding data}
 \usage{
-tagjumpslayer(x, threshold = 0.03)
+tagjumpslayer(metabarlist, threshold = 0.03)
 }
 \arguments{
-\item{x}{a \code{\link{TODEFINE}} object}
+\item{metabarlist}{a \code{\link{metabarlist}} object}
 
 \item{threshold}{an OTU relative abundance value below which the OTU is considered to be absent}
 }
 \value{
-a transformed reads count matrix
+a \code{\link{metabarlist}} object with the transformed reads count matrix
 }
 \description{
-Sets to zero abundances of potential tagjumps in a \code{\link{TODEFINE}} object.
+Removes reads of potential tagjumps in a \code{\link{metabarlist}} object.
 }
 \details{
-Tagjumps are an important bias that lead to the presence of potentially high amounts of false positive in DNA metabarcoding data. The origin of this bias is not well known yet, and currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Uncomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine OTU, but its tag combination is artifactual. This bias is also frequence-dependant, i.e. abundant genuine OTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each OTU separately and set to 0 any abundance representing < 0.03% of the total OTU abundance in the entire dataset.
+Tagjumps are an important bias that lead to the presence of potentially high numbers of false positives in DNA metabarcoding data. The origin of this bias is not well known yet, although currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Incomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine OTU, but its tag combination is artifactual. This bias is also frequency-dependant, i.e. abundant genuine OTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each OTU separately and setting to 0 any abundance representing < 0.03% of the total OTU abundance in the entire dataset.
 }
 \examples{
 
 data(soil_euk)
-soil_euk_clean = tagjumpslayer(soil_euk$reads, 0.03)
+soil_euk_clean <- tagjumpslayer(soil_euk, 0.03)
 
-#identify occurrence of the most abundant OTU
-idx = which.max(soil_euk$motus$count)
-p1 = ggpcrplate(attr = soil_euk$reads[,idx],
-               plate_no = soil_euk$pcrs$plate_no,
-               plate_col = soil_euk$pcrs$plate_col,
-               plate_row =  soil_euk$pcrs$plate_row,
-               control_type = soil_euk$pcrs$Control_type)
-p1 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-     labs(size="# reads", fill="control type") +
-     scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
-                       na.value = "white") +
-     ggtitle("Distribution of the most abundant OTU")
+# identify occurrence of the most abundant OTU
+idx <- which.max(soil_euk$motus$count)
+p1 <- ggpcrplate(soil_euk,
+  legend_title = "# reads",
+  FUN = function(m) {
+    m$reads[, idx]
+  }
+)
+p1 + scale_size(limits = c(1, max(soil_euk$reads[, idx]))) +
+  ggtitle("Distribution of the most abundant OTU")
 
-#same on clean data
-p2 = ggpcrplate(attr = soil_euk_clean[,idx],
-               plate_no = soil_euk$pcrs$plate_no,
-               plate_col = soil_euk$pcrs$plate_col,
-               plate_row =  soil_euk$pcrs$plate_row,
-               control_type = soil_euk$pcrs$Control_type)
-p2 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
-    labs(size="# reads", fill="control type") +
-    scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
-                       na.value = "white") +
-    ggtitle("Distribution of the most abundant OTU after curation")
+# same on clean data
+p2 <- ggpcrplate(soil_euk,
+  legend_title = "# reads",
+  FUN = function(m) {
+    m$reads[, idx]
+  }
+)
+p2 + scale_size(limits = c(1, max(soil_euk$reads[, idx]))) +
+  ggtitle("Distribution of the most abundant OTU after curation")
 }
 \references{
 Carlsen, T., Aas, A. B., Lindner, D., Vrålstad, T., Schumacher, T., & Kauserud, H. (2012). Don't make a mista (g) ke: is tag switching an overlooked source of error in amplicon pyrosequencing studies?. Fungal Ecology, 5(6), 747-749.

@@ -24,11 +24,13 @@
 #' @examples
 #'
 #' \dontrun{
-#' soil_euk = obifiles_to_metabarlist(file_obitab = "data-raw/litiere_euk_cl97_agg_filt_tax.tab",
-#'                                    file_ngsfilter = "data-raw/ngsfilter_GWM-768.new_2.txt",
-#'                                    file_samples = "data-raw/Litiere_sample_list_2.txt",
-#'                                    sep = "\t")
-#'}
+#' soil_euk <- obifiles_to_metabarlist(
+#'   file_obitab = "data-raw/litiere_euk_cl97_agg_filt_tax.tab",
+#'   file_ngsfilter = "data-raw/ngsfilter_GWM-768.new_2.txt",
+#'   file_samples = "data-raw/Litiere_sample_list_2.txt",
+#'   sep = "\t"
+#' )
+#' }
 #'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
 #'
@@ -36,45 +38,48 @@
 #' @export obifiles_to_metabarlist
 #'
 
-obifiles_to_metabarlist = function(file_obitab, file_ngsfilter, file_samples, ...) {
-  if(!file.exists(file_obitab))
+obifiles_to_metabarlist <- function(file_obitab, file_ngsfilter, file_samples, ...) {
+  if (!file.exists(file_obitab)) {
     stop("obitab file does not exist")
-  if(!file.exists(file_ngsfilter))
+  }
+  if (!file.exists(file_ngsfilter)) {
     stop("ngsfilter file does not exist")
-  if(!file.exists(file_samples))
+  }
+  if (!file.exists(file_samples)) {
     stop("file samples does not exist")
+  }
 
-  obi = read.csv2(file_obitab, h=T, check.names = F, stringsAsFactors = F, ...)
+  obi <- read.csv2(file_obitab, h = T, check.names = F, stringsAsFactors = F, ...)
 
-  #reads
-  reads = t(obi[,grep("sample\\:", colnames(obi))])
-  rownames(reads) = gsub("sample\\:", "", rownames(reads))
-  colnames(reads) = obi$id
+  # reads
+  reads <- t(obi[, grep("sample\\:", colnames(obi))])
+  rownames(reads) <- gsub("sample\\:", "", rownames(reads))
+  colnames(reads) <- obi$id
 
-  #motus
-  motus = obi[,grep("sample\\:", colnames(obi), invert = T)]
-  rownames(motus) = motus$id
-  motus = motus[,-match("id", colnames(motus))]
+  # motus
+  motus <- obi[, grep("sample\\:", colnames(obi), invert = T)]
+  rownames(motus) <- motus$id
+  motus <- motus[, -match("id", colnames(motus))]
 
-  #pcrs
-  pcrs = read_ngsfilter(file = file_ngsfilter, additional.sep = "=", ...)
-  rownames(pcrs) = pcrs$pcr_id
-  pcrs = pcrs[,-match("pcr_id", colnames(pcrs))]
+  # pcrs
+  pcrs <- read_ngsfilter(file = file_ngsfilter, additional.sep = "=", ...)
+  rownames(pcrs) <- pcrs$pcr_id
+  pcrs <- pcrs[, -match("pcr_id", colnames(pcrs))]
 
+  # samples
+  samples <- read.csv2(file_samples, row.names = 1, h = T, check.names = F, stringsAsFactors = F, ...)
 
-  #samples
-  samples = read.csv2(file_samples, row.names=1, h=T, check.names = F, stringsAsFactors = F, ...)
-
-  #check pcrs in reads present in pcrs table
-  if(!all(rownames(reads) %in% rownames(pcrs)))
+  # check pcrs in reads present in pcrs table
+  if (!all(rownames(reads) %in% rownames(pcrs))) {
     stop("cannot continue, rownames in reads are not part of rownames of pcrs")
+  }
 
-  #Add null lines for missing pcrs in reads
-  reads = reads[match(rownames(pcrs), rownames(reads)),]
-  reads[is.na(reads)] = 0
-  rownames(reads) = rownames(pcrs)
+  # Add null lines for missing pcrs in reads
+  reads <- reads[match(rownames(pcrs), rownames(reads)), ]
+  reads[is.na(reads)] <- 0
+  rownames(reads) <- rownames(pcrs)
 
-  out = metabarlist_generator(reads, motus, pcrs, samples)
+  out <- metabarlist_generator(reads, motus, pcrs, samples)
 
   return(out)
 }

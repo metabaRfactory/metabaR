@@ -9,7 +9,7 @@ extract_table(metabarlist, table = extract_table_methods)
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{table}{the table that ones want to extract. Can be only `reads`, `motus`, `pcrs`, or `samples`}
+\item{table}{the table required for extraction. Can be one of `reads`, `motus`, `pcrs`, or `samples`}
 }
 \value{
 a numeric matrix `reads` or a dataframe `motus`, `pcrs`, or `samples`
@@ -24,14 +24,12 @@ All \code{metabarlist} objects are composed of four different tables that can be
 
 data(soil_euk)
 
-reads = extract_table(soil_euk, "reads")
-motus = extract_table(soil_euk, "motus")
+reads <- extract_table(soil_euk, "reads")
+motus <- extract_table(soil_euk, "motus")
 
 all(colnames(reads) == rownames(motus))
 is.matrix(reads)
 is.data.frame(motus)
-
-
 }
 \author{
 Lucie Zinger
