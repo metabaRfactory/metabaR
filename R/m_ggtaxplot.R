@@ -49,7 +49,7 @@
 #' ggtaxplot(arthropoda, taxo.col)
 #' @author Lucie Zinger
 #' @import ggplot2
-#' @importFrom igraph graph V
+#' @importFrom igraph graph V layout.reingold.tilford get.vertex.attribute get.data.frame
 #' @export ggtaxplot
 
 ggtaxplot <- function(metabarlist, taxo, sep.level = NULL, sep.info = NULL, thresh = NULL) {
