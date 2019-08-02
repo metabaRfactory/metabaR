@@ -208,6 +208,19 @@ ggpcrtag(soil_euk, legend_title = "# of reads per PCR",
 # ggpcrtag(soil_euk)
 ```
 
+<span style="color:red">JULIAN: This function does not work for me. I get the following messages geom_path: Each group consists of only one observation. Do you need to adjust the group
+aesthetic?
+geom_path: Each group consists of only one observation. Do you need to adjust the group
+aesthetic?
+Warning messages:
+1: Removed 11 rows containing non-finite values (stat_boxplot). 
+2: Removed 11 rows containing non-finite values (stat_summary). 
+3: Removed 256 rows containing missing values (geom_raster). 
+4: Removed 11 rows containing missing values (geom_point). 
+5: Removed 11 rows containing non-finite values (stat_boxplot). 
+6: Removed 11 rows containing non-finite values (stat_summary).  
+</span>
+
 This plot shows the number of reads in their full PCR design. The Boxplots above and to the right show the distribution of the number of reads obtained for each tag-primer. Although the central plot obtained with `ggpcrtag` is equivalent to the one produced with `ggpcrplate`, this kind of plot can prove useful when looking for tags which may yield low read numbers in larger scale experiments.
 
 Another useful tool to determine PCR success is the production of rarefaction curves, which will indicate whether the diversity of each PCR amplification is well covered by sequencing. 
@@ -289,13 +302,18 @@ In general, the plot demonstrates a consistent overall positive correlation betw
 The next steps in this tutorial will be use the inforation provided by these controls to remove any potential contaminants or spurious sequences from our true sample pools.
 
 ### Contaslayer
+
 During PCR amplification of sequences, the introduction of contaminants can result in the presence of sequences which do not come from your biological samples. Contamination can occur at multiple stages, firstly during DNA extraction, and next during PCR amplification. Detecting these contaminants can be done through the use of control samples at each stage, as is the case for our example dataset. In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. The function contaslayer relies on this assumption and detects OTUs whose relative abundance across the whole dataset is maximum in negative controls.
+
+During PCR amplification of sequences, the introduction of contaminants can result in the presence of sequences which do not come from your biological samples. This can be addressed by assessing their presence within the pcr negative controls. In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. The function contaslayer relies on this assumption and detects OTUs whose relative abundance across the whole dataset is maximum in negative controls.
+
 
 It then tags those sequences within the soil_euk table, making their removal possible at subsequent stages.
 
 ```{r contaslayer, message=F, warning=F, cache=T, fig.width=6, fig.height=3, eval = F}
 #Define a vector containing the control names
 pcr.controls = rownames(soil_euk$pcrs)[which(soil_euk$pcrs$control_type=="pcr")]
+
 contaminant_PCR = contaslayer(soil_euk$reads, controls = pcr.controls)
 head(soil_euk$motus[contaminant_PCR,])
 ```
@@ -338,6 +356,33 @@ p = ggpcrplate(soil_euk, table = "reads", index = max.conta.2)+
 Again, this OTU appears abundant across all samples, but is very high in extraction control in plate 8 (position B8).
 
 By recording OTUs deemed contaminants, these can be removed from the subsequent dataset later.
+
+contaminant = contaslayer(soil_euk$reads, controls = pcr.controls)
+head(soil_euk$motus[contaminant,])
+```
+
+Visualisation of where MOTUs identified as contaminants can help clarify whether their presence is widespread across samples. NOT HERE, issue with ggpcrplate....
+
+```{r contaslayer2, message=F, warning=F, cache=T, fig.width=6, fig.height=3}
+#Distribution of the most abundant contaminants in the PCR plate design
+max.conta = contaminant[which.max(soil_euk$motus[contaminant, "count"])]
+p = ggpcrplate(attr = soil_euk$reads[,max.conta], plate_no = soil_euk$pcrs$plate_no,
+                  plate_col = soil_euk$pcrs$plate_col,
+                  plate_row =  soil_euk$pcrs$plate_row,
+                  control_type = soil_euk$pcrs$control_type
+                  )
+
+p + scale_size(limits=c(1,max(soil_euk$reads[,max.conta]))) +
+      labs(size="# reads", fill="control type") +
+      scale_fill_manual(values=c("brown", "pink", "cyan4", "red"),
+                        na.value = "white") +
+      ggtitle("Distribution of the most abundant contaminant")
+)
+```
+
+###Highly degraded OTUs, degraded OTUs not possible with SILVA??
+Low similarity against references - should mainy correspond to chimera
+
 
 ##Tag-switching
 Potentially caused index library switch
@@ -413,6 +458,7 @@ p2 + scale_size(limits=c(1,max(soil_euk$reads[,idx]))) +
 
 ##PCRs with too low amounts of reads
 PCR slayer
+
 The pcrslayer function identifies potential non-functional PCR reactions by comparing the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). More specifically, the function consists in first constructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered to be too distant from its associated average OTU community and are excluded from the analysis. The whole process is repeated iteratively until no more PCR are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
 
 The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Or it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
@@ -458,6 +504,11 @@ Done on samples cleaned (no conta) excluding positive and negative controls (max
 
 ###Highly degraded OTUs, degraded OTUs not possible with SILVA??
 Low similarity against references - should mainy correspond to chimera
+
+
+##Outlier replicate PCRs
+Done on samples cleaned (no conta) excluding positive and negative controls (maximize between dist?)
+
 
 
 ## References

@@ -4,8 +4,8 @@
 \alias{pcrslayer}
 \title{Detecting dysfunctional PCRs}
 \usage{
-pcrslayer(metabarlist, replicates, thresh.method = "intersect",
-  plot = T)
+pcrslayer(metabarlist, replicates = metabarlist$pcrs$sample_id,
+  thresh.method = "intersect", plot = T)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
@@ -57,7 +57,7 @@ nmds <- check_pcr_repl(sample_subset$reads,
 nmds + labs(fill = "sample type")
 
 # identify dysfunctional PCRs
-bad.pcrs <- pcrslayer(sample_subset,
+bad_pcrs <- pcrslayer(sample_subset,
   thresh.method = "intersect",
   replicates = sample_subset$pcrs$sample_id
 )
@@ -65,12 +65,12 @@ bad.pcrs <- pcrslayer(sample_subset,
 nmds <- check_pcr_repl(sample_subset$reads,
   replicates = sample_subset$pcrs$sample_id,
   colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|"),
-  dyspcr = bad.pcrs
+  dyspcr = bad_pcrs
 )
 nmds + labs(fill = "sample type")
 
 # identify PCRs too close to negative controls ### TO FINISH
 }
 \author{
-Lucie Zinger
+Lucie Zinger, Clement Lionnet
 }

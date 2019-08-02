@@ -43,7 +43,7 @@
 #' nmds + labs(fill = "sample type")
 #'
 #' # identify dysfunctional PCRs
-#' bad.pcrs <- pcrslayer(sample_subset,
+#' bad_pcrs <- pcrslayer(sample_subset,
 #'   thresh.method = "intersect",
 #'   replicates = sample_subset$pcrs$sample_id
 #' )
@@ -51,12 +51,12 @@
 #' nmds <- check_pcr_repl(sample_subset$reads,
 #'   replicates = sample_subset$pcrs$sample_id,
 #'   colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|"),
-#'   dyspcr = bad.pcrs
+#'   dyspcr = bad_pcrs
 #' )
 #' nmds + labs(fill = "sample type")
 #'
 #' # identify PCRs too close to negative controls ### TO FINISH
-#' @author Lucie Zinger
+#' @author Lucie Zinger, Clement Lionnet
 #' @importFrom vegan decostand vegdist metaMDS
 #' @export pcrslayer
 #' @export pcr_within_between
@@ -64,7 +64,7 @@
 #' @export check_pcr_repl
 #'
 
-pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot = T) {
+pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thresh.method = "intersect", plot = T) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     reads_table <- metabarlist$reads
 
@@ -76,77 +76,59 @@ pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot
       stop('thresh.method should be one of "intersect" or "mode"')
     }
 
-    # identify empty pcrs
-    empty.pcr <- NULL
-    if (length(which(rowSums(reads_table) == 0)) != 0) {
-      idx <- which(rowSums(reads_table) == 0)
-      empty.pcr <- rownames(reads_table)[idx]
-      replicates <- replicates[-idx]
-      reads_table <- reads_table[-idx, ]
-    }
+    subset_data <- data.frame(
+      groups = replicates, replicating = TRUE,
+      row.names = rownames(metabarlist$pcrs)
+    )
 
-    # within between object
-    # first round
-    wthn.btwn <- pcr_within_between(reads_table, replicates)
-    thresh.pcr <- pcr_threshold_estimate(wthn.btwn, thresh.method)
-    if (plot == T) {
-      check_pcr_thresh(wthn.btwn, thresh.pcr)
-    }
-    bad.pcr <- NULL
-    nb.bad.pcr <- length(bad.pcr)
+    idx <- which(rowSums(reads_table) == 0)
+    subset_data[idx, "replicating"] <- FALSE
 
-    # Combine les arguments bad.pcr avec
-    # vire de la liste les samples dont la valeur (dist par rapport au barycentre) est supérieure au thresh.pcr
-    # Et dont la valeur est Ègale à la valeur max des réplicats
-    bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn$pcr.intradist, function(y) {
-      names(which(y > thresh.pcr & y == max(y)))
-    }))))
+    iteration <- 0
+    repeat{
+      iteration <- iteration + 1
+      print(paste("Iteration", iteration))
 
-    # in case of samples with only one pcr
-    # dans les cas ou on n'a qu'un seul réplicat, on ajoute a bad.pcr les rownames du replicat
-    if (length(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)) != 0) {
-      singletons <- sapply(
-        names(which(table(as.vector(replicates)[-match(bad.pcr, rownames(reads_table))]) < 2)),
-        function(x) grep(x, rownames(reads_table)[-match(bad.pcr, rownames(reads_table))])
-      )
-      bad.pcr <- c(bad.pcr, rownames(reads_table)[-match(bad.pcr, rownames(reads_table))][unname(singletons)])
-    }
+      reads_table <- reads_table[
+        rownames(subset_data[subset_data$replicating, ]),
+      ]
 
+      replicates <- subset_data[rownames(reads_table), "groups"]
 
-    if (length(bad.pcr) != 0) {
-      n <- length(bad.pcr)
+      nb_bad_pcr <- length(rownames(subset_data[subset_data$replicating==F, ]))
+      wthn_btwn <- pcr_within_between(reads_table, replicates)
+      thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
+      if (plot == T) {
+        check_pcr_thresh(wthn_btwn, thresh_pcr)
+      }
+      # ajoute à la liste les samples dont la valeur (dist par rapport au barycentre) est supérieure au thresh_pcr
+      # et dont la valeur est égale à la valeur max des réplicats
+      to_flag <- unname(unlist(lapply(wthn_btwn$pcr_intradist, function(y) {
+        names(which(y > thresh_pcr & y == max(y)))
+      })))
+      subset_data[to_flag, "replicating"] <- FALSE
 
-      while (nb.bad.pcr[length(nb.bad.pcr)] < n) {
-        # n0 <- n
-        nb.bad.pcr <- c(nb.bad.pcr, n)
-        idx <- match(bad.pcr, rownames(reads_table))
-        sub_matrix <- reads_table[-idx, ]
-        sub_replicates <- as.factor(as.vector(replicates)[-idx])
-        wthn.btwn2 <- pcr_within_between(sub_matrix, sub_replicates)
-        thresh.pcr2 <- pcr_threshold_estimate(wthn.btwn2, thresh.method)
-        if (plot == T) {
-          check_pcr_thresh(wthn.btwn2, thresh.pcr2)
-        }
-        bad.pcr <- c(bad.pcr, unname(unlist(lapply(wthn.btwn2$pcr.intradist, function(y) {
-          names(which(y > thresh.pcr2 & y == max(y)))
-        }))))
+      # recherche les singletons dans la nouvelle matrice de reads
+      reads_table <- reads_table[
+        rownames(subset_data[subset_data$replicating, ]),
+      ]
+      replicates <- subset_data[rownames(reads_table), "groups"]
+      # dans le cas où l'on n'a qu'un seul réplicat, on ajoute a bad_pcr les rownames du réplicat
+      if (length(which(table(as.vector(replicates)) < 2)) != 0) {
+        singletons <- sapply(
+          names(which(table(as.vector(replicates)) < 2)),
+          function(x) grep(x, rownames(reads_table))
+        )
+        singletons_ids <- rownames(reads_table)[unname(singletons)]
+        subset_data[singletons_ids, "replicating"] <- FALSE
+      }
 
-
-        # VS mod : Redefinir sub_replicates avant le if :
-        idx1 <- match(bad.pcr, rownames(reads_table))
-        x.n2 <- reads_table[-idx1, ]
-        replicates3 <- as.factor(as.vector(replicates)[-idx1])
-        # END VS mod
-        if (length(which(table(as.vector(replicates3)) < 2)) != 0) {
-          singletons <- sapply(names(which(table(as.vector(replicates3)) < 2)), function(x) {
-            grep(x, rownames(x.n2))
-          })
-          bad.pcr <- c(bad.pcr, rownames(x.n2)[unname(singletons)])
-        }
-        n <- length(bad.pcr)
+      # stop the loop when none of replicat is added to the vector bad_pcr
+      if (length(rownames(subset_data[subset_data$replicating==F,])) == nb_bad_pcr) {
+        break
       }
     }
-    return(c(empty.pcr, bad.pcr))
+    return(subset_data)
   }
 }
 
@@ -164,8 +146,8 @@ pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot
 #   x.dist.list$comp = ifelse(x.dist.list$X1.type==x.dist.list$X1.type & x.dist.list$X1 %in% control, "control",
 #                             ifelse(x.dist.list$X1.type==x.dist.list$X2.type &
 #                                      !x.dist.list$X1.type %in% control, "sample", "between"))
-#   out = list(pcr.intradist = x.dist.list$dist[which(x.dist.list$comp=="control")],
-#              bar.dist = x.dist.list$dist[which(x.dist.list$comp=="between")])
+#   out = list(pcr_intradist = x.dist.list$dist[which(x.dist.list$comp=="control")],
+#              bar_dist = x.dist.list$dist[which(x.dist.list$comp=="between")])
 #
 #   thresh.pcr = pcr_threshold_estimate(out, thresh.pcr)
 #   if(plot==T) {
@@ -173,8 +155,8 @@ pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot
 #   }
 #   bad.all = unique(sort(unlist(x.dist.list[x.dist.list$comp=="between" &
 #                                              x.dist.list$dist < thresh.pcr, c("X1", "X2")])))
-#   bad.pcr = as.vector(bad.all[which(bad.all %in% rownames(x.n)[which(replicates==control)]==F)])
-#   return(bad.pcr)
+#   bad_pcr = as.vector(bad.all[which(bad.all %in% rownames(x.n)[which(replicates==control)]==F)])
+#   return(bad_pcr)
 # }
 
 
@@ -182,30 +164,30 @@ pcr_within_between <- function(reads, replicates) {
   # barycentre calculation and intradist function
 
   # data standardization
-  reads.stdt <- decostand(reads, MARGIN = 1, "total")
+  reads_stdt <- decostand(reads, MARGIN = 1, "total")
 
-  bar <- t(sapply(by(reads.stdt, as.vector(replicates), colMeans), identity))
+  bar <- t(sapply(by(reads_stdt, as.vector(replicates), colMeans), identity))
 
   # between barycentre distances
-  bar.dist <- vegdist(bar, "bray")
+  bar_dist <- vegdist(bar, "bray")
 
   # within replicates distances
-  pcr.intradist <- lapply(1:nrow(bar), function(x) {
+  pcr_intradist <- lapply(1:nrow(bar), function(x) {
     ind <- which(replicates == rownames(bar)[x])
     sapply(ind, function(y) {
-      out <- vegdist(rbind(bar[x, ], reads.stdt[y, ]), "bray")
-      names(out) <- rownames(reads.stdt)[y]
+      out <- vegdist(rbind(bar[x, ], reads_stdt[y, ]), "bray")
+      names(out) <- rownames(reads_stdt)[y]
       out
     })
   })
-  names(pcr.intradist) <- rownames(bar)
-  return(list(bar.dist = bar.dist, pcr.intradist = pcr.intradist))
+  names(pcr_intradist) <- rownames(bar)
+  return(list(bar_dist = bar_dist, pcr_intradist = pcr_intradist))
 }
 
 pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
-  dinter.max <- max(wthn.btwn$bar.dist)
-  ddinter <- density(wthn.btwn$bar.dist, from = 0, to = 1)
-  ddintra <- density(unlist(wthn.btwn$pcr.intradist), from = 0, to = 1)
+  dinter.max <- max(wthn.btwn$bar_dist)
+  ddinter <- density(wthn.btwn$bar_dist, from = 0, to = 1)
+  ddintra <- density(unlist(wthn.btwn$pcr_intradist), from = 0, to = 1)
 
   # assumption that each of them have a "unimodal" distribution
   dintra.mode <- ddintra$x[which.max(ddintra$y)]
@@ -228,8 +210,8 @@ pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
 }
 
 check_pcr_thresh <- function(wthn.btwn, thresh.pcr) {
-  d.bar <- density(wthn.btwn$bar.dist)
-  d.intra <- density(unlist(wthn.btwn$pcr.intradist))
+  d.bar <- density(wthn.btwn$bar_dist)
+  d.intra <- density(unlist(wthn.btwn$pcr_intradist))
   plot(d.bar, lwd = 2, main = "Distances density")
   lines(d.intra, col = "green", lwd = 2)
   legend("topright", c("btwn samples", "wthn samples"),
