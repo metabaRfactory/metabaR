@@ -1,11 +1,11 @@
 #' Detecting contaminants in metabarcoding data using negative controls
 #'
-#' Uses negative controls to detect contaminant OTUs in a \code{\link{TODEFINE}} object.
+#' Uses negative controls to detect contaminant OTUs in a \code{\link{metabarlist}} object.
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
 #' @param method        a character string specifying the detection method to be used. Default: \code{"max"}
-#' @param control_types a vector of control types containing in the column control_type of metabarlist$pcrs. This parameter is not used when the parameter controls is specified. Default: c("pcr", "extraction")
+#' @param control_types a vector of control types contained in the column control_type of metabarlist$pcrs. This parameter is not used when the parameter \code{controls} is specified. Default: c("pcr", "extraction")
 #' @param controls      a vector of amplicon names corresponding to negative controls.
 #'
 #' @name contaslayer
