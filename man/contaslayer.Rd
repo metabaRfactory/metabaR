@@ -12,7 +12,7 @@ contaslayer(metabarlist, method = "max", control_types = c("pcr",
 
 \item{method}{a character string specifying the detection method to be used. Default: \code{"max"}}
 
-\item{control_types}{a vector of control types containing in the column control_type of metabarlist$pcrs. This parameter is not used when the parameter controls is specified. Default: c("pcr", "extraction")}
+\item{control_types}{a vector of control types contained in the column control_type of metabarlist$pcrs. This parameter is not used when the parameter \code{controls} is specified. Default: c("pcr", "extraction")}
 
 \item{controls}{a vector of amplicon names corresponding to negative controls.}
 }
@@ -20,7 +20,7 @@ contaslayer(metabarlist, method = "max", control_types = c("pcr",
 a vector containing the names of OTUs identified as contaminants
 }
 \description{
-Uses negative controls to detect contaminant OTUs in a \code{\link{TODEFINE}} object.
+Uses negative controls to detect contaminant OTUs in a \code{\link{metabarlist}} object.
 }
 \details{
 In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. \code{\link{contaslayer}} relies on this assumption and detects OTUs whose relative abundance across the whole dataset is maximum in negative controls.
