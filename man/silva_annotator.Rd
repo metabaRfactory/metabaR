@@ -17,13 +17,31 @@ silva_annotator(metabarlist, silva.path, clust.path)
 a \code{metabarlist} object with a dataframe motus including the taxonomic assignemnts from silva
 }
 \description{
-Importing and formatting SILVANgs pipeline taxonomic annotation for a \code{\link{TODEFINE}} object.
+Importing and formatting taxonomic annotations obtained with the SILVANgs pipeline (https://ngs.arb-silva.de/silvangs/) for a \code{\link{metabarlist}} object.
 }
 \details{
-To amend
+Users can be interested in using the SILVAngs pipeline for assigning a taxon to DNA sequences. Assuming that it is done on data already filtered (i.e. dereplicated, clustering etc.), resulting in one sequence per OTU, one can then use the SILVAngs pipeline by setting all filtering parameters to "null" (i.e. returning to no filtration) and the taxonomic assignments parameters by default. These taxonomic assignments are compiled in the data archives provided by SILVAngs, in which two files will be important:
+\itemize{
+\item{}{`zipfile>ssu>exports>xxx---ssu---otus.csv`: a csv file containing the taxonomic assignment for each OTU}
+\item{}{`zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr`: a file containing the mapping informations of sequences to their respective OTUs. Even though the clustering is done before using the SILVAngs pipeline and that the clustering parameters in this pipeline are settled to 100\% identity of clustering, SILVAngs uses CDHit, which can group together OTUs sharing the same prefix/suffix. So it is common to retrieve less assigniations than what was expected.}
+}
 }
 \examples{
+data(soil_euk)
 
+\dontrun{
+soil_euk = silva_annotator(
+   metabarlist = soil_euk,
+   silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
+   clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr",
+   web=F
+   )
+
+ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
+  geom_bar() + coord_polar("y") +
+  theme_minimal() + labs(x=NULL, y=NULL) +
+  theme(legend.position = "bottom")
+}
 }
 \author{
 Lucie Zinger
