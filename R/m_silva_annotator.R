@@ -34,7 +34,7 @@
 #'   theme_minimal() + labs(x=NULL, y=NULL) +
 #'   theme(legend.position = "bottom")
 #'}
-#' @author Lucie Zinger
+#' @author Lucie Zinger, Anne-Sophie Benoiston
 #' @importFrom seqinr read.fasta
 #' @export silva_annotator
 #'
@@ -63,7 +63,12 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
       names(out) <- taxorank
       if (x[1] == "Eukaryota") {
         out["superkingdom_silva"] <- "Eukaryota"
-        if (x[2] == "Opisthokonta") {
+
+        #Add condition if not assignment is found at x[2] < Anne-Sophie's function bis in Dropbox
+
+        if(is.na(x[2])) {
+          out["kingdom_silva"] <- NA
+          } else if (x[2] == "Opisthokonta") {
           if (length(grep("Aphelidea", x)) != 0) {
             out["class_silva"] <- ifelse(length(x) != grep("Aphelidea", x), x[grep("Aphelidea", x)], NA)
             out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
