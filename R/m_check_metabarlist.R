@@ -139,7 +139,7 @@ check_metabarlist <- function(metabarlist) {
   }
 
   if (!all(is.na(metabarlist$pcrs$control_type) == (metabarlist$pcrs$type == "sample"))) {
-    stop("metabarlist$reads$control_type must have 'NA' values for samples")
+    stop("metabarlist$pcrs$control_type must have 'NA' values for samples")
   }
 
   if (!all(is.na(metabarlist$pcrs$sample_id) != (metabarlist$pcrss$type == "sample"))) {
