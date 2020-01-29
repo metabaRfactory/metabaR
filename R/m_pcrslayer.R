@@ -37,8 +37,7 @@
 #' @examples
 #' library(ggplot2)
 #' data(soil_euk)
-#' # define replicate factor
-#' # Consider only biological samples
+#' # consider only biological samples
 #' sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 #'
 #' # first visualization
@@ -200,7 +199,7 @@ check_pcr_thresh <- function(wthn.btwn, thresh.method = "intersect") {
   d.out <- rbind(data.frame(d.bar[c("x","y")], distance="between samples"),
                 data.frame(d.intra[c("x","y")], distance="between pcr replicates"))
 
-  thresh.pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
+  thresh.pcr <- pcr_threshold_estimate(wthn.btwn, thresh.method)
 
   p =
     ggplot(d.out, aes(x=x, y=y, color=distance)) +

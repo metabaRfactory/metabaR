@@ -65,8 +65,7 @@ Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and 
 \examples{
 library(ggplot2)
 data(soil_euk)
-# define replicate factor
-# Consider only biological samples
+# consider only biological samples
 sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 
 # first visualization
