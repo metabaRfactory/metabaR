@@ -44,5 +44,5 @@ ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
 }
 }
 \author{
-Lucie Zinger
+Lucie Zinger, Anne-Sophie Benoiston
 }
