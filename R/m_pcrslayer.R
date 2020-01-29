@@ -164,9 +164,9 @@ pcr_within_between <- function(reads, replicates) {
   # barycentre calculation and intradist function
 
   # data standardization
-  reads_stdt <- decostand(reads, MARGIN = 1, "total")
+  reads_stdt <- reads/rowSums(reads)
 
-  bar <- t(sapply(by(reads_stdt, as.vector(replicates), colMeans), identity))
+  bar <- rowsum(reads_stdt, replicates)/as.vector(table(replicates))
 
   # between barycentre distances
   bar_dist <- vegdist(bar, "bray")
