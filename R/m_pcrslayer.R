@@ -4,14 +4,17 @@
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
-#' @param replicates    a factor of sample names within which replicates belong (i.e. should be a prefix/suffix of pcr replicate names).
-#'                      Default is the `sample_id` column of the table `pcrs` from the \code{\link{metabarlist}} object.
-#' @param control       a character vector indicating the names of controls against which PCR replicates are to be compared.
+#' @param replicates    a column name in the `pcrs`table corresponding to the sample names to which
+#'                      pcr replicates belongs. Default is the `sample_id` column of the table `pcrs` from the
+#'                      \code{\link{metabarlist}} object.
 #' @param thresh.method a character indicating which method should be used to define the filtering threshold.
-#' @param plot          a boolean indicating whether dissimilarity distribution should be plotted. Default is \code{TRUE}
+#' @param plot          a boolean indicating whether dissimilarity distribution should be plotted.
+#'                      Default is \code{TRUE}
 #' @param wthn.btwn     an ouput from \code{pcr_within_between}
-#' @param colvec        a grouping factor for coloring PCR replicates in \code{check_pcr_repl}
+#' @param groups        a column name in the `pcrs`table corresponding to a factor giving the groups for which the
+#'                      graphical colors are drawn.
 #' @param dyspcr        a character vector of the dysfunctional PCR identified by \code{pcrslayer}
+#' @param control       a character vector indicating the names of controls against which PCR replicates are to be compared.
 #'
 #' @details
 #'
@@ -23,6 +26,8 @@
 #' The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Or it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
 #'
 #' Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
+#'
+#' Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroidsthrough a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
 #'
 #' Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 #'
@@ -38,44 +43,51 @@
 #' library(ggplot2)
 #' data(soil_euk)
 #' # consider only biological samples
-#' sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
+#' sample_subset <- subset_metabarlist(soil_euk, "pcrs",
+#'                                     rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 #'
-#' # first visualization
+#' # Visualization of within vs. between sample dissimilarities
 #' comp1 <- pcr_within_between(sample_subset)
 #' check_pcr_thresh(comp1, thresh.method = "intersect")
-#' # visualization of replicates through NMDS
-#' nmds <- check_pcr_repl(sample_subset$reads,
+#'
+#' # visualization of replicates through PCoA
+#' sample_subset$pcrs$habitat_material <- sample_subset$pcrs$sample_id
+#' idx = match(levels(sample_subset$pcrs$habitat_material), rownames(sample_subset$samples))
+#' levels(sample_subset$pcrs$habitat_material) <- paste(sample_subset$samples$Habitat[idx],
+#'                                                      sample_subset$samples$Material[idx], sep = "|")
+#' mds <- check_pcr_repl(sample_subset,
 #'   replicates = sample_subset$pcrs$sample_id,
-#'   colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|")
-#' )
-#' nmds + labs(fill = "sample type")
+#'   groups = "Habitat_Material")
+#' mds + labs(fill = "sample type")
 #'
 #' # identify dysfunctional PCRs
-#' bad_pcrs <- pcrslayer(sample_subset,
-#'   thresh.method = "intersect",
-#'   replicates = sample_subset$pcrs$sample_id
-#' )
+#' bad_pcrs <- pcrslayer(sample_subset, thresh.method = "intersect",
+#'                      replicates = sample_subset$pcrs$sample_id)
 #'
+#' # define a color vector that corresponds to the different habitat types. Should be named
 #' nmds <- check_pcr_repl(sample_subset$reads,
 #'   replicates = sample_subset$pcrs$sample_id,
-#'   colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|"),
+#'   colvec = colvec,
 #'   dyspcr = bad_pcrs
 #' )
 #' nmds + labs(fill = "sample type")
 #'
 #' # identify PCRs too close to negative controls ### TO FINISH
 #' @author Lucie Zinger, Clement Lionnet
-#' @importFrom vegan decostand vegdist metaMDS
+#' @importFrom vegan vegdist
 #' @describeIn pcrslayer Detect dysfunctional PCRs in a \code{\link{metabarlist}} object.
 #' @export pcrslayer
 
-pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thresh.method = "intersect", plot = T) {
+pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot = T) {
+
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     reads_table <- metabarlist$reads
 
-    if (nrow(reads_table) != length(replicates)) {
-      stop("reads table and replicates must have the same length")
+    if (!replicates %in% colnames(metabarlist$pcrs)) {
+      stop("replicates should be in colnames of the metabarlist$pcr table")
     }
+
+    replicates <- metabarlist$pcrs[,replicates]
 
     if (thresh.method != "intersect" & thresh.method != "mode") {
       stop('thresh.method should be one of "intersect" or "mode"')
@@ -141,14 +153,16 @@ pcrslayer <- function(metabarlist, replicates = metabarlist$pcrs$sample_id, thre
 #' @describeIn pcrslayer Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 #' @export pcr_within_between
 
-pcr_within_between <- function(metabarlist, replicates = metabarlist$pcrs$sample_id) {
+pcr_within_between <- function(metabarlist, replicates) {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     reads_table <- metabarlist$reads
 
-    if (nrow(reads_table) != length(replicates)) {
-      stop("reads table and replicates must have the same length")
+    if (!replicates %in% colnames(metabarlist$pcrs)) {
+      stop("replicates should be in colnames of the metabarlist$pcr table")
     }
+
+    replicates <- metabarlist$pcrs[,replicates]
 
     out = pcr_within_between_internal(reads_table, replicates)
     return(out)
@@ -186,7 +200,8 @@ pcr_within_between_internal <- function(reads, replicates) {
 check_pcr_thresh <- function(wthn.btwn, thresh.method = "intersect") {
 
   if(is.list(wthn.btwn) == F | all(names(wthn.btwn)==c("bar_dist", "pcr_intradist")) == F | length(wthn.btwn)!=2) {
-    stop("wthn.btwn should be a list of length 2 and of names bar_dist and pcr_intradist, typically an ouput from pcr_within_between")
+    stop("wthn.btwn should be a list of length 2 and of names bar_dist and pcr_intradist,
+         typically an ouput from pcr_within_between")
   }
 
   if (thresh.method != "intersect" & thresh.method != "mode") {
@@ -228,61 +243,58 @@ pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
 }
 
 
+#' @describeIn pcrslayer Vizualize pcrs dissimilarity patterns and pcr replicates centroids.
 #' @export check_pcr_repl
-#'
 
-check_pcr_repl <- function(x, replicates, colvec = NULL, dyspcr = NULL) {
-  x.n <- decostand(x, "total")
-  bar <- t(sapply(by(x.n, as.vector(replicates), colMeans), identity))
-  all <- rbind(x.n, bar)
+check_pcr_repl <- function(metabarlist, replicates, groups = NULL, dyspcr = NULL) {
 
-  mds <- metaMDS(all)
-  d <- data.frame(scores(mds, display = "sites"))
-  d$points <- ifelse(rownames(d) %in% rownames(bar), "bary", "samp")
-  dsub <- d[d$points == "bary", ]
-  d$NMDS1bary <- d$NMDS2bary <- NA
-  d$NMDS1bary[d$points != "bary"] <- dsub$NMDS1[match(replicates, rownames(dsub))]
-  d$NMDS2bary[d$points != "bary"] <- dsub$NMDS2[match(replicates, rownames(dsub))]
+  if (suppressWarnings(check_metabarlist(metabarlist))) {
+    reads <- metabarlist$reads
 
-  d2 <- d[d$points != "bary", ]
-  if (is.null(colvec) & is.null(dyspcr)) {
-    ggplot(d2, aes(x = NMDS1, y = NMDS2)) +
-      geom_point(shape = 21) + theme_bw() +
-      geom_segment(data = d, aes(
-        x = NMDS1bary, y = NMDS2bary,
-        xend = NMDS1, yend = NMDS2
-      ), colour = "grey")
-  } else if (!is.null(colvec) & is.null(dyspcr)) {
-    d$col <- NA
-    d2$col <- colvec
-    ggplot(d2, aes(x = NMDS1, y = NMDS2, fill = col)) +
-      geom_point(shape = 21) + theme_bw() +
-      geom_segment(data = d, aes(
-        x = NMDS1bary, y = NMDS2bary,
-        xend = NMDS1, yend = NMDS2
-      ), colour = "grey")
-  } else if (is.null(colvec) & !is.null(dyspcr)) {
-    d$dyspcr <- NA
-    d2$dyspcr <- ifelse(rownames(d2) %in% dyspcr, "dysfunctional", "functional")
-    ggplot(d2, aes(x = NMDS1, y = NMDS2)) +
+    if (!replicates %in% colnames(metabarlist$pcrs)) {
+      stop("replicates should be in colnames of the metabarlist$pcrs table")
+    }
+
+    replicates <- metabarlist$pcrs[,replicates]
+
+    if (!groups %in% colnames(metabarlist$pcrs)) {
+      stop("groups should be in colnames of the metabarlist$pcrs table")
+    }
+
+    groups <- metabarlist$pcrs[,groups]
+
+    if (!dyspcr %in% colnames(metabarlist$pcrs)) {
+      stop("dyspcr should be in colnames of the metabarlist$pcrs table")
+    }
+
+    dyspcr <- ifelse(rownames(reads) %in% dyspcr, "dyspcr", "0ok")
+
+    reads_stdt <- reads/rowSums(reads)
+    bar <- rowsum(reads_stdt, replicates)/as.vector(table(replicates))
+    all <- rbind(reads_stdt, bar)
+    all.d <- vegdist(all, "bray")
+
+    mds <- cmdscale(all.d, k = 2, eig = T, add = T)
+    d <- data.frame(mds$points)
+    d$points <- ifelse(rownames(d) %in% rownames(bar), "bary", "samp")
+
+    d.new <- data.frame(d[d$points=="samp",])
+    d.new$replicates <- replicates[match(rownames(d.new), rownames(reads))]
+    d.new$bary_x <- d$X1[match(d.new$replicates, rownames(d))]
+    d.new$bary_y <- d$X2[match(d.new$replicates, rownames(d))]
+    d.new$groups <- 0
+    d.new$dyspcr <- "0ok"
+
+    if(!is.null(groups)) {d.new$groups = groups}
+    if(!is.null(dyspcr)) {d.new$dyspcr = dyspcr}
+
+    ggplot(d.new, aes(x=X1, y=X2, color=groups)) +
       geom_point(aes(shape = dyspcr)) + theme_bw() +
-      geom_segment(data = d, aes(
-        x = NMDS1bary, y = NMDS2bary,
-        xend = NMDS1, yend = NMDS2
-      ), colour = "grey") +
-      scale_shape_manual(values = c(4, 21))
-  } else {
-    d$col <- NA
-    d2$col <- colvec
-    d$dyspcr <- NA
-    d2$dyspcr <- ifelse(rownames(d2) %in% dyspcr, "dysfunctional", "functional")
-    ggplot(d2, aes(x = NMDS1, y = NMDS2, fill = col)) +
-      geom_point(aes(shape = dyspcr)) + theme_bw() +
-      geom_segment(data = d, aes(
-        x = NMDS1bary, y = NMDS2bary,
-        xend = NMDS1, yend = NMDS2
-      ), colour = "grey") +
-      scale_shape_manual(values = c(4, 21))
+      scale_shape_manual(values = c(19,8), labels = c("good", "bad")) +
+      geom_segment(aes(x=bary_x, y=bary_y, xend=X1, yend=X2), color="grey") +
+      labs(x=paste("PCoA1 (", round(100*mds$eig[1]/sum(mds$eig),2), "%)", sep=""),
+           y=paste("PCoA2 (", round(100*mds$eig[2]/sum(mds$eig),2), "%)", sep=""),
+           shape="PCR type")
   }
 }
 
