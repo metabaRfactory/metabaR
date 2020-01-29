@@ -212,12 +212,15 @@ pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
 check_pcr_thresh <- function(wthn.btwn, thresh.pcr) {
   d.bar <- density(wthn.btwn$bar_dist)
   d.intra <- density(unlist(wthn.btwn$pcr_intradist))
-  plot(d.bar, lwd = 2, main = "Distances density")
-  lines(d.intra, col = "green", lwd = 2)
-  legend("topright", c("btwn samples", "wthn samples"),
-    col = c("black", "green"), lwd = 2
-  )
-  abline(v = thresh.pcr)
+
+  d.out = rbind(data.frame(d.bar[c("x","y")], distance="between samples"),
+                data.frame(d.intra[c("x","y")], distance="between pcr replicates"))
+
+  p =
+    ggplot(d.out, aes(x=x, y=y, color=distance)) +
+      geom_line() + labs(x="distance", y="density", color="Distances") +
+      theme_bw()
+  if(thresh.pcr) {p} else {p + geom_vline(xintercept = thresh.pcr, size=0.3, lty=2)}
 }
 
 check_pcr_repl <- function(x, replicates, colvec = NULL, dyspcr = NULL) {
