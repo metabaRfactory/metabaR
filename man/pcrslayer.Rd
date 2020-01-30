@@ -5,7 +5,7 @@
 \alias{pcr_within_between}
 \alias{check_pcr_thresh}
 \alias{check_pcr_repl}
-\title{Detecting dysfunctional PCRs based on their reproducibility.}
+\title{Detecting dysfunctional PCRs.}
 \usage{
 pcrslayer(metabarlist, replicates, thresh.method = "intersect",
   plot = T)
@@ -35,7 +35,7 @@ graphical colors are drawn.}
 
 \item{dyspcr}{a character vector of the dysfunctional PCR identified by \code{pcrslayer}}
 
-\item{control}{a character vector indicating the names of controls against which PCR replicates are to be compared.}
+\item{control}{a character vector indicating the names of controls against which PCR replicates are to be compared. #### TO FINISH}
 }
 \value{
 The \code{pcrslayer} function returns a vector of dysfunctional PCRs.
@@ -45,7 +45,7 @@ The \code{pcr_within_between} function returns a list of dissimilarities \emph{d
 The \code{check_pcr_thresh} and  \code{check_pcr_repl} functions returns \code{ggplot} objects.
 }
 \description{
-Detecting dysfunctional PCRs based on their reproducibility.
+Detecting dysfunctional PCRs based on their reproducibility or similarity against negative controls.
 }
 \details{
 The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered to be too distant from its associated average OTU community and are excluded from the analysis. The whole process is repeated iteratively until no more PCR are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.

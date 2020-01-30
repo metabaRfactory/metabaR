@@ -1,6 +1,6 @@
-#' Detecting dysfunctional PCRs based on their reproducibility.
+#' Detecting dysfunctional PCRs.
 #'
-#' Detecting dysfunctional PCRs based on their reproducibility.
+#' Detecting dysfunctional PCRs based on their reproducibility or similarity against negative controls.
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
