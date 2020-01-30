@@ -14,7 +14,7 @@
 #' @param groups        a column name in the `pcrs`table corresponding to a factor giving the groups for which the
 #'                      graphical colors are drawn.
 #' @param dyspcr        a character vector of the dysfunctional PCR identified by \code{pcrslayer}
-#' @param control       a character vector indicating the names of controls against which PCR replicates are to be compared.
+#' @param control       a character vector indicating the names of controls against which PCR replicates are to be compared. #### TO FINISH
 #'
 #' @details
 #'
