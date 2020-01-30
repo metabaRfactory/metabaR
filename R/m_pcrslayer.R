@@ -43,34 +43,29 @@
 #' library(ggplot2)
 #' data(soil_euk)
 #' # consider only biological samples
-#' sample_subset <- subset_metabarlist(soil_euk, "pcrs",
+#' soil_euk_sub <- subset_metabarlist(soil_euk, "pcrs",
 #'                                     rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 #'
 #' # Visualization of within vs. between sample dissimilarities
-#' comp1 <- pcr_within_between(sample_subset)
-#' check_pcr_thresh(comp1, thresh.method = "intersect")
+#' soil_euk_sub_wb <- pcr_within_between(soil_euk_sub, "sample_id")
+#' check_pcr_thresh(soil_euk_sub_wb, thresh.method = "intersect")
 #'
 #' # visualization of replicates through PCoA
-#' sample_subset$pcrs$habitat_material <- sample_subset$pcrs$sample_id
-#' idx = match(levels(sample_subset$pcrs$habitat_material), rownames(sample_subset$samples))
-#' levels(sample_subset$pcrs$habitat_material) <- paste(sample_subset$samples$Habitat[idx],
-#'                                                      sample_subset$samples$Material[idx], sep = "|")
-#' mds <- check_pcr_repl(sample_subset,
-#'   replicates = sample_subset$pcrs$sample_id,
-#'   groups = "Habitat_Material")
-#' mds + labs(fill = "sample type")
+#' ## create grouping factor according to habitat and material
+#' soil_euk_sub$pcrs$habitat_material <- soil_euk_sub$pcrs$sample_id
+#' idx = match(levels(soil_euk_sub$pcrs$habitat_material), rownames(soil_euk_sub$samples))
+#' levels(soil_euk_sub$pcrs$habitat_material) <- paste(soil_euk_sub$samples$Habitat[idx],
+#'                                                     soil_euk_sub$samples$Material[idx], sep = " | ")
+#' ## vizualize dissimilarity patterns
+#' mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material")
+#' mds + labs(color = "sample type")
 #'
 #' # identify dysfunctional PCRs
-#' bad_pcrs <- pcrslayer(sample_subset, thresh.method = "intersect",
-#'                      replicates = sample_subset$pcrs$sample_id)
+#' bad_pcrs <- pcrslayer(soil_euk_sub, thresh.method = "intersect", replicates = "sample_id")
 #'
 #' # define a color vector that corresponds to the different habitat types. Should be named
-#' nmds <- check_pcr_repl(sample_subset$reads,
-#'   replicates = sample_subset$pcrs$sample_id,
-#'   colvec = colvec,
-#'   dyspcr = bad_pcrs
-#' )
-#' nmds + labs(fill = "sample type")
+#' mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material", dyspcr = bad_pcrs)
+#' mds + labs(color = "sample type")
 #'
 #' # identify PCRs too close to negative controls ### TO FINISH
 #' @author Lucie Zinger, Clement Lionnet
@@ -81,71 +76,65 @@
 pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot = T) {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
-    reads_table <- metabarlist$reads
+    reads_table0 <- metabarlist$reads
 
     if (!replicates %in% colnames(metabarlist$pcrs)) {
       stop("replicates should be in colnames of the metabarlist$pcr table")
     }
 
-    replicates <- metabarlist$pcrs[,replicates]
+    replicates0 <- metabarlist$pcrs[,replicates]
 
     if (thresh.method != "intersect" & thresh.method != "mode") {
       stop('thresh.method should be one of "intersect" or "mode"')
     }
 
-    subset_data <- data.frame(
-      groups = replicates, replicating = TRUE,
-      row.names = rownames(metabarlist$pcrs)
-    )
+    #vector of pcrs boolean: good = T bad = F
+    good_pcrs <- rep(T, length(replicates0))
+    names(good_pcrs) <- rownames(metabarlist$pcrs)
 
-    idx <- which(rowSums(reads_table) == 0)
-    subset_data[idx, "replicating"] <- FALSE
+    #tag empty pcrs
+    idx <- which(rowSums(reads_table0) == 0)
+    good_pcrs[idx] <- FALSE
 
     iteration <- 0
     repeat{
       iteration <- iteration + 1
       print(paste("Iteration", iteration))
 
-      reads_table <- reads_table[
-        rownames(subset_data[subset_data$replicating, ]),
-      ]
+      #get good pcrs
+      reads_table <- reads_table0[names(good_pcrs)[good_pcrs==T], ]
 
-      replicates <- subset_data[rownames(reads_table), "groups"]
+      replicates <- replicates0[which(good_pcrs==T)]
 
-      nb_bad_pcr <- length(rownames(subset_data[subset_data$replicating==F, ]))
+      nb_bad_pcr <- sum(good_pcrs==F)
       wthn_btwn <- pcr_within_between_internal(reads_table, replicates)
       thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
       if (plot == T) {
-        check_pcr_thresh(wthn_btwn, thresh.method)
+        p = check_pcr_thresh(wthn_btwn, thresh.method)
+        print(p)
       }
-      # ajoute à la liste les samples dont la valeur (dist par rapport au barycentre) est supérieure au thresh_pcr
-      # et dont la valeur est égale à la valeur max des réplicats
-      to_flag <- unname(unlist(lapply(wthn_btwn$pcr_intradist, function(y) {
+
+      #get names of pcrs not meeting quality criterion (max distance and distance > thresh_pcr)
+      to_flag <- unname(unlist(sapply(wthn_btwn$pcr_intradist, function(y) {
         names(which(y > thresh_pcr & y == max(y)))
       })))
-      subset_data[to_flag, "replicating"] <- FALSE
+      good_pcrs[to_flag] <- FALSE
 
-      # recherche les singletons dans la nouvelle matrice de reads
-      reads_table <- reads_table[
-        rownames(subset_data[subset_data$replicating, ]),
-      ]
-      replicates <- subset_data[rownames(reads_table), "groups"]
-      # dans le cas où l'on n'a qu'un seul réplicat, on ajoute a bad_pcr les rownames du réplicat
-      if (length(which(table(as.vector(replicates)) < 2)) != 0) {
-        singletons <- sapply(
-          names(which(table(as.vector(replicates)) < 2)),
-          function(x) grep(x, rownames(reads_table))
-        )
-        singletons_ids <- rownames(reads_table)[unname(singletons)]
-        subset_data[singletons_ids, "replicating"] <- FALSE
-      }
+      # spot samples having only one representative (singelton)
+      replicates_table <- as.data.frame.matrix(table(replicates0, good_pcrs))
+      singleton_sample <- rownames(replicates_table)[replicates_table$`TRUE`<2]
 
-      # stop the loop when none of replicat is added to the vector bad_pcr
-      if (length(rownames(subset_data[subset_data$replicating==F,])) == nb_bad_pcr) {
+      # update good_pcrs
+      good_pcrs[replicates0 %in% singleton_sample] <- FALSE
+
+      replicates <- replicates[which(good_pcrs==T)]
+
+      # stop iterations when no more replicate spotted
+      if(sum(good_pcrs==F) == nb_bad_pcr) {
         break
       }
     }
-    return(subset_data)
+    return(names(which(good_pcrs==F)))
   }
 }
 
@@ -254,20 +243,18 @@ check_pcr_repl <- function(metabarlist, replicates, groups = NULL, dyspcr = NULL
     if (!replicates %in% colnames(metabarlist$pcrs)) {
       stop("replicates should be in colnames of the metabarlist$pcrs table")
     }
-
     replicates <- metabarlist$pcrs[,replicates]
 
-    if (!groups %in% colnames(metabarlist$pcrs)) {
-      stop("groups should be in colnames of the metabarlist$pcrs table")
-    }
+    if (!is.null(groups)) {
+      if(!groups %in% colnames(metabarlist$pcrs)) {
+        stop("groups should be in colnames of the metabarlist$pcrs table")
+      } else {
+        groups <- metabarlist$pcrs[,groups]
+      }}
 
-    groups <- metabarlist$pcrs[,groups]
-
-    if (!dyspcr %in% colnames(metabarlist$pcrs)) {
-      stop("dyspcr should be in colnames of the metabarlist$pcrs table")
-    }
-
-    dyspcr <- ifelse(rownames(reads) %in% dyspcr, "dyspcr", "0ok")
+    if (!is.null(dyspcr)) {
+          dyspcr <- ifelse(rownames(reads) %in% dyspcr, "dyspcr", "0ok")
+      }
 
     reads_stdt <- reads/rowSums(reads)
     bar <- rowsum(reads_stdt, replicates)/as.vector(table(replicates))

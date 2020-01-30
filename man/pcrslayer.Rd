@@ -4,32 +4,38 @@
 \alias{pcrslayer}
 \alias{pcr_within_between}
 \alias{check_pcr_thresh}
+\alias{check_pcr_repl}
 \title{Detecting dysfunctional PCRs based on their reproducibility.}
 \usage{
-pcrslayer(metabarlist, replicates = metabarlist$pcrs$sample_id,
-  thresh.method = "intersect", plot = T)
+pcrslayer(metabarlist, replicates, thresh.method = "intersect",
+  plot = T)
 
-pcr_within_between(metabarlist, replicates = metabarlist$pcrs$sample_id)
+pcr_within_between(metabarlist, replicates)
 
 check_pcr_thresh(wthn.btwn, thresh.method = "intersect")
+
+check_pcr_repl(metabarlist, replicates, groups = NULL, dyspcr = NULL)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{replicates}{a factor of sample names within which replicates belong (i.e. should be a prefix/suffix of pcr replicate names).
-Default is the `sample_id` column of the table `pcrs` from the \code{\link{metabarlist}} object.}
+\item{replicates}{a column name in the `pcrs`table corresponding to the sample names to which
+pcr replicates belongs. Default is the `sample_id` column of the table `pcrs` from the
+\code{\link{metabarlist}} object.}
 
 \item{thresh.method}{a character indicating which method should be used to define the filtering threshold.}
 
-\item{plot}{a boolean indicating whether dissimilarity distribution should be plotted. Default is \code{TRUE}}
+\item{plot}{a boolean indicating whether dissimilarity distribution should be plotted.
+Default is \code{TRUE}}
 
 \item{wthn.btwn}{an ouput from \code{pcr_within_between}}
 
-\item{control}{a character vector indicating the names of controls against which PCR replicates are to be compared.}
-
-\item{colvec}{a grouping factor for coloring PCR replicates in \code{check_pcr_repl}}
+\item{groups}{a column name in the `pcrs`table corresponding to a factor giving the groups for which the
+graphical colors are drawn.}
 
 \item{dyspcr}{a character vector of the dysfunctional PCR identified by \code{pcrslayer}}
+
+\item{control}{a character vector indicating the names of controls against which PCR replicates are to be compared.}
 }
 \value{
 The \code{pcrslayer} function returns a vector of dysfunctional PCRs.
@@ -51,6 +57,8 @@ The threshold \emph{tresh} is defined automatically with two alternative methods
 
 Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 
+Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroidsthrough a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
+
 Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 }
 \section{Functions}{
@@ -60,36 +68,37 @@ Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and 
 \item \code{pcr_within_between}: Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 
 \item \code{check_pcr_thresh}: Vizualize \emph{dw} and \emph{db} dissimilarities and the threshold (defined automatically) above which pcr replicates are considered as too dissimilar.
+
+\item \code{check_pcr_repl}: Vizualize pcrs dissimilarity patterns and pcr replicates centroids.
 }}
 
 \examples{
 library(ggplot2)
 data(soil_euk)
 # consider only biological samples
-sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
+soil_euk_sub <- subset_metabarlist(soil_euk, "pcrs",
+                                    rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 
-# first visualization
-comp1 <- pcr_within_between(sample_subset)
-check_pcr_thresh(comp1, thresh.method = "intersect")
-# visualization of replicates through NMDS
-nmds <- check_pcr_repl(sample_subset$reads,
-  replicates = sample_subset$pcrs$sample_id,
-  colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|")
-)
-nmds + labs(fill = "sample type")
+# Visualization of within vs. between sample dissimilarities
+soil_euk_sub_wb <- pcr_within_between(soil_euk_sub, "sample_id")
+check_pcr_thresh(soil_euk_sub_wb, thresh.method = "intersect")
+
+# visualization of replicates through PCoA
+## create grouping factor according to habitat and material
+soil_euk_sub$pcrs$habitat_material <- soil_euk_sub$pcrs$sample_id
+idx = match(levels(soil_euk_sub$pcrs$habitat_material), rownames(soil_euk_sub$samples))
+levels(soil_euk_sub$pcrs$habitat_material) <- paste(soil_euk_sub$samples$Habitat[idx],
+                                                    soil_euk_sub$samples$Material[idx], sep = " | ")
+## vizualize dissimilarity patterns
+mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material")
+mds + labs(color = "sample type")
 
 # identify dysfunctional PCRs
-bad_pcrs <- pcrslayer(sample_subset,
-  thresh.method = "intersect",
-  replicates = sample_subset$pcrs$sample_id
-)
+bad_pcrs <- pcrslayer(soil_euk_sub, thresh.method = "intersect", replicates = "sample_id")
 
-nmds <- check_pcr_repl(sample_subset$reads,
-  replicates = sample_subset$pcrs$sample_id,
-  colvec = paste(sample_subset$samples$Habitat, sample_subset$samples$Material, sep = "|"),
-  dyspcr = bad_pcrs
-)
-nmds + labs(fill = "sample type")
+# define a color vector that corresponds to the different habitat types. Should be named
+mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material", dyspcr = bad_pcrs)
+mds + labs(color = "sample type")
 
 # identify PCRs too close to negative controls ### TO FINISH
 }
