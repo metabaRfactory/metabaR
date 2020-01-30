@@ -1,24 +1,33 @@
-#' Detecting dysfunctional PCRs.
+#' Detecting PCRs replicates outliers.
 #'
-#' Detecting dysfunctional PCRs based on their reproducibility or similarity against negative controls.
+#' Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition in MOTUs.
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
 #' @param replicates    a column name in the `pcrs`table corresponding to the sample names to which
 #'                      pcr replicates belongs. Default is the `sample_id` column of the table `pcrs` from the
 #'                      \code{\link{metabarlist}} object.
-#' @param thresh.method a character indicating which method should be used to define the filtering threshold.
+#' @param method        a character indicating which method should be used to identify PCR outliers. Can be
+#'                      \code{"centroid"} or \code{"pairwise ##WARNING NOT IMPLEMENTED"}.
+#' @param thresh.method a character indicating which method should be used to define the filtering threshold. Can be
+#'                      \code{"interesect"} or \code{"mode"}.
 #' @param plot          a boolean indicating whether dissimilarity distribution should be plotted.
 #'                      Default is \code{TRUE}
 #' @param wthn.btwn     an ouput from \code{pcr_within_between}
 #' @param groups        a column name in the `pcrs`table corresponding to a factor giving the groups for which the
 #'                      graphical colors are drawn.
-#' @param dyspcr        a character vector of the dysfunctional PCR identified by \code{pcrslayer}
-#' @param control       a character vector indicating the names of controls against which PCR replicates are to be compared. #### TO FINISH
+#' @param outliers      a character vector of the PCR outliers identified by \code{pcrslayer}
 #'
 #' @details
 #'
-#' The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered to be too distant from its associated average OTU community and are excluded from the analysis. The whole process is repeated iteratively until no more PCR are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
+#' The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}).
+#'
+#'\itemize{
+#' \item{With method \code{"centroid"}, a PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community and are is from the analysis.}
+#' \item{With method \code{pairwise} ## to FINISH NOT IMPLEMENTED YET}
+#' }
+#'
+#' For both methods, the whole process of PCR outlier identification is repeated iteratively until no more PCRs are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
 #'
 #' The \code{pcr_within_between} function computes dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}. It first consists inconstructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples.
 #'
@@ -29,7 +38,6 @@
 #'
 #' Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroidsthrough a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
 #'
-#' Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 #'
 #' @return
 #'
@@ -67,13 +75,18 @@
 #' mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material", dyspcr = bad_pcrs)
 #' mds + labs(color = "sample type")
 #'
-#' # identify PCRs too close to negative controls ### TO FINISH
-#' @author Lucie Zinger, Clement Lionnet
+#' @author Lucie Zinger, Clement Lionnet, Fred Boyer
 #' @importFrom vegan vegdist
-#' @describeIn pcrslayer Detect dysfunctional PCRs in a \code{\link{metabarlist}} object.
+#' @describeIn pcrslayer Detect dysfunctional PCRs, i.e. PCR outliers in a \code{\link{metabarlist}} object.
 #' @export pcrslayer
 
-pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot = T) {
+pcrslayer <- function(metabarlist, replicates, method="centroids", thresh.method = "intersect", plot = T) {
+
+  if (!all(c("centroids", "pairwise") %in% method)) {
+    stop('method should be either "centroids" or "pairwise"')
+  }
+
+  if(method == "centroids") {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     reads_table0 <- metabarlist$reads
@@ -84,7 +97,7 @@ pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot
 
     replicates0 <- metabarlist$pcrs[,replicates]
 
-    if (thresh.method != "intersect" & thresh.method != "mode") {
+    if (!all(c("intersect", "mode") %in% thresh.method)) {
       stop('thresh.method should be one of "intersect" or "mode"')
     }
 
@@ -134,8 +147,12 @@ pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot
         break
       }
     }
+    #### warning if more than 20% of replicates are removed
+    if (sum(good_pcrs==F) / length(replicates0) > 0.2) {
+      warning("More than 20% of pcr replicates are removed !")
+    }
     return(names(which(good_pcrs==F)))
-  }
+  }}
 }
 
 
@@ -284,29 +301,3 @@ check_pcr_repl <- function(metabarlist, replicates, groups = NULL, dyspcr = NULL
            shape="PCR type")
   }
 }
-
-# pcr_controls = function(x, replicates, thresh.pcr, plot=T) {
-#
-#   x.n = decostand(x, MARGIN = 1, "total")
-#   x.dist = vegdist(x.n, "bray")
-#
-#   x.dist.list = data.frame(t(combn(labels(x.dist),2)), dist=as.vector(x.dist))
-#   x.dist.list$X1.type = replicates[match(x.dist.list$X1, rownames(x))]
-#   x.dist.list$X2.type = replicates[match(x.dist.list$X2, rownames(x))]
-#
-#   #here intradist should be within control  while between should be between samples and controls
-#   x.dist.list$comp = ifelse(x.dist.list$X1.type==x.dist.list$X1.type & x.dist.list$X1 %in% control, "control",
-#                             ifelse(x.dist.list$X1.type==x.dist.list$X2.type &
-#                                      !x.dist.list$X1.type %in% control, "sample", "between"))
-#   out = list(pcr_intradist = x.dist.list$dist[which(x.dist.list$comp=="control")],
-#              bar_dist = x.dist.list$dist[which(x.dist.list$comp=="between")])
-#
-#   thresh.pcr = pcr_threshold_estimate(out, thresh.pcr)
-#   if(plot==T) {
-#     check_pcr_thresh(out, thresh.pcr)
-#   }
-#   bad.all = unique(sort(unlist(x.dist.list[x.dist.list$comp=="between" &
-#                                              x.dist.list$dist < thresh.pcr, c("X1", "X2")])))
-#   bad_pcr = as.vector(bad.all[which(bad.all %in% rownames(x.n)[which(replicates==control)]==F)])
-#   return(bad_pcr)
-# }

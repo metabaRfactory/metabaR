@@ -5,10 +5,10 @@
 \alias{pcr_within_between}
 \alias{check_pcr_thresh}
 \alias{check_pcr_repl}
-\title{Detecting dysfunctional PCRs.}
+\title{Detecting PCRs replicates outliers.}
 \usage{
-pcrslayer(metabarlist, replicates, thresh.method = "intersect",
-  plot = T)
+pcrslayer(metabarlist, replicates, method = "centroids",
+  thresh.method = "intersect", plot = T)
 
 pcr_within_between(metabarlist, replicates)
 
@@ -23,7 +23,11 @@ check_pcr_repl(metabarlist, replicates, groups = NULL, dyspcr = NULL)
 pcr replicates belongs. Default is the `sample_id` column of the table `pcrs` from the
 \code{\link{metabarlist}} object.}
 
-\item{thresh.method}{a character indicating which method should be used to define the filtering threshold.}
+\item{method}{a character indicating which method should be used to identify PCR outliers. Can be
+\code{"centroid"} or \code{"pairwise ##WARNING NOT IMPLEMENTED"}.}
+
+\item{thresh.method}{a character indicating which method should be used to define the filtering threshold. Can be
+\code{"interesect"} or \code{"mode"}.}
 
 \item{plot}{a boolean indicating whether dissimilarity distribution should be plotted.
 Default is \code{TRUE}}
@@ -33,9 +37,7 @@ Default is \code{TRUE}}
 \item{groups}{a column name in the `pcrs`table corresponding to a factor giving the groups for which the
 graphical colors are drawn.}
 
-\item{dyspcr}{a character vector of the dysfunctional PCR identified by \code{pcrslayer}}
-
-\item{control}{a character vector indicating the names of controls against which PCR replicates are to be compared. #### TO FINISH}
+\item{outliers}{a character vector of the PCR outliers identified by \code{pcrslayer}}
 }
 \value{
 The \code{pcrslayer} function returns a vector of dysfunctional PCRs.
@@ -45,10 +47,17 @@ The \code{pcr_within_between} function returns a list of dissimilarities \emph{d
 The \code{check_pcr_thresh} and  \code{check_pcr_repl} functions returns \code{ggplot} objects.
 }
 \description{
-Detecting dysfunctional PCRs based on their reproducibility or similarity against negative controls.
+Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition in MOTUs.
 }
 \details{
-The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered to be too distant from its associated average OTU community and are excluded from the analysis. The whole process is repeated iteratively until no more PCR are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
+The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}).
+
+\itemize{
+\item{With method \code{"centroid"}, a PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community and are is from the analysis.}
+\item{With method \code{pairwise} ## to FINISH NOT IMPLEMENTED YET}
+}
+
+For both methods, the whole process of PCR outlier identification is repeated iteratively until no more PCRs are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
 
 The \code{pcr_within_between} function computes dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}. It first consists inconstructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples.
 
@@ -58,12 +67,10 @@ The threshold \emph{tresh} is defined automatically with two alternative methods
 Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 
 Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroidsthrough a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
-
-Function \code{pcr_control} is another way of detecting dysfunctional PCRs, and considers that any PCR replicate that is too similar to any control amplicon (blank or mock community) is dysfunctional. Note that this function will not be appropriate if one or more controls are contaminated with the DNA from biological samples (e.g. cross-contaminations). ### TO FINISH
 }
 \section{Functions}{
 \itemize{
-\item \code{pcrslayer}: Detect dysfunctional PCRs in a \code{\link{metabarlist}} object.
+\item \code{pcrslayer}: Detect dysfunctional PCRs, i.e. PCR outliers in a \code{\link{metabarlist}} object.
 
 \item \code{pcr_within_between}: Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 
@@ -100,8 +107,7 @@ bad_pcrs <- pcrslayer(soil_euk_sub, thresh.method = "intersect", replicates = "s
 mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material", dyspcr = bad_pcrs)
 mds + labs(color = "sample type")
 
-# identify PCRs too close to negative controls ### TO FINISH
 }
 \author{
-Lucie Zinger, Clement Lionnet
+Lucie Zinger, Clement Lionnet, Fred Boyer
 }
