@@ -8,7 +8,7 @@
 #'                      pcr replicates belongs. Default is the `sample_id` column of the table `pcrs` from the
 #'                      \code{\link{metabarlist}} object.
 #' @param method        a character indicating which method should be used to identify PCR outliers. Can be
-#'                      \code{"centroid"} or \code{"pairwise ##WARNING NOT IMPLEMENTED"}.
+#'                      \code{"centroid"} or \code{"centroid_ordi ## LZ: to implement if relevant"}.
 #' @param thresh.method a character indicating which method should be used to define the filtering threshold. Can be
 #'                      \code{"interesect"} or \code{"mode"}.
 #' @param plot          a boolean indicating whether dissimilarity distribution should be plotted.
@@ -23,11 +23,9 @@
 #' The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}).
 #'
 #'\itemize{
-#' \item{With method \code{"centroid"}, a PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community and are is from the analysis.}
-#' \item{With method \code{pairwise} ## to FINISH NOT IMPLEMENTED YET}
+#' \item{With method \code{"centroid"}, a PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community and are is from the analysis. The process is repeated iteratively until no more PCRs are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.}
+#' \item{With method \code{"centroid_ordi"} ## LZ: to include here, but still have doubts because of (i) the double transfo and (ii) the fact that at the end, only part of the variability is accounted for. We could also implement a "pairwise" method, which I tried, but then the form of the distribution are very different and the threshold estimate method not reliable > need to chose the threshold by hand. We could also implement a "pairwise method", but after giving it a try, the method of threshold detection cannot be used because the distributions are much dirtier (unbalanced amount of distances within and between + inflation of # of comparisons per pcr => always a bimodal-like distribution) so that would require adding a manual selection of the threshold...}
 #' }
-#'
-#' For both methods, the whole process of PCR outlier identification is repeated iteratively until no more PCRs are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.
 #'
 #' The \code{pcr_within_between} function computes dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}. It first consists inconstructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples.
 #'
@@ -36,7 +34,7 @@
 #'
 #' Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 #'
-#' Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroidsthrough a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
+#' Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroids through a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
 #'
 #'
 #' @return
@@ -80,13 +78,7 @@
 #' @describeIn pcrslayer Detect dysfunctional PCRs, i.e. PCR outliers in a \code{\link{metabarlist}} object.
 #' @export pcrslayer
 
-pcrslayer <- function(metabarlist, replicates, method="centroids", thresh.method = "intersect", plot = T) {
-
-  if (!all(c("centroids", "pairwise") %in% method)) {
-    stop('method should be either "centroids" or "pairwise"')
-  }
-
-  if(method == "centroids") {
+pcrslayer <- function(metabarlist, replicates, thresh.method = "intersect", plot = T) {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     reads_table0 <- metabarlist$reads
@@ -152,7 +144,7 @@ pcrslayer <- function(metabarlist, replicates, method="centroids", thresh.method
       warning("More than 20% of pcr replicates are removed !")
     }
     return(names(which(good_pcrs==F)))
-  }}
+    }
 }
 
 
@@ -171,6 +163,7 @@ pcr_within_between <- function(metabarlist, replicates) {
     replicates <- metabarlist$pcrs[,replicates]
 
     out = pcr_within_between_internal(reads_table, replicates)
+
     return(out)
   }
 }
@@ -178,14 +171,15 @@ pcr_within_between <- function(metabarlist, replicates) {
 
 #internal function pcr_within_between
 pcr_within_between_internal <- function(reads, replicates) {
-  # barycentre calculation and intradist function
-  # data standardization
-  reads_stdt <- reads/rowSums(reads)
 
-  bar <- rowsum(reads_stdt, replicates)/as.vector(table(replicates))
+    # barycentre calculation and intradist function
+    # data standardization
+    reads_stdt <- reads/rowSums(reads)
 
-  # between barycentre distances
-  bar_dist <- vegdist(bar, "bray")
+    bar <- rowsum(reads_stdt, replicates)/as.vector(table(replicates))
+
+    # between barycentre distances
+    bar_dist <- vegdist(bar, "bray")
 
   # within replicates distances
   pcr_intradist <- lapply(1:nrow(bar), function(x) {
@@ -198,6 +192,7 @@ pcr_within_between_internal <- function(reads, replicates) {
   })
   names(pcr_intradist) <- rownames(bar)
   return(list(bar_dist = bar_dist, pcr_intradist = pcr_intradist))
+
 }
 
 #' @describeIn pcrslayer Vizualize \emph{dw} and \emph{db} dissimilarities and the threshold (defined automatically) above which pcr replicates are considered as too dissimilar.
