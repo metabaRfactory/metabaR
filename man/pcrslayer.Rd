@@ -7,10 +7,11 @@
 \alias{check_pcr_repl}
 \title{Detecting PCRs replicates outliers.}
 \usage{
-pcrslayer(metabarlist, replicates, thresh.method = "intersect",
-  plot = T)
+pcrslayer(metabarlist, replicates = "sample_id", method = "centroid",
+  thresh.method = "intersect", plot = T)
 
-pcr_within_between(metabarlist, replicates)
+pcr_within_between(metabarlist, replicates = "sample_id",
+  method = "centroid")
 
 check_pcr_thresh(wthn.btwn, thresh.method = "intersect")
 
@@ -23,6 +24,9 @@ check_pcr_repl(metabarlist, replicates, groups = NULL, dyspcr = NULL)
 pcr replicates belongs. Default is the `sample_id` column of the table `pcrs` from the
 \code{\link{metabarlist}} object.}
 
+\item{method}{a character indicating which method should be used to identify PCR outliers. Can be
+\code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.}
+
 \item{thresh.method}{a character indicating which method should be used to define the filtering threshold. Can be
 \code{"interesect"} or \code{"mode"}.}
 
@@ -33,9 +37,6 @@ Default is \code{TRUE}}
 
 \item{groups}{a column name in the `pcrs`table corresponding to a factor giving the groups for which the
 graphical colors are drawn.}
-
-\item{method}{a character indicating which method should be used to identify PCR outliers. Can be
-\code{"centroid"} or \code{"centroid_ordi ## LZ: to implement if relevant"}.}
 
 \item{outliers}{a character vector of the PCR outliers identified by \code{pcrslayer}}
 }
@@ -50,15 +51,18 @@ The \code{check_pcr_thresh} and  \code{check_pcr_repl} functions returns \code{g
 Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition in MOTUs.
 }
 \details{
-The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}).
+The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). Two methods for computing \emph{dw} and \emph{db} are available.
 
 \itemize{
-\item{With method \code{"centroid"}, a PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community and are is from the analysis. The process is repeated iteratively until no more PCRs are excluded from the analysis. If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR.}
-\item{With method \code{"centroid_ordi"} ## LZ: to include here, but still have doubts because of (i) the double transfo and (ii) the fact that at the end, only part of the variability is accounted for. We could also implement a "pairwise" method, which I tried, but then the form of the distribution are very different and the threshold estimate method not reliable > need to chose the threshold by hand. We could also implement a "pairwise method", but after giving it a try, the method of threshold detection cannot be used because the distributions are much dirtier (unbalanced amount of distances within and between + inflation of # of comparisons per pcr => always a bimodal-like distribution) so that would require adding a manual selection of the threshold...}
+\item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the sample centroid. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
+\item{With method \code{"pairwise"}, pairwise distances between all PCR replicates are computed and then classified into \emph{dw} or \emph{db} depending on the pair considered. A PCR replicate having a an average \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated replicates (\code{method="pairwise"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. In this case, no iterations are done ## LZ: maybe should be done, as the average value of dw can change depending on what is included. However, this would require rewriting the whole thing so that to avoid computing the distance matrix at each iteration (it's only the mean that should be computed)}
+
+For both methods, the distances are computed with the Bray-Curtis index on data standardized by the total number of reads per pcr.
+
+## LZ: Fred's coa method to include too?
 }
 
-The \code{pcr_within_between} function computes dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}. It first consists inconstructing an average OTU community for each biological sample by averaging the OTUs abundances of PCR replicates from the same biological sample. Dissimilarities \emph{dw} are then defined as the pairwise Bray-Curtis dissimilarities between PCR replicates with their associated average OTU community. Dissimilarities \emph{db} correspond to the pairwise Bray-Curtis dissimilarities between average OTU communites from the different biological samples.
-
+The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"}
 
 The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Or it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
 
@@ -91,7 +95,7 @@ check_pcr_thresh(soil_euk_sub_wb, thresh.method = "intersect")
 # visualization of replicates through PCoA
 ## create grouping factor according to habitat and material
 soil_euk_sub$pcrs$habitat_material <- soil_euk_sub$pcrs$sample_id
-idx = match(levels(soil_euk_sub$pcrs$habitat_material), rownames(soil_euk_sub$samples))
+idx <- match(levels(soil_euk_sub$pcrs$habitat_material), rownames(soil_euk_sub$samples))
 levels(soil_euk_sub$pcrs$habitat_material) <- paste(soil_euk_sub$samples$Habitat[idx],
                                                     soil_euk_sub$samples$Material[idx], sep = " | ")
 ## vizualize dissimilarity patterns
