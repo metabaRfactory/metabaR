@@ -154,13 +154,6 @@ pcrslayer <- function(metabarlist, replicates="sample_id", method="centroid", th
       replicates <- replicates0
 
       wthn_btwn <- pcr_within_between_internal(reads_table, replicates, method)
-
-      iteration <- 0
-
-      repeat{
-        iteration <- iteration + 1
-        print(paste("Iteration", iteration))
-
       thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
       if (plot == T) {
         p = check_pcr_thresh(wthn_btwn, thresh.method)
@@ -187,7 +180,6 @@ pcrslayer <- function(metabarlist, replicates="sample_id", method="centroid", th
     }
     return(names(which(good_pcrs==F)))
     }
-  }
 }
 
 
