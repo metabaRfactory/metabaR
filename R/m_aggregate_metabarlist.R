@@ -77,7 +77,8 @@ aggregate_metabarlist <- function(metabarlist, groups="sample_id", method="sum")
       apply(sub, 2, function(x) ifelse(length(unique(x))==1, x[1], NA))
     })))
 
-    pcr.out$plate_no = ifelse(is.na(pcr.out$plate_no), 0, pcr.out$plate_no)
+    pcr.out$plate_no = 1:nrow(pcr.out)
+    #not ideal but used to deal with check_metabarlist who requires numerics and non duplicated
 
     motus.out <- metabarlist$motus[colnames(reads.out),]
     sample.out <- metabarlist$samples[rownames(reads.out[pcr.out$type=="sample",]),]
