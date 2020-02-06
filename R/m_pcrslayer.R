@@ -39,7 +39,7 @@
 #'
 #' Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroids through a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
 #'
-#' ##TODO method="pairwise": maybe iteration should be done as the average value of dw can change depending on what is remaining. However, this would require rewriting the whole thing so that to avoid computing the distance matrix at each iteration it's only the mean that should be computed.
+#' ##TODO method="pairwise": maybe iteration should be done as the average value of dw can change depending on what is remaining. However, this would require rewriting the whole thing so that to avoid computing the distance matrix at each iteration it's only the mean that should be computed. Also to discuss: wether we shoudl use mean distance with replicates or summed distances with replicates (in Fred's function).
 #'
 #' @return
 #'
