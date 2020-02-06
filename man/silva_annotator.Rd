@@ -14,7 +14,7 @@ silva_annotator(metabarlist, silva.path, clust.path)
 \item{clust.path}{path to a file from the SilvaNgs pipeline indicating otu cluster membership zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr}
 }
 \value{
-a \code{metabarlist} object with a dataframe motus including the taxonomic assignemnts from silva
+a \code{metabarlist} object with a dataframe motus including the taxonomic assignements from silva
 }
 \description{
 Importing and formatting taxonomic annotations obtained with the SILVANgs pipeline (https://ngs.arb-silva.de/silvangs/) for a \code{\link{metabarlist}} object.
@@ -27,15 +27,13 @@ Users can be interested in using the SILVAngs pipeline for assigning a taxon to 
 }
 }
 \examples{
-data(soil_euk)
 
 \dontrun{
-soil_euk = silva_annotator(
+data(soil_euk)
+soil_euk <- metabaRffe:::silva_annotator(
    metabarlist = soil_euk,
    silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
-   clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr",
-   web=F
-   )
+   clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
 
 ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
   geom_bar() + coord_polar("y") +

@@ -8,7 +8,7 @@
 #' @param clust.path   path to a file from the SilvaNgs pipeline indicating otu cluster membership zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr
 #' @name silva_annotator
 #'
-#' @return a \code{metabarlist} object with a dataframe motus including the taxonomic assignemnts from silva
+#' @return a \code{metabarlist} object with a dataframe motus including the taxonomic assignements from silva
 #'
 #' @details
 #'
@@ -19,15 +19,13 @@
 #' }
 #'
 #' @examples
-#' data(soil_euk)
 #'
 #' \dontrun{
-#' soil_euk = silva_annotator(
+#' data(soil_euk)
+#' soil_euk <- metabaRffe:::silva_annotator(
 #'    metabarlist = soil_euk,
 #'    silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
-#'    clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr",
-#'    web=F
-#'    )
+#'    clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
 #'
 #'ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
 #'   geom_bar() + coord_polar("y") +
@@ -36,8 +34,6 @@
 #'}
 #' @author Lucie Zinger, Anne-Sophie Benoiston
 #' @importFrom seqinr read.fasta
-#' @export silva_annotator
-#'
 
 silva_annotator <- function(metabarlist, silva.path, clust.path) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
