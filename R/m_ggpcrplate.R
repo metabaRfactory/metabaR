@@ -35,9 +35,7 @@
 
 
 ggpcrplate <- function(metabarlist, legend_title = "well_values",
-                       FUN = function(metabarlist) {
-                         rowSums(metabarlist$reads)
-                       }) {
+                       FUN = function(metabarlist) {rowSums(metabarlist$reads)}) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     function_values <- FUN(metabarlist)
 
