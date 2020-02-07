@@ -29,7 +29,7 @@
 #'     m$reads[, which.max(colSums(m$reads))]
 #'   }
 #' )
-#' @author Lucie Zinger
+#' @author Lucie Zinger, Clément Lionnet
 #' @import ggplot2
 #' @export ggpcrplate
 
