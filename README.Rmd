@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 ![MetabarF banner](metabaRF.png)
 
-*MetabaR-F* is an \R package enabling importing, handling and postprocessing metabarcoding data that have been already processed through bioinformatic pipelines. It provides functions to reveal and filter common molecular artifacts produced during the experimental workflow. 
+*MetabaR-F* is a \R package enabling importing, handling and postprocessing metabarcoding data that have been already processed through bioinformatic pipelines. It provides functions to reveal and filter common molecular artifacts produced during the experimental workflow. 
 
 Due to its simplicity of structure, this package can be easily used in combination with others \R packages commonly used in ecology (*vegan*, *ade4*, *ape*, *picante*, etc.), and provides flexible graphic systems based on *ggplot2* to vizualize the data under both ecological and experimental perspectives.
 
@@ -56,7 +56,7 @@ Pacakge dependencies:
 This is a basic example of use:
 
 ```{r example}
-# library(metabaR-F)
-# data(soil_euk)
-# basic example code TO PROVIDE
+library(metabaR-F)
+data(soil_euk)
+summary_metabarlist(soil_euk)
 ```
