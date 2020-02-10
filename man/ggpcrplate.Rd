@@ -40,5 +40,5 @@ ggpcrplate(soil_euk,
 )
 }
 \author{
-Lucie Zinger
+Lucie Zinger, Clément Lionnet
 }
