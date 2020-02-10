@@ -2,7 +2,5 @@ base
 metabaRffe
 ggplot2
 reshape2
-permute
-lattice
-vegan
 kableExtra
+cowplot
