@@ -1,4 +1,4 @@
-#' Detecting genuine MOTUs from contaminations using negative controls
+#' Separating genuine MOTUs from contaminations using negative controls
 #'
 #' Uses negative controls to determine if MOTUs in a \code{\link{metabarlist}} object are most likely genuine or most likely contaminants.
 #'
@@ -29,7 +29,7 @@
 #' head(out$motus[which(out$motus$not_contamination==F),])
 #' length(which(out$motus$not_contamination==F))
 #'
-#' # Distribution of the most abundant contaminants in the PCR plate design
+#' # Distribution of the most abundant contaminant MOTU in the PCR plate design
 #' max.conta <- rownames(out$motus)[out$motus$not_contamination==F][which.max(out$motus[contaminant, "count"])]
 #'
 #' p <- ggpcrplate(soil_euk,

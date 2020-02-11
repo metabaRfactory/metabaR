@@ -2,7 +2,7 @@
 % Please edit documentation in R/m_contaslayer.R
 \name{contaslayer}
 \alias{contaslayer}
-\title{Detecting genuine MOTUs from contaminations using negative controls}
+\title{Separating genuine MOTUs from contaminations using negative controls}
 \usage{
 contaslayer(metabarlist, method = "max", control_types = c("pcr",
   "extraction"), controls = NULL, output_col = "not_contamination")
@@ -39,7 +39,7 @@ tail(colnames(out$motus))
 head(out$motus[which(out$motus$not_contamination==F),])
 length(which(out$motus$not_contamination==F))
 
-# Distribution of the most abundant contaminants in the PCR plate design
+# Distribution of the most abundant contaminant MOTU in the PCR plate design
 max.conta <- rownames(out$motus)[out$motus$not_contamination==F][which.max(out$motus[contaminant, "count"])]
 
 p <- ggpcrplate(soil_euk,
