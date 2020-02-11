@@ -2,30 +2,35 @@
 % Please edit documentation in R/m_fasta_generator.R
 \name{fasta_generator}
 \alias{fasta_generator}
-\title{Generate a fasta file on a subset of sequences}
+\title{Generate a fasta file from a metabarlist object}
 \usage{
 fasta_generator(metabarlist, id = rownames(metabarlist$motus),
-  output_file = NULL, annotation = NULL, annot_sep = " ")
+  output_file = NULL, annotation = NULL, annot_sep = ";")
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object (Required)}
+\item{metabarlist}{a \code{\link{metabarlist}} object.}
 
-\item{id}{a character vector containing identifiers for the OTUs of interest. Default: rownames(metabarlist$motus)}
+\item{id}{a character vector containing identifiers for the MOTUs of interest. Default is rownames(metabarlist$motus)}
 
-\item{output_file}{the path/name of the output file. (Required)}
+\item{output_file}{the path/name of the output file.}
 
-\item{annotation}{a dataframe containing the additional information adding in the header. Each row name is an OTU identifiers and each column header is the information key (correspond to "key=" in the fasta header). Default: NULL}
+\item{annotation}{a data frame containing the additional information to be added in the header. Each row name is a MOTU identifier and each column header is the information key (correspond to "key=" in the fasta header). Default: NULL}
 
-\item{annot_sep}{the annotation separator. Default: " "}
+\item{annot_sep}{the annotation separator. Default is ";"}
 }
 \value{
 a fasta file
 }
 \description{
-Generate a fasta file on a subset of OTUs from a \code{\link{TODEFINE}} object.
+Generate a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
 }
 \details{
-Creates a fasta file from a set of sequences of interest. Obviously, \code{id} and \code{seq} vectors should be in agreement. The header can easily be amended with further information with e.g. \code{paste}.
+Creates a fasta file from a set of sequences of interest. One to several sequence information can be added in the sequence header through the `annotation` table. Using the default parameters, the resulting fasta file will have the following format:
+
+>Seq_id1 abundance=83079; GC=47
+tcaatctcgtgtgactaaacgccacttgtccctctaagaagttacgccgacagaatgcgatcggcgaactatttagcaggctagagtctcgttcgttat
+>Seq_id2 abundance=120520; GC=55
+ctcaaacttccttggcctggaaggccatagtccctctaagaagctggccgcggagggtcacctccgcatagctagttagcaggctgaggtctcgttcgttaa
 }
 \examples{
 
@@ -33,15 +38,14 @@ data(soil_euk)
 
 # export in fasta the 10 most abundant MOTUs
 idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
-fasta_generator(
-  soil_euk, rownames(soil_euk$motus)[idx],
+fasta_generator(soil_euk, rownames(soil_euk$motus)[idx],
   "Dominants.fasta"
 )
 
-# export in fasta the 10 most abundant MOTUs and their abundance
-idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
+# export in fasta the 10 most abundant MOTUs, their abundance and the GC content of the corresponding sequence
 annotation <- data.frame(
   abundance = soil_euk$motus$count[idx],
+  GC_content = soil_euk$motus$GC_content[idx],
   row.names = rownames(soil_euk$motus)[idx]
 )
 fasta_generator(
@@ -51,5 +55,5 @@ fasta_generator(
 )
 }
 \author{
-Lucie Zinger
+Lucie Zinger, Clément Lionnet
 }
