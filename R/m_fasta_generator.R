@@ -1,19 +1,24 @@
-#' Generate a fasta file on a subset of sequences
+#' Generate a fasta file from a metabarlist object
 #'
-#' Generate a fasta file on a subset of OTUs from a \code{\link{TODEFINE}} object.
+#' Generate a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
 #'
-#' @param metabarlist   a \code{\link{metabarlist}} object (Required)
-#' @param id            a character vector containing identifiers for the OTUs of interest. Default: rownames(metabarlist$motus)
-#' @param output_file   the path/name of the output file. (Required)
-#' @param annotation    a dataframe containing the additional information adding in the header. Each row name is an OTU identifiers and each column header is the information key (correspond to "key=" in the fasta header). Default: NULL
-#' @param annot_sep     the annotation separator. Default: " "
+#' @param metabarlist   a \code{\link{metabarlist}} object.
+#' @param id            a character vector containing identifiers for the MOTUs of interest. Default is rownames(metabarlist$motus)
+#' @param output_file   the path/name of the output file.
+#' @param annotation    a data frame containing the additional information to be added in the header. Each row name is a MOTU identifier and each column header is the information key (correspond to "key=" in the fasta header). Default: NULL
+#' @param annot_sep     the annotation separator. Default is ";"
 #'
 #' @name fasta_generator
 #'
 #' @return a fasta file
 #'
 #' @details
-#' Creates a fasta file from a set of sequences of interest. Obviously, \code{id} and \code{seq} vectors should be in agreement. The header can easily be amended with further information with e.g. \code{paste}.
+#' Creates a fasta file from a set of sequences of interest. One to several sequence information can be added in the sequence header through the `annotation` table. Using the default parameters, the resulting fasta file will have the following format:
+#'
+#'>Seq_id1 abundance=83079; GC=47
+#'tcaatctcgtgtgactaaacgccacttgtccctctaagaagttacgccgacagaatgcgatcggcgaactatttagcaggctagagtctcgttcgttat
+#'>Seq_id2 abundance=120520; GC=55
+#'ctcaaacttccttggcctggaaggccatagtccctctaagaagctggccgcggagggtcacctccgcatagctagttagcaggctgaggtctcgttcgttaa
 #'
 #' @examples
 #'
@@ -21,15 +26,14 @@
 #'
 #' # export in fasta the 10 most abundant MOTUs
 #' idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
-#' fasta_generator(
-#'   soil_euk, rownames(soil_euk$motus)[idx],
+#' fasta_generator(soil_euk, rownames(soil_euk$motus)[idx],
 #'   "Dominants.fasta"
 #' )
 #'
-#' # export in fasta the 10 most abundant MOTUs and their abundance
-#' idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
+#' # export in fasta the 10 most abundant MOTUs, their abundance and the GC content of the corresponding sequence
 #' annotation <- data.frame(
 #'   abundance = soil_euk$motus$count[idx],
+#'   GC_content = soil_euk$motus$GC_content[idx],
 #'   row.names = rownames(soil_euk$motus)[idx]
 #' )
 #' fasta_generator(
@@ -37,30 +41,30 @@
 #'   "Dominants.fasta",
 #'   annotation
 #' )
-#' @author Lucie Zinger
+#' @author Lucie Zinger, Clément Lionnet
 #' @export fasta_generator
 
-fasta_generator <- function(metabarlist, id = rownames(metabarlist$motus), output_file = NULL, annotation = NULL, annot_sep = " ") {
+fasta_generator <- function(metabarlist, id = rownames(metabarlist$motus), output_file = NULL, annotation = NULL, annot_sep = ";") {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     if (is.null(output_file)) {
-      stop("The output_file is required!")
+      stop("output_file is required!")
     }
 
     if (!all(id %in% rownames(metabarlist$motus))) {
-      stop("All identifiers must correspond exactly to rows of metabarlist$motus")
+      stop("elements of id (MOTUs identifiers to select) must be in the rownames of metabarlist$motus")
     }
 
     if (!is.null(annotation)) {
       if (!all(id %in% rownames(annotation))) {
-        stop("All identifiers must correspond exactly to rows of annotation")
+        stop("elements of id (identifiers of the MOTUs to select) must be in the rownames of the 'annotation' data.frame")
       }
 
       header_annot <- apply(annotation, 1, function(x) {
-        paste(names(x), x, sep = "=", collapse = annot_sep)
+        paste(paste(" ", names(x), sep=""), x, sep = "=", collapse = annot_sep)
       })
       header <- sapply(id, function(x) {
         bh <- paste(">", x, sep = "")
-        paste(bh, header_annot[x], sep = annot_sep)
+        paste(bh, header_annot[x], sep = "") #output as obitools.
       })
     }
     else {
@@ -82,23 +86,3 @@ fasta_generator <- function(metabarlist, id = rownames(metabarlist$motus), outpu
   }
 }
 
-
-# fasta_generator <- function(id, seq, output_file = NULL) {
-#   if (is.null(output_file)) {
-#     stop("The output_file is required!")
-#   }
-#   if (length(id) != length(seq)) {
-#     stop("id and seq should be of the same length")
-#   }
-#
-#   if (file.exists(output_file)) {
-#     file.remove(output_file)
-#   }
-#   file.create(output_file)
-#
-#   for (i in 1:length(id)) {
-#     cat(paste(">", id[i], "\n", seq[i], "\n", sep = ""),
-#       file = output_file, append = T
-#     )
-#   }
-# }
