@@ -18,7 +18,7 @@ gghill_rarefaction(hill_rar, group = NULL)
 
 \item{hill_rar}{an object of class \code{"hill_rarefaction"}.}
 
-\item{group}{a vector or factor giving the grouping of each pcr included in the \code{"hill_rarefaction"} object. Missing values will be treated as another group and a warning will be given. The names of each elements should be defined and correspond to the non duplicated names of pcr included in the hill_rar object. Default is `NULL` for no grouping.}
+\item{group}{a vector or factor giving the grouping of each pcr included in the \code{"hill_rarefaction"} object. Missing values will be treated as another group and a warning will be given. The elements should correspond to the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no grouping.}
 }
 \value{
 Function \code{hill_rarefaction} returns an object of class \code{"hill_rarefaction"}, which corresponds to a table of diversity indices for each pcr rarefied at each `nsteps`  sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
@@ -53,8 +53,9 @@ data(soil_euk)
 
 # Create a subset of pcrs: only a subset of samples from the H20 plot
 
-h20_id <- rownames(soil_euk$pcrs)[grep("H20-[A-B]", rownames(soil_euk$pcrs))]
-soil_euk_h20 <- subset_metabarlist(soil_euk, table = "pcrs", indices = h20_id)
+soil_euk_h20 <- subset_metabarlist(soil_euk,
+   table = "pcrs",
+   indices = grepl("H20-[A-B]", rownames(soil_euk$pcrs)))
 
 # run rarefaction (use boot = 20 to limit computation time, should be more)
 soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
@@ -63,15 +64,13 @@ soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
 gghill_rarefaction(soil_euk_h20.raref)
 
 # plot the results while differenciating litter vs. soil samples
-material <- setNames(
-  soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))],
-  rownames(soil_euk_h20$pcrs)
-)
-p <- gghill_rarefaction(soil_euk_h20.raref, group = material)
+p <- gghill_rarefaction(soil_euk_h20.raref,
+    group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))])
 p
 p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
   labs(color = "Material type")
+
 }
 \references{
 Chao, A., Chiu, C. H., & Jost, L. (2014). Unifying species diversity, phylogenetic diversity, functional diversity, and related similarity and differentiation measures through Hill numbers. Annual review of ecology, evolution, and systematics, 45, 297-324.

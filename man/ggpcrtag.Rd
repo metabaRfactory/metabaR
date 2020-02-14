@@ -37,7 +37,7 @@ ggpcrtag(soil_euk)
 ggpcrtag(soil_euk,
   legend_title = "#reads of most\\nabundant MOTU",
   FUN = function(m) {
-    m$reads[, which.max(colSums(m$reads))]
+    m$reads[,which.max(colSums(m$reads))]
   }
 )
 }

@@ -32,8 +32,9 @@
 #'
 #' # Create a subset of pcrs: only a subset of samples from the H20 plot
 #'
-#' h20_id <- rownames(soil_euk$pcrs)[grep("H20-[A-B]", rownames(soil_euk$pcrs))]
-#' soil_euk_h20 <- subset_metabarlist(soil_euk, table = "pcrs", indices = h20_id)
+#' soil_euk_h20 <- subset_metabarlist(soil_euk,
+#'    table = "pcrs",
+#'    indices = grepl("H20-[A-B]", rownames(soil_euk$pcrs)))
 #'
 #' # run rarefaction (use boot = 20 to limit computation time, should be more)
 #' soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
@@ -42,15 +43,13 @@
 #' gghill_rarefaction(soil_euk_h20.raref)
 #'
 #' # plot the results while differenciating litter vs. soil samples
-#' material <- setNames(
-#'   soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))],
-#'   rownames(soil_euk_h20$pcrs)
-#' )
-#' p <- gghill_rarefaction(soil_euk_h20.raref, group = material)
+#' p <- gghill_rarefaction(soil_euk_h20.raref,
+#'     group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))])
 #' p
 #' p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
 #'   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
 #'   labs(color = "Material type")
+#'
 #' @author Lucie Zinger
 #' @importFrom vegan diversity rrarefy
 #' @import ggplot2
@@ -100,7 +99,7 @@ hill_rarefaction <- function(metabarlist, nboot = 10, nsteps = 10) {
       return(out)
     }))
 
-    out <- list(hill_table = out, nboot = nboot, nsteps = nsteps)
+    out <- list(samples = rownames(reads), hill_table = out, nboot = nboot, nsteps = nsteps)
     attr(out, "class") <- "hill_rarefaction"
     return(out)
   }
@@ -109,7 +108,7 @@ hill_rarefaction <- function(metabarlist, nboot = 10, nsteps = 10) {
 
 #' @describeIn hill_rarefaction Plot a object of class \code{"hill_rarefaction"}
 #' @param hill_rar  an object of class \code{"hill_rarefaction"}.
-#' @param group     a vector or factor giving the grouping of each pcr included in the \code{"hill_rarefaction"} object. Missing values will be treated as another group and a warning will be given. The names of each elements should be defined and correspond to the non duplicated names of pcr included in the hill_rar object. Default is `NULL` for no grouping.
+#' @param group     a vector or factor giving the grouping of each pcr included in the \code{"hill_rarefaction"} object. Missing values will be treated as another group and a warning will be given. The elements should correspond to the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no grouping.
 #' @export gghill_rarefaction
 
 
@@ -136,12 +135,12 @@ gghill_rarefaction <- function(hill_rar, group = NULL) {
         legend.position = "bottom"
       )
   } else {
-    if (is.null(names(group))) {
+    if (length(group) != length(hill_rar$sample)) {
       stop("The names of each elements of group should be defined and correspond to
                 the non duplicated names of pcr included in the hill_rar object.")
     }
 
-    b$group <- group[b$pcr_id]
+    b$group <- group[match(b$pcr_id, hill_rar$samples)]
 
     ggplot(b, aes(x = reads, y = value, group = pcr_id)) +
       geom_line(aes(color = group)) +

@@ -26,7 +26,7 @@
 #' ggpcrtag(soil_euk,
 #'   legend_title = "#reads of most\nabundant MOTU",
 #'   FUN = function(m) {
-#'     m$reads[, which.max(colSums(m$reads))]
+#'     m$reads[,which.max(colSums(m$reads))]
 #'   }
 #' )
 #' @author Lucie Zinger
@@ -102,7 +102,7 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
         stat_summary(fun.y = median, geom = "line", aes(group = 1), color = "cyan2", lwd = 1, na.rm = TRUE) +
         labs(y = legend_title, x = NULL) +
         scale_x_discrete(expand = c(0.02, 0)) +
-        scale_y_discrete(expand = c(0.02, 0)) +
+        #scale_y_discrete(expand = c(0.02, 0)) +
         coord_flip() +
         theme(axis.text.y = element_blank())
 
@@ -113,7 +113,7 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
         stat_summary(fun.y = median, geom = "line", aes(group = 1), color = "cyan2", lwd = 1, na.rm = TRUE) +
         labs(y = legend_title, x = NULL) +
         scale_x_discrete(expand = c(0.02, 0)) +
-        scale_y_discrete(expand = c(0.02, 0)) +
+        #scale_y_discrete(expand = c(0.02, 0)) +
         theme(axis.text.x = element_blank())
 
     out <- insert_xaxis_grob(all, rev, grid::unit(.2, "null"), position = "top")
