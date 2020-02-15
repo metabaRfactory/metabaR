@@ -2,14 +2,14 @@
 % Please edit documentation in R/m_silva_annotator.R
 \name{silva_annotator}
 \alias{silva_annotator}
-\title{Integrating SILVANgs pipeline taxonomic annotations}
+\title{Integrating SILVAngs pipeline taxonomic annotations}
 \usage{
 silva_annotator(metabarlist, silva.path, clust.path)
 }
 \arguments{
 \item{metabarlist}{a \code{metabarlist} object}
 
-\item{silva.path}{path to a table from the SILVANgs pipeline, typically zipfile>ssu>exports>xxx---ssu---otus.csv}
+\item{silva.path}{path to a table from the SILVAngs pipeline, typically zipfile>ssu>exports>xxx---ssu---otus.csv}
 
 \item{clust.path}{path to a file from the SilvaNgs pipeline indicating otu cluster membership zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr}
 }
@@ -17,23 +17,23 @@ silva_annotator(metabarlist, silva.path, clust.path)
 a \code{metabarlist} object with a dataframe motus including the taxonomic assignements from silva
 }
 \description{
-Importing and formatting taxonomic annotations obtained with the SILVANgs pipeline (https://ngs.arb-silva.de/silvangs/) for a \code{\link{metabarlist}} object.
+Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (https://ngs.arb-silva.de/silvangs/) for a \code{\link{metabarlist}} object.
 }
 \details{
-Users can be interested in using the SILVAngs pipeline for assigning a taxon to DNA sequences. Assuming that it is done on data already filtered (i.e. dereplicated, clustering etc.), resulting in one sequence per OTU, one can then use the SILVAngs pipeline by setting all filtering parameters to "null" (i.e. returning to no filtration) and the taxonomic assignments parameters by default. These taxonomic assignments are compiled in the data archives provided by SILVAngs, in which two files will be important:
+Users can be interested in using the SILVAngs pipeline for assigning a taxon to DNA sequences/ MOTUs. Assuming that it is done on data already filtered (i.e. dereplicated, clustering etc.), resulting in one sequence per sequence or MOTU, one can then use the SILVAngs pipeline by setting all filtering parameters to "null" (i.e. returning to no filtration) and the taxonomic assignments parameters by default (or following the user's preferences). These taxonomic assignments are compiled in the data archives provided by SILVAngs, in which two files are important for the function `silva_annotator`:
 \itemize{
 \item{}{`zipfile>ssu>exports>xxx---ssu---otus.csv`: a csv file containing the taxonomic assignment for each OTU}
-\item{}{`zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr`: a file containing the mapping informations of sequences to their respective OTUs. Even though the clustering is done before using the SILVAngs pipeline and that the clustering parameters in this pipeline are settled to 100\% identity of clustering, SILVAngs uses CDHit, which can group together OTUs sharing the same prefix/suffix. So it is common to retrieve less assigniations than what was expected.}
+\item{}{`zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr`: a file containing the mapping informations of sequences to their respective MOTUs. Even though the clustering is done before using the SILVAngs pipeline and that the clustering parameters in this pipeline are settled to 100\% identity of clustering, SILVAngs uses CDHit, which can group together OTUs sharing the same prefix/suffix. So it is common to retrieve less assigniations than what was expected.}
 }
 }
 \examples{
 
 \dontrun{
 data(soil_euk)
-soil_euk <- metabaRffe:::silva_annotator(
+soil_euk <- silva_annotator(
    metabarlist = soil_euk,
    silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
-   clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
+   clust.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
 
 ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
   geom_bar() + coord_polar("y") +
