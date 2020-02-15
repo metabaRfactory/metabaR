@@ -4,17 +4,14 @@
 \alias{summary_metabarlist}
 \title{Metabarlist summary}
 \usage{
-summary_metabarlist(metabarlist, method = "dataset", table = NULL,
-  index = NULL)
+summary_metabarlist(metabarlist, method = "dataset", groups = NULL)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{method}{type of summary to provide. Should match with "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".}
+\item{method}{type of summary to provide. Should match with `dataset`, `motus` or `pcrs`. Default is `dataset`}
 
-\item{table}{the table where the information on which the aggregation is based. Can be one of `motus`, `pcrs`, or `samples`. Default is NULL}
-
-\item{index}{a character indicating the name of the element, i.e. column names on which the aggregation is based. Default is NULL}
+\item{groups}{a grouping vector or factor of same number of rows than `motus` or `pcrs` for which the summary should be done. Default is NULL}
 }
 \value{
 Function \code{summary_metabarlist} returns basic summary statistics (nb of elements, reads and MOTUs in total or on average per pcrs) of a \code{\link{metabarlist}} object. The format of the value returned depends on the method used.
@@ -25,8 +22,8 @@ summary_metabarlist is a generic function used to produce summary statistics of 
 \details{
 \code{summary_metabarlist} returns basic summary statistics of a \code{\link{metabarlist}} object. The summary returned depends on the `method` used :
 \itemize{
-\item{"dataset"}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
-\item{"type"}{returns a data.frame similar to the dataset_statistics described above}
+\item{`dataset`}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
+\item{`motus` or `pcrs`}{return one data.frame similar to the dataset_statistics described above according to a grouping factor/vector for MOTUs or pcrs}
 }
 }
 \examples{
@@ -37,13 +34,17 @@ data(soil_euk)
 summary_metabarlist(soil_euk, method = "dataset")
 
 # data summary per control type (NA = samples)
-summary_metabarlist(soil_euk, method = "type", table = "pcrs", index = "control_type")
+summary_metabarlist(soil_euk, method = "pcrs",
+    groups = soil_euk$pcrs$control_type)
 
 # data summary per phyla
-summary_metabarlist(soil_euk, method = "type", table = "motus", index = "phylum_name")
+summary_metabarlist(soil_euk, method = "motus",
+    groups = soil_euk$motus$phylum_name)
 
-# data summary per Habitat
-summary_metabarlist(soil_euk, method = "type", table = "samples", index = "Habitat")
+# data summary per Habitat (i.e. to get from soil_euk$samples). Here, NA values correspond to technical controls
+summary_metabarlist(soil_euk, method = "pcrs",
+    groups = soil_euk$samples$Habitat[match(soil_euk$pcrs$sample_id, rownames(soil_euk$samples))])
+
 }
 \author{
 Lucie Zinger

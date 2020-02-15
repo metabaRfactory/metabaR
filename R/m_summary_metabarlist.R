@@ -4,19 +4,16 @@
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
-#' @param method        type of summary to provide. Should match with "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".
-#' @param table         the table where the information on which the aggregation is based. Can be one of `motus`, `pcrs`, or `samples`. Default is NULL
-#' @param index         a character indicating the name of the element, i.e. column names on which the aggregation is based. Default is NULL
-
-
+#' @param method        type of summary to provide. Should match with `dataset`, `motus` or `pcrs`. Default is `dataset`
+#' @param groups       a grouping vector or factor of same number of rows than `motus` or `pcrs` for which the summary should be done. Default is NULL
 #'
 #' @return Function \code{summary_metabarlist} returns basic summary statistics (nb of elements, reads and MOTUs in total or on average per pcrs) of a \code{\link{metabarlist}} object. The format of the value returned depends on the method used.
 #'
 #' @details
 #' \code{summary_metabarlist} returns basic summary statistics of a \code{\link{metabarlist}} object. The summary returned depends on the `method` used :
 #' \itemize{
-#' \item{"dataset"}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
-#' \item{"type"}{returns a data.frame similar to the dataset_statistics described above}
+#' \item{`dataset`}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
+#' \item{`motus` or `pcrs`}{return one data.frame similar to the dataset_statistics described above according to a grouping factor/vector for MOTUs or pcrs}
 #' }
 #'
 #' @examples
@@ -27,19 +24,23 @@
 #' summary_metabarlist(soil_euk, method = "dataset")
 #'
 #' # data summary per control type (NA = samples)
-#' summary_metabarlist(soil_euk, method = "type", table = "pcrs", index = "control_type")
+#' summary_metabarlist(soil_euk, method = "pcrs",
+#'     groups = soil_euk$pcrs$control_type)
 #'
 #' # data summary per phyla
-#' summary_metabarlist(soil_euk, method = "type", table = "motus", index = "phylum_name")
+#' summary_metabarlist(soil_euk, method = "motus",
+#'     groups = soil_euk$motus$phylum_name)
 #'
-#' # data summary per Habitat
-#' summary_metabarlist(soil_euk, method = "type", table = "samples", index = "Habitat")
+#' # data summary per Habitat (i.e. to get from soil_euk$samples). Here, NA values correspond to technical controls
+#' summary_metabarlist(soil_euk, method = "pcrs",
+#'     groups = soil_euk$samples$Habitat[match(soil_euk$pcrs$sample_id, rownames(soil_euk$samples))])
+#'
 #' @author Lucie Zinger
 #' @export summary_metabarlist
 
-summary_metabarlist <- function(metabarlist, method = "dataset", table = NULL, index = NULL) {
+summary_metabarlist <- function(metabarlist, method = "dataset", groups = NULL) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
-    extract_type_methods <- c("dataset", "type")
+    extract_type_methods <- c("dataset", "motus", "pcrs")
     method <- match.arg(method, extract_type_methods)
 
     if (method == "dataset") {
@@ -49,6 +50,7 @@ summary_metabarlist <- function(metabarlist, method = "dataset", table = NULL, i
       idx <- which(metabarlist$pcrs$type == "sample")
       size <- rowSums(metabarlist$reads)
       rich <- rowSums(metabarlist$reads > 0)
+
       dataset_statistics <- data.frame(
         nb_reads = c(sum(metabarlist$reads), sum(metabarlist$reads[idx, ])),
         nb_motus = c(
@@ -61,21 +63,26 @@ summary_metabarlist <- function(metabarlist, method = "dataset", table = NULL, i
         sd_motus = c(sd(rich), sd(rich[idx])),
         row.names = c("pcrs", "samples")
       )
+
       return(list(
         dataset_dimension = dataset_dimension,
         dataset_statistics = dataset_statistics
       ))
-    } else {
-      extract_table_methods <- c("motus", "pcrs", "samples")
-      tab <- match.arg(table, extract_table_methods)
 
-      if (length(index) == 0 | is.character(index) == F) {
-        stop("character index of the element to select (i.e. column or row name) should be provided")
+    } else {
+
+      tab <- match.arg(method, extract_type_methods)
+
+      if (is.null(groups)) {
+        stop(paste("vector or factor 'groups' should be provided for method '", tab, "'", sep=""))
       }
 
-      idx <- ifelse(is.na(as.vector(metabarlist[[tab]][, index])),
-        "NA", as.vector(metabarlist[[tab]][, index])
-      )
+      if (length(groups) != nrow(metabarlist[[tab]])) {
+        stop(paste("vector or factor 'groups' should be of same length than the object called with method '",
+                   tab, "'", sep=""))
+      }
+
+      idx <- ifelse(is.na(as.vector(groups)), "NA", as.vector(groups))
 
       if (tab == "pcrs" | tab == "motus") {
         size <- if (tab == "pcrs") {
@@ -112,22 +119,6 @@ summary_metabarlist <- function(metabarlist, method = "dataset", table = NULL, i
         } else {
           return(dataset_statistics[, -1])
         }
-      } else {
-        idx1 <- match(metabarlist$pcrs$sample_id, rownames(metabarlist$samples), nomatch = 0)
-        size <- rowSums(metabarlist$reads[idx1, ])
-        rich <- rowSums(metabarlist$reads[idx1, ] > 0)
-
-        dataset_statistics <- data.frame(
-          nb_pcrs = as.vector(table(idx[idx1])),
-          nb_reads = as.vector(xtabs(size ~ idx[idx1])),
-          nb_motus = as.vector(xtabs(rich ~ idx[idx1])),
-          avg_reads = aggregate(size[idx1], list(idx[idx1]), mean)$x,
-          sd_reads = aggregate(size[idx1], list(idx[idx1]), sd)$x,
-          avg_motus = aggregate(rich[idx1], list(idx[idx1]), mean)$x,
-          sd_motus = aggregate(rich[idx1], list(idx[idx1]), sd)$x,
-          row.names = levels(factor(idx))
-        )
-        return(dataset_statistics)
       }
     }
   }
