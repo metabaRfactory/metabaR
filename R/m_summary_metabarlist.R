@@ -6,7 +6,7 @@
 #' @param metabarlist   a \code{\link{metabarlist}} object
 #' @param method        type of summary to provide. Should match with "dataset" or "type". If "type", parameters `table` and `index` should be provided. Default is "dataset".
 #' @param table         the table where the information on which the aggregation is based. Can be one of `motus`, `pcrs`, or `samples`. Default is NULL
-#' @param index         a character indicating the name of the element, i.e. column names on which the aggregation is based. Default is NULL
+#' @param index         a character indicating the name of the element, i.e. column names on which the summary should be done. Default is NULL
 
 
 #'
@@ -34,6 +34,7 @@
 #'
 #' # data summary per Habitat
 #' summary_metabarlist(soil_euk, method = "type", table = "samples", index = "Habitat")
+
 #' @author Lucie Zinger
 #' @export summary_metabarlist
 
