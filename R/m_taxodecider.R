@@ -9,7 +9,7 @@
 #' @param sim.scores    a vector of two column names in the `motus` table corresponding to the similarity scores
 #'                      of each database.
 #' @param lineage       a vector of two column names in the `motus` table corresponding to the full taxonomic
-#'                      lineage provided by each database. Should be provided in the same order than `best.db`.
+#'                      lineage obtained for each database. Should be provided in the same order than `best.db`.
 #'                      \code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.
 #' @param threshold     a similiarty score threshold above which the annotation of the best database is selected if
 #'                      both databases yields high similarity scores.
@@ -18,7 +18,7 @@
 #'
 #' @details
 #'
-#' The function \code{taxodecider} allows choosing amongst two taxonomic annotation based on the best identity scores and preferences for a given database (e.g. more reliable taxonomy).
+#' The function \code{taxodecider} allows choosing amongst two taxonomic annotation based on the best identity scores and preferences for a given database (e.g. more reliable taxonomy). All taxonomic information should be stored in `metabarlist$motus`.
 #'
 #' @return a \code{metabarlist} object with a dataframe motus including the preferred taxonomic assignements
 #'
@@ -26,14 +26,14 @@
 #'
 #' \dontrun{
 #' data(soil_euk)
-#' soil_euk <- metabaRffe:::silva_annotator(
+#' soil_euk <- silva_annotator(
 #'    metabarlist = soil_euk,
 #'    silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
 #'    clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
 #'
 #' soil_euk$motus$similarity = soil_euk$motus$similarity/100
 #'
-#' soil_euk2 <- metabaRffe:::taxodecider(
+#' soil_euk2 <- taxodecider(
 #'    metabarlist = soil_euk,
 #'    best.db = c("silva", "embl"),
 #'    sim.scores = c("similarity", "best_identity.order_filtered_embl_r136_noenv_EUK"),
@@ -44,6 +44,8 @@
 #'}
 #'
 #' @author Anne-Sophie Benoiston, Lucie Zinger
+#' @export taxodecider
+
 
 
 taxodecider = function(metabarlist, best.db, sim.scores, lineage, threshold){
@@ -77,6 +79,7 @@ taxodecider = function(metabarlist, best.db, sim.scores, lineage, threshold){
   metabarlist$motus <- cbind(metabarlist$motus,
                             data.frame(best.db = max.db, best.db.sim = as.numeric(max.bid), best.db.lineage = max.tax))
 
+  check_metabarlist(metabarlist)
   return(metabarlist)
   }
 }
