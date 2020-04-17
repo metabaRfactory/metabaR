@@ -4,9 +4,12 @@
 \alias{ggpcrtag}
 \title{Plotting a PCR attribute in the tag pair design}
 \usage{
-ggpcrtag(metabarlist, legend_title = "well_values",
+ggpcrtag(
+  metabarlist,
+  legend_title = "well_values",
   FUN = function(metabarlist) {     rowSums(metabarlist$reads) },
-  taglist = as.character(unique(metabarlist$pcrs$tag_rev)))
+  taglist = as.character(unique(metabarlist$pcrs$tag_rev))
+)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
@@ -35,7 +38,7 @@ ggpcrtag(soil_euk)
 
 # Plot the number of reads of the most abundant MOTU
 ggpcrtag(soil_euk,
-  legend_title = "#reads of most\\nabundant MOTU",
+  legend_title = "#reads of most\nabundant MOTU",
   FUN = function(m) {
     m$reads[,which.max(colSums(m$reads))]
   }

@@ -4,8 +4,7 @@
 \alias{ggtaxplot}
 \title{Plotting a taxonomic tree}
 \usage{
-ggtaxplot(metabarlist, taxo, sep.level = NULL, sep.info = NULL,
-  thresh = NULL)
+ggtaxplot(metabarlist, taxo, sep.level = NULL, sep.info = NULL, thresh = NULL)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object. The object should contain}

@@ -4,8 +4,13 @@
 \alias{contaslayer}
 \title{Separating genuine MOTUs from contaminations using negative controls}
 \usage{
-contaslayer(metabarlist, method = "max", control_types = c("pcr",
-  "extraction"), controls = NULL, output_col = "not_contamination")
+contaslayer(
+  metabarlist,
+  method = "max",
+  control_types = c("pcr", "extraction"),
+  controls = NULL,
+  output_col = "not_contamination"
+)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}

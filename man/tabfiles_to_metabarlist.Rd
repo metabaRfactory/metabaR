@@ -4,8 +4,13 @@
 \alias{tabfiles_to_metabarlist}
 \title{Import 4 tables to create a metabarlist object}
 \usage{
-tabfiles_to_metabarlist(file_reads, file_motus, file_pcrs, file_samples,
-  files_sep = "\\t")
+tabfiles_to_metabarlist(
+  file_reads,
+  file_motus,
+  file_pcrs,
+  file_samples,
+  files_sep = "\\t"
+)
 }
 \arguments{
 \item{file_reads}{path for the MOTU abundance table. Rows of the table should correspond to PCRs, and columns should correspond to MOTUs. The first column of this table should correspond to the names of the pcrs; the first line to the names of MOTUs.}

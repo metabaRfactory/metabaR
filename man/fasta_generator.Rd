@@ -4,8 +4,13 @@
 \alias{fasta_generator}
 \title{Generate a fasta file from a metabarlist object}
 \usage{
-fasta_generator(metabarlist, id = rownames(metabarlist$motus),
-  output_file = NULL, annotation = NULL, annot_sep = ";")
+fasta_generator(
+  metabarlist,
+  id = rownames(metabarlist$motus),
+  output_file = NULL,
+  annotation = NULL,
+  annot_sep = ";"
+)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object.}

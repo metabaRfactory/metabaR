@@ -7,11 +7,15 @@
 \alias{check_pcr_repl}
 \title{Detecting PCRs replicates outliers.}
 \usage{
-pcrslayer(metabarlist, replicates = "sample_id", method = "centroid",
-  thresh.method = "intersect", plot = T)
+pcrslayer(
+  metabarlist,
+  replicates = "sample_id",
+  method = "centroid",
+  thresh.method = "intersect",
+  plot = T
+)
 
-pcr_within_between(metabarlist, replicates = "sample_id",
-  method = "centroid")
+pcr_within_between(metabarlist, replicates = "sample_id", method = "centroid")
 
 check_pcr_thresh(wthn.btwn, thresh.method = "intersect")
 

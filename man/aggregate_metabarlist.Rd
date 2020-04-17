@@ -4,8 +4,7 @@
 \alias{aggregate_metabarlist}
 \title{Aggregate PCR replicates}
 \usage{
-aggregate_metabarlist(metabarlist, groups = "sample_id",
-  method = "sum")
+aggregate_metabarlist(metabarlist, groups = "sample_id", method = "sum")
 }
 \arguments{
 \item{metabarlist}{a \code{metabarlist} object}
