@@ -4,8 +4,11 @@
 \alias{ggpcrplate}
 \title{Plotting a PCR attribute in the PCR plate design}
 \usage{
-ggpcrplate(metabarlist, legend_title = "well_values",
-  FUN = function(metabarlist) {     rowSums(metabarlist$reads) })
+ggpcrplate(
+  metabarlist,
+  legend_title = "well_values",
+  FUN = function(metabarlist) {     rowSums(metabarlist$reads) }
+)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object.}
@@ -33,7 +36,7 @@ ggpcrplate(soil_euk)
 
 # Plot the number of reads of the most abundant MOTU
 ggpcrplate(soil_euk,
-  legend_title = "#reads of most \\nabundant MOTU",
+  legend_title = "#reads of most \nabundant MOTU",
   FUN = function(m) {
     m$reads[, which.max(colSums(m$reads))]
   }

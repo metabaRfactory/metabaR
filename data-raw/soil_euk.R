@@ -84,3 +84,24 @@ soil_euk = list(reads = reads,
 attr(soil_euk, 'class') = "metabarlist"
 
 devtools::use_data(soil_euk)
+
+
+# export the motu table in the right format for converting it to a biom file
+reads <- as.matrix(read.table("data-raw/litiere_euk_reads.txt",
+	row.names = 1, h = T, sep = "\t",
+    check.names = F, stringsAsFactors = F
+    ))
+pcrs <- read.table("data-raw/litiere_euk_pcrs.txt",
+    row.names = 1, h = T, sep = "\t",
+    check.names = F, stringsAsFactors = F
+  )
+
+reads <- reads[match(rownames(pcrs), rownames(reads)), ]
+reads[is.na(reads)] <- 0
+rownames(reads) <- rownames(pcrs)
+
+reads <- as.data.frame(t(reads))
+reads$OTU_ID <- rownames(reads)
+reads <- reads[,c(ncol(reads), 1:(ncol(reads)-1))]
+
+write.table(reads, file = "data-raw/litiere_euk_reads_4biom.tsv", quote = FALSE, sep = "\t", row.names = FALSE, na = "")

@@ -4,7 +4,9 @@
 \name{soil_euk}
 \alias{soil_euk}
 \title{Soil eukaryote DNA metabarcoding data from French Guiana}
-\format{An object of class \code{metabarlist}; see \code{\link[metabaRffe]{metabarlist}}.}
+\format{
+An object of class \code{metabarlist}; see \code{\link[metabaRffe]{metabarlist}}.
+}
 \source{
 \href{LINK WEB TO DEFINE}{DNA metabarcoding data archive}
 }
