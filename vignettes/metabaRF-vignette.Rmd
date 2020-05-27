@@ -277,7 +277,7 @@ Since this process can take a while, we here only construct rarefaction curves f
 
 ```{r subset, message=F, warning=F}
 #get the samples names from the H20 plot
-h20_id <- rownames(soil_euk$pcrs)[grep("H20-[A-B]", rownames(soil_euk$pcrs))]
+h20_id <- grepl("H20-[A-B]", rownames(soil_euk$pcrs))
 
 #subset the data
 soil_euk_h20 <- subset_metabarlist(soil_euk, table = "pcrs", indices = h20_id)
@@ -342,7 +342,7 @@ conta.ext <- contaslayer(soil_euk, controls = ext.controls)
 
 #tag these sequences in the metabarlist object
 soil_euk$motus$flagged_motus <- NA
-soil_euk$motus[conta.ext, "flagged_motus"]  = "extraction contaminant"
+soil_euk$motus[!conta.ext$motus$not_contamination, "flagged_motus"]  <- "extraction contaminant"
 ```
 
 Below are the ten most common contaminants that were identified by contaslayer in from `pcr` controls in the `soil_euk` dataset.
@@ -366,7 +366,7 @@ Next, one may want to know how these contamiants are distributed across the `soi
 
 ```{r contaslayer3, message=F, warning=F, fig.width=7, fig.height=6}
 #Identify the most common contaminant
-max.conta = conta.ext[which.max(soil_euk$motus[conta.ext, "count"])]
+max.conta <- rownames(conta.ext$motus[which.max(soil_euk$motus[!conta.ext$motus$not_contamination, "count"]),])
 
 #Distribution of the most abundant contaminant in the PCR plate design in terms of relative abundance
 ggpcrplate(soil_euk, legend_title = "#reads of most \nabundant contaminant",
