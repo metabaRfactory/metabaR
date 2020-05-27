@@ -149,9 +149,12 @@ pcr_outlier <- function(metabarlist,
         n = 1000
       )
 
-      threshold_distance <- between_replicate_density$x[
-        min(which(within_replicate_density$y < between_replicate_density$y))
-      ]
+      #jamais dans les 10 premier %
+      threshold_distance <- between_replicate_density$x[min(which(
+        cumsum(within_replicate_density$y / sum(within_replicate_density$y)) > 0.1 &
+          within_replicate_density$y <= between_replicate_density$y
+      ))]
+
 
       if (graphics) {
         plot(within_replicate_density$x, within_replicate_density$y,
