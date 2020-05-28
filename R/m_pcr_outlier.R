@@ -8,7 +8,7 @@
 #' @param groups a vector containing the identifier of replicate. The vector must has the same length of the table `PCRs` from a \code{\link{metabarlist}} object. Default = metabarlist$pcrs$sample_id
 #' @param graphics a boolean value to plot the distances densities for each iteration. Default = FALSE
 #'
-#' @name pcr_outlayer
+#' @name pcr_outlier
 #'
 #' @return data frame with the replicats groups and a column `replicating` or throws a stop
 #'
@@ -35,11 +35,11 @@
 #' data(soil_euk)
 #'
 #' sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
-#' pcr_outlayer(sample_subset)
+#' pcr_outlier(sample_subset)
 #' @author Frédéric Boyer & Clément Lionnet
 #' @import ade4
 #' @import vegan
-#' @export pcr_outlayer
+#' @export pcr_outlier
 #' @export coa_function
 #' @export bray_function
 
@@ -80,7 +80,7 @@ bray_function <- function(reads) {
 }
 
 # main function
-pcr_outlayer <- function(metabarlist,
+pcr_outlier <- function(metabarlist,
                                FUN = bray_function,
                                groups = metabarlist$pcrs$sample_id,
                                graphics = FALSE) {
@@ -149,9 +149,12 @@ pcr_outlayer <- function(metabarlist,
         n = 1000
       )
 
-      threshold_distance <- between_replicate_density$x[
-        min(which(within_replicate_density$y < between_replicate_density$y))
-      ]
+      #jamais dans les 10 premier %
+      threshold_distance <- between_replicate_density$x[min(which(
+        cumsum(within_replicate_density$y / sum(within_replicate_density$y)) > 0.1 &
+          within_replicate_density$y <= between_replicate_density$y
+      ))]
+
 
       if (graphics) {
         plot(within_replicate_density$x, within_replicate_density$y,
