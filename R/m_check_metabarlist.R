@@ -107,7 +107,7 @@ check_metabarlist <- function(metabarlist) {
     stop("metabarlist$pcrs has empty column names")
   }
   if (any(rownames(metabarlist$pcrs) %in% "")) {
-    stop("fmetabarlist$pcrs has empty row names")
+    stop("metabarlist$pcrs has empty row names")
   }
   if (any(duplicated(colnames(metabarlist$pcrs)))) {
     stop("metabarlist$pcrs has duplicated column names")
