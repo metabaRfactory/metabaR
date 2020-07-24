@@ -20,18 +20,17 @@
 #'
 #' @examples
 #'
-#' \dontrun{
 #' data(soil_euk)
 #' soil_euk <- silva_annotator(
 #'    metabarlist = soil_euk,
-#'    silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
-#'    clust.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
+#'    silva.path = system.file("extdata", "lit_euk---ssu---otus.csv", package = "metabaRffe"),
+#'    clust.path = system.file("extdata", "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr", package = "metabaRffe"))
 #'
 #'ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
 #'   geom_bar() + coord_polar("y") +
 #'   theme_minimal() + labs(x=NULL, y=NULL) +
 #'   theme(legend.position = "bottom")
-#'}
+#'
 #' @author Lucie Zinger, Anne-Sophie Benoiston
 #' @importFrom seqinr read.fasta
 #' @export silva_annotator
