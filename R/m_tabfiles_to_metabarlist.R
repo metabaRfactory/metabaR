@@ -20,14 +20,12 @@
 #'
 #' @examples
 #'
-#' \dontrun{
 #' soil_euk <- tabfiles_to_metabarlist(
-#'   file_reads = "data-raw/litiere_euk_reads.txt",
-#'   file_motus = "data-raw/litiere_euk_motus.txt",
-#'   file_pcrs = "data-raw/litiere_euk_pcrs.txt",
-#'   file_samples = "data-raw/litiere_euk_samples.txt"
+#'   file_reads = system.file("extdata", "litiere_euk_reads.txt", package = "metabaRffe"),
+#'   file_motus = system.file("extdata", "litiere_euk_motus.txt", package = "metabaRffe"),
+#'   file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaRffe"),
+#'   file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaRffe")
 #' )
-#' }
 #'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
 #'
