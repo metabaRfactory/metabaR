@@ -69,14 +69,14 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
     tag_design$well_values[tag_design$well_values == 0] <- NA
 
     tag_design$tag_fwd <- factor(tag_design$tag_fwd,
-      levels = rev(levels(tag_design$tag_fwd)[
-        match(taglist, levels(tag_design$tag_fwd), nomatch = 0)
+      levels = rev(levels(as.factor(tag_design$tag_fwd))[
+        match(taglist, levels(as.factor(tag_design$tag_fwd)), nomatch = 0)
       ])
     )
 
     tag_design$tag_rev <- factor(tag_design$tag_rev,
-      levels = levels(tag_design$tag_rev)[
-        match(taglist, levels(tag_design$tag_rev), nomatch = 0)
+      levels = levels(as.factor(tag_design$tag_rev))[
+        match(taglist, levels(as.factor(tag_design$tag_rev)), nomatch = 0)
       ]
     )
 
@@ -99,7 +99,8 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
       ggplot(tag_design, aes(x = tag_fwd, y = well_values)) +
         geom_boxplot(lwd = 0.5, na.rm = TRUE) +
         theme_bw() +
-        stat_summary(fun.y = median, geom = "line", aes(group = 1), color = "cyan2", lwd = 1, na.rm = TRUE) +
+        stat_summary(fun = median, geom = "line", aes(group = 1),
+                     color = "cyan2", lwd = 1, na.rm = TRUE) +
         labs(y = legend_title, x = NULL) +
         scale_x_discrete(expand = c(0.02, 0)) +
         #scale_y_discrete(expand = c(0.02, 0)) +
@@ -110,7 +111,8 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
       ggplot(tag_design, aes(x = tag_rev, y = well_values)) +
         geom_boxplot(lwd = 0.5, na.rm = TRUE) +
         theme_bw() +
-        stat_summary(fun.y = median, geom = "line", aes(group = 1), color = "cyan2", lwd = 1, na.rm = TRUE) +
+        stat_summary(fun = median, geom = "line", aes(group = 1),
+                     color = "cyan2", lwd = 1, na.rm = TRUE) +
         labs(y = legend_title, x = NULL) +
         scale_x_discrete(expand = c(0.02, 0)) +
         #scale_y_discrete(expand = c(0.02, 0)) +
