@@ -19,18 +19,16 @@
 #'
 #' This function imports OBITools outputs and related files into \R to create a \code{\link{metabarlist}} object. The three files required are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 #'
-#' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular ecology resources, 16(1), 176-182.
+#' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 #'
 #' @examples
 #'
-#' \dontrun{
 #' soil_euk <- obifiles_to_metabarlist(
-#'   file_obitab = "data-raw/litiere_euk_cl97_agg_filt_tax.tab",
-#'   file_ngsfilter = "data-raw/ngsfilter_GWM-768.new_2.txt",
-#'   file_samples = "data-raw/Litiere_sample_list_2.txt",
+#'   file_obitab = system.file("extdata", "litiere_euk_cl97_agg_filt_tax.tab", package = "metabaRffe"),
+#'   file_ngsfilter = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaRffe"),
+#'   file_samples = system.file("extdata", "Litiere_sample_list_2.txt", package = "metabaRffe"),
 #'   sep = "\t"
 #' )
-#' }
 #'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
 #'
