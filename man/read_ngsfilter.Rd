@@ -24,10 +24,10 @@ The function \code{read_ngsfilter} creates a sample table from a ngsfilter file 
 }
 \examples{
 
-\dontrun{
-
-ngsfilter <- read_ngsfilter(file = "data-raw/ngsfilter_GWM-768.new_2.txt", sep = "\t", additional.sep = "=")
-}
+ngsfilter <- read_ngsfilter(
+              file = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaRffe"),
+              sep = "\t",
+              additional.sep = "=")
 
 }
 \references{
