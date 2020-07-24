@@ -51,7 +51,7 @@ read_ngsfilter <- function(file, additional.sep = "=", ...) {
   if ("position" %in% colnames(d)) {
     d2 <- data.frame(
       plate_no = as.numeric(sapply(strsplit(d$position, "_"), "[[", 1)),
-      plate_col = gsub("[A-Z]", "", sapply(strsplit(d$position, "_"), "[[", 2)),
+      plate_col = as.numeric(gsub("[A-Z]", "", sapply(strsplit(d$position, "_"), "[[", 2))),
       plate_row = gsub("[0-9]", "", sapply(strsplit(d$position, "_"), "[[", 2))
     )
     if (ncol(d) == 1) {
