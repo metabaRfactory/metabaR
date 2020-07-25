@@ -38,13 +38,13 @@
 
 obifiles_to_metabarlist <- function(file_obitab, file_ngsfilter, file_samples, ...) {
   if (!file.exists(file_obitab)) {
-    stop("obitab file does not exist")
+    stop(paste("cannot open file_obitab", file_obitab, ": No such file or directory"))
   }
   if (!file.exists(file_ngsfilter)) {
-    stop("ngsfilter file does not exist")
+    stop(paste("cannot open file_ngsfilter", file_ngsfilter, ": No such file or directory"))
   }
   if (!file.exists(file_samples)) {
-    stop("file samples does not exist")
+    stop(paste("cannot open file_samples", file_samples, ": No such file or directory"))
   }
 
   obi <- read.csv2(file_obitab, h = T, check.names = F, stringsAsFactors = F, ...)
@@ -69,7 +69,8 @@ obifiles_to_metabarlist <- function(file_obitab, file_ngsfilter, file_samples, .
 
   # check pcrs in reads present in pcrs table
   if (!all(rownames(reads) %in% rownames(pcrs))) {
-    stop("cannot continue, rownames in reads are not part of rownames of pcrs")
+    stop("cannot continue, one or several rownames in the metabarlist table `reads`
+         are not in the rownames of the metabarlist table `pcrs`")
   }
 
   # Add null lines for missing pcrs in reads

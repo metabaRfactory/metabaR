@@ -20,7 +20,7 @@ a data.frame
 Import a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 }
 \details{
-The function \code{read_ngsfilter} creates a sample table from a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
+The function \code{read_ngsfilter} creates a `pcrs` table from a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 }
 \examples{
 
@@ -31,7 +31,7 @@ ngsfilter <- read_ngsfilter(
 
 }
 \references{
-Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular ecology resources, 16(1), 176-182.
+Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 }
 \author{
 Lucie Zinger

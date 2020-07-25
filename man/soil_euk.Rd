@@ -8,7 +8,7 @@
 An object of class \code{metabarlist}; see \code{\link[metabaRffe]{metabarlist}}.
 }
 \source{
-\href{LINK WEB TO DEFINE}{DNA metabarcoding data archive}
+\href{LINK WEB TO DEFINE}{DNA metabarcoding data archive} for obitools ouput data and contextual data.
 }
 \usage{
 data(soil_euk)

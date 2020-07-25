@@ -43,139 +43,144 @@
 
 
 check_metabarlist <- function(metabarlist) {
+
+  metabarlist.name = substitute(metabarlist)
+
   if (!"metabarlist" %in% class(metabarlist)) {
-    stop("Not a metabarlist class")
+    stop(paste("class of", metabarlist.name, "is not 'metabarlist'"))
   }
 
   if (!(is.list(metabarlist))) {
-    stop("metabarlist is not a list")
+    stop(paste(metabarlist.name, "is not a list"))
   }
   slots <- c("reads", "motus", "pcrs", "samples")
   if (!(all(slots %in% names(metabarlist)))) {
-    stop(paste0("metabarlist has no tag(s): ", paste(slots[slots %in% names(metabarlist)], collapse = ", ")))
+    stop(paste0(metabarlist.name, " does not contain the following objects: ", "'",
+                paste(slots[slots %in% names(metabarlist)], collapse = "', '"), "'"))
   }
-
 
   if (!(is.matrix(metabarlist$reads) &&
     is.numeric(metabarlist$reads) &&
     !any(is.na(metabarlist$reads) && all(metabarlist$reads >= 0)))) {
-    stop("metabarlist$reads must be a positive numeric matrix with no NA values")
+    stop(paste("table `reads` in", metabarlist.name,
+               "must be a positive numeric matrix with no NA values"))
   }
 
   if (any(colnames(metabarlist$reads) %in% "")) {
-    stop("metabarlist$reads has empty column names")
+    stop(paste("table `reads` in", metabarlist.name, "has empty column names"))
   }
   if (any(rownames(metabarlist$reads) %in% "")) {
-    stop("metabarlist$reads has empty row names")
+    stop(paste("table `reads` in", metabarlist.name, "has empty row names"))
   }
   if (any(duplicated(colnames(metabarlist$reads)))) {
-    stop("metabarlist$reads has duplicated column names")
+    stop(paste("table `reads` in", metabarlist.name, "has duplicated column names"))
   }
   if (any(duplicated(rownames(metabarlist$reads)))) {
-    stop("metabarlist$reads has duplicated row names")
+    stop(paste("table `reads` in", metabarlist.name, "has duplicated row names"))
   }
-
 
   if (!(is.data.frame(metabarlist$motus) &&
     is.data.frame(metabarlist$pcrs) &&
     is.data.frame(metabarlist$samples))) {
-    stop("metabarlist$motus, metabarlist$pcrs and metabarlist$samples must be data.frames")
+    stop(paste("tables `motus`, `pcrs` and `samples` in", metabarlist.name, "must be data.frames"))
   }
 
 
   if (any(colnames(metabarlist$motus) %in% "")) {
-    stop("metabarlist$motus has empty column names")
+    stop(paste("table `motus` in", metabarlist.name,"has empty column names"))
   }
   if (any(rownames(metabarlist$motus) %in% "")) {
-    stop("metabarlist$motus has empty row names")
+    stop(paste("table `motus` in", metabarlist.name,"has empty row names"))
   }
   if (any(duplicated(colnames(metabarlist$motus)))) {
-    stop("metabarlist$motus has duplicated column names")
+    stop(paste("table `motus` in", metabarlist.name,"has duplicated column names"))
   }
   if (any(duplicated(rownames(metabarlist$motus)))) {
-    stop("metabarlist$motus has duplicated row names")
+    stop(paste("table `motus` in", metabarlist.name,"has duplicated row names"))
   }
-
 
   if (!((length(colnames(metabarlist$reads)) == length(rownames(metabarlist$motus))) &&
     (all(colnames(metabarlist$reads) == rownames(metabarlist$motus))))) {
-    stop("columns of metabarlist$reads must correspond exactly to rows of metabarlist$motus")
+    stop(paste("columns of table `reads` in", metabarlist.name ,
+               "must correspond exactly to rows of `motus`"))
   }
-
 
   if (any(colnames(metabarlist$pcrs) %in% "")) {
-    stop("metabarlist$pcrs has empty column names")
+    stop(paste("table `pcrs` in", metabarlist.name, "has empty column names"))
   }
   if (any(rownames(metabarlist$pcrs) %in% "")) {
-    stop("metabarlist$pcrs has empty row names")
+    stop(paste("table `pcrs` in", metabarlist.name, "has empty row names"))
   }
   if (any(duplicated(colnames(metabarlist$pcrs)))) {
-    stop("metabarlist$pcrs has duplicated column names")
+    stop(paste("table `pcrs` in", metabarlist.name, "has duplicated column names"))
   }
   if (any(duplicated(rownames(metabarlist$pcrs)))) {
-    stop("metabarlist$pcrs has duplicated row names")
+    stop(paste("table `pcrs` in", metabarlist.name, "has duplicated row names"))
   }
-
-
 
   if (!((length(rownames(metabarlist$reads)) == length(rownames(metabarlist$pcrs))) &&
     (all(rownames(metabarlist$reads) == rownames(metabarlist$pcrs))))) {
-    stop("rows of metabarlist$reads must correspond exactly to rows of metabarlist$pcrs")
+    stop(paste("rows of table `reads` in", metabarlist.name,
+               "must correspond exactly to rows of `pcrs`"))
   }
 
   if (!("sequence" %in% colnames(metabarlist$motus) &&
     is.character(metabarlist$motus$sequence) &&
     all(!is.na(metabarlist$motus$sequence)))) {
-    stop("metabarlist$motus$sequence must be defined and be exclusively characters")
+    stop(paste("column `sequence` of table `motus` in", metabarlist.name,
+         "must be defined and be exclusively characters"))
   }
 
   pcrs_mandatory_cols <- c("sample_id", "type", "control_type")
   if (!(all(pcrs_mandatory_cols %in% colnames(metabarlist$pcrs)))) {
-    stop("metabarlist$pcrs have mandatory columns: 'sample_id', 'type','control_type'")
+    stop(paste("table `pcrs` in", metabarlist.name,
+               "has mandatory columns: `sample_id`, `type`,`control_type`"))
   }
 
   if (!all(sort(unique(metabarlist$pcrs$type), na.last = T) %in% c("control", "sample"))) {
-    stop("metabarlist$pcrs$type must contain only 'control' and 'sample' values")
+    stop(paste("column `type` of table `pcrs` in", metabarlist.name,
+         "must contain only `control` or `sample` values"))
   }
 
   if (!all(is.na(metabarlist$pcrs$control_type) == (metabarlist$pcrs$type == "sample"))) {
-    stop("metabarlist$pcrs$control_type must have 'NA' values for samples")
+    stop(paste("column `control_type` of table `pcrs` in", metabarlist.name,
+         "must have 'NA' values for samples"))
   }
 
   if (!all(is.na(metabarlist$pcrs$sample_id) != (metabarlist$pcrss$type == "sample"))) {
-    stop("metabarlist$reads$control_type must no have 'NA' values for controls")
+    stop(paste("'NA' values are not allowed for controls in column `control_type` of table `pcrs` in",
+               metabarlist.name))
   }
 
   if (!all(sort(unique(metabarlist$pcrs$control_type[!is.na(metabarlist$pcrs$control_type)])) %in% c("extraction", "pcr", "positive", "sequencing"))) {
-    stop("metabarlist$pcrs$control_type must be either 'extraction', 'pcr', 'positive' or
-       'sequencing' for controls")
+    stop(paste("column `control_type` of table `pcrs` in", metabarlist.name,
+               "must be either `extraction`, `pcr`, `positive` or `sequencing` for controls"))
   }
-
 
   if (any(colnames(metabarlist$samples) %in% "")) {
-    stop("metabarlist$samples has empty column names")
+    stop(paste("table `samples` in", metabarlist.name,"has empty column names"))
   }
   if (any(rownames(metabarlist$samples) %in% "")) {
-    stop("metabarlist$samples has empty row names")
+    stop(paste("table `samples` in", metabarlist.name,"has empty row names"))
   }
   if (any(duplicated(colnames(metabarlist$samples)))) {
-    stop("metabarlist$samples has duplicated column names")
+    stop(paste("table `samples` in", metabarlist.name,"has duplicated column names"))
   }
   if (any(duplicated(rownames(metabarlist$samples)))) {
-    stop("metabarlist$samples has duplicated row names")
+    stop(paste("table `samples` in", metabarlist.name,"has duplicated row names"))
   }
-
 
   if (!(all(unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type == "sample"]) %in%
     rownames(metabarlist$samples)))) {
     v <- unique(metabarlist$pcrs$sample_id[metabarlist$pcrs$type == "sample"])
     message(paste(v[!v %in% rownames(metabarlist$samples)],
-      "from metabarlist$pcrs$sample_id not found in rownames(metabarlist$samples)",
+      "from column `sample_id` of table `pcrs` in ", metabarlist.name,
+      "are not found in the row names of table `samples`",
       collapse = ""
     ))
-    stop("All values in metabarlist$pcrs$sample_id should have a corresponding entry in metabarlist$samples")
+    stop(paste("All values in column `sample_id` of table `pcrs` in", metabarlist.name
+               ,"should have a corresponding entry in table `samples`"))
   }
-
 
   cols_plate_design <- c(
     "tag_fwd", "tag_rev", "primer_fwd", "primer_rev",
@@ -183,21 +188,25 @@ check_metabarlist <- function(metabarlist) {
   )
 
   if (!all(cols_plate_design %in% colnames(metabarlist$pcrs))) {
-    warning(paste0("PCR plate design not properly provided: ", paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep = ", "), " missing !\n"))
+    warning(paste0("PCR plate design not properly provided: columns ",
+                   paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)],
+                         sep = ", "),
+                   "are missing in table `pcrs` of ", metabarlist.name,"!\n"))
   } else {
     if (all(c("plate_no", "plate_col", "plate_row") %in% colnames(metabarlist$pcrs))) {
       if (!(is.numeric(metabarlist$pcrs$plate_no))) {
-        stop("metabarlist$pcrs$plate_no must be numeric")
+        stop(paste("column `plate_no` of table `pcrs` in",metabarlist.name, "must be numeric"))
       }
 
       if (!(all(as.numeric(metabarlist$pcrs$plate_col) %in% 1:12))) {
-        stop("metabarlist$pcrs$plate_col must correspond to numbers from 1 to 12")
+        stop(paste("column `plate_col` of table `pcrs` in", metabarlist.name,
+                   "must contain numeric values ranging from 1 to 12"))
       }
 
       if (!(all(metabarlist$pcrs$plate_row %in% c("A", "B", "C", "D", "E", "F", "G", "H")))) {
-        stop("metabarlist$pcrs$plate_row must be letters from A to H")
+        stop(paste("column `plate_row` of table `pcrs` in", metabarlist.name,
+                   "must be letters ranging from A to H"))
       }
-
 
       if (!(nrow(metabarlist$pcrs) ==
         nrow(unique(metabarlist$pcrs[, c("plate_no", "plate_col", "plate_row")])))) {
@@ -205,16 +214,15 @@ check_metabarlist <- function(metabarlist) {
           MARGIN = 1, FUN = function(x) paste(x, collapse = " ")
         ))
         stop(paste0(
-          "Same combination of 'plate_no', 'plate_col', 'plate_row' found
-                  several times in metabarlist$pcrs (",
-          paste(names(combi)[combi > 1], collapse = ", "),
-          ")"
-        ))
+          "Same combination(s) of 'plate_no', 'plate_col', 'plate_row' found
+                  several times in table `pcrs` of ", metabarlist.name," :",
+          paste(names(combi)[combi > 1], collapse = ", ")))
       }
     }
     if (all(c("primer_fwd", "primer_rev") %in% colnames(metabarlist$pcrs))) {
       if (nrow(unique(metabarlist$pcrs[, c("primer_fwd", "primer_rev")])) > 1) {
-        warning("Several primer pairs described in metabarlist$pcrs")
+        warning(paste("columns `primer_fwd` or `primer_rev` from table `pcrs` in",
+                      metabarlist.name, "contain several primer pairs"))
       }
     }
     if (all(c("tag_fwd", "tag_rev") %in% colnames(metabarlist$pcrs))) {
@@ -223,20 +231,20 @@ check_metabarlist <- function(metabarlist) {
           MARGIN = 1, FUN = function(x) paste(x, collapse = " ")
         ))
 
-        warning(
-          "Several tag pairs are not unique in metabarlist$pcrs (",
-          paste(names(combi)[combi > 1], collapse = ", "), ")"
-        )
+        warning(paste("columns `tag_fwd` and `tag_rev` from table `pcrs` in",
+                      metabarlist.name,"contain one or several tag pairs that are not unique:",
+          paste(names(combi)[combi > 1], collapse = ", ")))
       }
     }
   }
 
-
   if (any(rowSums(metabarlist$reads) == 0)) {
-    warning("Some PCRs have a number of reads of zero !")
+    warning(paste("Some PCRs in", metabarlist.name,
+                  "have a number of reads of zero in table `reads`!"))
   }
   if (any(colSums(metabarlist$reads) == 0)) {
-    warning("Some MOTUs have a number of reads of zero !")
+    warning(paste("Some MOTUsin", metabarlist.name,
+                  "have a number of reads of zero in table `reads`!"))
   }
   TRUE
 }
