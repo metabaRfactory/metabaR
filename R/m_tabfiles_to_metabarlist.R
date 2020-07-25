@@ -35,16 +35,16 @@
 
 tabfiles_to_metabarlist <- function(file_reads, file_motus, file_pcrs, file_samples, files_sep = "\t") {
   if (!file.exists(file_reads)) {
-    stop("file reads does not exist")
+    stop(paste("cannot open file_reads", file_reads,": No such file or directory"))
   }
   if (!file.exists(file_motus)) {
-    stop("file motus does not exist")
+    stop(paste("cannot open file_reads", file_motus,": No such file or directory"))
   }
   if (!file.exists(file_pcrs)) {
-    stop("file pcrs does not exist")
+    stop(paste("cannot open file_reads", file_pcrs,": No such file or directory"))
   }
   if (!file.exists(file_samples)) {
-    stop("file samples does not exist")
+    stop(paste("cannot open file_reads", file_samples,": No such file or directory"))
   }
 
 

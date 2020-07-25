@@ -4,7 +4,7 @@
 #'
 #'
 #' @param metabarlist    a \code{\link{metabarlist}} object
-#' @param FUN            a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.
+#' @param FUN            a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table `reads`.
 #' @param legend_title   the title of legend containing the plotted information.
 #' @param taglist        a character vector corresponding to the full list of tags ordered as they are used in the PCR plate scheme
 #'
@@ -42,20 +42,20 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
     function_values <- FUN(metabarlist)
 
     if (length(function_values) != nrow(metabarlist$pcrs)) {
-      stop("provided information should have the length of pcrs")
+      stop("provided information through function `FUN` should have the length of table `pcrs`")
     }
 
     if (!is.numeric(function_values)) {
-      stop("selected information should be numeric")
+      stop("provided information through function `FUN` should be numeric")
     }
 
     cols_tag_design <- c("tag_fwd", "tag_rev")
 
     if (!all(cols_tag_design %in% colnames(metabarlist$pcrs))) {
       stop(
-        "Tag pair design not properly provided: ",
+        "Tag pair design not provided properly: columns ",
         paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep = ", "),
-        " missing !\n"
+        " are missing in table `pcrs`!\n"
       )
     }
 
