@@ -57,7 +57,7 @@
 #' @references Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... & Chave, J. (2019). Body size determines soil community assembly in a tropical forest. Molecular Ecology, 28(3), 528-543.
 #'
 #'
-#' @source \href{LINK WEB TO DEFINE}{DNA metabarcoding data archive}
+#' @source \href{LINK WEB TO DEFINE}{DNA metabarcoding data archive} for obitools ouput data and contextual data.
 #'
 #' @examples
 #' data(soil_euk)
