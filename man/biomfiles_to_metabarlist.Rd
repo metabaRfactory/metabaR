@@ -17,7 +17,7 @@ biomfiles_to_metabarlist(
 
 \item{file_samples}{path for the sample characteristics table. The first column of this table should contain the sample names.}
 
-\item{file_pcrs}{path for the PCRs characteristics table (e.g. tags, primers, plate wells, etc.), if the \code{BIOM} file is missing these data. Mandatory fields: (i) 'sample_id', i.e. the name of each sample. (ii) 'type', i.e. the type of PCR; can be 'sample' or 'control'. (iii) 'control_type', i.e. the type of control if applicable. Should be: 'NA' for samples, 'extraction' for extraction negative controls, 'pcr' for pcr negative controls, 'sequencing' for sequencing negative controls (e.g. unused tag combinations), and 'positive' for positive controls. The first column of this table should correspond to the names of the PCRs.}
+\item{file_pcrs}{path for the PCRs characteristics table (e.g. tags, primers, plate wells, etc.), if the \code{BIOM} file is missing these data. Mandatory fields: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e. the type of PCR; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be: 'NA' for samples, `extraction` for extraction negative controls, `pcr` for pcr negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), and `positive` for positive controls. The first column of this table should correspond to the names of the PCRs.}
 
 \item{file_motus}{path for the MOTUs characteristics table (e.g. taxonomy, sequence, etc.), if the \code{BIOM} file is missing these data. Rows of the table should correspond to MOTUs, and the columns to their characteristics. Mandatory fields: 'sequence', i.e. the most abundant sequence of the MOTU. The first column of this table should contain MOTU names.}
 
@@ -35,13 +35,12 @@ Imports and formats BIOM and associated files to create a \code{\link{metabarlis
 \examples{
 add an example here, such as:
 
-\dontrun{
 soil_euk <- biomfiles_to_metabarlist(
- file_biom = "data-raw/litiere_euk_reads_hdf5_wsmd.biom",
- file_motus = "data-raw/litiere_euk_motus.txt",
- file_samples = "data-raw/litiere_euk_samples.txt",
+ file_biom = system.file("extdata", "litiere_euk_reads_hdf5.biom", package = "metabaRffe"),
+ file_motus = system.file("extdata", "litiere_euk_motus.txt", package = "metabaRffe"),
+ file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaRffe"),
+ file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaRffe"),
  sep = "\t")
-}
 
 }
 \references{
