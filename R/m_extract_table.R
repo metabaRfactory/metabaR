@@ -13,6 +13,8 @@
 #' @details
 #' All \code{metabarlist} objects are composed of four different tables that can be extracted as single tables with this function.
 #'
+#' @seealso \code{\link{metabarlist_generator}}
+#'
 #' @examples
 #'
 #' data(soil_euk)
