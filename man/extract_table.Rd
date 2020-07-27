@@ -31,6 +31,9 @@ all(colnames(reads) == rownames(motus))
 is.matrix(reads)
 is.data.frame(motus)
 }
+\seealso{
+\code{\link{metabarlist_generator}}
+}
 \author{
 Lucie Zinger
 }

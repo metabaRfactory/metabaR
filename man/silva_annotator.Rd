@@ -40,6 +40,9 @@ ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
   theme(legend.position = "bottom")
 
 }
+\seealso{
+\code{\link{taxodecider}}
+}
 \author{
 Lucie Zinger, Anne-Sophie Benoiston
 }

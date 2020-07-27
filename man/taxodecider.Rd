@@ -29,16 +29,16 @@ a \code{metabarlist} object with a dataframe motus including the preferred taxon
 Selecting a given taxonomic annotation between those obtained from two different databases
 }
 \details{
-The function \code{taxodecider} allows choosing amongst two taxonomic annotation based on the best identity scores and preferences for a given database (e.g. more reliable taxonomy). All taxonomic information should be stored in `metabarlist$motus`.
+The function \code{taxodecider} allows choosing amongst two taxonomic annotation based on the best identity scores and preferences for a given database (e.g. more reliable taxonomy). All taxonomic information should be stored in the `motus` table.
 }
 \examples{
 
-\dontrun{
 data(soil_euk)
+
 soil_euk <- silva_annotator(
    metabarlist = soil_euk,
-   silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
-   clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
+   silva.path = system.file("extdata", "lit_euk---ssu---otus.csv", package = "metabaRffe"),
+   clust.path = system.file("extdata", "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr", package = "metabaRffe"))
 
 soil_euk$motus$similarity = soil_euk$motus$similarity/100
 
@@ -50,8 +50,10 @@ soil_euk2 <- taxodecider(
    threshold = 0.9
 )
 
-}
 
+}
+\seealso{
+\code{\link{silva_annotator}}
 }
 \author{
 Anne-Sophie Benoiston, Lucie Zinger
