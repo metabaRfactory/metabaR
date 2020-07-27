@@ -20,7 +20,7 @@ a list of vectors containing parsed taxa as values and corresponding taxonomic r
 Parse taxonomic information from full taxonomic paths
 }
 \details{
-The taxonomic path should include both taxa names AND their associated taxonomic rank (full names or abbreviations as in qiime or unite outputs). The function will use it together with separators by decreasing level of taxonomic resolution. The function does not infer missing taxonomic ranks.
+The taxonomic path should include both taxa names AND their associated taxonomic rank (full names or abbreviations as in qiime or unite outputs). The function will use it together with separators by decreasing level of taxonomic resolution. The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks.
 }
 \examples{
 
