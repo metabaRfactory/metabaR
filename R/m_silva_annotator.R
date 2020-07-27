@@ -18,6 +18,8 @@
 #' \item{}{`zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr`: a file containing the mapping informations of sequences to their respective MOTUs. Even though the clustering is done before using the SILVAngs pipeline and that the clustering parameters in this pipeline are settled to 100\% identity of clustering, SILVAngs uses CDHit, which can group together OTUs sharing the same prefix/suffix. So it is common to retrieve less assignations than what was expected.}
 #' }
 #'
+#' @seealso \code{\link{taxodecider}}
+#'
 #' @examples
 #'
 #' data(soil_euk)

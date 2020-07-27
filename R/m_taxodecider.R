@@ -18,18 +18,20 @@
 #'
 #' @details
 #'
-#' The function \code{taxodecider} allows choosing amongst two taxonomic annotation based on the best identity scores and preferences for a given database (e.g. more reliable taxonomy). All taxonomic information should be stored in `metabarlist$motus`.
+#' The function \code{taxodecider} allows choosing amongst two taxonomic annotation based on the best identity scores and preferences for a given database (e.g. more reliable taxonomy). All taxonomic information should be stored in the `motus` table.
 #'
 #' @return a \code{metabarlist} object with a dataframe motus including the preferred taxonomic assignements
 #'
+#' @seealso \code{\link{silva_annotator}}
+#'
 #' @examples
 #'
-#' \dontrun{
 #' data(soil_euk)
+#'
 #' soil_euk <- silva_annotator(
 #'    metabarlist = soil_euk,
-#'    silva.path = "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---otus.csv",
-#'    clust.path =  "~/Documents/workspace/metabaRffe_external_data/lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr")
+#'    silva.path = system.file("extdata", "lit_euk---ssu---otus.csv", package = "metabaRffe"),
+#'    clust.path = system.file("extdata", "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr", package = "metabaRffe"))
 #'
 #' soil_euk$motus$similarity = soil_euk$motus$similarity/100
 #'
@@ -41,7 +43,6 @@
 #'    threshold = 0.9
 #' )
 #'
-#'}
 #'
 #' @author Anne-Sophie Benoiston, Lucie Zinger
 #' @export taxodecider
@@ -53,11 +54,11 @@ taxodecider = function(metabarlist, best.db, sim.scores, lineage, threshold){
   if (suppressWarnings(check_metabarlist(metabarlist))) {
 
   if (!all(sim.scores %in% colnames(metabarlist$motus))) {
-    stop("sim.scores should be in colnames of the metabarlist$motus table")
+    stop("sim.scores should be in colnames of the `motus` table" )
   }
 
   if (!all(sim.scores %in% colnames(metabarlist$motus))) {
-    stop("sim.scores should be in colnames of the metabarlist$motus table")
+    stop("sim.scores should be in colnames of the `motus` table")
   }
 
   x <- metabarlist$motus
@@ -77,7 +78,8 @@ taxodecider = function(metabarlist, best.db, sim.scores, lineage, threshold){
   max.bid <- bid[idx]
   max.tax <- tax[idx]
   metabarlist$motus <- cbind(metabarlist$motus,
-                            data.frame(best.db = max.db, best.db.sim = as.numeric(max.bid), best.db.lineage = max.tax))
+                            data.frame(best.db = max.db, best.db.sim = as.numeric(max.bid),
+                                       best.db.lineage = max.tax))
 
   check_metabarlist(metabarlist)
   return(metabarlist)
