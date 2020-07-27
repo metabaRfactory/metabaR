@@ -3,10 +3,10 @@
 #' Plots the taxonomic tree of a \code{\link{metabarlist}} object and maps an attribute onto it
 #'
 #'
-#' @param metabarlist    a \code{\link{metabarlist}} object. The object should contain
+#' @param metabarlist    a \code{\link{metabarlist}} object. Should contain taxonomic information in table `motus`.
 #' @param taxo           a character string or vector of strings indicating the name of the column (or group of column) containing the full taxonomic information in the `motus` table from the \code{\link{metabarlist}} object.
-#' @param sep.level      an optional character string to separate the terms. Required only if `taxo` is a string. NA character not allowed.
-#' @param sep.info       an optional character string to separate the terms. Required only if `taxo` is a string. NA character not allowed.
+#' @param sep.level      an optional character string to separate the terms. Required only if `taxo` is a string. NA not allowed.
+#' @param sep.info       an optional character string to separate the terms. Required only if `taxo` is a string. NA not allowed.
 #' @param thresh         a numeric indicating the relative abundance below which taxon labels won't be plotted
 #'
 #' @name ggtaxplot
@@ -52,65 +52,22 @@
 #' @importFrom igraph graph V layout.reingold.tilford get.vertex.attribute get.data.frame
 #' @export ggtaxplot
 
-ggtaxplot <- function(metabarlist, taxo, sep.level = NULL, sep.info = NULL, thresh = NULL) {
+ggtaxplot <- function(metabarlist, taxo, sep.level, sep.info, thresh = NULL) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     if (!is.character(taxo)) {
-      stop("taxo should be a character string or vector")
+      stop("`taxo` should be a character string or vector")
     }
 
     if (any(!taxo %in% colnames(metabarlist$motus))) {
-      stop("taxo should be a character string or vector of strings present
-           in the column names of metabarlist$motus")
+      stop("`taxo` should be a character string or vector of strings present
+           in the column names of the table `motus`")
     }
 
     if (length(taxo) == 1) {
 
-      # dictionnary of taxo ranks
-      taxolev.dict1 <- c(
-        "superkingdom", "kingdom", "subkingdom",
-        "superphylum", "phylum", "subphylum",
-        "superclass", "class", "subclass", "infraclass",
-        "superorder", "order", "cohort", "suborder",
-        "subcohort", "infraorder", "parvorder",
-        "superfamily", "family", "subfamily",
-        "tribe", "subtribe",
-        "genus", "subgenus", "section", "subsection", "series",
-        "species group", "species subgroup", "species", "subspecies",
-        "varietas", "forma",
-        "no rank"
-      )
-      taxolev.dict2 <- c("k", "p", "c", "o", "f", "g", "s")
-
-      path <- metabarlist$motus[, taxo]
-
-      if (is.null(sep.level) | is.null(sep.info)) {
-        stop("sep.level and sep.info are required to parse the taxonomic information")
-      }
-      if (all(!grepl(sep.info, path))) {
-        stop("sep.info not found in taxonomic information: no parsing possible")
-      }
-      if (all(!grepl(sep.level, path))) {
-        stop("sep.level not found in taxonomic information: no parsing possible")
-      }
-
-      # find were to parse (i.e. taxo level info before or after taxon name)
-      parsid <- which(unlist(strsplit(unlist(strsplit(path[1], sep.level)[1])[1], sep.info)) %in%
-        c(taxolev.dict1, taxolev.dict2))
-
-      # set spe characters
-      spe <- c("$", "*", "+", ".", "?", "[", "]", "^", "{", "}", "|", "(", ")", "\\")
-      if (sep.info %in% spe) sep.info <- paste("\\", sep.info, sep = "")
-      if (sep.level %in% spe) sep.info <- paste("\\", sep.level, sep = "")
-
-      if (parsid == 2) {
-        pattern <- paste(sep.info, "([a-zA-Z]|[[:space:]])*(", sep.level, "|$)", sep = "")
-        parse <- strsplit(path, pattern)
-      } else {
-        pattern <- paste("([a-zA-Z]|[[:space:]])*", sep.info, sep = "")
-        parse <- sapply(strsplit(path, pattern), function(x) gsub(sep.level, "", x[-1]))
-      }
-
+      parse <- unname(taxoparser(metabarlist$motus[, taxo], sep.level, sep.info))
       path <- sapply(parse, toString)
+
     } else {
       path <- sapply(
         1:nrow(metabarlist$motus),

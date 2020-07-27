@@ -4,16 +4,16 @@
 \alias{ggtaxplot}
 \title{Plotting a taxonomic tree}
 \usage{
-ggtaxplot(metabarlist, taxo, sep.level = NULL, sep.info = NULL, thresh = NULL)
+ggtaxplot(metabarlist, taxo, sep.level, sep.info, thresh = NULL)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object. The object should contain}
+\item{metabarlist}{a \code{\link{metabarlist}} object. Should contain taxonomic information in table `motus`.}
 
 \item{taxo}{a character string or vector of strings indicating the name of the column (or group of column) containing the full taxonomic information in the `motus` table from the \code{\link{metabarlist}} object.}
 
-\item{sep.level}{an optional character string to separate the terms. Required only if `taxo` is a string. NA character not allowed.}
+\item{sep.level}{an optional character string to separate the terms. Required only if `taxo` is a string. NA not allowed.}
 
-\item{sep.info}{an optional character string to separate the terms. Required only if `taxo` is a string. NA character not allowed.}
+\item{sep.info}{an optional character string to separate the terms. Required only if `taxo` is a string. NA not allowed.}
 
 \item{thresh}{a numeric indicating the relative abundance below which taxon labels won't be plotted}
 }
