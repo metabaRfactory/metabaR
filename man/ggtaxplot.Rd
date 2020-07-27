@@ -24,7 +24,7 @@ a ggplot
 Plots the taxonomic tree of a \code{\link{metabarlist}} object and maps an attribute onto it
 }
 \details{
-This function allows to visualize the full taxonomic tree of a set of samples and to map some attributes  on the trees (e.g. number of reads per node/branches, nb of MOTUs, etc.). The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD or with defined taxonomic levels if `taxo` is a vector) by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks.
+This function allows to visualize the full taxonomic tree of a set of samples and to map some attributes  on the trees (e.g. number of reads per node/branches, nb of MOTUs, etc.). The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD or with defined taxonomic levels if `taxo` is a vector) by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks. The taxonomic information should contain a level that is common to all MOTUs taxonomic assignments (common ancestor).
 }
 \examples{
 
@@ -39,14 +39,10 @@ ggtaxplot(soil_euk, "path", sep.level = ":", sep.info = "@")
 ggtaxplot(soil_euk, "path", sep.level = ":", sep.info = "@", thresh = 1e-3)
 
 ## run on a particular clade e.g. here arthropoda, otherwise difficult to read
-## get motus names assigned to annelids
-arthropoda_motus <- rownames(soil_euk$motus)[grep("Arthropoda", soil_euk$motus$path)]
-## create the metabarlist object
 arthropoda <- subset_metabarlist(soil_euk,
   table = "motus",
-  indices = arthropoda_motus
+  indices = grepl("Arthropoda", soil_euk$motus$path)
 )
-
 ### plot
 ggtaxplot(arthropoda, "path", sep.level = ":", sep.info = "@")
 
@@ -57,6 +53,11 @@ taxo.col <- c(
   "family_name", "genus_name", "species_name"
 )
 ggtaxplot(arthropoda, taxo.col)
+## to do the same on the full soil_euk data, add a column "kingdom_name" with value "Eukaryota" in soil_euk$motus
+
+}
+\seealso{
+\code{\link{taxoparser}}
 }
 \author{
 Lucie Zinger

@@ -1,6 +1,6 @@
 #' Create a metabarlist object
 #'
-#' Formatting R tables to create a \code{\link{metabarlist}} object.
+#' Combining R tables to create a \code{\link{metabarlist}} object.
 #'
 #'
 #' @param reads     MOTU abundance table. Rows and rownames of the table should correspond to PCRs and their names respectively. Columns and colnames should correspond to MOTUs and their names. Rownames in this table should correspond to PCR names respectively.
