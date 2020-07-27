@@ -3,7 +3,7 @@
 #' Parse taxonomic information from full taxonomic paths
 #'
 #'
-#' @param taxopath    a vector full taxonomic paths to parse
+#' @param taxopath    a vector of full taxonomic paths to parse
 #' @param sep.level   a character string to separate the taxonomic levels in `taxopath`. NA character not allowed.
 #' @param sep.info    a character string to separate taxonomic from taxorank information in `taxopath`. NA character not allowed.
 #'
@@ -25,7 +25,8 @@
 #'                          sep.info = "@",
 #'                          sep.level= ":")
 #'
-#' ## a qiime/unite-like type of full taxonomic path. No kingdom level available in soil_euk
+#' ## a qiime/unite-like type of full taxonomic path.
+#' # No kingdom level available in soil_euk
 #' qiimepath <- apply(soil_euk$motus[,grep("[msry]_name", colnames(soil_euk$motus))], 1,
 #'                   function(x) {
 #'                      paste(sapply(1:length(x), function(y) {

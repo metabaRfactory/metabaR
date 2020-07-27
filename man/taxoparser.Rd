@@ -7,7 +7,7 @@
 taxoparser(taxopath, sep.level, sep.info)
 }
 \arguments{
-\item{taxopath}{a vector full taxonomic paths to parse}
+\item{taxopath}{a vector of full taxonomic paths to parse}
 
 \item{sep.level}{a character string to separate the taxonomic levels in `taxopath`. NA character not allowed.}
 
@@ -33,7 +33,8 @@ taxoparsed <- taxoparser(taxopath = soil_euk$motus$path,
                          sep.info = "@",
                          sep.level= ":")
 
-## a qiime/unite-like type of full taxonomic path. No kingdom level available in soil_euk
+## a qiime/unite-like type of full taxonomic path.
+# No kingdom level available in soil_euk
 qiimepath <- apply(soil_euk$motus[,grep("[msry]_name", colnames(soil_euk$motus))], 1,
                   function(x) {
                      paste(sapply(1:length(x), function(y) {
