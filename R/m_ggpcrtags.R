@@ -17,6 +17,8 @@
 #' @details
 #' Vizualizing attributes of the PCRs in their tag pair design context, i.e. according to the tag combination used. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer/tag sets).
 #'
+#' @seealso \code{\link{ggpcrplate}}
+#'
 #' @examples
 #'
 #' data(soil_euk)

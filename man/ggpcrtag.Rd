@@ -46,6 +46,9 @@ ggpcrtag(soil_euk,
   }
 )
 }
+\seealso{
+\code{\link{ggpcrplate}}
+}
 \author{
 Lucie Zinger
 }

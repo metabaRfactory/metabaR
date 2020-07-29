@@ -44,6 +44,9 @@ ggpcrplate(soil_euk,
   }
 )
 }
+\seealso{
+\code{\link{ggpcrtags}}
+}
 \author{
 Lucie Zinger, Clément Lionnet
 }
