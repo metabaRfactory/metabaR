@@ -4,8 +4,11 @@
 #'
 #'
 #' @param metabarlist  a \code{metabarlist} object
-#' @param silva.path   path to a table from the SILVAngs pipeline, typically zipfile>ssu>exports>xxx---ssu---otus.csv
-#' @param clust.path   path to a file from the SilvaNgs pipeline indicating otu cluster membership zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr
+#' @param silva.path   path to a table from the SILVAngs pipeline,
+#'                     typically zipfile > ssu > exports > xxx---ssu---otus.csv
+#' @param clust.path   path to a file from the SilvAngs pipeline indicating otu cluster membership,
+#'                     typically zipfile > ssu > stats > sequence_cluster_map > data >
+#'                     xxx---ssu---sequence_cluster_map---tmptaxo.clstr
 #' @name silva_annotator
 #'
 #' @return a \code{metabarlist} object with table `motus` including the taxonomic assignments from silva
@@ -39,6 +42,7 @@
 
 
 silva_annotator <- function(metabarlist, silva.path, clust.path) {
+
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     motus <- metabarlist$motus
 
