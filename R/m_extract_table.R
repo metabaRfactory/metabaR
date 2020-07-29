@@ -4,11 +4,12 @@
 #'
 #'
 #' @param metabarlist       a \code{\link{metabarlist}} object
-#' @param table             the table required for extraction. Can be one of `reads`, `motus`, `pcrs`, or `samples`
+#' @param table             the table required for extraction.
+#'                          Can be one of `reads`, `motus`, `pcrs`, or `samples`
 #'
 #' @name extract_table
 #'
-#' @return a numeric matrix `reads` or a dataframe `motus`, `pcrs`, or `samples`
+#' @return a numeric matrix `reads` or a data frame `motus`, `pcrs`, or `samples`
 #'
 #' @details
 #' All \code{metabarlist} objects are composed of four different tables that can be extracted as single tables with this function.
@@ -25,6 +26,7 @@
 #' all(colnames(reads) == rownames(motus))
 #' is.matrix(reads)
 #' is.data.frame(motus)
+#'
 #' @author Lucie Zinger
 #'
 #' @export extract_table
