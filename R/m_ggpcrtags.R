@@ -4,9 +4,11 @@
 #'
 #'
 #' @param metabarlist    a \code{\link{metabarlist}} object
-#' @param FUN            a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table `reads`.
+#' @param FUN            a function which return a vector containing the information to be plotted.
+#'                       The vector should be a numeric vector which has the same length of table `reads`.
 #' @param legend_title   the title of legend containing the plotted information.
-#' @param taglist        a character vector corresponding to the full list of tags ordered as they are used in the PCR plate scheme
+#' @param taglist        a character vector corresponding to the full list of tags ordered as
+#'                       they are used in the PCR plate scheme
 #'
 #' @name ggpcrtag
 #'
