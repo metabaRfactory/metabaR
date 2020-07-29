@@ -1,4 +1,4 @@
-#' Plotting a taxonomic tree
+#' @title Plotting a taxonomic tree
 #'
 #' Plots the taxonomic tree of a \code{\link{metabarlist}} object and maps an attribute onto it
 #'
