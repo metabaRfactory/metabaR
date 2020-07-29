@@ -56,7 +56,7 @@ soil_euk_ag <- aggregate_metabarlist(soil_euk,
 
 }
 \seealso{
-\code{\link{apply}}, \code{\link{aggregate}}
+\code{\link{aggregate_motus}}, \code{\link{apply}}, \code{\link{aggregate}}
 }
 \author{
 Lucie Zinger, Frédéric Boyer
