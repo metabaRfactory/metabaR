@@ -2,23 +2,34 @@
 % Please edit documentation in R/m_tagjumpslayer.R
 \name{tagjumpslayer}
 \alias{tagjumpslayer}
-\title{Filtering potential tag jumps in metabarcoding data}
+\title{Filtering potential tag-jumps in metabarcoding data}
 \usage{
-tagjumpslayer(metabarlist, threshold = 0.03)
+tagjumpslayer(metabarlist, threshold = 0.03, method = "cut")
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{threshold}{an MOTU relative abundance value below which the MOTU is considered to be absent}
+\item{threshold}{an MOTU relative abundance value below
+which the MOTU is considered to be tag-jumps}
+
+\item{method}{a string indicating the method to deal with tag-jumps.
+Default: \code{"cut"}}
 }
 \value{
-a \code{\link{metabarlist}} object with the transformed reads count matrix
+a \code{\link{metabarlist}} object with the curated reads count matrix
 }
 \description{
 Removes reads of potential tagjumps in a \code{\link{metabarlist}} object.
 }
 \details{
-Tagjumps are an important bias that lead to the presence of potentially high numbers of false positives in DNA metabarcoding data. The origin of this bias is not well known yet, although currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Incomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine MOTU, but its tag combination is an artifact. This bias is also frequency-dependent, i.e. abundant genuine MOTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each MOTU separately and setting to 0 any abundance representing < 0.03% of the total MOTU abundance in the entire dataset.
+Tagjumps are an important bias that lead to the presence of potentially high numbers of false positives in DNA metabarcoding data. The exact mechanism generating this bias is not well characterized yet, but is currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Incomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine MOTU, but its tag combination (and hence sample origin) is an artifact. This bias is also frequency-dependent, i.e. abundant genuine MOTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each MOTU separately and reducing their abundance to 0 below a given \code{threshold} of in terms of proportion over the total MOTU abundance in the entire dataset. This reduction can be done with one of the two following methods:
+
+\itemize{
+\item{\code{method = "cut"} sets the MOTU abundance to 0.}
+\item{\code{method = "substract"} substracts the maximum MOTU abundance corresponding to
+      \code{threshold} to all abundances of that MOTU in the entire dataset.
+     Negative values obtained from this operation are set to 0}
+}
 }
 \examples{
 
@@ -33,6 +44,7 @@ p1 <- ggpcrplate(soil_euk,
     m$reads[, idx]
   }
 )
+
 p1 + scale_size(limits = c(1, max(soil_euk$reads[, idx]))) +
   ggtitle("Distribution of the most abundant MOTU")
 
@@ -55,6 +67,10 @@ Esling, P., Lejzerowicz, F., & Pawlowski, J. (2015). Accurate multiplexing and f
 Schnell, I. B., Bohmann, K., & Gilbert, M. T. P. (2015). Tag jumps illuminated–reducing sequence‐to‐sample misidentifications in metabarcoding studies. Molecular Ecology Resources, 15(6), 1289-1303.
 
 Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... & Réjou‐Méchain, M. (2019). Body size determines soil community assembly in a tropical forest. Molecular Ecology, 28(3), 528-543.
+}
+\seealso{
+\code{\link{contaslayer}}, \code{\link{pcrslayer}}
+         for other data curation procedures.
 }
 \author{
 Lucie Zinger
