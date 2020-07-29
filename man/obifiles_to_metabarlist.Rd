@@ -7,11 +7,22 @@
 obifiles_to_metabarlist(file_obitab, file_ngsfilter, file_samples, ...)
 }
 \arguments{
-\item{file_obitab}{path for the \code{obitab} output file. Rows of the table correspond to MOTUs, and columns correspond to MOTU characteristics and counts across PCRs. Mandatory fields: `sequence`; should be printed when using \code{obitab}.}
+\item{file_obitab}{path for the \code{obitab} output file. Rows of the table correspond to MOTUs,
+and columns correspond to MOTU characteristics and counts across PCRs.
+Mandatory fields: `sequence`; should be printed when using \code{obitab}.}
 
-\item{file_ngsfilter}{path for the \code{ngsfilter} file. Rows of the table correspond to PCRs, and the columns to their characteristics. Mandatory fields in the additional information: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e. the type of pcr; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be: `NA` for samples, `extraction` for extraction negative controls, `pcr` for pcr negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), and `positive` for positive controls. The first column of this table should correspond to the names of the pcrs.}
+\item{file_ngsfilter}{path for the \code{ngsfilter} file. Rows of the table correspond to PCRs,
+and the columns to their characteristics. Mandatory fields in the additional
+information: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e.
+the type of pcr; can be `sample` or `control`. (iii) `control_type`, i.e. the
+type of control if applicable. Should be: `NA` for samples, `extraction` for
+extraction negative controls, `pcr` for pcr negative controls, `sequencing`
+for sequencing negative controls (e.g. unused tag combinations), and `positive`
+for positive controls. The first column of this table should correspond to the
+names of the pcrs.}
 
-\item{file_samples}{path for the sample characteristics table. The first column of this table should contain the sample names.}
+\item{file_samples}{path for the sample characteristics table. The first column of this
+table should contain the sample names.}
 
 \item{...}{other arguments to be pasted from \code{read.table}}
 }
@@ -40,6 +51,8 @@ soil_euk <- obifiles_to_metabarlist(
 Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 }
 \seealso{
+\code{\link{read_ngsfiler}}, \code{\link{tabfiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
+
 \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
 }
 \author{

@@ -12,16 +12,22 @@ gghill_rarefaction(hill_rar, group = NULL)
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{nboot}{number of resampling events to estimate \eqn{^{q}D} at a given sequencing depth.}
+\item{nboot}{number of resamplings to estimate \eqn{^{q}D} at a given sequencing depth.}
 
-\item{nsteps}{number of steps between sample sizes for the rarefaction curves. Default is 10 steps.}
+\item{nsteps}{number of steps between sample sizes for the rarefaction curves.
+Default is 10 steps.}
 
 \item{hill_rar}{an object of class \code{"hill_rarefaction"}.}
 
-\item{group}{a vector or factor giving the grouping of each pcr included in the \code{"hill_rarefaction"} object. Missing values will be treated as another group and a warning will be given. The elements should correspond to the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no grouping.}
+\item{group}{a vector or factor giving the grouping of each pcr included in the
+\code{"hill_rarefaction"} object. Missing values will be treated as
+another group and a warning will be given. The elements should correspond to
+the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no grouping.}
 }
 \value{
-Function \code{hill_rarefaction} returns an object of class \code{"hill_rarefaction"}, which corresponds to a table of diversity indices for each pcr rarefied at each `nsteps`  sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
+Function \code{hill_rarefaction} returns an object of class \code{"hill_rarefaction"},
+        which corresponds to a table of diversity indices for each pcr rarefied at each `nsteps`
+        sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
 }
 \description{
 These functions generate and plot rarefaction curves from a \code{\link{metabarlist}} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as Good's coverage index.
@@ -57,7 +63,7 @@ soil_euk_h20 <- subset_metabarlist(soil_euk,
    table = "pcrs",
    indices = grepl("H20-[A-B]", rownames(soil_euk$pcrs)))
 
-# run rarefaction (use boot = 20 to limit computation time, should be more)
+# run rarefaction (use boot = 20 to limit computation time)
 soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
 
 # plot the results
@@ -65,7 +71,7 @@ gghill_rarefaction(soil_euk_h20.raref)
 
 # plot the results while differenciating litter vs. soil samples
 p <- gghill_rarefaction(soil_euk_h20.raref,
-    group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))])
+                        group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))])
 p
 p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +

@@ -3,15 +3,18 @@
 #' Import a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 #'
 #'
-#' @param file    path/name of the input ngsfilter txt file
-#' @param additional.sep character indicating the field separator in the additional info column in the ngsfilter filter file.
-#' @param ...    other arguments to be pasted from \code{read.table}
+#' @param file             path/name of the input ngsfilter txt file
+#' @param additional.sep   character indicating the field separator in the additional info column in
+#'                         the ngsfilter filter file.
+#' @param ...              other arguments to be pasted from \code{read.table}
 #' @name read_ngsfilter
 #'
 #' @return a data.frame
 #'
 #' @details
 #' The function \code{read_ngsfilter} creates a `pcrs` table from a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
+#'
+#' @seealso \code{\link{obifiles_to_metabarlist}}
 #'
 #' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 #'

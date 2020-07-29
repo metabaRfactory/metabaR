@@ -45,6 +45,9 @@ taxoparsed <- taxoparser(taxopath = qiimepath,
                          sep.info = "_",
                          sep.level= ";")
 }
+\seealso{
+\code{\link{ggtaxplot}}
+}
 \author{
 Lucie Zinger
 }

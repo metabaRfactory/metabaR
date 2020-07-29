@@ -2,7 +2,7 @@
 % Please edit documentation in R/m_fasta_generator.R
 \name{fasta_generator}
 \alias{fasta_generator}
-\title{Generate a fasta file from a metabarlist object}
+\title{Generating a fasta file from a metabarlist object}
 \usage{
 fasta_generator(
   metabarlist,
@@ -15,11 +15,16 @@ fasta_generator(
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object.}
 
-\item{id}{a character vector containing identifiers for the MOTUs of interest. Default is rownames(metabarlist$motus)}
+\item{id}{a character vector containing identifiers for the MOTUs of interest.
+Default is the row names of table `motus`}
 
 \item{output_file}{the path/name of the output file.}
 
-\item{annotation}{a data frame containing the additional information to be added in the header. Each row name is a MOTU identifier and each column header is the information key (correspond to "key=" in the fasta header). Default: NULL}
+\item{annotation}{a data frame containing the additional information to be added
+in the sequence header. Each row name is a MOTU identifier and each
+column header is the information key
+(correspond to "key=" in the fasta header).
+Default: NULL}
 
 \item{annot_sep}{the annotation separator. Default is ";"}
 }
@@ -27,7 +32,7 @@ fasta_generator(
 a fasta file
 }
 \description{
-Generate a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
+Generates a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
 }
 \details{
 Creates a fasta file from a set of sequences of interest. One to several sequence information can be added in the sequence header through the `annotation` table. Using the default parameters, the resulting fasta file will have the following format:
@@ -41,13 +46,14 @@ ctcaaacttccttggcctggaaggccatagtccctctaagaagctggccgcggagggtcacctccgcatagctagttagc
 
 data(soil_euk)
 
-# export in fasta the 10 most abundant MOTUs
+## Export in fasta the 10 most abundant MOTUs
 idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
 fasta_generator(soil_euk, rownames(soil_euk$motus)[idx],
   "Dominants.fasta"
 )
 
-# export in fasta the 10 most abundant MOTUs, their abundance and the GC content of the corresponding sequence
+## Export in fasta the 10 most abundant MOTUs, their abundance and the GC content
+# of the corresponding sequence
 annotation <- data.frame(
   abundance = soil_euk$motus$count[idx],
   GC_content = soil_euk$motus$GC_content[idx],
@@ -58,6 +64,9 @@ fasta_generator(
   "Dominants.fasta",
   annotation
 )
+}
+\seealso{
+\code{\link{metabarlist_generator}}
 }
 \author{
 Lucie Zinger, Clément Lionnet
