@@ -9,7 +9,8 @@ read_ngsfilter(file, additional.sep = "=", ...)
 \arguments{
 \item{file}{path/name of the input ngsfilter txt file}
 
-\item{additional.sep}{character indicating the field separator in the additional info column in the ngsfilter filter file.}
+\item{additional.sep}{character indicating the field separator in the additional info column in
+the ngsfilter filter file.}
 
 \item{...}{other arguments to be pasted from \code{read.table}}
 }
@@ -32,6 +33,9 @@ ngsfilter <- read_ngsfilter(
 }
 \references{
 Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
+}
+\seealso{
+\code{\link{obifiles_to_metabarlist}}
 }
 \author{
 Lucie Zinger
