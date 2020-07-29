@@ -28,6 +28,8 @@
 #' After aggregation, the information contained in the `pcrs` table is averaged if numeric,
 #' or if not, it is dereplicated if equal across replicates, or concatenated if not.
 #'
+#'
+#'
 #' @seealso \code{\link{aggregate_motus}}, \code{\link{apply}}, \code{\link{aggregate}}
 #'
 #' @examples
