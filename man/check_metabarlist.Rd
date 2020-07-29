@@ -2,48 +2,57 @@
 % Please edit documentation in R/m_check_metabarlist.R
 \name{check_metabarlist}
 \alias{check_metabarlist}
-\title{Check that a list of tables is in the correct format as a metabarlist}
+\title{Checks if a list of tables is a metabarlist}
 \usage{
 check_metabarlist(metabarlist)
 }
 \arguments{
-\item{metabarlist}{a \code{metabarlist} object}
+\item{metabarlist}{a \code{\link{metabarlist}} object}
 }
 \value{
-TRUE or throws a stop
+\code{check_metabarlist} returns TRUE if \code{metabarlist} fulfills of conditions to be of class \code{\link{metabarlist}}` (see details). If not, the function throws a stop.
 }
 \description{
-Test that a list of tables containing information on MOTU abundances, MOTU characteristics, pcr characteristics, and sample characteristics form a congruent \code{\link{metabarlist}}
+Tests if a list of tables containing information on MOTUs abundances, MOTUs characteristics, PCRs characteristics, and samples characteristics form an object of class \code{\link{metabarlist}}
 }
 \details{
-Checks for the properties required for a well formed \code{metabarlist} object:
+The function \code{check_metabarlist} checks if \code{metabarlist} has all the properties required to be a well formed \code{metabarlist} object:
 
 \itemize{
-\item {is a list with four attributes named `reads`, `motus`, `pcrs` and `samples`}
-\item {`reads` is a numeric matrix}
-\item {`motus`, `pcrs` and `samples` are of type `data.frame`}
-\item {`reads` must have the exact same row names and columns as the row names of `motus` and `pcrs` (in the same order)}
-\item {`pcrs` have mandatory columns, i.e.  `sample_id`, `type` and `control_type`}
-\item {values in `type` are properly defined, i.e. `sample` or `control`}
-\item {values in and `control_type` are properly defined, i.e. `sequencing`, `pcr`, `extraction`, `positive`}
+\item {\code{metabarlist} should be is a list with four tables named
+       `reads`, `motus`, `pcrs` and `samples`.}
+\item {table `reads` should be a numeric matrix.}
+\item {tables `motus`, `pcrs` and `samples` should be a data frame.}
+\item {table `reads` row names should be exactely the same than row names in table `pcrs`.}
+\item {table `reads` column names should be exactely the same than
+       row names in table `motus`.}
+\item {table `pcrs` should contain the mandatory columns,
+       i.e.  `sample_id`, `type` and `control_type`.}
+\item {values in `type` should be properly defined:
+       they can only be `sample` or `control`.}
+\item {values in and `control_type` should be properly defined:
+       they can only be `sequencing`, `pcr`, `extraction`, `positive`, (or NA for samples).}
 }
 
 The function will stop if these basic criteria are not met.
 
-The function will issue warnings if tables lack columns which are non-mandatory for the \code{metabaRffe} package to run, but which are mandatory for specific functions (e.g., \code{ggpcrplate})
+\code{check_metabarlist} also issues warnings if tables lack columns which are non-mandatory for the \code{metabaRffe} package to run, but that are mandatory (or have a mandatory format) for specific functions (e.g., \code{\link{ggpcrplate}})
 \itemize{
 \item {the column `sequence` for the `motus` table}
 \item {the columns `tag_fwd`, `tag_rev`, `primer_fwd`, `primer_rev`, `plate_no`, `plate_col`, and `plate_row` for the `pcrs` table}
 }
 
 
-In addition, the function issues a warning if any sample or MOTU is has a count of 0
+In addition, the function issues a warning if any PCR or MOTU has a total count of 0 across the entire dataset.
 }
 \examples{
 
 data(soil_euk)
-
 check_metabarlist(soil_euk)
+
+}
+\seealso{
+\code{\link{metabarlist_generator}}
 }
 \author{
 Clément Lionnet & Frédéric Boyer & Lucie Zinger
