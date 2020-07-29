@@ -3,11 +3,28 @@
 #' Imports and formats BIOM and associated files to create a \code{\link{metabarlist}} object.
 #'
 #'
-#' @param file_biom path for the \code{BIOM} file. This is either a JSON formatted file (biom file format version 1) or a HDF5 formatted file (\code{BIOM} file format version 2 and 2.1), as described in \link{http://biom-format.org/}. This file should include at least MOTUs abundance data. It may also store MOTUs and/or PCRs attributes data. Mandatory fields for MOTUs and PCRs attributes data are described below.
-#' @param file_samples path for the sample characteristics table. The first column of this table should contain the sample names.
-#' @param file_pcrs path for the PCRs characteristics table (e.g. tags, primers, plate wells, etc.), if the \code{BIOM} file is missing these data. Mandatory fields: (i) `sample_id`, i.e. the name of each sample. (ii) `type`, i.e. the type of PCR; can be `sample` or `control`. (iii) `control_type`, i.e. the type of control if applicable. Should be: 'NA' for samples, `extraction` for extraction negative controls, `pcr` for pcr negative controls, `sequencing` for sequencing negative controls (e.g. unused tag combinations), and `positive` for positive controls. The first column of this table should correspond to the names of the PCRs.
-#' @param file_motus path for the MOTUs characteristics table (e.g. taxonomy, sequence, etc.), if the \code{BIOM} file is missing these data. Rows of the table should correspond to MOTUs, and the columns to their characteristics. Mandatory fields: 'sequence', i.e. the most abundant sequence of the MOTU. The first column of this table should contain MOTU names.
-#'
+#' @param file_biom      path for the \code{BIOM} file. This is either a JSON formatted file
+#'                       (biom file format version 1) or a HDF5 formatted file (\code{BIOM} file format
+#'                       version 2 and 2.1), as described in \link{http://biom-format.org/}.
+#'                       This file should include at least MOTUs abundance data.
+#'                       It may also store MOTUs and/or PCRs attributes data.
+#'                       Mandatory fields for MOTUs and PCRs attributes data are described below.
+#' @param file_samples   path for the sample characteristics table.
+#'                       The first column of this table should contain the sample names.
+#' @param file_pcrs      path for the PCRs characteristics table (e.g. tags, primers, plate wells, etc.),
+#'                       if the \code{BIOM} file is missing these data. Mandatory fields:
+#'                       (i) `sample_id`, i.e. the name of each sample. (ii) `type`,
+#'                       i.e. the type of PCR; can be `sample` or `control`. (iii) `control_type`,
+#'                       i.e. the type of control if applicable. Should be: 'NA' for samples,
+#'                       `extraction` for extraction negative controls, `pcr` for pcr negative controls,
+#'                       `sequencing` for sequencing negative controls (e.g. unused tag combinations),
+#'                       and `positive` for positive controls. The first column of this table should
+#'                       correspond to the names of the PCRs.
+#' @param file_motus     path for the MOTUs characteristics table (e.g. taxonomy, sequence, etc.),
+#'                       if the \code{BIOM} file is missing these data. Rows of the table should
+#'                       correspond to MOTUs, and the columns to their characteristics.
+#'                       Mandatory fields: 'sequence', i.e. the most abundant sequence of the MOTU.
+#'                       The first column of this table should contain MOTU names.
 #' @param ... other arguments to be pasted from \code{read.table}.
 #'
 #' @name biomfiles_to_metabarlist
@@ -16,6 +33,8 @@
 #'
 #' @details
 #'
+#' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
+#'           \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}}
 #'
 #' @references
 #' \link{http://biom-format.org/}
@@ -30,7 +49,7 @@
 #'  file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaRffe"),
 #'  sep = "\t")
 #'
-#' @author Anne-Sophie Benoiston & Lucie Zinger
+#' @author Anne-Sophie Benoiston, Lucie Zinger
 #'
 #' @import biomformat
 #'
