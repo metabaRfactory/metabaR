@@ -1,20 +1,27 @@
 #' Plotting a taxonomic tree
 #'
-#' Plots the taxonomic tree of a \code{\link{metabarlist}} object and maps an attribute onto it
+#' Plots the taxonomic tree from a \code{\link{metabarlist}} object and maps an attribute onto it
 #'
 #'
-#' @param metabarlist    a \code{\link{metabarlist}} object. Should contain taxonomic information in table `motus`.
-#' @param taxo           a character string or vector of strings indicating the name of the column (or group of column) containing the full taxonomic information in the `motus` table from the \code{\link{metabarlist}} object.
-#' @param sep.level      an optional character string to separate the terms. Required only if `taxo` is a string. NA not allowed.
-#' @param sep.info       an optional character string to separate the terms. Required only if `taxo` is a string. NA not allowed.
-#' @param thresh         a numeric indicating the relative abundance below which taxon labels won't be plotted
+#' @param metabarlist    a \code{\link{metabarlist}} object.
+#'                       Should contain taxonomic information in table `motus`.
+#' @param taxo           a character string or vector of strings indicating the name of
+#'                       the column (or group of column) containing the full taxonomic
+#'                       information in the `motus` table from the \code{\link{metabarlist}}
+#'                       object.
+#' @param sep.level      an optional character string to separate the terms.
+#'                       Required only if `taxo` is a string. \code{NA} not allowed.
+#' @param sep.info       an optional character string to separate the terms.
+#'                       Required only if `taxo` is a string. \code{NA} not allowed.
+#' @param thresh         a numeric indicating the relative abundance below which
+#'                       taxon labels won't be plotted
 #'
 #' @name ggtaxplot
 #'
 #' @return a ggplot
 #'
 #' @details
-#' This function allows to visualize the full taxonomic tree of a set of samples and to map some attributes  on the trees (e.g. number of reads per node/branches, nb of MOTUs, etc.). The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD or with defined taxonomic levels if `taxo` is a vector) by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks. The taxonomic information should contain a level that is common to all MOTUs taxonomic assignments (common ancestor).
+#' This function allows to visualize the full taxonomic tree of a set of samples and to map some attributes on the tree (e.g. number of reads per node/branches, nb of MOTUs, etc.). The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD or with defined taxonomic levels if `taxo` is a vector) by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks. The taxonomic information should contain a level that is common to all MOTUs taxonomic assignments (common ancestor).
 #'
 #' @seealso \code{\link{taxoparser}}
 #'
@@ -103,7 +110,8 @@ ggtaxplot <- function(metabarlist, taxo, sep.level, sep.info, thresh = NULL) {
     # edgelist[is.na(edgelist)] = "NA"
     # edgelist = edgelist[!duplicated(edgelist),] #should all be NAs.
 
-    g <- igraph::graph.edgelist(edgelist[rev(1:nrow(edgelist)), c("parentfull", "kidfull")], directed = F)
+    g <- igraph::graph.edgelist(edgelist[rev(1:nrow(edgelist)),
+                                         c("parentfull", "kidfull")], directed = F)
 
     # Rename nodes with kid names
     igraph::V(g)$name2 <- ifelse(igraph::V(g)$name %in% edgelist[, "parent"],
