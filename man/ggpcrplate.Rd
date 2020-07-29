@@ -15,7 +15,9 @@ ggpcrplate(
 
 \item{legend_title}{the title of legend containing the plotted information.}
 
-\item{FUN}{a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.}
+\item{FUN}{a function which return a vector containing the information to be plotted.
+The vector should be numeric and of length equal to the number of
+rows of table `reads`.}
 }
 \value{
 a ggplot
@@ -30,11 +32,11 @@ Vizualizing some attributes of the PCRs in their plate design context, i.e. thei
 
 data(soil_euk)
 
-# Plot the number of reads per pcrs
+## Plot the number of reads per pcrs
 ggpcrplate(soil_euk)
 
 
-# Plot the number of reads of the most abundant MOTU
+## Plot the number of reads of the most abundant MOTU
 ggpcrplate(soil_euk,
   legend_title = "#reads of most \nabundant MOTU",
   FUN = function(m) {

@@ -4,7 +4,9 @@
 #'
 #'
 #' @param metabarlist    a \code{\link{metabarlist}} object.
-#' @param FUN            a function which return a vector containing the information to be plotted. The vector should be a numeric vector which has the same length of table 'reads'.
+#' @param FUN            a function which return a vector containing the information to be plotted.
+#'                       The vector should be numeric and of length equal to the number of
+#'                       rows of table `reads`.
 #' @param legend_title   the title of legend containing the plotted information.
 #'
 #' @name ggpcrplate
@@ -18,11 +20,11 @@
 #'
 #' data(soil_euk)
 #'
-#' # Plot the number of reads per pcrs
+#' ## Plot the number of reads per pcrs
 #' ggpcrplate(soil_euk)
 #'
 #'
-#' # Plot the number of reads of the most abundant MOTU
+#' ## Plot the number of reads of the most abundant MOTU
 #' ggpcrplate(soil_euk,
 #'   legend_title = "#reads of most \nabundant MOTU",
 #'   FUN = function(m) {
