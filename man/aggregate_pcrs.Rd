@@ -26,13 +26,15 @@ Aggregate PCR replicates in a \code{metabarlist} object.
 The function \code{aggregate_pcrs} is typically used at the end of the data filtration process and aims at aggregating reads and the pcr related information at the sample level. The user is free to use its own method of aggregation, but the following are often used and therefore pre-encoded:
 
 #'\itemize{
-\item{\code{"FUN_agg_sum"}: reads of pcr replicates are summed for each MOTU}
-\item{\code{"FUN_agg_mean"}: reads of pcr replicates are averaged for each MOTU.
+\item{\code{"FUN_agg_pcrs_sum"}: reads of pcr replicates are summed for each MOTU}
+\item{\code{"FUN_agg_pcrs_mean"}: reads of pcr replicates are averaged for each MOTU.
       Results are rounded so that to obtain genuine count data}
-\item{\code{"FUN_agg_prob"}: the probability of detection is returned for each MOTU. This method is often used in studies dealing with ancient DNA or diet.}
+\item{\code{"FUN_agg_pcrs_prob"}: the probability of detection is returned for each MOTU.
+      This method is often used in studies dealing with ancient DNA or diet.}
 }
 
-After aggregation, the information contained in the `pcrs` table is dereplicated if equal across replicates, or concatenated if not.
+After aggregation, the information contained in the `pcrs` table is averaged if numeric,
+or if not, it is dereplicated if equal across replicates, or concatenated if not.
 }
 \examples{
 
