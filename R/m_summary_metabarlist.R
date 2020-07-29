@@ -4,34 +4,39 @@
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
-#' @param method        type of summary to provide. Should match with `dataset`, `motus` or `pcrs`. Default is `dataset`
-#' @param groups       a grouping vector or factor of same number of rows than `motus` or `pcrs` for which the summary should be done. Default is NULL
+#' @param method        type of summary to provide. Should match with `dataset`, `motus` or `pcrs`.
+#'                      Default is `dataset`
+#' @param groups        a grouping vector or factor of same number of rows than `motus` or `pcrs`
+#'                      for which the summary should be done. Default is NULL
 #'
 #' @return Function \code{summary_metabarlist} returns basic summary statistics (nb of elements, reads and MOTUs in total or on average per pcrs) of a \code{\link{metabarlist}} object. The format of the value returned depends on the method used.
 #'
 #' @details
+#'
 #' \code{summary_metabarlist} returns basic summary statistics of a \code{\link{metabarlist}} object. The summary returned depends on the `method` used :
 #' \itemize{
 #' \item{`dataset`}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
 #' \item{`motus` or `pcrs`}{return one data.frame similar to the dataset_statistics described above according to a grouping factor/vector for MOTUs or pcrs}
 #' }
 #'
+#' @seealso \code{\link{summary}}
 #' @examples
 #'
 #' data(soil_euk)
 #'
-#' # dataset summary
+#' ## Dataset summary
 #' summary_metabarlist(soil_euk, method = "dataset")
 #'
-#' # data summary per control type (NA = samples)
+#' ## Data summary per control type (NA = samples)
 #' summary_metabarlist(soil_euk, method = "pcrs",
 #'     groups = soil_euk$pcrs$control_type)
 #'
-#' # data summary per phyla
+#' ## Data summary per phyla
 #' summary_metabarlist(soil_euk, method = "motus",
 #'     groups = soil_euk$motus$phylum_name)
 #'
-#' # data summary per Habitat (i.e. to get from soil_euk$samples). Here, NA values correspond to technical controls
+#' ## Data summary per Habitat (i.e. to get from soil_euk$samples).
+#' # Here, NA values correspond to technical controls
 #' summary_metabarlist(soil_euk, method = "pcrs",
 #'     groups = soil_euk$samples$Habitat[match(soil_euk$pcrs$sample_id, rownames(soil_euk$samples))])
 #'
@@ -74,11 +79,12 @@ summary_metabarlist <- function(metabarlist, method = "dataset", groups = NULL) 
       tab <- match.arg(method, extract_type_methods)
 
       if (is.null(groups)) {
-        stop(paste("vector or factor 'groups' should be provided for method '", tab, "'", sep=""))
+        stop(paste("vector or factor `groups` should be provided for method '", tab, "'", sep=""))
       }
 
       if (length(groups) != nrow(metabarlist[[tab]])) {
-        stop(paste("vector or factor 'groups' should be of same length than the object called with method '",
+        stop(paste("vector or factor `groups` should be of same length than the object
+                   called with method '",
                    tab, "'", sep=""))
       }
 

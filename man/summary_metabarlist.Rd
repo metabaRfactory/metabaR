@@ -9,9 +9,11 @@ summary_metabarlist(metabarlist, method = "dataset", groups = NULL)
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{method}{type of summary to provide. Should match with `dataset`, `motus` or `pcrs`. Default is `dataset`}
+\item{method}{type of summary to provide. Should match with `dataset`, `motus` or `pcrs`.
+Default is `dataset`}
 
-\item{groups}{a grouping vector or factor of same number of rows than `motus` or `pcrs` for which the summary should be done. Default is NULL}
+\item{groups}{a grouping vector or factor of same number of rows than `motus` or `pcrs`
+for which the summary should be done. Default is NULL}
 }
 \value{
 Function \code{summary_metabarlist} returns basic summary statistics (nb of elements, reads and MOTUs in total or on average per pcrs) of a \code{\link{metabarlist}} object. The format of the value returned depends on the method used.
@@ -30,21 +32,25 @@ summary_metabarlist is a generic function used to produce summary statistics of 
 
 data(soil_euk)
 
-# dataset summary
+## Dataset summary
 summary_metabarlist(soil_euk, method = "dataset")
 
-# data summary per control type (NA = samples)
+## Data summary per control type (NA = samples)
 summary_metabarlist(soil_euk, method = "pcrs",
     groups = soil_euk$pcrs$control_type)
 
-# data summary per phyla
+## Data summary per phyla
 summary_metabarlist(soil_euk, method = "motus",
     groups = soil_euk$motus$phylum_name)
 
-# data summary per Habitat (i.e. to get from soil_euk$samples). Here, NA values correspond to technical controls
+## Data summary per Habitat (i.e. to get from soil_euk$samples).
+# Here, NA values correspond to technical controls
 summary_metabarlist(soil_euk, method = "pcrs",
     groups = soil_euk$samples$Habitat[match(soil_euk$pcrs$sample_id, rownames(soil_euk$samples))])
 
+}
+\seealso{
+\code{\link{summary}}
 }
 \author{
 Lucie Zinger
