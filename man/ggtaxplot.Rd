@@ -2,7 +2,9 @@
 % Please edit documentation in R/m_ggtaxplot.R
 \name{ggtaxplot}
 \alias{ggtaxplot}
-\title{Plotting a taxonomic tree}
+\title{Plotting a taxonomic tree
+
+Plots the taxonomic tree from a \code{\link{metabarlist}} object and maps an attribute onto it}
 \usage{
 ggtaxplot(metabarlist, taxo, sep.level, sep.info, thresh = NULL)
 }
@@ -28,6 +30,8 @@ taxon labels won't be plotted}
 a ggplot
 }
 \description{
+Plotting a taxonomic tree
+
 Plots the taxonomic tree from a \code{\link{metabarlist}} object and maps an attribute onto it
 }
 \details{
