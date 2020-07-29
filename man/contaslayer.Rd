@@ -2,50 +2,63 @@
 % Please edit documentation in R/m_contaslayer.R
 \name{contaslayer}
 \alias{contaslayer}
-\title{Separating genuine MOTUs from contaminations using negative controls}
+\title{Detecting contaminants using negative controls}
 \usage{
 contaslayer(
   metabarlist,
   method = "max",
   control_types = c("pcr", "extraction"),
   controls = NULL,
-  output_col = "not_contamination"
+  output_col = "not_a_contaminant"
 )
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{method}{a character string specifying the detection method to be used. Default: \code{"max"}}
+\item{method}{a character string specifying the detection method to be used.
+Default: \code{"max"}}
 
-\item{control_types}{a vector of control types contained in the column control_type of metabarlist$pcrs. This parameter is not used when the parameter \code{controls} is specified. Default is c("pcr", "extraction").}
+\item{control_types}{a vector of control types contained in the column control_type
+of the table `pcrs`. This parameter is not used when the parameter
+\code{controls} is specified.
+Default is c("pcr", "extraction").}
 
-\item{controls}{a vector of amplicon names corresponding to negative controls.}
+\item{controls}{a vector of pcrs names corresponding to negative controls.}
 
-\item{output_col}{a character string for the column name in `metabarlist$motus` in which the result will be stored. Default is "not_contamination"}
+\item{output_col}{a character string for the column name in table `motus`, in
+which the result will be stored.
+Default is "not_a_contaminant"}
 }
 \value{
-a metabarlist with a new boolean column vector of name `output_col` in `metabarlist$motus` indicating whether MOTUs are genuine (\code{TRUE}) or identified as contaminants (\code{FALSE})
+a metabarlist with a new boolean column vector of name `output_col` in
+        table `motus` indicating whether MOTUs are genuine (\code{TRUE}) or
+        identified as contaminants (\code{FALSE})
 }
 \description{
 Uses negative controls to determine if MOTUs in a \code{\link{metabarlist}} object are most likely genuine or most likely contaminants.
 }
 \details{
-In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. \code{\link{contaslayer}} relies on this assumption and detects MOTUs whose relative abundance across the whole dataset is maximum in negative controls.
-\code{method = "max"} considers a MOTU as a contaminant if its frequencies across the entire dataset are maximum in at least one negative control
-\code{method = "all"} considers a MOTU as a contaminant if its frequencies across all negative controls is greater than that across all samples
+In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. On the other hand, a MOTU detected in negative controls is not necessarily a contaminant, it can be a genuine MOTU detected in negative controls through tag-jump issues.
+The function \code{\link{contaslayer}} relies on these assumptions and detects MOTUs whose relative abundance across the whole dataset is maximum in negative controls. Two methods are currently available:
+
+\itemize{
+\item{\code{method = "max"} considers a MOTU as a contaminant if its frequencies across the entire dataset are maximum in at least one negative control.}
+\item{\code{method = "all"} considers a MOTU as a contaminant if its frequencies across all negative controls is greater than that across all samples.}
+}
 }
 \examples{
 
 data(soil_euk)
 
-# identify potential genuine from contaminants using PCR or extraction negative controls
-out <- contaslayer(soil_euk)
-tail(colnames(out$motus))
-head(out$motus[which(out$motus$not_contamination==F),])
-length(which(out$motus$not_contamination==F))
+## Identify genuine from contaminants using PCR or extraction negative controls
+mbl <- contaslayer(soil_euk)
+tail(colnames(mbl$motus))
+head(mbl$motus[which(mbl$motus$not_a_contaminant==F),])
+length(which(mbl$motus$not_a_contaminant==F))
 
-# Distribution of the most abundant contaminant MOTU in the PCR plate design
-max.conta <- rownames(out$motus)[out$motus$not_contamination==F][which.max(out$motus[contaminant, "count"])]
+## Distribution of the most abundant contaminant MOTU in the PCR plate design
+contaminants <- rownames(mbl$motus)[mbl$motus$not_a_contaminant==F]
+max.conta <- contaminants[which.max(mbl$motus[contaminants, "count"])]
 
 p <- ggpcrplate(soil_euk,
   legend_title = "# reads",
@@ -57,11 +70,17 @@ p <- ggpcrplate(soil_euk,
 p + scale_size(limits = c(1, max(soil_euk$reads[, max.conta]))) +
   ggtitle("Distribution of the most abundant contaminant")
 
-# identify potential genuine from contaminants using extraction negative controls only
-out <- contaslayer(soil_euk, control_types="extraction", output_col= "not_ext_contamination")
-tail(colnames(out$motus))
-length(which(out$motus$not_ext_contamination==F))
+## Identify contaminants using extraction negative controls only
+mbl <- contaslayer(soil_euk,
+                   control_types="extraction",
+                   output_col= "not_an_ext_contaminant")
+tail(colnames(mbl$motus))
+length(which(mbl$motus$not_an_ext_contaminant==F))
 
+}
+\seealso{
+\code{\link{tagjumpslayer}}, \code{\link{pcrslayer}}
+         for other data curation procedures.
 }
 \author{
 Lucie Zinger, Clement Lionnet
