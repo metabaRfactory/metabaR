@@ -3,13 +3,17 @@
 #' These functions generate and plot rarefaction curves from a \code{\link{metabarlist}} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as Good's coverage index.
 #'
 #'
-#' @param metabarlist       a \code{\link{metabarlist}} object
-#' @param nboot              number of resampling events to estimate \eqn{^{q}D} at a given sequencing depth.
-#' @param nsteps             number of steps between sample sizes for the rarefaction curves. Default is 10 steps.
+#' @param metabarlist    a \code{\link{metabarlist}} object
+#' @param nboot          number of resamplings to estimate \eqn{^{q}D} at a given sequencing depth.
+#' @param nsteps         number of steps between sample sizes for the rarefaction curves.
+#'                       Default is 10 steps.
 #'
-#' @return Function \code{hill_rarefaction} returns an object of class \code{"hill_rarefaction"}, which corresponds to a table of diversity indices for each pcr rarefied at each `nsteps`  sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
+#' @return Function \code{hill_rarefaction} returns an object of class \code{"hill_rarefaction"},
+#'         which corresponds to a table of diversity indices for each pcr rarefied at each `nsteps`
+#'         sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
 #'
 #' @details
+#'
 #' \code{\link{hill_rarefaction}} builds a rarefaction analysis for each pcr of a \code{\link{metabarlist}} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalent to :
 #' \itemize{
 #' \item{Richness, for q=0}
@@ -36,7 +40,7 @@
 #'    table = "pcrs",
 #'    indices = grepl("H20-[A-B]", rownames(soil_euk$pcrs)))
 #'
-#' # run rarefaction (use boot = 20 to limit computation time, should be more)
+#' # run rarefaction (use boot = 20 to limit computation time)
 #' soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
 #'
 #' # plot the results
@@ -44,7 +48,7 @@
 #'
 #' # plot the results while differenciating litter vs. soil samples
 #' p <- gghill_rarefaction(soil_euk_h20.raref,
-#'     group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))])
+#'                         group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))])
 #' p
 #' p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
 #'   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
@@ -60,6 +64,7 @@
 
 hill_rarefaction <- function(metabarlist, nboot = 10, nsteps = 10) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
+
     reads <- metabarlist$reads
 
     out <- do.call("rbind", lapply(rownames(reads), function(y) {
@@ -108,50 +113,57 @@ hill_rarefaction <- function(metabarlist, nboot = 10, nsteps = 10) {
 
 #' @describeIn hill_rarefaction Plot a object of class \code{"hill_rarefaction"}
 #' @param hill_rar  an object of class \code{"hill_rarefaction"}.
-#' @param group     a vector or factor giving the grouping of each pcr included in the \code{"hill_rarefaction"} object. Missing values will be treated as another group and a warning will be given. The elements should correspond to the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no grouping.
+#' @param group     a vector or factor giving the grouping of each pcr included in the
+#'                  \code{"hill_rarefaction"} object. Missing values will be treated as
+#'                  another group and a warning will be given. The elements should correspond to
+#'                  the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no grouping.
 #' @export gghill_rarefaction
 
 
 gghill_rarefaction <- function(hill_rar, group = NULL) {
+
   if (class(hill_rar) != "hill_rarefaction") {
     stop("hill_rar must be a hill_rarefaction object")
   }
 
   hill_table <- hill_rar$hill_table
   b <- melt(hill_table[, -grep("\\.sd", colnames(hill_table))], id.var = c("reads", "pcr_id"))
-  b$value.sd <- melt(hill_table[, grep("\\.sd|reads|pcr_id", colnames(hill_table))],
-    id.var = c("reads", "pcr_id")
-  )$value
+  b$value.sd <-
+    melt(hill_table[, grep("\\.sd|reads|pcr_id", colnames(hill_table))],
+         id.var = c("reads", "pcr_id"))$value
 
   if (is.null(group)) {
     ggplot(b, aes(x = reads, y = value, group = pcr_id)) +
       geom_line() +
       geom_ribbon(aes(ymin = value - value.sd, ymax = value + value.sd), alpha = 0.3) +
-      facet_wrap(~variable, scale = "free", ncol = 4) +
+      facet_wrap( ~ variable, scale = "free", ncol = 4) +
       labs(x = "#reads", y = "diversity / coverage estimate") +
       theme_bw() +
-      theme(
-        panel.grid = element_blank(),
-        legend.position = "bottom"
-      )
+      theme(panel.grid = element_blank(),
+            legend.position = "bottom")
   } else {
     if (length(group) != length(hill_rar$sample)) {
-      stop("The names of each elements of group should be defined and correspond to
-                the non duplicated names of pcr included in the hill_rar object.")
+      stop(
+        "The names of each elements of group should be defined and correspond to
+                the non duplicated names of pcr included in the hill_rar object."
+      )
     }
 
     b$group <- group[match(b$pcr_id, hill_rar$samples)]
 
     ggplot(b, aes(x = reads, y = value, group = pcr_id)) +
       geom_line(aes(color = group)) +
-      geom_ribbon(aes(ymin = value - value.sd, ymax = value + value.sd, fill = group), alpha = 0.3) +
-      facet_wrap(~variable, scale = "free", ncol = 4) +
+      geom_ribbon(aes(
+        ymin = value - value.sd,
+        ymax = value + value.sd,
+        fill = group
+      ),
+      alpha = 0.3) +
+      facet_wrap( ~ variable, scale = "free", ncol = 4) +
       labs(x = "#reads", y = "diversity / coverage estimate") +
       theme_bw() +
       guides(fill = FALSE) +
-      theme(
-        panel.grid = element_blank(),
-        legend.position = "bottom"
-      )
+      theme(panel.grid = element_blank(),
+            legend.position = "bottom")
   }
 }
