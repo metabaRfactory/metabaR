@@ -2,25 +2,28 @@
 % Please edit documentation in R/m_subset_metabarlist.R
 \name{subset_metabarlist}
 \alias{subset_metabarlist}
-\title{Subset a \code{metabarlist} object}
+\title{Subsetting metabarlists}
 \usage{
 subset_metabarlist(metabarlist, table, indices)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object to be subsetted}
+\item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{table}{the table where the information on which the subsetting is based. Can be one of `reads`, `motus`, `pcrs`, or `samples`.}
+\item{table}{the table where the information on which the subsetting is based.
+Can be one of `reads`, `motus`, `pcrs`, or `samples`.}
 
-\item{indices}{a boolean vector indicating the elements, i.e. rows or columns to keep. Elements to keep should be encoded \code{TRUE}.}
+\item{indices}{a boolean vector indicating the elements,
+i.e. rows or columns to keep.
+Elements to keep should be encoded \code{TRUE}.}
 }
 \value{
-a \code{metabarlist} object similar to `metabarlist` except that it contain only the selected elements.
+a \code{\link{metabarlist}} object similar to the initial `metabarlist` except that it contains only the selected elements.
 }
 \description{
-Subsetting a \code{\link{metabarlist}} object
+Return subsets of a \code{\link{metabarlist}} object which meet user-defined conditions.
 }
 \details{
-Subsetting a \code{metabarlist} will select specific rows from the `reads`, `motus`, `pcrs`, or `samples` tables. Factor levels that are unused after selection are dropped. Note however that:
+Subsetting a \code{\link{metabarlist}} will select specific rows from the `reads`, `motus`, `pcrs`, or `samples` tables. Factor levels that are unused after selection are dropped. Note however that:
 \itemize{
 \item {If the selection is done on `reads`, `pcrs` or `samples`, the MOTUs not occurring in the pcrs or samples selected (i.e. those having a total number of reads of 0) are dropped.}
 \item {If the selection is done on `motus`, the pcrs and samples where none of the selected MOTUs are found are kept.}
@@ -31,31 +34,31 @@ Subsetting a \code{metabarlist} will select specific rows from the `reads`, `mot
 data(soil_euk)
 
 
-# Create a subset of soil_euk containing only annelid MOTUs
-# (i.e. by searching for "Annelida" in MOTUs taxonomic assignements)
+## Create a subset of soil_euk containing only annelid MOTUs
+# i.e. by searching for "Annelida" in MOTUs taxonomic assignments
 annelids <- subset_metabarlist(soil_euk,
-  table = "motus",
-  indices = grepl("Annelida", soil_euk$motus$path)
-)
+                               table = "motus",
+                               indices = grepl("Annelida", soil_euk$motus$path))
 summary_metabarlist(annelids)
 
-# Create a subset of soil_euk containing only pcrs conducted in plate 1
+## Create a subset of soil_euk containing only pcrs conducted in plate 1
 plate1 <- subset_metabarlist(soil_euk,
-  table = "pcrs",
-  indices = (soil_euk$pcrs$plate_no == 1)
-)
-
+                             table = "pcrs",
+                             indices = (soil_euk$pcrs$plate_no == 1))
 summary_metabarlist(plate1)
 
-# Create a subset of soil_euk containing only positive controls (i.e. excluding biological samples too who are NA in soil_euk$pcrs$control_type)
+## Create a subset of soil_euk containing only positive controls
+# i.e. excluding biological samples too that are NA in soil_euk$pcrs$control_type
 poscontrols <- subset_metabarlist(soil_euk,
-  table = "pcrs",
-  indices = (soil_euk$pcrs$control_type == "positive" & !is.na(soil_euk$pcrs$control_type))
-)
-
+                                  table = "pcrs",
+                                  indices = (soil_euk$pcrs$control_type == "positive" &
+                                             !is.na(soil_euk$pcrs$control_type)))
 summary_metabarlist(poscontrols)
 
 
+}
+\seealso{
+\code{\link{droplevels}}
 }
 \author{
 Lucie Zinger
