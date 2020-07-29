@@ -4,23 +4,25 @@
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
-#' @param best.db       a vector of two database names, the best one in terms of taxonomic information
+#' @param best.db       a vector of two database names, the best one in terms of
+#'                      taxonomic information
 #'                      reliability being provided first.
-#' @param sim.scores    a vector of two column names in the `motus` table corresponding to the similarity scores
-#'                      of each database.
-#' @param lineage       a vector of two column names in the `motus` table corresponding to the full taxonomic
-#'                      lineage obtained for each database. Should be provided in the same order than `best.db`.
-#'                      \code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.
-#' @param threshold     a similiarty score threshold above which the annotation of the best database is selected if
-#'                      both databases yields high similarity scores.
+#' @param sim.scores    a vector of two column names in the `motus` table corresponding to
+#'                      the similarity scores of each database.
+#' @param lineage       a vector of two column names in the `motus` table corresponding to
+#'                      the full taxonomic lineage obtained for each database.
+#'                      Should be provided in the same order than `best.db`.
+#' @param threshold     a similiarty score threshold above which the annotation of the
+#'                      best database is kept if both databases yields high similarity scores.
 #'
 #' @name taxodecider
 #'
 #' @details
 #'
-#' The function \code{taxodecider} allows choosing amongst two taxonomic annotation based on the best identity scores and preferences for a given database (e.g. more reliable taxonomy). All taxonomic information should be stored in the `motus` table.
+#' The function \code{taxodecider} allows choosing amongst two taxonomic annotations based on best similarity scores and on a preference for a given database (e.g. with more reliable taxonomy). All taxonomic information should be stored in the `motus` table.
 #'
-#' @return a \code{metabarlist} object with a dataframe motus including the preferred taxonomic assignements
+#' @return a \code{metabarlist} object with a dataframe motus including
+#'         the preferred taxonomic assignements
 #'
 #' @seealso \code{\link{silva_annotator}}
 #'
@@ -48,7 +50,6 @@
 #' @export taxodecider
 
 
-
 taxodecider = function(metabarlist, best.db, sim.scores, lineage, threshold){
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
@@ -67,10 +68,12 @@ taxodecider = function(metabarlist, best.db, sim.scores, lineage, threshold){
   tax <- x[,lineage]
   colnames(bid) <- colnames(tax) <- best.db
 
-  max.db = sapply(1:nrow(bid), function(y){
-    dt = data.frame(bid = rank(as.numeric(bid[y,]), na.last=F), # column with the rank of the best identities
-                    above = apply(bid[y,], 2, function(z){
-                      ifelse(as.numeric(z) > threshold, TRUE, FALSE)}))
+  max.db = sapply(1:nrow(bid), function(y) {
+    dt = data.frame(bid = rank(as.numeric(bid[y, ]), na.last = F),
+                    # column with rank of best ids
+                    above = apply(bid[y, ], 2, function(z) {
+                      ifelse(as.numeric(z) > threshold, TRUE, FALSE)
+                    }))
     ifelse(sum(dt$above, na.rm = T) == 2, best.db[1], row.names(dt)[which.max(dt$bid)]) # best.db
   })
 
