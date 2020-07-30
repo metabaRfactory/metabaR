@@ -39,9 +39,6 @@
 #' @author Frédéric Boyer & Clément Lionnet
 #' @import ade4
 #' @import vegan
-#' @export pcr_outlier
-#' @export coa_function
-#' @export bray_function
 
 
 # recursive function to find the non replicating samples or controls
