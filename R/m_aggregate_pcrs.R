@@ -65,8 +65,13 @@ aggregate_pcrs <- function(metabarlist,
                            FUN = FUN_agg_pcrs_sum) {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
+
     if (is.null(replicates)) {
       replicates <- metabarlist$pcrs$sample_id
+    }
+
+    if (length(replicates)!=nrow(metabarlist$reads)) {
+      stop("`replicates` length should be equal to the number of rows of table `reads`")
     }
 
     #aggregate reads
