@@ -9,38 +9,38 @@
 \usage{
 pcrslayer(
   metabarlist,
-  replicates = "sample_id",
+  replicates = NULL,
   method = "centroid",
   thresh.method = "intersect",
   plot = T
 )
 
-pcr_within_between(metabarlist, replicates = "sample_id", method = "centroid")
+pcr_within_between(metabarlist, replicates = NULL, method = "centroid")
 
 check_pcr_thresh(wthn.btwn, thresh.method = "intersect")
 
-check_pcr_repl(metabarlist, replicates, groups = NULL, dyspcr = NULL)
+check_pcr_repl(metabarlist, replicates = NULL, groups = NULL, dyspcr = NULL)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{replicates}{a column name in the `pcrs`table corresponding to the sample names to which
-pcr replicates belongs. Default is the `sample_id` column of the table `pcrs` from the
-\code{\link{metabarlist}} object.}
+\item{replicates}{a vector corresponding to the sample names to which
+pcr replicates belongs. Default is the `sample_id` column of the table `pcrs`
+from the \code{\link{metabarlist}} object.}
 
 \item{method}{a character indicating which method should be used to identify PCR outliers. Can be
 \code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.}
 
-\item{thresh.method}{a character indicating which method should be used to define the filtering threshold. Can be
-\code{"interesect"} or \code{"mode"}.}
+\item{thresh.method}{a character indicating which method should be used to define the filtering
+threshold. Can be \code{"interesect"} or \code{"mode"}.}
 
 \item{plot}{a boolean indicating whether dissimilarity distribution should be plotted.
 Default is \code{TRUE}}
 
 \item{wthn.btwn}{an ouput from \code{pcr_within_between}}
 
-\item{groups}{a column name in the `pcrs`table corresponding to a factor giving the groups for which the
-graphical colors are drawn.}
+\item{groups}{a column name in the `pcrs`table corresponding to a factor giving the groups
+for which the graphical colors are drawn.}
 
 \item{outliers}{a character vector of the PCR outliers identified by \code{pcrslayer}}
 }
@@ -60,11 +60,8 @@ The \code{pcrslayer} function identifies potential non-functional PCR reactions 
 \itemize{
 \item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the sample centroid. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
 \item{With method \code{"pairwise"}, pairwise distances between all PCR replicates are computed and then classified into \emph{dw} or \emph{db} depending on the pair considered. A PCR replicate having a an average \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated replicates (\code{method="pairwise"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. In this case, no iterations are done.}
-
-For both methods, the distances are computed with the Bray-Curtis index on data standardized by the total number of reads per pcr.
-
-## LZ: Fred's coa method to include too?
 }
+For both methods, the distances are computed with the Bray-Curtis index on data standardized by the total number of reads per pcr.
 
 The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"}
 
@@ -73,8 +70,6 @@ The threshold \emph{tresh} is defined automatically with two alternative methods
 Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 
 Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroids through a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
-
-##TODO method="pairwise": maybe iteration should be done as the average value of dw can change depending on what is remaining. However, this would require rewriting the whole thing so that to avoid computing the distance matrix at each iteration it's only the mean that should be computed. Also to discuss: wether we shoudl use mean distance with replicates or summed distances with replicates (in Fred's function).
 }
 \section{Functions}{
 \itemize{
@@ -89,23 +84,26 @@ Function \code{check_pcr_repl} enables visualization of dissimilarity patterns a
 
 \examples{
 library(ggplot2)
-data(soil_euk)
-# consider only biological samples
-soil_euk_sub <- subset_metabarlist(soil_euk, "pcrs",
-                                    rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
 
-# Visualization of within vs. between sample dissimilarities
-soil_euk_sub_wb <- pcr_within_between(soil_euk_sub, "sample_id")
+data(soil_euk)
+
+## Consider only biological samples
+soil_euk_sub <- subset_metabarlist(soil_euk,
+                                   "pcrs",
+                                   soil_euk$pcrs$type == "sample")
+
+## Visualization of within vs. between sample dissimilarities
+soil_euk_sub_wb <- pcr_within_between(soil_euk_sub)
 check_pcr_thresh(soil_euk_sub_wb, thresh.method = "intersect")
 
-# visualization of replicates through PCoA
-## create grouping factor according to habitat and material
+## Visualization of replicates through PCoA
+# create grouping factor according to habitat and material
 soil_euk_sub$pcrs$habitat_material <- soil_euk_sub$pcrs$sample_id
 idx <- match(levels(soil_euk_sub$pcrs$habitat_material), rownames(soil_euk_sub$samples))
 levels(soil_euk_sub$pcrs$habitat_material) <- paste(soil_euk_sub$samples$Habitat[idx],
                                                     soil_euk_sub$samples$Material[idx], sep = " | ")
-## vizualize dissimilarity patterns
-mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material")
+# vizualize dissimilarity patterns
+mds <- check_pcr_repl(soil_euk_sub, groups = "habitat_material")
 mds + labs(color = "sample type")
 
 # identify dysfunctional PCRs
@@ -115,6 +113,9 @@ bad_pcrs <- pcrslayer(soil_euk_sub, thresh.method = "intersect", replicates = "s
 mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material", dyspcr = bad_pcrs)
 mds + labs(color = "sample type")
 
+}
+\seealso{
+\code{\link{tagjumpslayer}}, \code{\link{contaslayer}} for other data curation procedures.
 }
 \author{
 Lucie Zinger, Clement Lionnet, Fred Boyer
