@@ -9,6 +9,11 @@
 #'                      from the \code{\link{metabarlist}} object.
 #' @param method        a character indicating which method should be used to identify PCR outliers. Can be
 #'                      \code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.
+#' @param FUN           a function for computing distances between replicates.
+#'                      Default is Bray-Curtis distances on MOTUs relative abundance table.
+#' @param output_col    a character string for the column name in table `pcrs`, in
+#'                      which the result will be stored.
+#'                      Default is "functional_pcr"
 #' @param thresh.method a character indicating which method should be used to define the filtering
 #'                      threshold. Can be \code{"interesect"} or \code{"mode"}.
 #' @param plot          a boolean indicating whether dissimilarity distribution should be plotted.
@@ -16,19 +21,23 @@
 #' @param wthn.btwn     an ouput from \code{pcr_within_between}
 #' @param groups        a column name in the `pcrs`table corresponding to a factor giving the groups
 #'                      for which the graphical colors are drawn.
-#' @param outliers      a character vector of the PCR outliers identified by \code{pcrslayer}
+#' @param funcpcr       a boolean vector indicating whether PCR are functional (\code{TRUE}) or not.
 #'
 #' @details
 #'
-#' The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in OTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). Two methods for computing \emph{dw} and \emph{db} are available.
+#' The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in MOTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). Two methods for computing \emph{dw} and \emph{db} are available.
 #'
 #'\itemize{
-#' \item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the sample centroid. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average OTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
+#' \item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the samples centroid. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average MOTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
 #' \item{With method \code{"pairwise"}, pairwise distances between all PCR replicates are computed and then classified into \emph{dw} or \emph{db} depending on the pair considered. A PCR replicate having a an average \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated replicates (\code{method="pairwise"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. In this case, no iterations are done.}
 #' }
-#' For both methods, the distances are computed with the Bray-Curtis index on data standardized by the total number of reads per pcr.
+#' For both methods, the user is free to chose its own distance metric and whether distances should be computed on relative abundances or true abundances, through the argument \code{FUN}. Two methods are currently pre-encoded:
+#' \itemize{
+#' \item{FUN_pcrdist_bray_freq computes Bray-Curtis distances on MOTUs relative abundances}
+#' \item{FUN_pcrdist_coa_freq computes Euclidean distances between pcrs from a Correspondance Analysis on MOTUs relative abundances}
+#' }.
 #'
-#' The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"}
+#' The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in MOTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"}
 #'
 #' The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Or it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
 #'
@@ -38,7 +47,9 @@
 #'
 #' @return
 #'
-#' The \code{pcrslayer} function returns a vector of dysfunctional PCRs.
+#' The \code{pcrslayer} function returns a metabarlist with a new boolean column vector of name
+#' `output_col` in table `pcrs` indicating whether the pcr is functional (\code{TRUE}) or
+#'         or dysfunctional (\code{FALSE})
 #'
 #' The \code{pcr_within_between} function returns a list of dissimilarities \emph{dw} and \emph{db}.
 #'
@@ -51,10 +62,10 @@
 #'
 #' data(soil_euk)
 #'
-#' ## Consider only biological samples
+#' ## Consider only biological samples with # reads > 0
 #' soil_euk_sub <- subset_metabarlist(soil_euk,
 #'                                    "pcrs",
-#'                                    soil_euk$pcrs$type == "sample")
+#'                                    soil_euk$pcrs$type == "sample" & rowSums(soil_euk$reads>0))
 #'
 #' ## Visualization of within vs. between sample dissimilarities
 #' soil_euk_sub_wb <- pcr_within_between(soil_euk_sub)
@@ -71,25 +82,32 @@
 #' mds + labs(color = "sample type")
 #'
 #' # identify dysfunctional PCRs
-#' bad_pcrs <- pcrslayer(soil_euk_sub, thresh.method = "intersect", replicates = "sample_id")
+#' soil_euk_sub2 <- pcrslayer(soil_euk_sub)
+#' tail(colnames(soil_euk_sub2$pcrs))
+#' length(which(soil_euk_sub2$pcrs$functional_pcr==F))
 #'
 #' # define a color vector that corresponds to the different habitat types. Should be named
-#' mds <- check_pcr_repl(soil_euk_sub, replicates = "sample_id", groups = "habitat_material", dyspcr = bad_pcrs)
-#' mds + labs(color = "sample type")
+#' mds <- check_pcr_repl(soil_euk_sub2,
+#'                       groups = soil_euk_sub2$pcrs$habitat_material,
+#'                       funcpcr = soil_euk_sub2$pcrs$functional_pcr)
+#' mds + guides(color = F)
 #'
 #' @author Lucie Zinger, Clement Lionnet, Fred Boyer
-#' @importFrom vegan vegdist
+#' @importFrom vegan vegdist cca
 #' @describeIn pcrslayer Detect dysfunctional PCRs, i.e. PCR outliers in a \code{\link{metabarlist}} object.
 #' @export pcrslayer
 
 pcrslayer <- function(metabarlist,
                       replicates = NULL,
                       method = "centroid",
+                      FUN = FUN_pcrdist_bray_freq,
                       thresh.method = "intersect",
+                      output_col = "functional_pcr",
                       plot = T) {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
 
+    metabarlist0 <- metabarlist
     reads_table0 <- metabarlist$reads
 
     if (is.null(replicates)) {
@@ -126,12 +144,16 @@ pcrslayer <- function(metabarlist,
       print(paste("Iteration", iteration))
 
       #get good pcrs
-      reads_table <- reads_table0[names(good_pcrs)[good_pcrs==T], ]
+      #reads_table <- reads_table0[names(good_pcrs)[good_pcrs==T], ]
+      metabarlist <- subset_metabarlist(metabarlist0, "pcr", good_pcrs)
 
       replicates <- replicates0[which(good_pcrs==T)]
 
       nb_bad_pcr <- sum(good_pcrs==F)
-      wthn_btwn <- pcr_within_between(reads_table, replicates, method)
+      wthn_btwn <- pcr_within_between(metabarlist,
+                                      replicates = replicates,
+                                      method = method,
+                                      FUN = FUN)
       thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
       if (plot == T) {
         p = check_pcr_thresh(wthn_btwn, thresh.method)
@@ -189,16 +211,22 @@ pcrslayer <- function(metabarlist,
     if (sum(good_pcrs==F) / length(replicates0) > 0.2) {
       warning("More than 20% of pcr replicates are removed !")
     }
-    return(names(which(good_pcrs==F)))
+
+    metabarlist0$pcrs[,output_col] <- good_pcrs
+    return(metabarlist0)
+
     }
 }
 
 
 #' @describeIn pcrslayer Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 #' @export pcr_within_between
+#' @export FUN_pcrdist_bray_freq
+#' @export FUN_pcrdist_coa_freq
 
 pcr_within_between <- function(metabarlist,
                                replicates = NULL,
+                               FUN = FUN_pcrdist_bray_freq,
                                method="centroid") {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
@@ -217,20 +245,25 @@ pcr_within_between <- function(metabarlist,
       stop('method should be one of "centroid" or "pairwise"')
     }
 
-    reads_stdt <- reads_table/rowSums(reads_table)
 
     if(method=="centroid") {
 
+      reads_stdt <- reads_table/rowSums(reads_table)
       bar <- rowsum(reads_stdt, replicates)/as.vector(table(replicates))
 
       # between barycentre distances
-      bar_dist <- vegdist(bar, "bray")
+
+      if(substitute(FUN)=="FUN_pcrdist_coa_freq") {
+        stop("FUN cannot be `FUN_pcrdist_coa_freq` if method is `centroid`")
+      }
+
+      bar_dist <- FUN(bar)
 
       # within replicates distances
       pcr_intradist <- lapply(1:nrow(bar), function(x) {
        ind <- which(replicates == rownames(bar)[x])
        sapply(ind, function(y) {
-         out <- vegdist(rbind(bar[x, ], reads_stdt[y, ]), "bray")
+         out <- FUN(rbind(bar[x, ], reads_stdt[y, ]))
          names(out) <- rownames(reads_stdt)[y]
          out
          })
@@ -239,23 +272,23 @@ pcr_within_between <- function(metabarlist,
 
     } else if (method=="pairwise"){
 
-      all.dist <- as.data.frame(t(combn(rownames(reads_stdt),2)))
-      all.dist$dist <- vegdist(reads_stdt, "bray")
-      all.dist$S1 <- replicates[match(all.dist$V1, rownames(reads))]
-      all.dist$S2 <- replicates[match(all.dist$V2, rownames(reads))]
+      all.dist <- as.data.frame(t(combn(rownames(reads_table),2)))
+      all.dist$dist <- FUN(reads_table)
+      all.dist$S1 <- replicates[match(all.dist$V1, rownames(reads_table))]
+      all.dist$S2 <- replicates[match(all.dist$V2, rownames(reads_table))]
       all.dist$type <- ifelse(as.vector(all.dist$S1)==as.vector(all.dist$S2), "intra", "inter")
 
       bar_dist = all.dist$dist[all.dist$type=="inter"]
       tmp = all.dist[all.dist$type=="intra",]
       pcr_intradist <- lapply(unique(tmp$S1), function(x) {
         df <- droplevels(tmp[tmp$S1==x,])
-        df$V1 <- factor(df$V1, levels = (unique(c(levels(df$V1), levels(df$V2)))))
-        df$V2 <- factor(df$V2, levels = (unique(c(levels(df$V1), levels(df$V2)))))
+        df$V1 <- factor(df$V1, levels = (unique(c(levels(as.factor(df$V1)), levels(as.factor(df$V2))))))
+        df$V2 <- factor(df$V2, levels = (unique(c(levels(as.factor(df$V1)), levels(as.factor(df$V2))))))
         out <- as.matrix(xtabs(dist ~ V2 + V1, data=df))
         out[upper.tri(out)] <- out[lower.tri(out)]
         colMeans(out)
       })
-      names(pcr_intradist)= unique(tmp$S1)
+      names(pcr_intradist) <- unique(tmp$S1)
     }
 
     return(list(bar_dist = bar_dist, pcr_intradist = pcr_intradist))
@@ -263,8 +296,30 @@ pcr_within_between <- function(metabarlist,
   }
 }
 
+## Distance functions
+
+# FUN_pcrdist_bray_freq
+FUN_pcrdist_bray_freq <- function(reads_table) {
+  if(any(rowSums(reads_table)==0 )) {
+    stop("you have empty rows in table `reads`")}
+  reads_std <- (reads_table)/rowSums(reads_table)
+  distance_matrix <- vegdist(reads_std, method = "bray")
+  return(distance_matrix)
+}
+
+# FUN_pcrdist_coa_freq
+FUN_pcrdist_coa_freq <- function(reads_table) {
+  if(any(rowSums(reads_table)==0)) {
+    stop("you have empty rows in table `reads`")}
+  reads_std <- cca((reads_table)/rowSums(reads_table))
+  distance_matrix <- dist(scores(reads_std)$sites)
+  return(distance_matrix)
+}
+
+
 #' @describeIn pcrslayer Vizualize \emph{dw} and \emph{db} dissimilarities and the threshold (defined automatically) above which pcr replicates are considered as too dissimilar.
 #' @export check_pcr_thresh
+#' @export pcr_threshold_estimate
 
 check_pcr_thresh <- function(wthn.btwn, thresh.method = "intersect") {
 
@@ -293,7 +348,7 @@ check_pcr_thresh <- function(wthn.btwn, thresh.method = "intersect") {
   if(is.null(thresh.pcr)) {p} else {p + geom_vline(xintercept = thresh.pcr, size=0.3, lty=2)}
 }
 
-#internal function pcr_threshold_estimate
+# function pcr_threshold_estimate
 pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
   dinter.max <- max(wthn.btwn$bar_dist)
   ddinter <- density(wthn.btwn$bar_dist, from = 0, to = 1)
@@ -319,7 +374,7 @@ pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
 check_pcr_repl <- function(metabarlist,
                            replicates=NULL,
                            groups = NULL,
-                           dyspcr = NULL) {
+                           funcpcr = NULL) {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     reads <- metabarlist$reads
@@ -332,15 +387,26 @@ check_pcr_repl <- function(metabarlist,
       stop("`replicates` length should be equal to the number of rows of table `reads`")
     }
 
-    if (!is.null(groups)) {
-      if(!groups %in% colnames(metabarlist$pcrs)) {
-        stop("groups should be in colnames of the metabarlist$pcrs table")
-      } else {
-        groups <- metabarlist$pcrs[,groups]
-      }}
+    if (is.null(groups)) {
+      stop("groups should be defined")
+    }
 
-    if (!is.null(dyspcr)) {
-          dyspcr <- ifelse(rownames(reads) %in% dyspcr, "dyspcr", "0ok")
+    if (length(groups)!=nrow(metabarlist$reads)) {
+      stop("`groups` length should be equal to the number of rows of table `reads`")
+    }
+
+    if (!is.null(funcpcr)) {
+
+      if (length(funcpcr)!=nrow(metabarlist$reads)) {
+        stop("`funcpcr` length should be equal to the number of rows of table `reads`")
+      }
+
+      if (!is.logical(funcpcr)) {
+        stop("`funcpcr` should be logical")
+      }
+
+      funcpcr <- ifelse(funcpcr, "0ok", "dyspcr")
+
       }
 
     reads_stdt <- reads/rowSums(reads)
@@ -357,13 +423,13 @@ check_pcr_repl <- function(metabarlist,
     d.new$bary_x <- d$X1[match(d.new$replicates, rownames(d))]
     d.new$bary_y <- d$X2[match(d.new$replicates, rownames(d))]
     d.new$groups <- 0
-    d.new$dyspcr <- "0ok"
+    d.new$funcpcr <- "0ok"
 
     if(!is.null(groups)) {d.new$groups = groups}
-    if(!is.null(dyspcr)) {d.new$dyspcr = dyspcr}
+    if(!is.null(funcpcr)) {d.new$funcpcr = funcpcr}
 
     ggplot(d.new, aes(x=X1, y=X2, color=groups)) +
-      geom_point(aes(shape = dyspcr)) + theme_bw() +
+      geom_point(aes(shape = funcpcr)) + theme_bw() +
       scale_shape_manual(values = c(19,8), labels = c("good", "bad")) +
       geom_segment(aes(x=bary_x, y=bary_y, xend=X1, yend=X2), color="grey") +
       labs(x=paste("PCoA1 (", round(100*mds$eig[1]/sum(mds$eig),2), "%)", sep=""),
