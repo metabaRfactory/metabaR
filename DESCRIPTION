@@ -1,11 +1,14 @@
 Package: metabaRffe
 Type: Package
-Title: Metabarcoding R post-bioinfo processing for super cool people
+Title: metabaR-F : an R package for the evaluation and improvement of DNA metabarcoding data quality
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors@R: c(
+    person("Zinger", "Lucie", email = "lucie@zinger.fr", role = c("aut", "cre")),
+    person("Boyer", "Frédéric", email = "frederic.boyer@univ-grenoble-alpes.fr", role = c("aut", "cre")),
+    person("Lionnet", "Clément", email = "clement.lionnet@univ-grenoble-alpes.fr", role = c("aut", "cre")),
+    person("Benoiston", "Anne-Sophie", email = "anne-sophie.benoiston@bio.ens.psl.eu", role = "aut"),
+    person("Donald", "Julian", email = "julesdonald@googlemail.com", role = "ctb"))
+Description: metabaR-F is an R package that provides a comprehensive suite of tools to effectively curate DNA metabarcoding data after basic bioinformatics analyses. In particular, metabaR-F uses experimental negative or positive controls to identify different types of artifactual sequences such as reagent contaminants or tag-jumps. It also allows the detection of potentially dysfunctional PCRs based on PCR replicate similarities when those are available. Finally, metabaR-F provides tools for visualising pre- and post-processed DNA metabarcoding data characteristics in their experimental context as well as their distribution, hence enabling assessing the appropriateness of certain data curation filtering thresholds.
 License: TO DEFINE
 Encoding: UTF-8
 LazyData: true
