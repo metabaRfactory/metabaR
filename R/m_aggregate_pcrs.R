@@ -106,20 +106,20 @@ aggregate_pcrs <- function(metabarlist,
 }
 
 # sum function
-FUN_agg_pcrs_sum <- function(reads, replicates) {
+FUN_agg_pcrs_sum <- function(metabarlist, replicates) {
   reads.out <- rowsum(metabarlist$reads, replicates)
   return(reads.out)
 }
 
 # mean function
-FUN_agg_pcrs_mean <- function(reads, replicates) {
+FUN_agg_pcrs_mean <- function(metabarlist, replicates) {
   reads.out <-
     ceiling(rowsum(metabarlist$reads, replicates) / as.vector(table(replicates)))
   return(reads.out)
 }
 
 #prob function
-FUN_agg_pcrs_prob <- function(reads, replicates) {
+FUN_agg_pcrs_prob <- function(metabarlist, replicates) {
   reads.out <-
     rowsum(ifelse(metabarlist$reads > 0, 1, 0), replicates) / as.vector(table(replicates))
   return(reads.out)
