@@ -22,29 +22,29 @@ Samples were collected at 2 sample sites in contrasting habitats:
   \item{}{The Mana site located in a white sand forest, characterized highly oligotrophic soils and tree species adaptated to the local harsh conditions.}
   \item{}{The Petit Plateau site is located in pristine rainforest (Nouragues natural reserve) characterized by soils richer in clay and organic matter.}
  }
-At each site, 16 samples (mesh grid size of 20 m) were collected in from a 1 ha plot.
-For each sampling point, two types of substrate were collected:
+
+At each site, sample collection were conducted at 16 sampling points separated from one another by 20 m and arranged in a grid across a 1 ha plot. At each sampling point, two types of environmental materia were collected:
 \itemize{
-  \item{}{Soil: composite sample of 5 soil cores}
-  \item{}{Litter: sampling of 1 m2 of surface leaf litter}
-  \item{}{=>A total of 64 DNA extracts + 4 extraction blank controls (1 per site and compartment)}
+  \item{}{soil: a composite sample of 5 soil cores}
+  \item{}{litter: sampling of 1 m2 of surface leaf litter from the forest floor}
+  \item{}{=> A total of 64 DNA extracts (i.e. 16 sampling points x 2 sites x 2 types of environmental matrix, i.e. soil and litter) were thus produced, in addition to four DNA extraction controls (one per site and environmental matrix).}
 }
-For each DNA extract, a short region of the 18S rRNA (Taberlet et al. 2018) was
-amplfied by PCR in quadruplicate, following the protocol described in Zinger et al. 2019.
-The resulting amplicons were pooled and sequenced on an Illumina HiSeq platform, using
+
+For each DNA extract, a short region of the 18S rRNA (primer pair Euka02 in Taberlet et al. 2018) was
+amplfied by PCR in quadruplicate, following the protocol described in Zinger et al. (2019).
+The resulting PCR products were pooled and sequenced on an Illumina HiSeq platform, using
 the paired-end technology.
 
-The total experiment hence includes the following amplicon types:
+The total experiment hence resulted in 384 PCR products consisting in:
 \itemize{
-  \item{}{4 replicates / samples (n = 256)}
-  \item{}{4 replicates for the 4 extraction blank controls (n = 16)}
-  \item{}{4 replicates for 8 PCR blank controls (n = 32)}
-  \item{}{4 replicates for 12 sequencing blank controls (n = 48)}
-  \item{}{4 replicates for 8 positive controls (plant DNA from 16 species; n = 32)}
-  \item{}{=> 384 amplicons in total}
+  \item{}{256 PCR products obtained from biological samples (16 sampling points x 2 sites x 2 environmental matrices x 4 pcr replicates).}
+  \item{}{16 PCR products obtained from extraction negative controls (4 extraction negative controls x 4 pcr replicates).}
+  \item{}{32 PCR products corresponding to PCR negative controls (8 pcr negative controls x 4 pcr replicates).}
+  \item{}{48 sequencing negative controls (i.e. 48 unused tag combinations).}
+  \item{}{32 PCR products corresponding to PCR positive controls, i.e. PCR amplifications of a DNA template composed of a mixture of DNA from 16 plant species (8 pcr positive controls at different dilutions x 4 pcr replicates).}
 }
 
-The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining sequences were clustered into operational taxonomic units (OTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each OTU (the most abundant one) was assigned a taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010).
+The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining sequences were clustered into operational taxonomic units (OTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each OTU (the most abundant one) was assigned a taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010). Taxonomic assignments obtained from the SILVAngs pipeline (Quast et al. 2013; using default parameters for the taxonomic identification) are also available in /inst/extdata (lit_euk---ssu* files) .
 
 
 The data `soil_euk` is a \code{metabarlist} containing four tables
@@ -70,5 +70,7 @@ Mercier, C., Boyer, F., Bonin, A., & Coissac, E. (2013, November). SUMATRA and S
 Taberlet, P., Bonin, A., Zinger, L., & Coissac, E. (2018). Environmental DNA: For Biodiversity Research and Monitoring. Oxford University Press.
 
 Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... & Chave, J. (2019). Body size determines soil community assembly in a tropical forest. Molecular Ecology, 28(3), 528-543.
+
+Quast, C., Pruesse, E., Yilmaz, P., Gerken, J., Schweer, T., Yarza, P., ... & Glöckner, F. O. (2012). The SILVA ribosomal RNA gene database project: improved data processing and web-based tools. Nucleic Acids Research, 41(D1), D590-D596.
 }
 \keyword{dataset}
