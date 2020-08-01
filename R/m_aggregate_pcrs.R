@@ -76,7 +76,7 @@ aggregate_pcrs <- function(metabarlist,
 
     #aggregate reads
 
-    reads.out <- FUN(metabarlist$reads, replicates)
+    reads.out <- FUN(metabarlist, replicates)
 
     pcr.out <- data.frame(t(sapply(rownames(reads.out), function(x) {
       sub <- metabarlist$pcrs[replicates == x,]
