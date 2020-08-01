@@ -67,23 +67,25 @@ aggregate_motus <- function(metabarlist,
 
     #aggregate reads
 
-    reads.out <- FUN(metabarlist$reads, groups)
+    reads.out <- FUN(metabarlist, groups)
 
-    motus.out <- data.frame(t(sapply(colnames(reads.out), function(x) {
+    motus.out <- do.call("rbind", lapply(colnames(reads.out), function(x) {
       sub <- metabarlist$motus[groups == x,]
       sub.count <- colSums(metabarlist$reads[, groups == x, drop=F])
       sub[which.max(sub.count), ]
-    })))
+    }))
+
+    motus.out <-
 
     pcrs.out <- metabarlist$pcrs[rownames(reads.out), ]
     sample.out <-
-      metabarlist$samples[rownames(reads.out[pcr.out$type == "sample", ]), ]
+      metabarlist$samples[rownames(reads.out[pcrs.out$type == "sample", ]), ]
 
     metabarlist.out <-
       metabarlist_generator(
         reads = reads.out,
         motus = motus.out,
-        pcrs = pcr.out,
+        pcrs = pcrs.out,
         samples = data.frame(sample.out)
       )
 
@@ -92,7 +94,7 @@ aggregate_motus <- function(metabarlist,
 }
 
 # sum function
-FUN_agg_motus_sum <- function(reads, groups) {
+FUN_agg_motus_sum <- function(metabarlist, groups) {
   reads.out <- t(rowsum(t(metabarlist$reads), groups))
   return(reads.out)
 }
