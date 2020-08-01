@@ -1,10 +1,19 @@
 ---
 title: "Let's metabaR-F!"
-author: "Boyer F., Benoiston A., Donald J., Lionnet C., Zinger L."
+author: 
+  - name: "Lucie Zinger, Anne-Sophie Benoiston"
+    affiliation: "Institut de Biologie de l’ENS (IBENS), Département de biologie, École normale supérieure, CNRS, INSERM, Université PSL, 75005 Paris, France."
+  - name: "Julian Donald"
+    affiliation: "Evolution et Diversité Biologique (EDB UMR5174), Université Toulouse 3 Paul Sabatier, CNRS, IRD - Toulouse, France."
+  - name: "Clément Lionnet, Frédéric Boyer"
+    affiliation: "Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France."
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    toc: true
 vignette: >
-  %\VignetteIndexEntry{Let's metabaR-F}
+  %\VignetteIndexEntry{Let's metabaR-F!}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -21,13 +30,14 @@ knitr::opts_chunk$set(
 
 ![](../metabaRF.png){width=100%}
 
-#Introduction
+# Introduction
+
 
 `metabaR-F` is an R package which supports the importing, handling and post-bioinformatics evaluation and improvement of metabarcoding data quality. It provides a suite of functions to identify and filter common molecular artifacts produced during the experimental workflow, from sampling to sequencing, ideally using experimental controls. 
 
 Due to its simple structure, `metabaR-F` can easily be used in combination with other R packages commonly used for ecological analysis (`vegan`, `ade4`, `ape`, `picante`, etc.). In addition, it provides flexible graphical systems based on `ggplot2` to vizualize data from both an ecological and experimental perspective.
 
-#Dependencies and Installation
+# Dependencies and Installation
 
 `metabaR-F` relies on basic R functions and data structures so as to maximize fexibility and transposability across other packages. It has a minimal number of dependencies to essential R packages : 
 
@@ -48,78 +58,807 @@ And then load the package
 library(metabaRffe) # modify the name once we'll all agree on that
 ```
 
-#Package overview
+# Package overview
 
-![MetabarF over](../metabaRF_overview.png){width=90%}
+![](../metabaRF_overview.png){width=90%}
 
-<span style="color:mediumseagreen"> LZ: --- could include a section here with a figure showing the different steps of data production and to what the different terms we use (e.g. a pcr, a biological sample, a MOTU, a read, tag, primers, etc.) corresponds </span>   
+## Data format and structure
+ 
+The basic data format used in `metabaR-F` is a `metabarlist`, a list of four tables:   
 
-##Data format and structure
+- a table `reads` of class `matrix` consisting of PCRs as rows, and molecular operational taxonomic units (MOTUs) as columns. The number of reads for each MOTU in each PCR is given in each cell, with 0 corresponding to no reads.   
 
-The basic dataformat used in `metabaR-F` is a `metabarlist`, consisting of a list of four tables:   
+- a table `motus` of class `data.frame` where MOTUs are listed as rows, and their attributes as columns. **A mandatory field in this table is the field "sequence", i.e. the DNA sequence representative of the MOTU**.  Examples of other attributes that can be included in this table is the MOTU taxonomic information, its taxonomic assignment scores, or any other characteristic (e.g. MOTU sequence GC content, MOTU total abundance in the dataset). 
 
-- `reads`: a `matrix` consisting of PCRs as rows, and molecular operational taxonomic units (MOTUs) as columns. The number of reads for MOTUs are given in each cell, with 0 corresponding to no reads.   
-
-- `motus`: a `data.frame` where MOTUs are listed as rows, and their attributes as columns. Examples of attributes include taxonomic information, but could also include any information collected during bioinformatic analysis. A mandatory field in this table is "sequence", i.e. the DNA sequence representative of the MOTU.    
-
-- `pcrs`: a `data.frame` consisting of PCRs as rows, and PCR attributes as columns. This table is particularly important in `metabaR-F`, as it contains all the information related to the sequencing/pcr protocols and design that are necessary to assess and improve the quality of metabarcoding data [@taberlet2018environmental; @zinger2019dna]. This table can also include information related to the PCR design, such as the tag combinations, the primers used, the well and plate of each PCR, etc. Mandatory fields are:    
-    - `sample_id`: a vector indicating the biological sample origin of each PCR
-    - `type` : type of pcr between an amplification of a sample or of an experimental control. Only two values allowed: `"sample"` or `"control"`.     
-    - `control_type` : type of controls. Mandatory values are listed below and should be attributed as follows:   
-        - `NA` if `type="sample"`, i.e. for any pcr amplification of a biological sample.    
-        - `"extraction"` for DNA extraction negative controls, i.e. pcr amplification of an extraction where sample was replaced by extraction buffer.   
-        - `"pcr"` for PCR negative controls, i.e. pcr amplification where the DNA template was replaced by pcr buffer or sterile water.    
-        - `"sequencing"` for sequencing negative controls, i.e. sequencing reads present in the data and that were assigned to unused tag/library index combinations.     
+- a table `pcrs` of class `data.frame` consisting of PCRs as rows, and PCR attributes as columns. This table is particularly important in `metabaR-F`, as it contains all the information related to the extraction, PCR and sequencing protocols and design that are necessary to assess and improve the quality of metabarcoding data [@taberlet2018environmental; @zinger2019dna]. This table can also include information related to the PCR design, such as the tag combinations specific of the PCR, the primers used, the well coordinates and plate of each PCR, etc. **Mandatory fields are**:    
+    - **`sample_id`**: a vector indicating the biological sample origin of each PCR (e.g. the sample name)
+    - **`type`** : type of pcr between an amplification of a sample or of an experimental control. Only two values allowed: `"sample"` or `"control"`.     
+    - **`control_type`** : the type of controls. Only five values are possible in this field:    
+        - `NA` if `type="sample"`, i.e. for any PCR obtained from a biological sample.    
+        - `"extraction"` for DNA extraction negative controls, i.e. PCR amplification of an extraction where sample was replaced by extraction buffer.   
+        - `"pcr"` for PCR negative controls, i.e. pcr amplification where the DNA template was replaced by PCR buffer or sterile water.    
+        - `"sequencing"` for sequencing negative controls, i.e. unused tag/library index combinations.     
         - `"positive"` for DNA extraction or PCR positive controls, i.e. pcr amplifications of known biological samples or DNA template (e.g. mock community).     
 
-- `samples`: a `data.frame` consisting of biological samples as rows, and associated contextual information as columns. Such information includes e.g. geographic coordinates, abiotic parameters, treatment, etc. This table does not include information on the DNA metabarcoding experimental controls, which can only be found in `pcrs`.
+- a table `samples` of class `data.frame` consisting of biological samples as rows, and associated information as columns. Such information includes e.g. geographic coordinates, abiotic parameters, experimental treatment, etc. This table does not include information on the DNA metabarcoding experimental controls, which can only be found in `pcrs`.   
 
 
-###Function Types 
+## Function Types 
 
 `metabaR-F` provides a range of function types:
 
-- Import and formating functions to import DNA metabarcoding data from common bioinformatic pipelines (OBITools, <span style="color:mediumseagreen">more to come</span>) or more generally to any data formatted into 4 tables corresponding to the `reads`, `motus`, `pcrs`, `samples` mentionned above.   
-- Functions for data curation. These are often absent from most bioinformatic pipelines, as they aim at detecting and allow the tagging potential molecular artifacts such as contaminants or dysfynctional pcrs.    
+- Import and formating functions to import DNA metabarcoding data from common bioinformatic pipelines (e.g. OBITools, data in the biom format) or more generally to any data formatted into 4 tables corresponding to the `reads`, `motus`, `pcrs`, `samples` mentionned above.   
+- Functions for data curation. These are often absent from most bioinformatic pipelines. They aim at detecting and allow the tagging of potential molecular artifacts such as contaminants or dysfynctional pcrs.    
 - Functions for visualizing the data under both ecological (e.g. type of samples) and experimental (e.g. type of controls, distribution across the PCR plate design) perspectives.     
-- Functions to manipulate the `metabarlist` object, such as selection of a subset, or data aggregation.   
-- <span style="color:mediumseagreen">LZ: Blablabla</span>
+- Functions to manipulate the `metabarlist` object, such as selection of a subset, data aggregation by PCRs or MOTUs, taxonomy information formatting, etc.   
 
 
-###Example dataset
+## Example dataset
 
-An example data set is provided to show how the package can be used to assess and improve the data quality.  
+An example data set is provided in `metabaR-F` to show how the package can be used to assess and improve the data quality.   
 
-The `soil_euk` dataset is a `metabarlist`. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the diversity of soil eukaryotes in French Guiana in two sites corresponding to two contrasting habitats:    
+The `soil_euk` dataset is of class `metabarlist`. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the diversity of soil eukaryotes in French Guiana in two sites corresponding to two contrasting habitats:    
 - Mana, a site located in a white sand forest, characterized by highly oligotrophic soils and tree species adapted to the harsh local conditions.    
 - Petit Plateau, a site located in the pristine rainforest of the Nouragues natural reserve characterized by *terra firme* soils richer in clay and organic matter. 
 
 ![](soil_euk_loc.png){width=50%} ![](soil_euk_plots.png){width=36%}
 
-At each site sample collection were conducted at 16 sampling points separated from one another by 20 m and arranged in a grid across a 1 ha plot. At each sampling point, two types of environmental matrix were sampled: soil and litter. One soil sample corresponds to a composite sample of five soil cores. One litter sample corresponds to ca. 1 m2 of litter collected from the forest floor. A total of 64 DNA extracts (i.e. 16 sampling points x 2 sites x 2 types of environmental matrix, i.e. soil and litter) were thus produced, in addition to four DNA extraction controls (one per site and environmental matrix).
- 
-For each DNA extract, a short region of the 18S rRNA [using the primer pair Euka02 in @taberlet2018environmental] was amplified by PCR in quadruplicate, following the protocol described in @zinger2019body. The resulting amplicons were pooled and sequenced on an Illumina HiSeq platform, using paired-end technology.
- 
-The total experiment hence resulted in 384 amplicons as follows:
+At each site, both soil and litter samples were collected so that to also assess if these two types of material differs in their soil eukaryotic communities (Figure 2b). The total experiment consists in 384 PCR products, including 256 PCR products obtained from biological samples, the rest corresponding to various experimental controls. The retrieved data were then processed using the OBITools [@boyer:2016:00] and SUMACLUST [@mercier:2013:00] packages, as well as the SILVAngs pipeline [quast2013silva].
 
-- 256 pcrs corresponding to biological samples (16 sampling points x 2 sites x 2 environmental matrices x 4 pcr replicates).    
-- 16 pcrs corresponding to extraction negative controls (4 extraction negative controls x 4 pcr replicates).    
-- 32 pcrs corresponding to PCR negative controls (8 pcr negative controls x 4 pcr replicates).    
-- 48 sequencing negative controls (monitoring of 48 unused tag combinations).    
-- 32 positive controls obtained from a DNA template composed of a mix of 16 plant species (8 pcr positive controls at different dilutions x 4 pcr replicates).   
-
- <span style="color:mediumseagreen"> LZ -- We might need to include a description of the PCR plate design here too, not everyone is used to this kind of approach </span> 
-
-The retrieved data were then processed using the OBITools [@boyer:2016:00] and SUMACLUST [@mercier:2013:00] packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded. The remaining sequences were clustered into molecular operational taxonomic units (MOTUs) using SUMACLUST at a sequence similarity threshold of 97%. The representative sequence of each motu (i.e. the most abundant sequence) was assigned a taxonomic clade using a database built from the EMBL (release 136) with the ecoPCR program [@Ficetola:2010:00].
-
-<span style="color:mediumseagreen"> LZ -- not sure here that we need to explain everything, this is just a copy paste from the help page, we might need to lighten this document a bit. See also depending on what the pkgdown package offers for this </span>
-
-This description can also be found in the `soil_euk` help page: 
+More information on the `soil_euk` dataset can be found in its help page: 
 
 ```{r help}
 ?soil_euk
 ```
 
+The example dataset is loaded in R as follows: 
+  
+```{r soil_euk_data}
+data(soil_euk) 
+summary_metabarlist(soil_euk)
+```
 
-##References
+Function `summary_metabarlist` display the dataset dimensions and characteristics: it is composed of 12647 eukaryote MOTUs from 384 pcrs, corresponding to a total of 64 soil cores and the different experimental controls (object `soil_euk$dataset_dimension`). This is why the number of total MOTUs and reads differ in the `soil_euk$dataset_statistics` object when considering all PCRs products (hereafter referred to as **pcrs*) - which include experimental controls - or only biological samples (hereafter referred to as *samples*).    
+
+The `soil_euk` dataset also contains several information relative to MOTUs (15 variables in the `motus` table), PCRs (11 variables in the `pcrs` table), and samples (8 variables in the `samples` table).  
+
+Such information can be observed with basic R commands, given that the `metabarlist` object is a simple R `list`:  
+
+```{r namesex1}
+colnames(soil_euk$pcrs)
+```
+ 
+In `soil_euk$pcrs` these columns correspond to:    
+
+- `"plate_no"`: the PCR plate number in which each *pcr* has been conducted.   
+- `"plate_col"` and `"plate_row"`: the well coordinate (i.e. column and row) in which each *pcr* has been conducted.    
+- `"tag_fwd"` and `"tag_rev"`: the forward and reverse nucleotidic tag/indices used to differenciate each *pcr*.    
+- `"primer_fwd"` and `"primer_rev"`: the forward and reverse primers used.   
+- `"project"`: the project name of the experiment.
+- `"sample_id"`, `"type"`, `"control_type"`: the mandatory fields for the `pcrs` table that are described above.   
+
+```{r namesex2}
+colnames(soil_euk$samples)
+```
+
+In `soil_euk$samples` these columns correspond to:   
+
+- `"site_id"` and `"point_id"`: the identification codes for sites and sampling points respectively.    
+- `"Latitude"` and `"Longitude"`: the geographic coordinates of the sampling points (decimal degree).    
+- `"Code.Petit.Plateau"`: code specific to the experiment, to not be considered here.
+- `"Site"` `"Habitat"`: sites names and corresponding habitats of each *sample*.   
+- `"Material"`: type of material for each  *sample*.    
+
+# Tutorial with the `soil_euk` dataset
+
+We below provide what would be a classical procedure of data analysis and curation with the `metabaR-F` package. Note however that not all functions provided in `metabaR-F` are examplified below, we encourage the user to explore and play a bit further with the package to make the best use of it according to its dataset characteristics.
+
+## Data import   
+
+`metabaR-F` provides import tools for different data formats. Let's consider for example a suite of four classical ".txt" or csv files each corresponding to the future `reads`, `motus`, `pcrs`, and `samples` objects. These can be imported and formated into a `metabarlist` with the `tabfiles_to_metabarlist` function as follows:   
+
+```{r import, eval=F}
+soil_euk <- tabfiles_to_metabarlist(file_reads = "litiere_euk_reads.txt",
+                                    file_motus = "litiere_euk_motus.txt",
+                                    file_pcrs = "litiere_euk_pcrs.txt",
+                                    file_samples = "litiere_euk_samples.txt")
+```
+
+Default field separator of the input files is tabulation, but can be modified by the user. The rows x columns of the input files should follow the format of the table `reads`, `motus`, `pcrs`, and `samples` described above. Note that in this example above, these input files are stored in the current working directory. If you want to use specifically these example files, you need to use the commands e.g. `system.file("extdata", "litiere_euk_reads.txt", package = "metabaRffe")`, which returns the example files absolute path on your own computer.    
+
+## Diagnostic Plots
+
+Before processing the data *per se*, it is useful to begin the analysis with an explorative vizualization of the raw data, which can already highlight several potential problems. 
+
+### Basic vizualisation
+
+A first basic assessment consists in determining how many reads and MOTUs have been obtained across the different samples and control types, as one can confidently expect that negative controls yield no or much smaller amounts of reads and MOTUs. To do so, one can either create new independent vectors storing the total number of reads and MOTUs in each *pcr*, or store these information in the table `pcrs` of the `metabarlist` directly, as done below:    
+
+```{r diag1_readsmotus}
+# Compute the number of reads per pcr
+soil_euk$pcrs$nb_reads <- rowSums(soil_euk$reads)
+
+# Compute the number of motus per pcr
+soil_euk$pcrs$nb_motus <- rowSums(soil_euk$reads>0)
+```
+
+
+And then plot the results using the "control_type" column of the `pcrs` table
+
+```{r diag1_boxplotreadsmotus, warning=F, message=F, fig.width=8, fig.height=4, fig.align="center"}
+# Load requested package for plotting
+library(ggplot2)
+library(reshape2)
+
+# Create an input table (named check1) for ggplot of 3 columns: 
+#  (i) control type 
+#  (ii) a vector indicated whether it corresponds to nb_reads or nb_motus, 
+#  (iii) the corresponding values.
+
+check1 <- melt(soil_euk$pcrs[,c("control_type", "nb_reads", "nb_motus")])
+
+ggplot(data <- check1, aes(x=control_type, y=value, color=control_type)) + 
+  geom_boxplot() + theme_bw() + 
+  geom_jitter(alpha=0.2) + 
+  scale_color_manual(values = c("brown", "red", "cyan4","pink"), na.value = "darkgrey") +
+  facet_wrap(~variable, scales = "free_y") + 
+  theme(axis.text.x = element_text(angle=45, h=1))
+```
+
+Remember that *pcrs* obtained from *samples* are referred to `NA` in the `control_type` vector, they are exhibited in grey in the example above. In this example, extraction and pcr negative controls yield a few MOTUs of non negligible abundance, which are likely contaminants. No worries for now, this feature is common in DNA metabarcoding datasets [@taberlet2018environmental; @zinger2019dna], we deal with those below.   
+
+An other basic vizualization consists in determining how the number of MOTUs and reads do correlate. This information can help identify the sequencing depth below which a *pcr* might not be reliable, in particular by comparison with experimental negative controls' behavior.     
+
+```{r diag2_readsMOTUs, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
+# Using the nb_reads and nb_motus defined previously in the soil_euk$pcrs table
+
+ggplot(soil_euk$pcrs, aes(x=nb_reads, y=nb_motus, color = control_type)) + 
+  geom_point() + theme_bw() + 
+  scale_y_log10() + scale_x_log10() + 
+  scale_color_manual(values = c("brown", "red", "cyan4","pink"), na.value = "darkgrey")
+```
+ 
+In general, one observe a positive correlation between the number of reads and of MOTUs per "pcr". The strength of the relationship for the different *pcrs* types (i.e. from *samples* or controls) can provide several information. A strong correlation suggests that the sequencing effort is not sufficient to cover the *pcr* diversity. On the contrary, an absence of correlation suggests that the diversity is well covered by sequencing. The latter is exemplified above with the *pcrs* corresponding to extraction or pcr negative controls that harbor high number of reads but low amounts of MOTUs: these are most likely contaminants. At the opposite, the relationship is the steepest for sequencing negative controls, which reflects that albeit tagjumps do occur at low rates in the `soil_euk` dataset (low number of reads), it occurs for many MOTUs [@schnell:2015:00]. For *pcrs* obtained from *samples*, the number of reads and MOTUs only tends to be correlated. Some *pcrs* however exhibit similar features as controls and are likely dysfunctional.    
+
+### Vizualisation in the PCR design context   
+
+Another way to vizualise basic descriptive dataset statistics is to represent them in their experimental context. For example, one can plot the number of reads in the PCR plates if the PCR plates numbers and well coordinates have been provided in the `pcrs` table. Such vizualisation can highlight potential issues at the PCR amplification step. For example, low read abundances in *pcrs* throughout one line or column of the PCR plate suggests that a primer was dysfunctional or that the pipetting of reagents was inconsistent. Let's see how it appears for the `soil_euk` data:   
+
+```{r ggpcrplate1, warning=F, message=F, fig.width=7, fig.height=5, fig.align="center"}
+ggpcrplate(soil_euk, FUN = function(m){rowSums(m$reads)}, legend_title = "# of reads per PCR")
+```
+
+`ggpcrplate` uses a `metabarlist` and a custom function. In the example above, it computes the number of reads per *pcr* so that to display these in their experimental context. This operation is the default when using `ggpcrplate`, and can be obtained with the bfollowing asic call:
+
+```{r ggpcrplate2, warning=F, message=F, fig.width=7, fig.height=5, eval=F}
+ggpcrplate(soil_euk)
+```
+
+Besides the presence of contaminants in extraction and pcr negative controls, one can observe:    
+- That sequencing negative controls (here corresponding to wells where neither DNA template nor PCR reagents were introduced: these are the unused tag combinations in the `soil_euk` dataset experimental design), have low or null read numbers. This exemplifies the existence of the so called "tagjumps" [@schnell:2015:00; reviewed in @zinger2019dna], which remain relatively limited in this experiment.   
+- That certain lines or columns do exhibit a low number of reads in general, e.g. here in all wells in plate 1, line H. This tendency might denote a pipetting or primer problem, as mentioned above.  
+
+If the PCR design uses a combination of two tags as for the `soil_euk` dataset and that this information is available in the `pcrs` table, it is also possible to determine if one of the tag introduces systematic biases as follows: 
+
+```{r ggpcrtag, warning=F, message=F, fig.width=7, fig.height=7, fig.align="center"}
+# Here the list of all tag/indices used in the experiment 
+# is available in the column "tag_rev" of the soil_euk$pcrs table
+tag.list <- as.character(unique(soil_euk$pcrs$tag_rev))
+
+ggpcrtag(soil_euk, 
+         legend_title = "# of reads per PCR", 
+         FUN = function(m) {rowSums(m$reads)},
+         taglist = tag.list) 
+```
+
+Function `ggpcrtag` works similarly to `ggpcrplate`. The plot shows the number of reads in their full PCR design, i.e. with all plates all together including the tags they may share. The boxplots above and to the right show the distribution of the number of reads obtained for each tag-primer. If the tagging strategy relies on identical tags for both primers, then only the diagonal of this plot will be shown.    
+
+### Vizualisation with tools borrowed from ecology
+  
+Another useful way to vizualize the success of the experiment consists in constructing rarefaction curves, which can indicate whether sequencing effort is sufficient to cover the diversity in MOTUs of each pcr (remember here that sequencing is a sampling process of amplicons, not of the in situ diversity).    
+
+In `metabaR-F`, rarefaction curves are constructed with three diversity indices. These are part of the Hill numbers framework [reviewed in @chao2014unifying], which is based on the concept of effective number species, and is defined as follows: 
+  
+$^{q}D=(\sum_{i=1}^{S}p_i^q)^{1/(1-q)}$     
+
+Where $S$ is the total number of species, and $p_i$ the species frequency. The diversity $^{q}D$ corresponds to the diversity of equally-common species, with order $q$ defining the degree of species commonness. In other words, this framework give less weight to rare species when $q$ increases. The interesting feature of the framework is that it unifies mathematically the best known diversity measures in ecology through this unique parameter $q$:    
+for $q=0$, $^{0}D$ is species richness     
+for $q=1$, $^{1}D$ approaches the exponential of the Shannon index $H'=\sum_{i=1}^{S}p_i log p_i$    
+for $q=2$, $^{2}D$ is the inverted of the Simpson index $\lambda=\sum_{i=1}^{S}p_i^2$    
+These are the value of $q$ for which `metabaR-F` will construct rarefaction curves.
+
+For metabarcoding data, these indices are particularly useful because they allow giving less and less weight to rare MOTUs, which often correspond to molecular artifacts and of which inclusion in the data can lead to spurious ecological conclusions [@taberlet2018environmental; @alberdi:2019:00; @calderon2020environmental].
+
+`metabaR-F` also compute the Good's coverage index for each pcr:   
+
+$Coverage = 1-\frac{N_{singletons}}{N}$    
+
+Where $N_{singletons}$ is the number of singletons and $N$ the total number of individuals, i.e. the proportion of reads that are not singletons in the *pcr*. Note that the Good coverage index should be interpreted carefully with DNA metabarcoding data, as it is based on singletons. First, because singletons are potentially spurious signal that can be especially important is species/DNA-poor samples. This may lead to an overestimation of the coverage. On the other hand, "absolute singletons" (i.e. singletons across the whole sequence dataset) are often filtered out during the bioinformatic process, so the number of singletons observed at this stage of the analysis is likely to be strongly underestimated (and this would artificially lower the coverage estimate).
+
+Since this process can take a while, we here only construct rarefaction curves for a subset of *pcrs*, in this case by keeping only few *samples* from the H20 plot of the Petit Plateau. The subsetting of the `soil_euk` dataset can be done as follows:  
+  
+```{r subset, message=F, warning=F}
+# Get the samples names from the H20 plot
+h20_id <- grepl("H20-[A-B]", rownames(soil_euk$pcrs))
+
+# Subset the data
+soil_euk_h20 <- subset_metabarlist(soil_euk, table = "pcrs", indices = h20_id)
+
+# Check results
+summary_metabarlist(soil_euk_h20)
+```
+
+Note that subsetting of a `metabarlist` object can be done with `subset_metabarlist` with any criterion, based either on MOTUs, *pcrs*, or *samples* characteristics.  
+
+Now lets construct the rarefaction curves with the `hill_rarefaction` function. The number of sequencing depths used to build these curves is defined by the `nsteps` argument. For each sequencing depth, the `reads` table is resampled randomly `nboot` times so that to obtain an estimate of $^{q}D$ and $Coverage$. `nboot` is low in the example below to limit the computing time.
+
+```{r hillraref, message=F, warning=F}
+soil_euk_h20.raref = hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
+head(soil_euk_h20.raref$hill_table)
+```
+
+The `hill_rarefaction` function produces an object from which the first element is a table indicating the `pcr_id`, the sequencing depth at which the *pcr* was resampled, and the corresponding diversity / coverage indices. These can be used to draw rarefaction curves.
+
+```{r gghill, message=F, warning=F, fig.width=7, fig.height=2.5, fig.align="center"}
+gghill_rarefaction(soil_euk_h20.raref) 
+```
+
+The user may also want to distinguish different types of *samples* on these curves, for example here soil vs. litter *samples*. This can be achieved as follows:   
+  
+```{r gghill2, message=F, warning=F, fig.width=7, fig.height=3, fig.align="center"}
+# Define a vector containing the Material info for each pcrs 
+material <- soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id,
+                                                rownames(soil_euk_h20$samples))]
+
+# Use of gghill_rarefaction requires a vector with named pcrs
+material <- setNames(material,rownames(soil_euk_h20$pcrs))
+
+# Plot
+p <- gghill_rarefaction(soil_euk_h20.raref, group=material)
+p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
+  scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
+  labs(color="Material type")
+```
+
+The obtained curves tell us a couple of things about the *pcrs*:    
+- The sampling coverage is relatively high even at intermediate sequencing depths (but see remarks above).   
+- The less weight is given to rare MOTUs (i.e. the more $q$ is high), the better $^{q}D$ is estimated.  
+- Litter *samples* in general tend to be less diverse than soil *samples*.    
+
+## Flagging spurious signal   
+
+The next steps of the analysis usually consists at spotting potential spurious signal, whether in terms of MOTUs (e.g. contaminants, presence of untargeted taxa due to primer lack of specificity), MOTUs abundances (i.e. tagjumps), or *pcrs* (*pcrs* yielding low amounts of reads or with low replicability). In this tutorial, the flagging is done by creating a boolean vector specific to each flagging criterion.
+
+### Detecting contaminants based on experimental negative controls
+
+Contamination can occur at multiple stages, from sample collection to library preparation. Detecting these contaminants can be done through the use of negative controls at each stage [reviewed in @taberlet2018environmental; @zinger2019dna], as is the case for the `soil_euk` dataset.     
+
+Due to the tagjump bias, many genuine MOTUs that are abundant in *samples* can be detected in negative controls. Consequently, simply removing from the dataset any MOTU that occurs in negative controls is a very bad idea.
+
+A contaminant should be preferentially amplified in negative controls since there is no competing DNA. The function `contaslayer` relies on this assumption and detects and MOTUs whose relative abundance across the whole dataset is maximum in negative controls. Note however that this approach won't be appropriate if the negative controls have been contaminated with biological samples. The function `contaslayer` adds a new column in table `motus` indicating whether the MOTU is a genuine MOTU (`TRUE`) or 
+a contaminant (`FALSE`). Below, an example for detecting contaminants from the DNA extraction step.
+
+```{r contaslayer, message=F, warning=F}
+# Identifying extraction contaminants
+soil_euk <- contaslayer(soil_euk, 
+                         control_types = "extraction",
+                         output_col = "not_an_extraction_conta")
+
+table(soil_euk$motus$not_an_extraction_conta)
+```
+
+`contaslayer` identified here `r sum(!soil_euk$motus$not_an_extraction_conta)` contaminant MOTUs. Below are the ten most common extraction contaminants identified by `contaslayer` in the `soil_euk` dataset.
+
+```{r contaslayer2, message=F, warning=F, echo=F}
+library(kableExtra)
+dt <- soil_euk$motus[!soil_euk$motus$not_an_extraction_conta,
+                     c("count","best_identity.order_filtered_embl_r136_noenv_EUK",
+                       "path", "sequence")]
+dt$best_identity.order_filtered_embl_r136_noenv_EUK <-
+  round(dt$best_identity.order_filtered_embl_r136_noenv_EUK)
+dt$path <- unlist(lapply(taxoparser(dt$path, sep.level = ":", sep.info = "@"), toString))
+colnames(dt) <- c("total # reads", "similarity to ref DB", "full taxonomic path", "sequence")
+
+rownames(dt) <- NULL
+
+kable(dt[order(dt[,1], decreasing = TRUE)[1:10],], row.names=F) %>%
+  kable_styling(bootstrap_options= c("striped", "hover", "condensed"), 
+                font_size = 8, full_width = F)
+```
+
+The identified contaminants correspond to metazoans (including humans), protists, fungi and plants. The most abundant contaminant does not have precise taxonomic identification in the `soil_euk` dataset, but a BLAST of the sequence suggests that it corresponds most likely to a *Fusarium*, a notorius laboratory contaminant.   
+
+Next, one may want to know how these contamiants are distributed across the `soil_euk` dataset. For example, the contamination could be present only in one PCR plate for some reasons. To assess this, one can use `ggpcrplate` to plot e.g. the distribution of the most common contaminant across the PCR setup:
+
+```{r contaslayer3, message=F, warning=F, fig.width=7, fig.height=5, fig.align="center"}
+# Identify the most common contaminant
+# get contaminant ids
+id <- !soil_euk$motus$not_an_extraction_conta
+max.conta <- rownames(soil_euk$motus[id,])[which.max(soil_euk$motus[id, "count"])]
+
+#... and its distribution and relative abundance in each pcr
+ggpcrplate(soil_euk, legend_title = "#reads of most \nabundant contaminant",
+           FUN = function(m) {m$reads[, max.conta]/rowSums(m$reads)})
+```
+
+In the `soil_euk` dataset, the most abundant contaminant occur across all samples, but in general in low relative abundance (on average `r 100*round(mean(soil_euk$reads[,max.conta]/rowSums(soil_euk$reads+1)),4)` % here, `ggplot` tends to oversize low values). 
+
+One can also determine whether *pcrs* exhibit generally a high proportions of contaminants.
+
+```{r contaslayer4, message=F, warning=F, fig.width=4, fig.height=3, fig.align="center"}
+# Compute relative abundance of all pcr contaminants together 
+a <- data.frame(conta.relab = rowSums(soil_euk$reads[,!soil_euk$motus$not_an_extraction_conta]) / 
+                                    rowSums(soil_euk$reads))
+# Add information on control types
+a$control_type <- soil_euk$pcrs$control_type[match(rownames(a), rownames(soil_euk$pcrs))]
+
+ggplot(a, aes(x=control_type, y=conta.relab, color=control_type)) + 
+  geom_boxplot() + geom_jitter(alpha=0.5) +
+  scale_color_manual(values = c("brown", "red", "cyan4","pink"), na.value = "darkgrey") +
+  labs(x=NULL, y="Prop. Reads (log10)") + 
+  theme_bw() + 
+  scale_y_log10()
+```
+
+Overall, *samples* yield much less amounts of extraction contaminants than experimental negative controls. Some *pcrs* corresponding to *samples* have, however, > 10% of their reads corresponding to contaminants and could be dysfunctional. Based on this criteria *pcrs* could be flagged as follows for potential downstream filtering:   
+
+```{r contaslayer5, message=F, warning=F}
+# flag pcrs with total contaminant relative abundance > 10% of reads)
+soil_euk$pcrs$low_contamination_level <- 
+  ifelse(a$conta.relab[match(rownames(soil_euk$pcrs), rownames(a))]>1e-1,  F, T)
+
+# Proportion of potentially functional (TRUE) vs. dysfunctional (FALSE) pcrs
+# (controls included) based on this criterion
+table(soil_euk$pcrs$low_contamination_level) / nrow(soil_euk$pcrs)
+```
+
+Note that this step should be done for all types of contaminants (coming from extraction, pcr or sequencing). The user can identify each of them separetly or without differentiating the different controls types.
+
+### Flagging spurious or non-target MOTUs
+  
+Non-target sequences can be amplified if the primers are not specific enough. On the other hand, some highly degraded sequences can be produced throughout the data production process, such as primer dimers, or chimeras from multiple parents (hereafter refereed to as spurious MOTUs). To detect these, one can use the information related to taxonomic assignments and associated similarity scores.   
+
+Since the `soil_euk` dataset was obtained with primers that targets eukaryotes. Non-eukaryotic MOTUs should be excluded. At this stage of the analysis, we only flag MOTUs based on this criterion.   
+
+```{r nontarget, message=F, warning=F, fig.width=6, fig.height=3}
+#Flag MOTUs corresponding to target (TRUE) vs. non-target (FALSE) taxa 
+soil_euk$motus$target_taxon <- grepl("Eukaryota", soil_euk$motus$path)
+
+# Proportion of each of these over total number of MOTUs
+table(soil_euk$motus$target_taxon) / nrow(soil_euk$motus)
+
+# Intersection with extraction contaminant flags (not contaminant = T)
+table(soil_euk$motus$target_taxon, 
+      soil_euk$motus$not_an_extraction_conta)
+```
+
+Here we 8 MOTUS flagged as non-targets were already flagged as potential extraction contaminants. 
+
+Next, we want to identify MOTUS whose sequence is too dissimilar from references. This filtering criterion relies on the assumption that current reference databases capture most of the diversity at broad taxonomic levels (i.e. have already at least one representative of each e.g. phyla). Considering this, MOTUs being too distant from reference databases are more likely to be a degraded sequence, especially if such MOTUs are relatively numerous and quite rare. To assess this, one can use the distribution of MOTUs similarity scores, weighted and unweighted by their relative abundance.
+
+```{r nontarget3, message=F, warning=F, fig.width=6, fig.height=3, fig.align="center"}
+# Plot the unweighted distribution of MOTUs similarity scores 
+a <- 
+  ggplot(soil_euk$motus, aes(x=best_identity.order_filtered_embl_r136_noenv_EUK)) + 
+  geom_histogram(color="grey", fill="white", bins=20) + 
+  geom_vline(xintercept = 0.8, col="orange", lty=2) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank()) + 
+  labs(x="% similarity against best match", y="# OTUs")
+
+# Same for the weighted distribution
+b <- 
+  ggplot(soil_euk$motus, 
+         aes(x=best_identity.order_filtered_embl_r136_noenv_EUK, y = ..count.., weight = count)) + 
+  geom_histogram(color="grey", fill="white", bins=20) + 
+  geom_vline(xintercept = 0.8, col="orange", lty=2) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank()) + 
+  labs(x="% similarity against best match", y="# Reads")
+
+# Combine plots into one
+library(cowplot)
+ggdraw() + 
+  draw_plot(a, x=0, y=0, width = 0.5) + 
+  draw_plot(b, x=0.5, y=0, width = 0.5)
+```
+
+Here we may consider any MOTU as degraded sequences if its sequence similarity is < 80% against its best match in the reference database. 
+
+```{r nontarget5, message=F, warning=F}
+# Flag not degraded (TRUE) vs. potentially degraded sequences (FALSE)
+soil_euk$motus$not_degraded <-
+  ifelse(soil_euk$motus$best_identity.order_filtered_embl_r136_noenv_EUK < 0.8, F, T)
+
+# Proportion of each of these over total number of MOTUs
+table(soil_euk$motus$not_degraded) / nrow(soil_euk$motus)
+
+# Intersection with other flags
+table(soil_euk$motus$target_taxon, 
+      soil_euk$motus$not_an_extraction_conta, 
+      soil_euk$motus$not_degraded)
+```
+
+Here, we find that 7 non-target MOTUs are also extraction contaminants and potentially degraded fragments.
+
+### Detecting PCR outliers
+
+A first way to identify dysfunctional PCRs is to flag them based on the *pcr* sequencing depth 
+
+```{r dysfuncPCR1, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
+ggplot(soil_euk$pcrs, aes(nb_reads)) +
+    geom_histogram(bins=40, color="grey", fill="white") + 
+    geom_vline(xintercept = 1e3, lty=2, color="orange") + # threshold
+    scale_x_log10() + 
+    labs(x="# Reads (with all OTUs and PCRs)", 
+        y="# PCRs") +
+    theme_bw() + 
+    theme(panel.grid = element_blank())
+```
+
+The histogram above includes negative controls, which - fortunately - yield low amounts of reads in general, but also *pcrs* obtained from *samples*, as shown below.
+
+```{r dysfuncPCR2, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
+# Flag pcrs with an acceptable sequencing depth (TRUE) or inacceptable one (FALSE)
+soil_euk$pcrs$seqdepth_ok <- ifelse(soil_euk$pcrs$nb_reads < 1e3, F, T)
+
+# Proportion of each of these over total number of pcrs, control excluded
+table(soil_euk$pcrs$seqdepth_ok[soil_euk$pcrs$type=="sample"]) /
+  nrow(soil_euk$pcrs[soil_euk$pcrs$type=="sample",])
+```
+
+A second way to evaluate the PCR quality is to assess their reproducibility. Function `pcrslayer` and associated functions (e.g. `pcr_within_between`) allow detecting *pcrs* outliers in replicates using different methods, with a common underlying assumption: the compositional dissimilarities in MOTUs between *pcrs* replicates from a same *sample* should be lower than that observed between *pcrs* obtained from different *samples* (see help page for more details). This assessment is obviously only possible when the experimental designs includes PCR replicates for each biological samples. For these function to run, pcrs yielding no reads, as well as negative controls, should be excluded.
+
+```{r pcrsalyer1, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
+# Subsetting the metabarlist
+soil_euk_sub <- subset_metabarlist(soil_euk, 
+                                   table = "pcrs", 
+                                   indices = soil_euk$pcrs$nb_reads>0 & (
+                                     is.na(soil_euk$pcrs$control_type) |
+                                       soil_euk$pcrs$control_type=="positive"))
+
+# First visualization
+comp1 = pcr_within_between(soil_euk_sub)
+check_pcr_thresh(comp1)
+```
+
+In the density plots shown above, one can see that several *pcrs* replicates are as distant than *pcrs* from different *samples*. Let's now flag *pcrs* based on this criterion and store this in the `output_col` column of the `pcr` table:
+
+```{r pcrsalyer2, message=F, warning=F}
+# Flagging
+soil_euk_sub <- pcrslayer(soil_euk_sub, output_col = "replicating_pcr", plot = F)
+
+# Proportion of replicating pcrs (TRUE)
+table(soil_euk_sub$pcrs$replicating_pcr) /
+  nrow(soil_euk_sub$pcrs)
+
+# Intersection with the sequencing depth criterion
+table(soil_euk_sub$pcrs$seqdepth_ok, 
+      soil_euk_sub$pcrs$replicating_pcr)
+```
+
+Here, 3 *pcrs* out of the 5 detected as outliers had low sequencing depth. One can also visualize the replicates and outliers behaviour in a Principal Coordinate Analysis with the function `check_pcr_repl`.
+
+```{r pcrsalyer3, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
+# Distinguish between pcrs obtained from samples from positive controls
+mds = check_pcr_repl(soil_euk_sub, 
+                     groups = soil_euk_sub$pcrs$type, 
+                     funcpcr = soil_euk_sub$pcrs$replicating_pcr)
+mds + labs(color = "pcr type") + scale_color_manual(values = c("cyan4", "gray"))
+```
+
+Now report the flagging in the initial `metabarlist`
+```{r pcrsalyer4, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
+soil_euk$pcrs$replicating_pcr <- NA
+soil_euk$pcrs[rownames(soil_euk_sub$pcrs),"replicating_pcr"] <- soil_euk_sub$pcrs$replicating_pcr
+```
+
+### Lowering tag-jumps
+
+Tagjumps are frequency-dependent, i.e. abundant genuine MOTUs are more likely to be found in low abundance in samples were they are not supposed to be than rare genuine MOTUs. To reduce the amount of such false positives, the function `tagumpslayer` considers each MOTU separately and corrects its abundance in *pcrs* (see `tagumpslayer` help for more information on possible correction methods) when the MOTU relative abundance over the entire dataset is below a given threshold. Such data a curation strategy is similar to what has been proposed by @esling:2015:00. Effect of this threshold can be evaluated by testing how this filtration procedure affect basic dataset characteristics (e.g. # MOTUs or reads) at different levels, as exemplified below.
+
+```{r tagjump1, message=F, warning=F, fig.width=10, fig.height=5, fig.align="center"}
+# Define a vector of thresholds to test
+thresholds <- c(0,1e-4,1e-3, 1e-2, 3e-2, 5e-2) 
+
+# Run the tests and stores the results in a list
+tests <- lapply(thresholds, function(x) tagjumpslayer(soil_euk,x))
+names(tests) <- paste("t_", thresholds, sep="")
+
+# Format the data for ggplot with amount of reads at each threshold
+tmp <- melt(as.matrix(do.call("rbind", lapply(tests, function(x) rowSums(x$reads)))))
+colnames(tmp) <- c("threshold", "sample", "abundance")
+
+# Add richness in MOTUs at each threshold
+tmp$richness <-
+  melt(as.matrix(do.call("rbind", lapply(tests, function(x) {
+    rowSums(x$reads > 0)
+  }))))$value
+
+# Add control type information on pcrs and make data curation threshold numeric
+tmp$controls <- soil_euk$pcrs$control_type[match(tmp$sample, rownames(soil_euk$pcrs))]
+tmp$threshold <- as.numeric(gsub("t_", "", tmp$threshold))
+
+# New table formatting for ggplot
+tmp2 <- melt(tmp, id.vars=colnames(tmp)[-grep("abundance|richness", colnames(tmp))])
+
+ggplot(tmp2, aes(x=as.factor(threshold), y=value)) + 
+  geom_boxplot(color="grey40") + 
+  geom_vline(xintercept = which(levels(as.factor(tmp2$threshold)) == "0.01"), col="orange", lty=2) + 
+  geom_jitter(aes(color=controls), width = 0.2, alpha=0.5) + 
+  scale_color_manual(values = c("brown", "red", "cyan4","pink"), na.value = "darkgrey") +
+  facet_wrap(~variable+controls, scale="free_y", ncol=5) + 
+  theme_bw() + 
+  scale_y_log10() +
+  labs(x="MOTU pcr : total abundance filtering threshold", y="# Reads/MOTUs") + 
+  theme(panel.grid = element_blank(), 
+        strip.background = element_blank(), 
+        axis.text.x = element_text(angle=40, h=1), 
+        legend.position = "none")
+```
+
+A threshold of 0.01 leads to a drop in both # of reads and MOTUs in sequencing negative controls. This drop is also noticeable in terms of # MOTUs in *pcrs* obtained from other controls as compared to those obtained from *samples*. The former are expected to be voided of environmental MOTUs, and tagjumps should be more visible/important in these *pcrs*. Note that this procedure primarily affects MOTU diversity in *pcrs*, and poorly the *pcrs* number of reads.   
+
+As for above, *pcrs* containing large amounts of MOTUs identified as potentially artifactual or where tagjum filtering strongly affects the *pcrs* number of reads can be flagged as potentially dysfunctional.  
+
+## Summarizing the noise in the `soil_euk` dataset
+
+One can now get an overview of the amount of noise identified with the criteria used above, first in terms of MOTUs.    
+```{r noiseMOTUs, message=F, warning=F, fig.width=7, fig.height=4, fig.align="center"}
+# Create a table of MOTUs quality criteria 
+# noise is identified as FALSE in soil_euk, the "!" transforms it to TRUE
+motus.qual <- !soil_euk$motus[,c("not_an_extraction_conta", "target_taxon", "not_degraded")]
+colnames(motus.qual) <- c("extraction_conta", "untargeted_taxon", "degraded_seq")
+
+# Proportion of MOTUs potentially artifactual (TRUE) based on the criteria used
+prop.table(table(apply(motus.qual, 1, sum) > 0))
+
+# Corresponding proportion of artifactual reads (TRUE)
+prop.table(xtabs(soil_euk$motus$count~apply(motus.qual, 1, sum) > 0))
+
+# Proportion of MOTUs and reads potentially artifactual for each criterion
+apply(motus.qual, 2, sum) / nrow(motus.qual)
+apply(motus.qual, 2, function(x) sum(soil_euk$motus$count[x])/sum(soil_euk$motus$count))
+
+tmp.motus <- 
+  apply(sapply(1:ncol(motus.qual), function(x) {
+    ifelse(motus.qual[,x]==T, colnames(motus.qual)[x], NA)}), 1, function(x) {
+      paste(sort(unique(x)), collapse = "|")
+      })
+tmp.motus <- as.data.frame(gsub("^$", "not_artefactual", tmp.motus))
+colnames(tmp.motus) <-  "artefact_type"
+
+ggplot(tmp.motus, aes(x=1, fill=artefact_type)) +
+    geom_bar() +  xlim(0, 2) +
+    labs(fill="Artifact type") + 
+    coord_polar(theta="y") + theme_void() + 
+    scale_fill_brewer(palette = "Set3") + 
+    theme(legend.direction = "vertical") + 
+    ggtitle("MOTUs artefacts overview")
+```
+
+The above shows that MOTUs flagged as potentially artefactuals account for ca. 10% of the dataset diversity and roughly the same in terms of # of reads. Most of these artifacts MOTUs are rare and correspond to sequences potentially highly degraded, with very low sequence similarity against the EMBL reference database. Most abundant artifacts MOTUs correspond to contaminants.
+
+Let's do the same with *pcrs*
+
+```{r noisePCRs,  message=F, warning=F, fig.width=7, fig.height=4, fig.align="center"}
+# Create a table of pcrs quality criteria 
+# noise is identified as FALSE in soil_euk, the "!" transforms it to TRUE
+pcrs.qual <- !soil_euk$pcrs[,c("low_contamination_level", "seqdepth_ok", "replicating_pcr")]
+colnames(pcrs.qual) <- c("high_contamination_level", "low_seqdepth", "outliers")
+
+# Proportion of pcrs potentially artifactual (TRUE) based on the criteria used
+# excluding controls
+prop.table(table(apply(pcrs.qual[soil_euk$pcrs$type=="sample",], 1, sum) > 0))
+
+# Proportion of MOTUs and reads potentially artifactual for each criterion
+apply(pcrs.qual[soil_euk$pcrs$type=="sample",], 2, sum) / nrow(pcrs.qual[soil_euk$pcrs$type=="sample",])
+
+tmp.pcrs <- 
+  apply(sapply(1:ncol(pcrs.qual), function(x) {
+    ifelse(pcrs.qual[soil_euk$pcrs$type=="sample",x]==T, 
+           colnames(pcrs.qual)[x], NA)}), 1, function(x) {
+      paste(sort(unique(x)), collapse = "|")
+      })
+tmp.pcrs <- as.data.frame(gsub("^$", "not_artefactual", tmp.pcrs))
+
+colnames(tmp.pcrs) <- "artefact_type"
+
+ggplot(tmp.pcrs, aes(x=1, fill=artefact_type)) +
+    geom_bar() +  xlim(0, 2) +
+    labs(fill="Artifact type") + 
+    coord_polar(theta="y") + theme_void() + 
+    scale_fill_brewer(palette = "Set3") + 
+    theme(legend.direction = "vertical") +
+    ggtitle("PCR artefacts overview")
+```
+
+*pcrs* flagged as potentially dysfunctional account for ca. 10% of the *pcrs*, most of these corresponding to *pcrs* yiedling a high amount of contaminants. 
+
+## Data cleaning and aggregation
+
+Final stage of the analysis consists in removing the based on the criteria (or part of - ) defined above and aggregating the *pcrs* to get rid off technical replicates.
+
+
+### Removing spurious signal
+
+We will here remove of suprious MOTUs, PCRs as well as adjusting read counts by removing tagjumps. At this stage of the analysis, controls are not necessary anymore.   
+
+```{r cleaning1,  message=F, warning=F}
+# Use tag-jump corrected metabarlist with the threshold identified above
+tmp <- tests[["t_0.01"]]
+
+# Subset on MOTUs 
+tmp <- subset_metabarlist(tmp, "motus", 
+                          indices = rowSums(tmp$motus[,c("not_an_extraction_conta", "target_taxon",
+                                                 "not_degraded")]) == 3)
+summary_metabarlist(tmp)
+```
+
+Same with *pcrs*
+```{r cleaning2,  message=F, warning=F}
+# Subset on pcrs and keep only controls 
+soil_euk_clean <- subset_metabarlist(tmp, "pcrs", 
+                          indices = rowSums(tmp$pcrs[,c("low_contamination_level", 
+                                                         "seqdepth_ok", "replicating_pcr")]) == 3 & 
+                                    tmp$pcrs$type == "sample")
+summary_metabarlist(soil_euk_clean)
+```
+
+Now check if previous subsetting leads to any empty *pcrs* or MOTUs
+
+```{r cleaning3,  message=F, warning=F}
+if(sum(colSums(soil_euk_clean$reads)==0)>0){print("empty motus present")}
+if(sum(colSums(soil_euk_clean$reads)==0)>0){print("empty pcrs present")}
+```
+
+Update some parameters in the metabarlist (e.g. counts, etc.)
+
+```{r cleaning4,  message=F, warning=F}
+soil_euk_clean$motus$count = colSums(soil_euk_clean$reads)
+soil_euk_clean$pcrs$nb_reads_postmetabarf = rowSums(soil_euk_clean$reads)
+soil_euk_clean$pcrs$nb_motus_postmetabarf = rowSums(ifelse(soil_euk_clean$reads>0, T, F))
+```
+
+We can now compare some basic characteristics of the `soil_euk` before and after data curation with `metabaR-F`. 
+
+```{r beforeafter1,  message=F, warning=F, fig.width=6, fig.height=4, fig.align="center"}
+check <- melt(soil_euk_clean$pcrs[,c("nb_reads", "nb_reads_postmetabarf", 
+                               "nb_motus", "nb_motus_postmetabarf")])
+check$type <- ifelse(grepl("motus", check$variable), "richness", "abundance")
+
+ggplot(data = check, aes(x = variable, y = value)) +
+  geom_boxplot( color = "darkgrey") +
+  geom_jitter(alpha=0.1, color = "darkgrey") +
+  theme_bw() +
+  facet_wrap(~type, scales = "free", ncol = 5) +
+  theme(axis.text.x = element_text(angle=45, h=1))
+```
+
+*pcrs* sequencing depth and richness are poorly affected by the trimming. 
+Let's now see if the signal is changed in terms of beta diversity:
+
+```{r beforeafter2,  message=F, warning=F, fig.width=10, fig.height=3, fig.align="center"}
+# Get row data only for samples
+tmp <- subset_metabarlist(soil_euk, table = "pcrs",
+                          indices = soil_euk$pcrs$type == "sample")
+
+# Add sample biological information for checks
+tmp$pcrs$Material <- tmp$samples$Material[match(tmp$pcrs$sample_id, rownames(tmp$samples))]
+tmp$pcrs$Habitat <- tmp$samples$Habitat[match(tmp$pcrs$sample_id, rownames(tmp$samples))]
+
+soil_euk_clean$pcrs$Material <-
+  soil_euk_clean$samples$Material[match(soil_euk_clean$pcrs$sample_id,
+                                        rownames(soil_euk_clean$samples))]
+soil_euk_clean$pcrs$Habitat <-
+  soil_euk_clean$samples$Habitat[match(soil_euk_clean$pcrs$sample_id,
+                                       rownames(soil_euk_clean$samples))]
+
+# Build PCoA ordinations 
+mds1 <- check_pcr_repl(tmp,
+                      groups = paste(tmp$pcrs$Habitat, tmp$pcrs$Material, sep = " | "))
+mds2 <- check_pcr_repl(soil_euk_clean,
+                       groups = paste(
+                         soil_euk_clean$pcrs$Habitat,
+                         soil_euk_clean$pcrs$Material,
+                         sep = " | "))
+
+# Custom colors
+a <- mds1 + labs(color = "Habitat | Material") + 
+  scale_color_manual(values = c("brown4", "brown1", "goldenrod4", "goldenrod1")) +
+  theme(legend.position = "none") + 
+  ggtitle("Raw data")
+b <- mds2 + labs(color = "Habitat | Material") +
+  scale_color_manual(values = c("brown4", "brown1", "goldenrod4", "goldenrod1")) + 
+  ggtitle("Clean data")
+
+# Assemble plots
+leg <- get_legend(b + guides(shape=F) + 
+                    theme(legend.position = "right", 
+                          legend.direction = "vertical"))
+ggdraw() +
+  draw_plot(a, x=0, y=0, width = 0.4, height = 1) + 
+  draw_plot(b + guides(color=F, shape=F), x=0.42, y=0, width = 0.4, height = 1) +
+  draw_grob(leg, x=0.4, y=0)
+```
+
+Cleaning data from the various contaminants flagged above also increases *samples* between- and within type dissimilarities. 
+
+### Data aggregation
+
+At this stage *pcrs* technical replicates should be aggregated so that to focus on biological patterns. This can be done with function `aggregate_pcrs`, which includes flexible possibilities for data aggregation methods. Here, we will simply sum MOTUs counts across *pcrs* replicates, which is the default function of `aggregate_pcrs`. Note that this function can be used for other purposes than for aggregating technical replicates.  
+
+```{r aggregate,  message=F, warning=F, fig.width=10, fig.height=3, fig.align="center"}
+soil_euk_agg <- aggregate_pcrs(soil_euk_clean)
+summary_metabarlist(soil_euk_agg)
+```
+
+Now, `soil_euk_agg` has the same dataset characteristics for *pcrs* and *samples*. 
+
+## Final vizualisations
+
+One can finally use the output of this tutorial for ecological analyses with other `R` packages. Before finishing this tutorial, we will use two last `metabaR-F` functions and others from other `R`packages to roughly explore the final dataset characteristics. 
+
+### Taxonomic composition
+
+One challenge when assessing the taxonomic composition of DNA metabarcoding data is (i) a taxonomic information that is not always available at the same taxonomic resolution, and (ii) the large taxonomic breadth of the community under study. Function `ggtaxplot` builds a taxonomic tree from a taxonomic information contained in the `motus` table, hence allowing having an overview of the whole community composition:
+
+```{r taxo1,  message=F, warning=F, fig.width=10, fig.height=6, fig.align="center"}
+ggtaxplot(soil_euk_agg, 
+          taxo = "path", 
+          sep.level = ":", sep.info = "@")
+```
+
+The taxonomic tree above shows that the `soil_euk` dataset is mainy composed of Fungi and Metazoa MOTUs and reads. Let's see further the taxonomic composition in phylum of one kingdom, the Metazoa. This can be done with function `aggregate_motus`. The kingdom level is not available as a single column in the `soil_euk` dataset, one need to parse the full MOTU taxonomic information available in the column "path", with the `taxoparser` function.
+
+```{r taxo2,  message=F, warning=F, fig.width=8, fig.height=3, fig.align="center"}
+# Get the kingdom names of MOTUs
+kingdom <-
+  unname(sapply(taxoparser(taxopath = soil_euk_agg$motus$path,
+                           sep.level = ":",sep.info = "@"),
+                function(x) x["kingdom"]))
+
+# Create metazoa metabarlist
+soil_metazoa <- subset_metabarlist(soil_euk_agg, "motus", 
+                                    kingdom=="Metazoa" & !is.na(kingdom))
+
+# Aggregate the metabarlist at the phylum level
+soil_metazoa_phy <-
+  aggregate_motus(soil_metazoa, groups = soil_metazoa$motus$phylum_name)
+
+# Aggregate per Habitat/material
+tmp <-
+  melt(aggregate(soil_metazoa_phy$reads, by = list(
+    paste(soil_metazoa_phy$samples$Habitat,
+          soil_metazoa_phy$samples$Material,
+          sep = " | ")), sum))
+  
+# Plot 
+ggplot(tmp, aes(x=Group.1, y=value, fill=variable)) +
+    geom_bar(stat="identity") + 
+    labs(x=NULL, y="#reads", fill="Phyla") + 
+    coord_flip() + theme_bw() + 
+    scale_fill_brewer(palette = "Set3") + 
+    theme(legend.position = "bottom") +
+    ggtitle("Metazoa phyla")
+```
+
+### Rarefaction curves
+
+A final look at the *samples* diversity coverage with rarefaction curves.
+```{r raref,  message=F, warning=F, fig.width=8, fig.height=3, fig.align="center"}
+soil_euk_agg.raref = hill_rarefaction(soil_euk_agg, nboot = 20, nsteps = 10)
+material <- paste(soil_euk_agg$samples$Habitat, soil_euk_agg$samples$Material)
+material <- setNames(material,rownames(soil_euk_agg$samples))
+
+#plot
+p <- gghill_rarefaction(soil_euk_agg.raref, group=material)
+p + scale_fill_manual(values = c("brown4", "brown1", "goldenrod4", "goldenrod1")) +
+  scale_color_manual(values = c("brown4", "brown1", "goldenrod4", "goldenrod1")) +
+  labs(color="Habitat | Material type")
+```
+
+You can now go on with ecological analyses using `metabaR-F` for data handling and any other R package!
+
+# References
 
