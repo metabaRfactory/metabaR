@@ -75,7 +75,7 @@ aggregate_motus <- function(metabarlist,
       sub[which.max(sub.count), ]
     }))
 
-    motus.out <-
+    rownames(motus.out) <- colnames(reads.out)
 
     pcrs.out <- metabarlist$pcrs[rownames(reads.out), ]
     sample.out <-
