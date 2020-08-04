@@ -90,6 +90,7 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
         theme_bw() +
         scale_fill_manual(values = c("brown", "red", "pink", "cyan4"), na.translate = FALSE) +
         geom_point(na.rm = TRUE) +
+        scale_size(range = c(0,3)) +
         labs(size = legend_title) +
         scale_x_discrete(expand = c(0.02, 0)) +
         scale_y_discrete(expand = c(0.02, 0)) +
