@@ -28,8 +28,11 @@
 #'                          sep.level= ":")
 #'
 #' ## a qiime/unite-like type of full taxonomic path.
-#' # No kingdom level available in soil_euk
-#' qiimepath <- apply(soil_euk$motus[,grep("[msry]_name", colnames(soil_euk$motus))], 1,
+#' arthropoda <- subset_metabarlist(soil_euk,
+#'                                  table = "motus",
+#'                                  indices = grepl("Arthropoda", soil_euk$motus$path))
+#'
+#' qiimepath <- apply(arthropoda$motus[,grep("[msry]_name", colnames(soil_euk$motus))], 1,
 #'                   function(x) {
 #'                      paste(sapply(1:length(x), function(y) {
 #'                        paste(c("p", "c", "o", "f", "g", "s")[y], x[y], sep="_")
