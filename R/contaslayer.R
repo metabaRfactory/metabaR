@@ -36,6 +36,7 @@
 #' @examples
 #'
 #' data(soil_euk)
+#' library(ggplot2)
 #'
 #' ## Identify genuine from contaminants using PCR or extraction negative controls
 #' mbl <- contaslayer(soil_euk)
