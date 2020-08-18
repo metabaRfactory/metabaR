@@ -37,7 +37,7 @@ over](metabaR_overview.png)
 
 ## Installation
 
-`metabaR` can be installed from github with:
+`metabaR` can be installed from GitHub with:
 
 ``` r
 install.packages("devtools")
@@ -45,9 +45,9 @@ devtools::install_github("metabaRfactory/metabaR")
 ```
 
 Package dependencies:  
-\- for graphical purposes: *igraph*, *ggplot2* and *cowplot*  
-\- for formatting purposes: *reshape2*, *seqinr*, *biomformat*  
-\- for analysis purposes: *vegan*, *ade4*
+\- for graphical purposes: `igraph`, `ggplot2` and `cowplot`  
+\- for formatting purposes: `reshape2`, `seqinr`, `biomformat`  
+\- for analysis purposes: `vegan`, `ade4`
 
 ## Example
 
