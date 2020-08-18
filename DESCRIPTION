@@ -1,6 +1,6 @@
-Package: metabaRffe
+Package: metabaR
 Type: Package
-Title: metabaR-F : an R package for the evaluation and improvement of DNA metabarcoding data quality
+Title: metabaR : an R package for the evaluation and improvement of DNA metabarcoding data quality
 Version: 0.1.0
 Authors@R: c(
     person("Zinger", "Lucie", email = "lucie@zinger.fr", role = c("aut")),
