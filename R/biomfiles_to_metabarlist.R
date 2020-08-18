@@ -49,7 +49,7 @@
 #'  file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaR"),
 #'  sep = "\t")
 #'
-#' @author Anne-Sophie Benoiston, Lucie Zinger
+#' @author Anne-Sophie Benoiston
 #'
 #' @import biomformat
 #'
