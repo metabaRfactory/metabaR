@@ -37,18 +37,13 @@ data(soil_euk)
 
 ## With MOTU phylum assignment as grouping factor and
 ## default grouping aggregation (sum reads across replicates)
-soil_euk_ag <- aggregate_motus(soil_euk)
+soil_euk_ag <- aggregate_motus(soil_euk, groups = soil_euk$motus$phylum_name)
 summary_metabarlist(soil_euk)
 summary_metabarlist(soil_euk_ag)
 
-## With the FUN_agg_prob pre-defined function
-soil_euk_ag <- aggregate_motus(soil_euk, FUN = FUN_agg_prob)
-summary_metabarlist(soil_euk)
-summary_metabarlist(soil_euk_ag) ## output on reads do not have much sense in this case.
-
 ## With a custom function (here equivalent to FUN_agg_sum,
 ## i.e. summing all MOTUs abundance across groups)
-soil_euk_ag <- aggregate_motus(soil_euk,
+soil_euk_ag <- aggregate_motus(soil_euk, groups = soil_euk$motus$phylum_name,
                                FUN = function(reads, groups){
                                        t(rowsum(t(metabarlist$reads), groups))})
 
