@@ -14,9 +14,9 @@ knitr::opts_chunk$set(
 
 ![Metabar banner](metabaR.png)
 
-`metabaR` is an \R package enabling importing, handling and postprocessing metabarcoding data that have been already processed through bioinformatic pipelines. It provides functions to reveal and filter common molecular artifacts produced during the experimental workflow. 
+`metabaR` is an R package enabling the import, handling and processing of DNA metabarcoding data that have been already processed through bioinformatic pipelines. It provides functions to reveal and filter common molecular artifacts produced during the experimental workflow. 
 
-Due to its simplicity of structure, this package can be easily used in combination with others \R packages commonly used in ecology (`vegan`, `ade4`, `ape`, `picante`, etc.), and provides flexible graphic systems based on `ggplot2` to vizualize the data under both ecological and experimental perspectives.
+This package can be easily used in combination with others R packages commonly used in ecology (`vegan`, `ade4`, `ape`, `picante`, etc.), and provides flexible graphic systems based on `ggplot2` to visualise the data under both ecological and experimental perspectives.
 
 More specifically, `metabaR` provides:
 
@@ -36,7 +36,7 @@ https://github.com/metabaRfactory/metabaR
 
 ## Installation
 
-*metabaR* can be installed from github with:
+`metabaR` can be installed from github with:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
@@ -45,7 +45,7 @@ devtools::install_github("metabaRfactory/metabaR")
 
 Package dependencies:   
 - for graphical purposes: *igraph*, *ggplot2* and *cowplot*   
-- for formatting purposes: *reshape2*, *seqinr*, *biomformat*
+- for formatting purposes: *reshape2*, *seqinr*, *biomformat*    
 - for analysis purposes: *vegan*, *ade4*   
 
 ## Example
