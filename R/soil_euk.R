@@ -46,7 +46,7 @@
 #'
 #' @usage data(soil_euk)
 #'
-#' @format An object of class \code{metabarlist}; see \code{\link[metabaRffe]{metabarlist}}.
+#' @format An object of class \code{metabarlist}; see \code{\link[metabaR]{metabarlist}}.
 #'
 #' @keywords dataset
 #'
@@ -58,7 +58,6 @@
 #' @references Quast, C., Pruesse, E., Yilmaz, P., Gerken, J., Schweer, T., Yarza, P., ... & Glöckner, F. O. (2012). The SILVA ribosomal RNA gene database project: improved data processing and web-based tools. Nucleic Acids Research, 41(D1), D590-D596.
 #'
 #'
-#' @source \href{LINK WEB TO DEFINE}{DNA metabarcoding data archive} for obitools ouput data and contextual data.
 #'
 #' @examples
 #' data(soil_euk)
