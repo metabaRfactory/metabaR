@@ -32,12 +32,11 @@ More specifically, `metabaR` provides:
 
 ## Overall overview
 
-<span style="color:red">Temporary</span> ![Metabar
-over](metabaR_overview.png)
+![Metabar over](metabaR_overview.png)
 
 ## Installation
 
-`metabaR` can be installed from GitHub with:
+`metabaR` can be installed from GitHub using:
 
 ``` r
 install.packages("devtools")
