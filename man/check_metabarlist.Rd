@@ -36,7 +36,7 @@ The function \code{check_metabarlist} checks if \code{metabarlist} has all the p
 
 The function will stop if these basic criteria are not met.
 
-\code{check_metabarlist} also issues warnings if tables lack columns which are non-mandatory for the \code{metabaRffe} package to run, but that are mandatory (or have a mandatory format) for specific functions (e.g., \code{\link{ggpcrplate}})
+\code{check_metabarlist} also issues warnings if tables lack columns which are non-mandatory for the \code{metabaR} package to run, but that are mandatory (or have a mandatory format) for specific functions (e.g., \code{\link{ggpcrplate}})
 \itemize{
 \item {the column `sequence` for the `motus` table.}
 \item {the columns `tag_fwd`, `tag_rev`, `primer_fwd`, `primer_rev`,

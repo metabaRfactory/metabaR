@@ -43,10 +43,10 @@
 #' add an example here, such as:
 #'
 #'soil_euk <- biomfiles_to_metabarlist(
-#'  file_biom = system.file("extdata", "litiere_euk_reads_hdf5.biom", package = "metabaRffe"),
-#'  file_motus = system.file("extdata", "litiere_euk_motus.txt", package = "metabaRffe"),
-#'  file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaRffe"),
-#'  file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaRffe"),
+#'  file_biom = system.file("extdata", "litiere_euk_reads_hdf5.biom", package = "metabaR"),
+#'  file_motus = system.file("extdata", "litiere_euk_motus.txt", package = "metabaR"),
+#'  file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaR"),
+#'  file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaR"),
 #'  sep = "\t")
 #'
 #' @author Anne-Sophie Benoiston, Lucie Zinger

@@ -35,10 +35,10 @@
 #' @examples
 #'
 #' soil_euk <- tabfiles_to_metabarlist(
-#'   file_reads = system.file("extdata", "litiere_euk_reads.txt", package = "metabaRffe"),
-#'   file_motus = system.file("extdata", "litiere_euk_motus.txt", package = "metabaRffe"),
-#'   file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaRffe"),
-#'   file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaRffe")
+#'   file_reads = system.file("extdata", "litiere_euk_reads.txt", package = "metabaR"),
+#'   file_motus = system.file("extdata", "litiere_euk_motus.txt", package = "metabaR"),
+#'   file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaR"),
+#'   file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaR")
 #' )
 #'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},

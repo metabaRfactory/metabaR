@@ -21,7 +21,7 @@
 #' @examples
 #'
 #' ngsfilter <- read_ngsfilter(
-#'               file = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaRffe"),
+#'               file = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaR"),
 #'               sep = "\t",
 #'               additional.sep = "=")
 #'

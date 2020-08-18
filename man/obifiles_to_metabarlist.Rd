@@ -40,9 +40,9 @@ This function imports OBITools outputs and related files into \R to create a \co
 \examples{
 
 soil_euk <- obifiles_to_metabarlist(
-  file_obitab = system.file("extdata", "litiere_euk_cl97_agg_filt_tax.tab", package = "metabaRffe"),
-  file_ngsfilter = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaRffe"),
-  file_samples = system.file("extdata", "Litiere_sample_list_2.txt", package = "metabaRffe"),
+  file_obitab = system.file("extdata", "litiere_euk_cl97_agg_filt_tax.tab", package = "metabaR"),
+  file_ngsfilter = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaR"),
+  file_samples = system.file("extdata", "Litiere_sample_list_2.txt", package = "metabaR"),
   sep = "\t"
 )
 
