@@ -46,11 +46,11 @@ summary_metabarlist(soil_euk)
 summary_metabarlist(soil_euk_ag)
 
 ## With the FUN_agg_prob pre-defined function
-soil_euk_ag <- aggregate_pcrs(soil_euk, FUN = FUN_agg_prob)
+soil_euk_ag <- aggregate_pcrs(soil_euk, FUN = FUN_agg_pcrs_prob)
 summary_metabarlist(soil_euk)
 summary_metabarlist(soil_euk_ag) ## output on reads do not have much sense in this case.
 
-## With a custom function (here equivalent to FUN_agg_sum,
+## With a custom function (here equivalent to FUN_agg_pcrs_sum,
 ## i.e. summing all MOTUs abundance across replicates)
 soil_euk_ag <- aggregate_pcrs(soil_euk,
                               FUN = function(reads, replicates){
