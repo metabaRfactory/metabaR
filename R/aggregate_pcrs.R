@@ -49,8 +49,8 @@
 #' ## With a custom function (here equivalent to FUN_agg_pcrs_sum,
 #' ## i.e. summing all MOTUs abundance across replicates)
 #' soil_euk_ag <- aggregate_pcrs(soil_euk,
-#'                               FUN = function(reads, replicates){
-#'                                  rowsum(reads, replicates)})
+#'                               FUN = function(metabarlist, replicates){
+#'                                  rowsum(metabarlist$reads, replicates)})
 #'
 #' @author Lucie Zinger, Frédéric Boyer
 #'
