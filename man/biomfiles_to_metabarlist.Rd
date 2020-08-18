@@ -69,5 +69,5 @@ soil_euk <- biomfiles_to_metabarlist(
           \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}}
 }
 \author{
-Anne-Sophie Benoiston, Lucie Zinger
+Anne-Sophie Benoiston
 }
