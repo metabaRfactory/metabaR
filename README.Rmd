@@ -31,7 +31,6 @@ https://github.com/metabaRfactory/metabaR
 
 ## Overall overview
 
-<span style="color:red">Temporary</span>
 ![Metabar over](metabaR_overview.png)
 
 ## Installation
