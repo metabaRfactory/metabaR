@@ -5,14 +5,14 @@
 #' @details
 #' Samples were collected at 2 sample sites in contrasting habitats:
 #' \itemize{
-#'   \item{}{The Mana site located in a white sand forest, characterized highly oligotrophic soils and tree species adaptated to the local harsh conditions.}
-#'   \item{}{The Petit Plateau site is located in pristine rainforest (Nouragues natural reserve) characterized by soils richer in clay and organic matter.}
+#'   \item{}{The Mana site located in a white sand forest, characterised by highly oligotrophic soils and tree species adaptated to the local harsh conditions.}
+#'   \item{}{The Petit Plateau site is located in pristine rainforest (Nouragues Natural Reserve) characterized by soils rich in clay and organic matter.}
 #'  }
 #'
-#' At each site, sample collection were conducted at 16 sampling points separated from one another by 20 m and arranged in a grid across a 1 ha plot. At each sampling point, two types of environmental materia were collected:
+#' At each site, sample collection was conducted at 16 sampling points separated from one another by 20 m and arranged in a grid across a 1 ha plot. At each sampling point, two types of environmental material were collected:
 #' \itemize{
 #'   \item{}{soil: a composite sample of 5 soil cores}
-#'   \item{}{litter: sampling of 1 m2 of surface leaf litter from the forest floor}
+#'   \item{}{litter: 1 m2 of surface leaf litter from the forest floor}
 #'   \item{}{=> A total of 64 DNA extracts (i.e. 16 sampling points x 2 sites x 2 types of environmental matrix, i.e. soil and litter) were thus produced, in addition to four DNA extraction controls (one per site and environmental matrix).}
 #' }
 #'
@@ -21,7 +21,7 @@
 #' The resulting PCR products were pooled and sequenced on an Illumina HiSeq platform, using
 #' the paired-end technology.
 #'
-#' The total experiment hence resulted in 384 PCR products consisting in:
+#' The total experiment hence resulted in 384 PCR products consisting of:
 #' \itemize{
 #'   \item{}{256 PCR products obtained from biological samples (16 sampling points x 2 sites x 2 environmental matrices x 4 pcr replicates).}
 #'   \item{}{16 PCR products obtained from extraction negative controls (4 extraction negative controls x 4 pcr replicates).}
@@ -30,15 +30,15 @@
 #'   \item{}{32 PCR products corresponding to PCR positive controls, i.e. PCR amplifications of a DNA template composed of a mixture of DNA from 16 plant species (8 pcr positive controls at different dilutions x 4 pcr replicates).}
 #' }
 #'
-#' The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining sequences were clustered into operational taxonomic units (OTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each OTU (the most abundant one) was assigned a taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010). Taxonomic assignments obtained from the SILVAngs pipeline (Quast et al. 2013; using default parameters for the taxonomic identification) are also available in /inst/extdata (lit_euk---ssu* files) .
+#' The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining sequences were clustered into molecular operational taxonomic units (MOTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each MOTU (the most abundant one) was assigned a taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010). Taxonomic assignments obtained from the SILVAngs pipeline (Quast et al. 2013; using default parameters for the taxonomic identification) are also available in /inst/extdata (lit_euk---ssu* files) .
 #'
 #'
 #' The data `soil_euk` is a \code{metabarlist} containing four tables
 #'
 #' \itemize{
-#' \item{}{`reads`: a numeric matrix containing MOTU abundances (expressed as a number of reads) for each pcr (i.e. technical replicates of both biological samples and positive and negative controls)}
+#' \item{}{`reads`: a numeric matrix containing MOTU abundances (expressed as a number of reads) for each PCR (i.e. technical replicates of both biological samples and positive and negative controls)}
 #' \item{}{`motus`: a dataframe containing MOTU characteristics (e.g. taxonomy, sequence) for each MOTU)}
-#' \item{}{`pcrs`: a dataframe containing information on each pcr (e.g. control type, pcr wells, etc.)}
+#' \item{}{`pcrs`: a dataframe containing information on each PCR (e.g. control type, PCR well, etc.)}
 #' \item{}{`samples`: a dataframe containing information on each environmental sample (e.g. habitat type, etc.)}
 #' }
 #'

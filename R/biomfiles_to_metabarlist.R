@@ -1,6 +1,6 @@
-#' Import BIOM and associated files to create a \code{\link{metabarlist}} object
+#' Import BIOM and associated files to create a metabarlist object
 #'
-#' Imports and formats BIOM and associated files to create a \code{\link{metabarlist}} object.
+#' Imports and formats \code{BIOM} and associated files to create a \code{\link{metabarlist}} object.
 #'
 #'
 #' @param file_biom      path for the \code{BIOM} file. This is either a JSON formatted file
@@ -33,14 +33,16 @@
 #'
 #' @details
 #'
+#' This function imports a \code{BIOM} file and associated files into \R to create a \code{\link{metabarlist}} object. Two files are required: a \code{BIOM} file, as well as a sample characteristics table. If the \code{BIOM} file does not contain PCRs and MOTUs attributes data, two other files containing these data are required. The files are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+#'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
-#'           \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}}
+#'           \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}},
+#'           \code{\link{biomformat}}
 #'
 #' @references
-#' \link{http://biom-format.org/}
+#' \url{http://biom-format.org/}
 #'
 #' @examples
-#' add an example here, such as:
 #'
 #'soil_euk <- biomfiles_to_metabarlist(
 #'  file_biom = system.file("extdata", "litiere_euk_reads_hdf5.biom", package = "metabaR"),
@@ -51,7 +53,8 @@
 #'
 #' @author Anne-Sophie Benoiston
 #'
-#' @import biomformat
+#' @importFrom biomformat read_biom biom_data observation_metadata sample_metadata
+#' @importFrom utils read.table
 #'
 #' @export biomfiles_to_metabarlist
 
@@ -61,7 +64,7 @@ biomfiles_to_metabarlist <- function(file_biom, file_samples, file_pcrs = NULL, 
   }
   if (!file.exists(file_samples)) {
     stop(paste("cannot open file_samples", file_samples,": No such file or directory"))
-    }
+  }
 
   biom <- suppressWarnings(read_biom(biom_file = file_biom))
 
@@ -107,11 +110,6 @@ biomfiles_to_metabarlist <- function(file_biom, file_samples, file_pcrs = NULL, 
   else {
     pcrs <- sample_metadata(biom)
     pcrs$control_type[pcrs$control_type == "NA"] <- NA
-    pcrs$plate_no = as.numeric(pcrs$plate_no)
-    pcrs$plate_col = as.numeric(pcrs$plate_col)
-    pcrs$plate_row = as.factor(pcrs$plate_row)
-    pcrs$tag_fwd = as.factor(pcrs$tag_fwd)
-    pcrs$tag_rev = as.factor(pcrs$tag_rev)
   }
 
   # samples

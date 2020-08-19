@@ -12,7 +12,7 @@
 #' @return a numeric matrix `reads` or a data frame `motus`, `pcrs`, or `samples`
 #'
 #' @details
-#' All \code{metabarlist} objects are composed of four different tables that can be extracted as single tables with this function.
+#' All \code{metabarlist} objects are composed of four different tables that can be extracted as single table with this function.
 #'
 #' @seealso \code{\link{metabarlist_generator}}
 #'
