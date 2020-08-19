@@ -224,7 +224,7 @@ pcrslayer <- function(metabarlist,
 
 #' @describeIn pcrslayer Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 #' @importFrom utils combn
-#' @importFrom stats xtabs
+#' @importFrom stats xtabs median
 #' @export pcr_within_between
 #' @export FUN_pcrdist_bray_freq
 #' @export FUN_pcrdist_coa_freq
