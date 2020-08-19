@@ -1,9 +1,9 @@
 #' Generating rarefaction curves using Hill numbers
 #'
-#' These functions generate and plot rarefaction curves from a \code{\link{metabarlist}} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as Good's coverage index.
+#' These functions generate and plot rarefaction curves from a \code{metabarlist} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as Good's coverage index.
 #'
 #'
-#' @param metabarlist    a \code{\link{metabarlist}} object
+#' @param metabarlist    a \code{metabarlist} object
 #' @param nboot          the number of resampling events to estimate \eqn{^{q}D} at a given sequencing depth.
 #' @param nsteps         the number of steps between sample sizes for the rarefaction curves.
 #'                       Default is 10 steps.
@@ -14,7 +14,7 @@
 #'
 #' @details
 #'
-#' \code{\link{hill_rarefaction}} builds a rarefaction analysis for each PCR of a \code{\link{metabarlist}} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalent to :
+#' \code{\link{hill_rarefaction}} builds a rarefaction analysis for each PCR of a \code{metabarlist} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalent to :
 #' \itemize{
 #' \item{Richness, for q=0}
 #' \item{Exponential of the Shannon entropy, for q->1}
@@ -62,7 +62,7 @@
 #' @import ggplot2
 #' @import reshape2
 #'
-#' @describeIn hill_rarefaction Compute hill_rarefaction curves on a \code{\link{metabarlist}} object.
+#' @describeIn hill_rarefaction Compute hill_rarefaction curves on a \code{metabarlist} object.
 #' @export hill_rarefaction
 #'
 #'

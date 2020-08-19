@@ -10,7 +10,7 @@ hill_rarefaction(metabarlist, nboot = 10, nsteps = 10)
 gghill_rarefaction(hill_rar, group = NULL)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 
 \item{nboot}{the number of resampling events to estimate \eqn{^{q}D} at a given sequencing depth.}
 
@@ -30,10 +30,10 @@ The \code{hill_rarefaction} function returns an object of class \code{"hill_rare
         sequencing depth, as well as the arguments `nboot` and `nsteps` to conduct the analysis.
 }
 \description{
-These functions generate and plot rarefaction curves from a \code{\link{metabarlist}} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as Good's coverage index.
+These functions generate and plot rarefaction curves from a \code{metabarlist} object using the hill numbers framework (i.e. \eqn{^{q}D}), as well as Good's coverage index.
 }
 \details{
-\code{\link{hill_rarefaction}} builds a rarefaction analysis for each PCR of a \code{\link{metabarlist}} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalent to :
+\code{\link{hill_rarefaction}} builds a rarefaction analysis for each PCR of a \code{metabarlist} object using Hill numbers for q={0,1,2} (see Chao et al. 2014 for a review). These indices are equivalent to :
 \itemize{
 \item{Richness, for q=0}
 \item{Exponential of the Shannon entropy, for q->1}
@@ -48,7 +48,7 @@ The function also returns Good's coverage index (1-singletons/#reads). Note howe
 }
 \section{Functions}{
 \itemize{
-\item \code{hill_rarefaction}: Compute hill_rarefaction curves on a \code{\link{metabarlist}} object.
+\item \code{hill_rarefaction}: Compute hill_rarefaction curves on a \code{metabarlist} object.
 
 \item \code{gghill_rarefaction}: Plot a object of class \code{"hill_rarefaction"}
 }}
