@@ -56,6 +56,7 @@
 #'
 #' @author Lucie Zinger
 #' @importFrom vegan diversity rrarefy
+#' @importFrom stats sd
 #' @import ggplot2
 #' @import reshape2
 #'
