@@ -146,12 +146,13 @@ ggtaxplot <- function(metabarlist, taxo, sep.level, sep.info, thresh = NULL) {
     edf$to.y <- vdf$y[match(edf$to, as.vector(vdf$name))]
 
     gp <-
-      ggplot(data = vdf, aes(x = x, y = y, size = motus * 100, colour = reads * 100)) +
+      ggplot(data = vdf, aes(x = .data$x, y = .data$y,
+                             size = .data$motus * 100, colour = .data$reads * 100)) +
       geom_segment(
         data = edf,
         aes(
-          x = from.x, xend = to.x,
-          y = from.y, yend = to.y
+          x = .data$from.x, xend = .data$to.x,
+          y = .data$from.y, yend = .data$to.y
         ), size = 0.2, colour = "grey"
       ) +
       geom_point() +
@@ -161,10 +162,10 @@ ggtaxplot <- function(metabarlist, taxo, sep.level, sep.info, thresh = NULL) {
       labs(color = "%reads", size = "%motus")
 
     if (is.null(thresh)) {
-      gp <- gp + geom_text(aes(label = name2), color = "darkgrey", show.legend = FALSE)
+      gp <- gp + geom_text(aes(label = .data$name2), color = "darkgrey", show.legend = FALSE)
     } else {
       gp <- gp + geom_text(
-        data = vdf[which(vdf$reads > thresh), ], aes(label = name2),
+        data = vdf[which(vdf$reads > thresh), ], aes(label = .data$name2),
         color = "darkgrey", show.legend = FALSE
       )
     }
