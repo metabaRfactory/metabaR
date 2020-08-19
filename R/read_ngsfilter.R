@@ -1,6 +1,6 @@
-#' Import a ngsfilter file
+#' Import an ngsfilter file
 #'
-#' Import a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
+#' Import an ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 #'
 #'
 #' @param file             path/name of the input ngsfilter txt file
@@ -12,7 +12,7 @@
 #' @return a data.frame
 #'
 #' @details
-#' The function \code{read_ngsfilter} creates a `pcrs` table from a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
+#' The function \code{read_ngsfilter} creates a `pcrs` table from an ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 #'
 #' @seealso \code{\link{obifiles_to_metabarlist}}
 #'
