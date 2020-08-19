@@ -49,7 +49,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     motus <- metabarlist$motus
 
-    silva <- read.csv(silva.path, h = T, sep = "\t", skip = 1, row.names = NULL)
+    silva <- read.csv(silva.path, header = T, sep = "\t", skip = 1, row.names = NULL)
     colnames(silva) <- c(colnames(silva)[-c(1, ncol(silva))], "classif_ncbi", "classif_silva")
 
     # taxo formating
