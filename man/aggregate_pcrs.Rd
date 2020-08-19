@@ -2,9 +2,18 @@
 % Please edit documentation in R/aggregate_pcrs.R
 \name{aggregate_pcrs}
 \alias{aggregate_pcrs}
+\alias{FUN_agg_pcrs_sum}
+\alias{FUN_agg_pcrs_mean}
+\alias{FUN_agg_pcrs_prob}
 \title{Aggregate PCR replicates}
 \usage{
 aggregate_pcrs(metabarlist, replicates = NULL, FUN = FUN_agg_pcrs_sum)
+
+FUN_agg_pcrs_sum(metabarlist, replicates)
+
+FUN_agg_pcrs_mean(metabarlist, replicates)
+
+FUN_agg_pcrs_prob(metabarlist, replicates)
 }
 \arguments{
 \item{metabarlist}{a \code{metabarlist} object}
@@ -26,16 +35,25 @@ Aggregate PCR replicates in a \code{metabarlist} object.
 The function \code{aggregate_pcrs} is typically used at the end of the data filtration process and aims at aggregating reads and the pcr related information at the sample level. The user is free to use its own method of aggregation, but the following are often used and therefore pre-encoded:
 
 #'\itemize{
-\item{\code{"FUN_agg_pcrs_sum"}: reads of pcr replicates are summed for each MOTU}
-\item{\code{"FUN_agg_pcrs_mean"}: reads of pcr replicates are averaged for each MOTU.
+\item{\code{FUN_agg_pcrs_sum}: reads of pcr replicates are summed for each MOTU}
+\item{\code{FUN_agg_pcrs_mean}: reads of pcr replicates are averaged for each MOTU.
       Results are rounded so that to obtain genuine count data}
-\item{\code{"FUN_agg_pcrs_prob"}: the probability of detection is returned for each MOTU.
-      This method is often used in studies dealing with ancient DNA or diet.}
+\item{\code{FUN_agg_pcrs_prob}: the probability of detection is returned for each MOTU.
+      This method is often used in studies dealing with ancient DNA (e.g. Pansu et al. 2015) or diet (e.g. Deagles et al. 2019).}
 }
 
 After aggregation, the information contained in the `pcrs` table is averaged if numeric,
 or if not, it is dereplicated if equal across replicates, or concatenated if not.
 }
+\section{Functions}{
+\itemize{
+\item \code{FUN_agg_pcrs_sum}: Aggregate PCR replicates in a \code{metabarlist} object by summing MOTUs read counts across PCR replicates.
+
+\item \code{FUN_agg_pcrs_mean}: Aggregate PCR replicates in a \code{metabarlist} object by averaging MOTUs read counts across PCR replicates
+
+\item \code{FUN_agg_pcrs_prob}: Aggregate PCR replicates in a \code{metabarlist} object by computing the probability of MOTU occurrence across PCR replicates.
+}}
+
 \examples{
 
 data(soil_euk)
@@ -56,6 +74,11 @@ soil_euk_ag <- aggregate_pcrs(soil_euk,
                               FUN = function(metabarlist, replicates){
                                  rowsum(metabarlist$reads, replicates)})
 
+}
+\references{
+Deagle, B. E., Thomas, A. C., McInnes, J. C., Clarke, L. J., Vesterinen, E. J., Clare, E. L., ... & Eveson, J. P. (2019). Counting with DNA in metabarcoding studies: How should we convert sequence reads to dietary data?. Molecular Ecology, 28(2), 391-406.
+
+Pansu, J., Giguet‐Covex, C., Ficetola, G. F., Gielly, L., Boyer, F., Zinger, L., ... & Choler, P. (2015). Reconstructing long‐term human impacts on plant communities: An ecological approach based on lake sediment DNA. Molecular Ecology, 24(7), 1485-1498.
 }
 \seealso{
 \code{\link{aggregate_motus}}, \code{\link{apply}}, \code{\link{aggregate}}
