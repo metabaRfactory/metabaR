@@ -82,7 +82,7 @@ biomfiles_to_metabarlist <- function(file_biom, file_samples, file_pcrs = NULL, 
       }
       else {
         motus <- read.table(file_motus,
-                            row.names = 1, h = T,
+                            row.names = 1, header = T,
                             check.names = F, stringsAsFactors = F, ...)
       }
     }
@@ -102,7 +102,7 @@ biomfiles_to_metabarlist <- function(file_biom, file_samples, file_pcrs = NULL, 
       }
       else {
         pcrs <- read.table(file_pcrs,
-                           row.names = 1, h = T,
+                           row.names = 1, header = T,
                            check.names = F, stringsAsFactors = F, ...)
       }
     }
@@ -114,7 +114,7 @@ biomfiles_to_metabarlist <- function(file_biom, file_samples, file_pcrs = NULL, 
 
   # samples
   samples <- read.table(file_samples,
-                        row.names = 1, h = T,
+                        row.names = 1, header = T,
                         check.names = F, stringsAsFactors = F, ...
   )
 
