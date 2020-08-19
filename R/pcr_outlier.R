@@ -9,6 +9,7 @@
 #' @param graphics a boolean value to plot the distance densities for each iteration. Default = FALSE
 #' @param sub_matrix a distance matrix for replicates comparisons
 #' @param threshold a threshold below which a pcr is considered as outlier
+#' @param reads a reads table from a \code{metabarlist} object
 #'
 #' @return a data frame with the replicate groups and a `replicating`column. If not possible, the function will terminate and return an error message.
 #'

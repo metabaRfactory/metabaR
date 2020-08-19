@@ -25,6 +25,8 @@ pcr_outlier(
 
 \item{threshold}{a threshold below which a pcr is considered as outlier}
 
+\item{reads}{a reads table from a \code{metabarlist} object}
+
 \item{metabarlist}{a \code{metabarlist} object}
 
 \item{FUN}{a function returning a distance matrix. The distance matrix should be a `dist` object which has the same dimensions as the number of rows in the `reads`table, i.e number of PCRs.}
