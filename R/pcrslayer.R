@@ -94,6 +94,7 @@
 #'
 #' @author Lucie Zinger, Clement Lionnet, Fred Boyer
 #' @importFrom vegan vegdist cca
+#' @importFrom stats dist
 #' @describeIn pcrslayer Detect dysfunctional PCRs, i.e. PCR outliers in a \code{\link{metabarlist}} object.
 #' @export pcrslayer
 
@@ -318,6 +319,7 @@ FUN_pcrdist_coa_freq <- function(reads_table) {
 
 
 #' @describeIn pcrslayer Vizualize \emph{dw} and \emph{db} dissimilarities and the threshold (defined automatically) above which pcr replicates are considered as too dissimilar.
+#' @importFrom stats density
 #' @export check_pcr_thresh
 #' @export pcr_threshold_estimate
 
@@ -342,7 +344,7 @@ check_pcr_thresh <- function(wthn.btwn, thresh.method = "intersect") {
   thresh.pcr <- pcr_threshold_estimate(wthn.btwn, thresh.method)
 
   p =
-    ggplot(d.out, aes(x=x, y=y, color=distance)) +
+    ggplot(d.out, aes(x=.data$x, y=.data$y, color=.data$distance)) +
       geom_line() + labs(x="distance", y="density", color="Distances") +
       theme_bw()
   if(is.null(thresh.pcr)) {p} else {p + geom_vline(xintercept = thresh.pcr, size=0.3, lty=2)}
@@ -369,6 +371,7 @@ pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
 
 
 #' @describeIn pcrslayer Vizualize pcrs dissimilarity patterns and pcr replicates centroids.
+#' @importFrom stats cmdscale
 #' @export check_pcr_repl
 
 check_pcr_repl <- function(metabarlist,
@@ -428,10 +431,11 @@ check_pcr_repl <- function(metabarlist,
     if(!is.null(groups)) {d.new$groups = groups}
     if(!is.null(funcpcr)) {d.new$funcpcr = funcpcr}
 
-    ggplot(d.new, aes(x=X1, y=X2, color=groups)) +
+    ggplot(d.new, aes(x=.data$X1, y=.data$X2, color=.data$groups)) +
       geom_point(aes(shape = funcpcr)) + theme_bw() +
       scale_shape_manual(values = c(19,8), labels = c("good", "bad")) +
-      geom_segment(aes(x=bary_x, y=bary_y, xend=X1, yend=X2), color="grey") +
+      geom_segment(aes(x=.data$bary_x, y=.data$bary_y, xend=.data$X1, yend=.data$X2),
+                   color="grey") +
       labs(x=paste("PCoA1 (", round(100*mds$eig[1]/sum(mds$eig),2), "%)", sep=""),
            y=paste("PCoA2 (", round(100*mds$eig[2]/sum(mds$eig),2), "%)", sep=""),
            shape="PCR type")
