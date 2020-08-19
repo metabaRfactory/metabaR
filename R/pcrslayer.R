@@ -58,14 +58,15 @@
 #' @seealso \code{\link{tagjumpslayer}}, \code{\link{contaslayer}} for other data curation procedures.
 #'
 #' @examples
-#' library(ggplot2)
 #'
+#' library(ggplot2)
 #' data(soil_euk)
 #'
 #' ## Consider only biological samples with # reads > 0
 #' soil_euk_sub <- subset_metabarlist(soil_euk,
 #'                                    "pcrs",
-#'                                    soil_euk$pcrs$type == "sample" & rowSums(soil_euk$reads>0))
+#'                                    soil_euk$pcrs$type == "sample" &
+#'                                    rowSums(soil_euk$reads>0))
 #'
 #' ## Visualization of within vs. between sample dissimilarities
 #' soil_euk_sub_wb <- pcr_within_between(soil_euk_sub)
@@ -76,9 +77,10 @@
 #' soil_euk_sub$pcrs$habitat_material <- soil_euk_sub$pcrs$sample_id
 #' idx <- match(levels(soil_euk_sub$pcrs$habitat_material), rownames(soil_euk_sub$samples))
 #' levels(soil_euk_sub$pcrs$habitat_material) <- paste(soil_euk_sub$samples$Habitat[idx],
-#'                                                     soil_euk_sub$samples$Material[idx], sep = " | ")
+#'                                                     soil_euk_sub$samples$Material[idx],
+#'                                                     sep = " | ")
 #' # vizualize dissimilarity patterns
-#' mds <- check_pcr_repl(soil_euk_sub, groups = "habitat_material")
+#' mds <- check_pcr_repl(soil_euk_sub, groups = soil_euk_sub$pcrs$habitat_material)
 #' mds + labs(color = "sample type")
 #'
 #' # identify dysfunctional PCRs
