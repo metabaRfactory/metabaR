@@ -38,7 +38,7 @@
 #' ## With a custom function (here equivalent to FUN_agg_sum,
 #' ## i.e. summing all MOTUs abundance across groups)
 #' soil_euk_ag <- aggregate_motus(soil_euk, groups = soil_euk$motus$phylum_name,
-#'                                FUN = function(reads, groups){
+#'                                FUN = function(metabarlist, groups){
 #'                                        t(rowsum(t(metabarlist$reads), groups))})
 #'
 #' @author Lucie Zinger
