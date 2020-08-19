@@ -51,7 +51,7 @@ soil_euk <- obifiles_to_metabarlist(
 Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 }
 \seealso{
-\code{\link{read_ngsfiler}}, \code{\link{tabfiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
+\code{\link{tabfiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
 
 \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
 }

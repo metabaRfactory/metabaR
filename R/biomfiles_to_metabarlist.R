@@ -5,7 +5,7 @@
 #'
 #' @param file_biom      path for the \code{BIOM} file. This is either a JSON formatted file
 #'                       (biom file format version 1) or a HDF5 formatted file (\code{BIOM} file format
-#'                       version 2 and 2.1), as described in \link{http://biom-format.org/}.
+#'                       version 2 and 2.1), as described at \href{http://biom-format.org/}{http://biom-format.org/}.
 #'                       This file should include at least MOTUs abundance data.
 #'                       It may also store MOTUs and/or PCRs attributes data.
 #'                       Mandatory fields for MOTUs and PCRs attributes data are described below.

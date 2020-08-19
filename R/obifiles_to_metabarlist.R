@@ -31,7 +31,7 @@
 #' This function imports OBITools outputs and related files into \R to create a \code{metabarlist} object. The three files required are imported in \R, included into a list of class \code{metabarlist} with the \code{\link{metabarlist_generator}} function, before congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 #'
 #'
-#' @seealso \code{\link{read_ngsfiler}}, \code{\link{tabfiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
+#' @seealso \code{\link{tabfiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
 #'
 #' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 #'
