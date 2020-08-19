@@ -41,6 +41,7 @@
 #'     groups = soil_euk$samples$Habitat[match(soil_euk$pcrs$sample_id, rownames(soil_euk$samples))])
 #'
 #' @author Lucie Zinger
+#' @importFrom stats sd xtabs aggregate
 #' @export summary_metabarlist
 
 summary_metabarlist <- function(metabarlist, method = "dataset", groups = NULL) {
