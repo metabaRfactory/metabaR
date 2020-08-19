@@ -138,10 +138,11 @@ gghill_rarefaction <- function(hill_rar, group = NULL) {
          id.var = c("reads", "pcr_id"))$value
 
   if (is.null(group)) {
-    ggplot(b, aes(x = reads, y = value, group = pcr_id)) +
+    ggplot(b, aes(x = .data$reads, y = .data$value, group = .data$pcr_id)) +
       geom_line() +
-      geom_ribbon(aes(ymin = value - value.sd, ymax = value + value.sd), alpha = 0.3) +
-      facet_wrap( ~ variable, scales = "free", ncol = 4) +
+      geom_ribbon(aes(ymin = .data$value - .data$value.sd,
+                      ymax = .data$value + .data$value.sd), alpha = 0.3) +
+      facet_wrap( ~ .data$variable, scales = "free", ncol = 4) +
       labs(x = "#reads", y = "diversity / coverage estimate") +
       theme_bw() +
       theme(panel.grid = element_blank(),
@@ -156,15 +157,15 @@ gghill_rarefaction <- function(hill_rar, group = NULL) {
 
     b$group <- group[match(b$pcr_id, hill_rar$samples)]
 
-    ggplot(b, aes(x = reads, y = value, group = pcr_id)) +
-      geom_line(aes(color = group)) +
+    ggplot(b, aes(x = .data$reads, y = .data$value, group = .data$pcr_id)) +
+      geom_line(aes(color = .data$group)) +
       geom_ribbon(aes(
-        ymin = value - value.sd,
-        ymax = value + value.sd,
-        fill = group
+        ymin = .data$value - .data$value.sd,
+        ymax = .data$value + .data$value.sd,
+        fill = .data$group
       ),
       alpha = 0.3) +
-      facet_wrap( ~ variable, scales = "free", ncol = 4) +
+      facet_wrap( ~ .data$variable, scales = "free", ncol = 4) +
       labs(x = "#reads", y = "diversity / coverage estimate") +
       theme_bw() +
       guides(fill = FALSE) +
