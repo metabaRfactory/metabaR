@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_ngsfilter.R
 \name{read_ngsfilter}
 \alias{read_ngsfilter}
-\title{Import a ngsfilter file}
+\title{Import an ngsfilter file}
 \usage{
 read_ngsfilter(file, additional.sep = "=", ...)
 }
@@ -18,10 +18,10 @@ the ngsfilter filter file.}
 a data.frame
 }
 \description{
-Import a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
+Import an ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 }
 \details{
-The function \code{read_ngsfilter} creates a `pcrs` table from a ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
+The function \code{read_ngsfilter} creates a `pcrs` table from an ngsfilter file formatted for the \code{OBITools} package (Boyer et al. 2016).
 }
 \examples{
 

@@ -5,7 +5,7 @@
 \alias{coa_function}
 \alias{bray_function}
 \alias{pcr_outlier}
-\title{Identifying the replicate that doesn't replicating}
+\title{Identify non-conforming PCR replicates}
 \usage{
 filter_replicat(sub_matrix, threshold)
 
@@ -27,35 +27,35 @@ pcr_outlier(
 
 \item{metabarlist}{a \code{metabarlist} object}
 
-\item{FUN}{a function returning a distance matrix. The distance matrix should be a object `dist` which has the same length of table `reads`.}
+\item{FUN}{a function returning a distance matrix. The distance matrix should be a `dist` object which has the same dimensions as the number of rows in the `reads`table, i.e number of PCRs.}
 
-\item{groups}{a vector containing the identifier of replicate. The vector must has the same length of the table `PCRs` from a \code{\link{metabarlist}} object. Default = metabarlist$pcrs$sample_id}
+\item{groups}{a vector containing the replicate identifier. The vector must have the same dimensions as the `PCRs` table from a \code{\link{metabarlist}} object. Default = metabarlist$pcrs$sample_id}
 
-\item{graphics}{a boolean value to plot the distances densities for each iteration. Default = FALSE}
+\item{graphics}{a boolean value to plot the distance densities for each iteration. Default = FALSE}
 }
 \value{
-data frame with the replicats groups and a column `replicating` or throws a stop
+a data frame with the replicate groups and a `replicating`column. If not possible, the function will terminate and return an error message.
 }
 \description{
-Identifying the non-replicating samples or controls in the table PCRs from a \code{metabarlist} object.
-Process many iteration to compare the density for distance within replicate and between replicate.
+Identify the non-conforming sample or control PCR replicates in the PCRs table from a \code{\link{metabarlist}} object.
+Process numerous reiterations to compare distance densities within PCR replicates and between PCR replicates.
 }
 \details{
-This function identify the non-replicating samples or controls.
+This function identifies non-conforming sample or control replicates.
 
-The parameter `groups` defined the groups of replicates. The vector should be sorted like the table `PCRs` from the \code{\link{metabarlist}}.
-Note: if the distance within replicate is too higher than the distance between replicate function cannot return result because all replicates are removed.
-The parameter `FUN` define the function used to compute the distance matrix. The function must return a object of class `dist` with the same length that its input table.
-The default function use the function `decostand` and `vegdist` of package `vegan` to perform a correspondance analysis of \code{\link{metabarlist}} table `reads`, and return a matrix distance.
+The parameter `groups` defines groups of replicates. The vector should be arranged following the format of a `PCRs` table from the \code{\link{metabarlist}}.
+Note: If the distance within replicates is higher than the distance between replicates, the function cannot return any result because all replicates are removed.
+The parameter `FUN` defines the function used to compute the distance matrix. The function will return an object of class `dist` with the same length as the input table.
+The default function use the `decostand` and `vegdist` functions from the `vegan` package to perform a correspondance analysis of the `reads` table from the \code{\link{metabarlist}}, and returns a distance matrix.
 Default function detail:
 bray_function <- function(reads) {
   distance_matrix <- vegdist(decostand(reads, method = 'total'), method='bray')
   return(distance_matrix)
 }
 
-When the parameter `graphics` is True, a graphic is plotted with the density of distance within replicate and between replicate. The threshold is also plotted like a vertical line at the intersection of two densities.
+When the `graphics` parameter is defined as True, a graphic is plotted with the density of distance within replicate and between replicate. The threshold is also plotted as a vertical line at the intersection of the two densities.
 
-Note: when many projects are pulled in the same plate, you must process this function for each project. If you execute this function on many project the variability between projects can be disturbed the calcul of density and then removed all samples for one project.
+Note: In the circumstance where numerous sequencing projects have been pooled and analysed on the the same PCR plates, the function must be processed individually for each project, to avoid calculating distances which are meaningless.
 }
 \section{Functions}{
 \itemize{

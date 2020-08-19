@@ -35,7 +35,7 @@ a fasta file
 Generates a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
 }
 \details{
-Creates a fasta file from a set of sequences of interest. One to several sequence information can be added in the sequence header through the `annotation` table. Using the default parameters, the resulting fasta file will have the following format:
+Creates a fasta file from a set of sequences of interest. A single or multiple pieces of sequence information can be added to the sequence header via the `annotation` table. Using the default parameters, the resulting fasta file will have the following format:
 
 >Seq_id1 abundance=83079; GC=47
 tcaatctcgtgtgactaaacgccacttgtccctctaagaagttacgccgacagaatgcgatcggcgaactatttagcaggctagagtctcgttcgttat
@@ -46,13 +46,13 @@ ctcaaacttccttggcctggaaggccatagtccctctaagaagctggccgcggagggtcacctccgcatagctagttagc
 
 data(soil_euk)
 
-## Export in fasta the 10 most abundant MOTUs
+## Export in fasta format the 10 most abundant MOTUs
 idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
 fasta_generator(soil_euk, rownames(soil_euk$motus)[idx],
   "Dominants.fasta"
 )
 
-## Export in fasta the 10 most abundant MOTUs, their abundance and the GC content
+## Export in fasta format the 10 most abundant MOTUs, their abundance and the GC content
 # of the corresponding sequence
 annotation <- data.frame(
   abundance = soil_euk$motus$count[idx],

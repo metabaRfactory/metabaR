@@ -15,9 +15,9 @@ ggpcrplate(
 
 \item{legend_title}{the title of legend containing the plotted information.}
 
-\item{FUN}{a function which return a vector containing the information to be plotted.
-The vector should be numeric and of length equal to the number of
-rows of table `reads`.}
+\item{FUN}{a function which returns a vector containing the information to be plotted.
+The vector should be numeric and of equal length to the number of
+rows of the `reads` table.}
 }
 \value{
 a ggplot
@@ -26,13 +26,13 @@ a ggplot
 Plots an attribute of PCRs from a \code{\link{metabarlist}} object into the corresponding 96-well PCR plate design
 }
 \details{
-Vizualizing some attributes of the PCRs in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful to identify potential problems (e.g. high amount of reads in one control due to cross contaminations with neighboring samples).
+Visualising PCR attributes in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful for identifying potential problems (e.g. high amount of reads in one control due to cross contaminations with neighboring samples).
 }
 \examples{
 
 data(soil_euk)
 
-## Plot the number of reads per pcrs
+## Plot the number of reads per pcr
 ggpcrplate(soil_euk)
 
 

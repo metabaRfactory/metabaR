@@ -19,7 +19,7 @@ a numeric matrix `reads` or a data frame `motus`, `pcrs`, or `samples`
 \code{extract_table} is a generic function which extracts a table from a \code{\link{metabarlist}} object.
 }
 \details{
-All \code{metabarlist} objects are composed of four different tables that can be extracted as single tables with this function.
+All \code{metabarlist} objects are composed of four different tables that can be extracted as single table with this function.
 }
 \examples{
 

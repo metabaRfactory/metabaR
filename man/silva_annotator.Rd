@@ -12,7 +12,7 @@ silva_annotator(metabarlist, silva.path, clust.path)
 \item{silva.path}{path to a table from the SILVAngs pipeline,
 typically zipfile > ssu > exports > xxx---ssu---otus.csv}
 
-\item{clust.path}{path to a file from the SilvAngs pipeline indicating otu cluster membership,
+\item{clust.path}{path to a file from the SilvAngs pipeline indicating MOTU cluster membership,
 typically zipfile > ssu > stats > sequence_cluster_map > data >
 xxx---ssu---sequence_cluster_map---tmptaxo.clstr}
 }

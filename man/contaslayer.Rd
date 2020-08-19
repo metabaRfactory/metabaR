@@ -19,30 +19,30 @@ contaslayer(
 Default: \code{"max"}}
 
 \item{control_types}{a vector of control types contained in the column control_type
-of the table `pcrs`. This parameter is not used when the parameter
+of the `pcrs` table. This parameter is not used when the parameter
 \code{controls} is specified.
 Default is c("pcr", "extraction").}
 
-\item{controls}{a vector of pcrs names corresponding to negative controls.}
+\item{controls}{a vector of pcr names corresponding to negative controls.}
 
-\item{output_col}{a character string for the column name in table `motus`, in
+\item{output_col}{a character string for the column name in the `motus` table, in
 which the result will be stored.
 Default is "not_a_contaminant"}
 }
 \value{
 a metabarlist with a new boolean column vector of name `output_col` in
-        table `motus` indicating whether MOTUs are genuine (\code{TRUE}) or
+        the `motus` table indicating whether MOTUs are genuine (\code{TRUE}) or
         identified as contaminants (\code{FALSE})
 }
 \description{
-Uses negative controls to determine if MOTUs in a \code{\link{metabarlist}} object are most likely genuine or most likely contaminants.
+Uses negative controls to determine whether MOTUs in a \code{\link{metabarlist}} object are more likely to be genuine or contaminants.
 }
 \details{
 In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. On the other hand, a MOTU detected in negative controls is not necessarily a contaminant, it can be a genuine MOTU detected in negative controls through tag-jump issues.
-The function \code{\link{contaslayer}} relies on these assumptions and detects MOTUs whose relative abundance across the whole dataset is maximum in negative controls. Two methods are currently available:
+The function \code{\link{contaslayer}} relies on these assumptions and detects MOTUs whose relative abundance across the whole dataset is highest in negative controls. Two methods are currently available:
 
 \itemize{
-\item{\code{method = "max"} considers a MOTU as a contaminant if its frequencies across the entire dataset are maximum in at least one negative control.}
+\item{\code{method = "max"} considers a MOTU as a contaminant if its frequencies across the entire dataset are highest in at least one negative control.}
 \item{\code{method = "all"} considers a MOTU as a contaminant if its frequencies across all negative controls is greater than that across all samples.}
 }
 }
@@ -51,7 +51,7 @@ The function \code{\link{contaslayer}} relies on these assumptions and detects M
 data(soil_euk)
 library(ggplot2)
 
-## Identify genuine from contaminants using PCR or extraction negative controls
+## Distinguish genuine MOTUs from contaminants using PCR or extraction negative controls
 mbl <- contaslayer(soil_euk)
 tail(colnames(mbl$motus))
 head(mbl$motus[which(mbl$motus$not_a_contaminant==F),])

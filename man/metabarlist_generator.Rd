@@ -25,7 +25,7 @@ Should be either: `NA` for samples, `extraction` for extraction negative control
 `pcr` for PCR negative controls, `sequencing` for sequencing negative controls
 (e.g. unused tag combinations), or `positive` for positive controls.}
 
-\item{samples}{Samples characteristics table. Rows and rownames of the table should correspond
+\item{samples}{Sample characteristics table. Rows and rownames of the table should correspond
 to biological samples and their names respectively, and the columns to their
  environnemental characteristics.}
 }
@@ -87,5 +87,5 @@ test <- metabarlist_generator(reads = reads, motus = motus, pcrs = pcrs, samples
 \code{\link{check_metabarlist}}
 }
 \author{
-Lucie Zinger & Clément Lionnet & Frédéric boyer
+Lucie Zinger & Clément Lionnet & Frédéric Boyer
 }

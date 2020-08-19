@@ -8,10 +8,10 @@ ggtaxplot(metabarlist, taxo, sep.level, sep.info, thresh = NULL)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object.
-Should contain taxonomic information in table `motus`.}
+Should contain taxonomic information in the `motus` table.}
 
 \item{taxo}{a character string or vector of strings indicating the name of
-the column (or group of column) containing the full taxonomic
+the column (or group of columns) containing the full taxonomic
 information in the `motus` table from the \code{\link{metabarlist}}
 object.}
 
@@ -31,7 +31,7 @@ a ggplot
 Plots the taxonomic tree from a \code{\link{metabarlist}} object and maps an attribute onto it
 }
 \details{
-This function allows to visualize the full taxonomic tree of a set of samples and to map some attributes on the tree (e.g. number of reads per node/branches, nb of MOTUs, etc.). The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD or with defined taxonomic levels if `taxo` is a vector) by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks. The taxonomic information should contain a level that is common to all MOTUs taxonomic assignments (common ancestor).
+This function allows users to visualise the full taxonomic tree for a set of samples and to map attributes onto the produced tree (e.g. number of reads per node/branches, nb of MOTUs, etc.). The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD or with defined taxonomic levels if `taxo` is a vector) by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks. The taxonomic information should contain a level that is common to all MOTU taxonomic assignments (common ancestor).
 }
 \examples{
 
