@@ -16,7 +16,7 @@ Default is `dataset`}
 for which the summary should be done. Default is NULL}
 }
 \value{
-Function \code{summary_metabarlist} returns basic summary statistics (nb of elements, reads and MOTUs in total or on average per pcrs) of a \code{\link{metabarlist}} object. The format of the value returned depends on the method used.
+The \code{summary_metabarlist} function returns basic summary statistics (nb of elements, reads and MOTUs in total or on average per pcrs) of a \code{\link{metabarlist}} object. The format of the value returned depends on the method used.
 }
 \description{
 summary_metabarlist is a generic function used to produce summary statistics of a \code{\link{metabarlist}} object.
@@ -25,7 +25,7 @@ summary_metabarlist is a generic function used to produce summary statistics of 
 \code{summary_metabarlist} returns basic summary statistics of a \code{\link{metabarlist}} object. The summary returned depends on the `method` used :
 \itemize{
 \item{`dataset`}{returns a list of two data.frames: dataset_dimension contains the dimensions of the full metabarlist object, dataset_statistics contains the number of reads, motus in pcrs and samples, as well as average and sd values of reads and motus per sample}
-\item{`motus` or `pcrs`}{return one data.frame similar to the dataset_statistics described above according to a grouping factor/vector for MOTUs or pcrs}
+\item{`motus` or `pcrs`}{returns a data.frame similar to the dataset_statistics described above according to a grouping factor/vector for MOTUs or pcrs}
 }
 }
 \examples{

@@ -9,8 +9,8 @@ tagjumpslayer(metabarlist, threshold = 0.03, method = "cut")
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{threshold}{an MOTU relative abundance value below
-which the MOTU is considered to be tag-jumps}
+\item{threshold}{a MOTU relative abundance value below
+which the MOTU is considered to be a tag-jump}
 
 \item{method}{a string indicating the method to deal with tag-jumps.
 Default: \code{"cut"}}
@@ -22,7 +22,7 @@ a \code{\link{metabarlist}} object with the curated reads count matrix
 Removes reads of potential tagjumps in a \code{\link{metabarlist}} object.
 }
 \details{
-Tagjumps are an important bias that lead to the presence of potentially high numbers of false positives in DNA metabarcoding data. The exact mechanism generating this bias is not well characterized yet, but is currently suspected to be generated during the PCR enrichment process of the sequencing library preparation. Incomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine MOTU, but its tag combination (and hence sample origin) is an artifact. This bias is also frequency-dependent, i.e. abundant genuine MOTUs are more likely to be found in low abundance in samples were they are not supposed to be. The function aims at reducing the amount of such false positives, by considering each MOTU separately and reducing their abundance to 0 below a given \code{threshold} of in terms of proportion over the total MOTU abundance in the entire dataset. This reduction can be done with one of the two following methods:
+Tagjumps are an important bias that lead to the presence of potentially high numbers of false positives in DNA metabarcoding data. The exact mechanism generating this bias is not yet well characterised, but is currently suspected to be generated during the PCR enrichment process of sequencing library preparation. Incomplete PCR amplification at this stage may lead to the formation of chimeras at priming sites, from fragments belonging to two different amplicons. The resulting fragment is therefore strictly identical to the genuine MOTU, but its tag combination (and hence sample origin) is an artifact. This bias is also frequency-dependent, i.e. abundant genuine MOTUs are more likely to be found at low abundances in samples where they are not supposed to be. The function aims to reduce the amounts of such false positives, by considering each MOTU separately and reducing their abundance to 0 below a given \code{threshold} of in terms of their proportion over the total MOTU abundance in the entire dataset. This reduction can be done with one of the two following methods:
 
 \itemize{
 \item{\code{method = "cut"} sets the MOTU abundance to 0.}

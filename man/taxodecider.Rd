@@ -2,36 +2,36 @@
 % Please edit documentation in R/taxodecider.R
 \name{taxodecider}
 \alias{taxodecider}
-\title{Selecting the good taxonomy}
+\title{Selecting the correct taxonomy}
 \usage{
 taxodecider(metabarlist, best.db, sim.scores, lineage, threshold)
 }
 \arguments{
 \item{metabarlist}{a \code{\link{metabarlist}} object}
 
-\item{best.db}{a vector of two database names, the best one in terms of
+\item{best.db}{a vector of two database names, with the best database in terms of
 taxonomic information
-reliability being provided first.}
+reliability listed first.}
 
 \item{sim.scores}{a vector of two column names in the `motus` table corresponding to
 the similarity scores of each database.}
 
 \item{lineage}{a vector of two column names in the `motus` table corresponding to
 the full taxonomic lineage obtained for each database.
-Should be provided in the same order than `best.db`.}
+This should be provided in the same order as `best.db`.}
 
 \item{threshold}{a similiarty score threshold above which the annotation of the
 best database is kept if both databases yields high similarity scores.}
 }
 \value{
-a \code{metabarlist} object with a dataframe motus including
-        the preferred taxonomic assignements
+a \code{metabarlist} object with a motus dataframe including
+        the preferred taxonomic assignements.
 }
 \description{
 Selecting a given taxonomic annotation between those obtained from two different databases
 }
 \details{
-The function \code{taxodecider} allows choosing amongst two taxonomic annotations based on best similarity scores and on a preference for a given database (e.g. with more reliable taxonomy). All taxonomic information should be stored in the `motus` table.
+The function \code{taxodecider} allows users to choose between two taxonomic annotations based on their best similarity scores and on a preference for a given database (e.g. with more reliable taxonomy). All taxonomic information should be stored in the `motus` table.
 }
 \examples{
 
