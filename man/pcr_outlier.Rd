@@ -41,11 +41,13 @@ When the parameter `graphics` is True, a graphic is plotted with the density of 
 Note: when many projects are pulled in the same plate, you must process this function for each project. If you execute this function on many project the variability between projects can be disturbed the calcul of density and then removed all samples for one project.
 }
 \examples{
-
+\dontrun{
 data(soil_euk)
 
-sample_subset <- subset_metabarlist(soil_euk, "pcrs", rownames(soil_euk$pcrs)[which(soil_euk$pcrs$type == "sample")])
-pcr_outlier(sample_subset)
+sample_subset <- subset_metabarlist(soil_euk, "pcrs",
+                                    soil_euk$pcrs$type == "sample")
+filter_replicat(sample_subset)
+}
 }
 \author{
 Frédéric Boyer & Clément Lionnet
