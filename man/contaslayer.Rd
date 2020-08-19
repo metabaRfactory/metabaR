@@ -54,11 +54,11 @@ library(ggplot2)
 ## Distinguish genuine MOTUs from contaminants using PCR or extraction negative controls
 mbl <- contaslayer(soil_euk)
 tail(colnames(mbl$motus))
-head(mbl$motus[which(mbl$motus$not_a_contaminant==F),])
-length(which(mbl$motus$not_a_contaminant==F))
+head(mbl$motus[which(mbl$motus$not_a_contaminant == FALSE),])
+length(which(mbl$motus$not_a_contaminant == FALSE))
 
 ## Distribution of the most abundant contaminant MOTU in the PCR plate design
-contaminants <- rownames(mbl$motus)[mbl$motus$not_a_contaminant==F]
+contaminants <- rownames(mbl$motus)[mbl$motus$not_a_contaminant == FALSE]
 max.conta <- contaminants[which.max(mbl$motus[contaminants, "count"])]
 
 p <- ggpcrplate(soil_euk,
@@ -76,7 +76,7 @@ mbl <- contaslayer(soil_euk,
                    control_types="extraction",
                    output_col= "not_an_ext_contaminant")
 tail(colnames(mbl$motus))
-length(which(mbl$motus$not_an_ext_contaminant==F))
+length(which(mbl$motus$not_an_ext_contaminant == FALSE))
 
 }
 \seealso{
