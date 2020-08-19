@@ -61,8 +61,7 @@ subset_metabarlist <- function(metabarlist, table, indices) {
 
     if (length(indices) == 0 |
         is.logical(indices) == F) {
-      stop("character indices of the elements to select (i.e. columns or row names)
-               should be provided")
+      stop("the elements to select or not (i.e. columns or rows) should be `TRUE/FALSE`")
     }
 
     reads <- metabarlist$reads
