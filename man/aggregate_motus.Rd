@@ -32,6 +32,8 @@ information of the most abundant MOTU in a given group.
 }
 \section{Functions}{
 \itemize{
+\item \code{aggregate_motus}: Aggregate MOTUs in a \code{metabarlist} object according to a grouping factor or vector for each pcr.
+
 \item \code{FUN_agg_motus_sum}: compute the sum of reads according to a grouping factor or vector for each pcr.
 }}
 
@@ -53,7 +55,7 @@ soil_euk_ag <- aggregate_motus(soil_euk, groups = soil_euk$motus$phylum_name,
 
 }
 \seealso{
-@seealso \code{\link{aggregate_pcrs}}, \code{\link{apply}}, \code{\link{aggregate}}
+\code{\link{aggregate_pcrs}}, \code{\link{apply}}, \code{\link{aggregate}}
 }
 \author{
 Lucie Zinger

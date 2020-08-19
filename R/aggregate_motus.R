@@ -8,8 +8,6 @@
 #' @param FUN           a function of MOTU aggregation.
 #'                      Default is the sum of MOTUs reads abundances for each grouping value.
 #'
-#' @name aggregate_motus
-#'
 #' @return A \code{metabarlist} where the table `reads` contains MOTUs abundances aggregated according to a grouping vector/factor (e.g. taxonomic assignment at the phylum level), using a method defined in \code{FUN} and where number of columns of tables `reads` will be equal to that of the number of groups in `groups`.
 #'
 #' @details
@@ -19,7 +17,7 @@
 #' After aggregation, the information contained in the `motus` table corresponds to the
 #'information of the most abundant MOTU in a given group.
 #'
-#' @seealso @seealso \code{\link{aggregate_pcrs}}, \code{\link{apply}}, \code{\link{aggregate}}
+#' @seealso \code{\link{aggregate_pcrs}}, \code{\link{apply}}, \code{\link{aggregate}}
 #'
 #' @examples
 #'
