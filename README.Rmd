@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-![Metabar banner](metabaR.png)
+![Metabar banner](man/figures/metabaR.png)
 
 `metabaR` is an R package enabling the import, handling and processing of DNA metabarcoding data that have been already processed through bioinformatic pipelines. It provides functions to reveal and filter common molecular artifacts produced during the experimental workflow. 
 
@@ -31,7 +31,7 @@ https://github.com/metabaRfactory/metabaR
 
 ## Overall overview
 
-![Metabar over](metabaR_overview.png)
+![Metabar over](man/figures/metabaR_overview.png)
 
 ## Installation
 

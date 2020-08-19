@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-![Metabar banner](metabaR.png)
+![Metabar banner](man/figures/metabaR.png)
 
 `metabaR` is an R package enabling the import, handling and processing
 of DNA metabarcoding data that have been already processed through
@@ -32,7 +32,7 @@ More specifically, `metabaR` provides:
 
 ## Overall overview
 
-![Metabar over](metabaR_overview.png)
+![Metabar over](man/figures/metabaR_overview.png)
 
 ## Installation
 
