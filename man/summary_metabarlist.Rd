@@ -46,7 +46,8 @@ summary_metabarlist(soil_euk, method = "motus",
 ## Data summary per Habitat (i.e. to get from soil_euk$samples).
 # Here, NA values correspond to technical controls
 summary_metabarlist(soil_euk, method = "pcrs",
-    groups = soil_euk$samples$Habitat[match(soil_euk$pcrs$sample_id, rownames(soil_euk$samples))])
+    groups = soil_euk$samples$Habitat[match(soil_euk$pcrs$sample_id,
+                                            rownames(soil_euk$samples))])
 
 }
 \seealso{

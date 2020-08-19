@@ -46,7 +46,7 @@
 #'
 #' ## MOTUs characteristics table
 #' motus <- data.frame(
-#'   fake_taxon = sample(letters, ncol(reads), replace = T),
+#'   fake_taxon = sample(letters, ncol(reads), replace = TRUE),
 #'   sequence = sapply(
 #'     1:ncol(reads),
 #'     function(x) paste(sample(c("a", "t", "c", "g"), 20, TRUE), collapse = "")
@@ -59,7 +59,7 @@
 #'   sample_id = sapply(strsplit(rownames(reads), "_"), "[[", 1),
 #'   type = c(rep("sample", 6), rep("control", 4)),
 #'   control_type = c(rep(NA, 6), "extraction", "pcr", "sequencing", "positive"),
-#'   fake_pcrplate = sample(c(1, 2), nrow(reads), replace = T),
+#'   fake_pcrplate = sample(c(1, 2), nrow(reads), replace = TRUE),
 #'   row.names = rownames(reads)
 #' )
 #'

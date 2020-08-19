@@ -148,13 +148,13 @@ mds + labs(color = "sample type")
 # identify dysfunctional PCRs
 soil_euk_sub2 <- pcrslayer(soil_euk_sub)
 tail(colnames(soil_euk_sub2$pcrs))
-length(which(soil_euk_sub2$pcrs$functional_pcr==F))
+length(which(soil_euk_sub2$pcrs$functional_pcr == FALSE))
 
 # define a color vector that corresponds to the different habitat types. Should be named.
 mds <- check_pcr_repl(soil_euk_sub2,
                       groups = soil_euk_sub2$pcrs$habitat_material,
                       funcpcr = soil_euk_sub2$pcrs$functional_pcr)
-mds + guides(color = F)
+mds + guides(color = FALSE)
 
 }
 \seealso{

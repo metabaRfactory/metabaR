@@ -33,7 +33,7 @@
 #' data(soil_euk)
 #'
 #' ## Export in fasta format the 10 most abundant MOTUs
-#' idx <- order(soil_euk$motus$count, decreasing = T)[1:10]
+#' idx <- order(soil_euk$motus$count, decreasing = TRUE)[1:10]
 #' fasta_generator(soil_euk, rownames(soil_euk$motus)[idx],
 #'   "Dominants.fasta"
 #' )
