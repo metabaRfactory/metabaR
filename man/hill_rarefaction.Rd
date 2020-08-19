@@ -70,8 +70,10 @@ soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
 gghill_rarefaction(soil_euk_h20.raref)
 
 # plot the results while differenciating litter vs. soil samples
-p <- gghill_rarefaction(soil_euk_h20.raref,
-                        group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id, rownames(soil_euk_h20$samples))])
+p <- gghill_rarefaction(
+         soil_euk_h20.raref,
+         group = soil_euk_h20$samples$Material[match(soil_euk_h20$pcrs$sample_id,
+                                               rownames(soil_euk_h20$samples))])
 p
 p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
