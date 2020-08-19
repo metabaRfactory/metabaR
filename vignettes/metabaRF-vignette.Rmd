@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-![](../metabaR.png){width=100%}
+![](../man/figures/metabaR.png){width=100%}
 
 # Introduction
 
@@ -60,7 +60,7 @@ library(metabaR) # modify the name once we'll all agree on that
 
 # Package overview
 
-![](../metabaR_overview.png){width=90%}
+![](../man/figures/metabaR_overview.png){width=90%}
 
 ## Data format and structure
  
