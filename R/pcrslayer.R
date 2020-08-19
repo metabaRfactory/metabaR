@@ -1,59 +1,59 @@
-#' Detecting PCRs replicates outliers.
+#' Detecting PCRs replicate outliers.
 #'
-#' Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition in MOTUs.
+#' Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs.
 #'
 #'
 #' @param metabarlist   a \code{\link{metabarlist}} object
 #' @param replicates    a vector corresponding to the sample names to which
-#'                      pcr replicates belongs. Default is the `sample_id` column of the table `pcrs`
+#'                      pcr replicates belongs. Default is the `sample_id` column of the `pcrs` table
 #'                      from the \code{\link{metabarlist}} object.
 #' @param method        a character indicating which method should be used to identify PCR outliers. Can be
 #'                      \code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.
 #' @param FUN           a function for computing distances between replicates.
-#'                      Default is Bray-Curtis distances on MOTUs relative abundance table.
-#' @param output_col    a character string for the column name in table `pcrs`, in
+#'                      Default is Bray-Curtis distances on MOTU relative abundance table.
+#' @param output_col    a character string for the column name in the `pcrs` table, in
 #'                      which the result will be stored.
 #'                      Default is "functional_pcr"
 #' @param thresh.method a character indicating which method should be used to define the filtering
 #'                      threshold. Can be \code{"interesect"} or \code{"mode"}.
-#' @param plot          a boolean indicating whether dissimilarity distribution should be plotted.
+#' @param plot          a boolean vector indicating whether dissimilarity distribution should be plotted.
 #'                      Default is \code{TRUE}
 #' @param wthn.btwn     an ouput from \code{pcr_within_between}
-#' @param groups        a column name in the `pcrs`table corresponding to a factor giving the groups
-#'                      for which the graphical colors are drawn.
-#' @param funcpcr       a boolean vector indicating whether PCR are functional (\code{TRUE}) or not.
+#' @param groups        a column name in the `pcrs` table corresponding to a factor giving the groups
+#'                      from which the graphical colorscheme is drawn.
+#' @param funcpcr       a boolean vector indicating whether PCRs are functional (\code{TRUE}) or not.
 #'
 #' @details
 #'
-#' The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in MOTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from a same biological samples should be more similar than two different biological samples (\emph{dw} < \emph{db}). Two methods for computing \emph{dw} and \emph{db} are available.
+#' The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in MOTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from the same biological sample should be more similar than two different biological samples (\emph{dw} < \emph{db}). Two methods for computing \emph{dw} and \emph{db} are available.
 #'
 #'\itemize{
-#' \item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the samples centroid. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average MOTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
+#' \item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the centroid of samples. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average MOTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
 #' \item{With method \code{"pairwise"}, pairwise distances between all PCR replicates are computed and then classified into \emph{dw} or \emph{db} depending on the pair considered. A PCR replicate having a an average \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated replicates (\code{method="pairwise"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. In this case, no iterations are done.}
 #' }
-#' For both methods, the user is free to chose its own distance metric and whether distances should be computed on relative abundances or true abundances, through the argument \code{FUN}. Two methods are currently pre-encoded:
+#' For both methods, the user is free to chose their own distance metric and whether distances should be computed on relative abundances or true abundances, through the argument \code{FUN}. Two methods are currently pre-encoded:
 #' \itemize{
-#' \item{FUN_pcrdist_bray_freq computes Bray-Curtis distances on MOTUs relative abundances}
-#' \item{FUN_pcrdist_coa_freq computes Euclidean distances between pcrs from a Correspondance Analysis on MOTUs relative abundances}
+#' \item{FUN_pcrdist_bray_freq computes Bray-Curtis distances on MOTU relative abundances}
+#' \item{FUN_pcrdist_coa_freq computes Euclidean distances between PCRs from a Correspondance Analysis on MOTU relative abundances}
 #' }.
 #'
-#' The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in MOTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"}
+#' The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in MOTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"} methods.
 #'
-#' The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Or it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
+#' The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Alternatively, it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
 #'
-#' Function \code{check_pcr_thresh} enables visualization of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
+#' The \code{check_pcr_thresh} function enables visualisation of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 #'
-#' Function \code{check_pcr_repl} enables visualization of dissimilarity patterns across all pcrs while showing pcr replicates centroids through a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
+#' The \code{check_pcr_repl} function enables visualisation of dissimilarity patterns across all PCRs while showing PCR replicate centroids through a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.
 #'
 #' @return
 #'
 #' The \code{pcrslayer} function returns a metabarlist with a new boolean column vector of name
-#' `output_col` in table `pcrs` indicating whether the pcr is functional (\code{TRUE}) or
-#'         or dysfunctional (\code{FALSE})
+#' `output_col` in the `pcrs` table indicating whether the PCR is functional (\code{TRUE}) or
+#'         or dysfunctional (\code{FALSE}).
 #'
-#' The \code{pcr_within_between} function returns a list of dissimilarities \emph{dw} and \emph{db}.
+#' The \code{pcr_within_between} function returns a list of \emph{dw} and \emph{db} dissimilarities.
 #'
-#' The \code{check_pcr_thresh} and  \code{check_pcr_repl} functions returns \code{ggplot} objects.
+#' The \code{check_pcr_thresh} and \code{check_pcr_repl} functions return \code{ggplot} objects.
 #'
 #' @seealso \code{\link{tagjumpslayer}}, \code{\link{contaslayer}} for other data curation procedures.
 #'
@@ -68,18 +68,18 @@
 #'                                    soil_euk$pcrs$type == "sample" &
 #'                                    rowSums(soil_euk$reads>0))
 #'
-#' ## Visualization of within vs. between sample dissimilarities
+#' ## Visualisation of within vs. between sample dissimilarities
 #' soil_euk_sub_wb <- pcr_within_between(soil_euk_sub)
 #' check_pcr_thresh(soil_euk_sub_wb, thresh.method = "intersect")
 #'
-#' ## Visualization of replicates through PCoA
+#' ## Visualisation of replicates through PCoA
 #' # create grouping factor according to habitat and material
 #' soil_euk_sub$pcrs$habitat_material <- soil_euk_sub$pcrs$sample_id
 #' idx <- match(levels(soil_euk_sub$pcrs$habitat_material), rownames(soil_euk_sub$samples))
 #' levels(soil_euk_sub$pcrs$habitat_material) <- paste(soil_euk_sub$samples$Habitat[idx],
 #'                                                     soil_euk_sub$samples$Material[idx],
 #'                                                     sep = " | ")
-#' # vizualize dissimilarity patterns
+#' # visualise dissimilarity patterns
 #' mds <- check_pcr_repl(soil_euk_sub, groups = soil_euk_sub$pcrs$habitat_material)
 #' mds + labs(color = "sample type")
 #'
@@ -88,7 +88,7 @@
 #' tail(colnames(soil_euk_sub2$pcrs))
 #' length(which(soil_euk_sub2$pcrs$functional_pcr==F))
 #'
-#' # define a color vector that corresponds to the different habitat types. Should be named
+#' # define a color vector that corresponds to the different habitat types. Should be named.
 #' mds <- check_pcr_repl(soil_euk_sub2,
 #'                       groups = soil_euk_sub2$pcrs$habitat_material,
 #'                       funcpcr = soil_euk_sub2$pcrs$functional_pcr)
