@@ -59,9 +59,12 @@ annotation <- data.frame(
   GC_content = soil_euk$motus$GC_content[idx],
   row.names = rownames(soil_euk$motus)[idx]
 )
+
+dir <- tempdir()
+
 fasta_generator(
   soil_euk, rownames(soil_euk$motus)[idx],
-  "Dominants.fasta",
+   file.path(dir, "Dominants.fasta"),
   annotation
 )
 }
