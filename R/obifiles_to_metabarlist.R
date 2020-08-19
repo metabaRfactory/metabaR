@@ -62,7 +62,7 @@ obifiles_to_metabarlist <- function(file_obitab, file_ngsfilter, file_samples, .
     stop(paste("cannot open file_samples", file_samples, ": No such file or directory"))
   }
 
-  obi <- read.csv2(file_obitab, h = T, check.names = F, stringsAsFactors = F, ...)
+  obi <- read.csv2(file_obitab, header = T, check.names = F, stringsAsFactors = F, ...)
 
   # reads
   reads <- t(obi[, grep("sample\\:", colnames(obi))])
@@ -80,7 +80,7 @@ obifiles_to_metabarlist <- function(file_obitab, file_ngsfilter, file_samples, .
   pcrs <- pcrs[, -match("pcr_id", colnames(pcrs))]
 
   # samples
-  samples <- read.csv2(file_samples, row.names = 1, h = T, check.names = F, stringsAsFactors = F, ...)
+  samples <- read.csv2(file_samples, row.names = 1, header = T, check.names = F, stringsAsFactors = F, ...)
 
   # check pcrs in reads present in pcrs table
   if (!all(rownames(reads) %in% rownames(pcrs))) {
