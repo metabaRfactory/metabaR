@@ -60,6 +60,8 @@ Default is "functional_pcr"}
 \item{plot}{a boolean vector indicating whether dissimilarity distribution should be plotted.
 Default is \code{TRUE}}
 
+\item{reads_table}{a table `reads` from a \code{metabarlist} object}
+
 \item{wthn.btwn}{an ouput from \code{pcr_within_between}}
 
 \item{groups}{a column name in the `pcrs` table corresponding to a factor giving the groups

@@ -22,6 +22,7 @@
 #' @param groups        a column name in the `pcrs` table corresponding to a factor giving the groups
 #'                      from which the graphical colorscheme is drawn.
 #' @param funcpcr       a boolean vector indicating whether PCRs are functional (\code{TRUE}) or not.
+#' @param reads_table   a table `reads` from a \code{metabarlist} object
 #'
 #' @details
 #'
@@ -185,10 +186,10 @@ pcrslayer <- function(metabarlist,
     }
     } else if(method=="pairwise") {
 
-      reads_table <- reads_table0
+      metabarlist <- metabarlist0
       replicates <- replicates0
 
-      wthn_btwn <- pcr_within_between(reads_table, replicates, method)
+      wthn_btwn <- pcr_within_between(metabarlist, replicates, method)
       thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
       if (plot == T) {
         p = check_pcr_thresh(wthn_btwn, thresh.method)
