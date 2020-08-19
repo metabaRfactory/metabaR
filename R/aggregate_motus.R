@@ -1,6 +1,7 @@
 #' Aggregate MOTUs
 #'
 #' Aggregate MOTUs in a \code{metabarlist} object according to a grouping factor or vector
+#' :)
 #'
 #' @param metabarlist   a \code{metabarlist} object
 #' @param groups        a grouping vector or factor for MOTUs.
