@@ -159,7 +159,7 @@ gghill_rarefaction <- function(hill_rar, group = NULL) {
         fill = group
       ),
       alpha = 0.3) +
-      facet_wrap( ~ variable, scale = "free", ncol = 4) +
+      facet_wrap( ~ variable, scales = "free", ncol = 4) +
       labs(x = "#reads", y = "diversity / coverage estimate") +
       theme_bw() +
       guides(fill = FALSE) +
