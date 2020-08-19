@@ -1,6 +1,6 @@
 #' Checks if a list of tables is a \code{\link{metabarlist}}
 #'
-#' Tests if a list of tables containing information on MOTUs abundances, MOTUs characteristics, PCRs characteristics, and samples characteristics form an object of class \code{\link{metabarlist}}
+#' Tests if a list of tables contains correct information on MOTU abundances, MOTU characteristics, PCR characteristics, and sample characteristics to be classed as a \code{\link{metabarlist}} object.
 #'
 #' @param metabarlist a \code{\link{metabarlist}} object
 #'
@@ -13,18 +13,19 @@
 #' The function \code{check_metabarlist} checks if \code{metabarlist} has all the properties required to be a well formed \code{metabarlist} object:
 #'
 #' \itemize{
-#' \item {\code{metabarlist} should be is a list with four tables named
+#' \item {\code{metabarlist} should be a list with four tables named
 #'        `reads`, `motus`, `pcrs` and `samples`.}
-#' \item {table `reads` should be a numeric matrix.}
-#' \item {tables `motus`, `pcrs` and `samples` should be a data frame.}
-#' \item {table `reads` row names should be exactely the same than row names in table `pcrs`.}
-#' \item {table `reads` column names should be exactely the same than
-#'        row names in table `motus`.}
-#' \item {table `pcrs` should contain the mandatory columns,
+#' \item {the `reads` table should be a numeric matrix.}
+#' \item {the `motus`, `pcrs` and `samples` tables should be data frames.}
+#' \item {the `reads` table row names should be exactly the same as row names
+#'        in the `pcrs` table.}
+#' \item {the `reads` table column names should be exactly the same as row names
+#'        in the `motus` table.}
+#' \item {the `pcrs` table should contain the mandatory columns required,
 #'        i.e.  `sample_id`, `type` and `control_type`.}
 #' \item {values in `type` should be properly defined:
 #'        they can only be `sample` or `control`.}
-#' \item {values in and `control_type` should be properly defined:
+#' \item {values in `control_type` should be properly defined:
 #'        they can only be `sequencing`, `pcr`, `extraction`, `positive`, (or NA for samples).}
 #' }
 #'
