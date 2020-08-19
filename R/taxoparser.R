@@ -3,7 +3,7 @@
 #' Parse taxonomic information from full taxonomic paths
 #'
 #'
-#' @param taxopath    a vector of full taxonomic paths to parse
+#' @param taxopath    a vector containing full taxonomic paths to parse
 #' @param sep.level   a character string to separate the taxonomic levels in `taxopath`. NA character not allowed.
 #' @param sep.info    a character string to separate taxonomic from taxorank information in `taxopath`. NA character not allowed.
 #'
@@ -12,7 +12,7 @@
 #' @return a list of vectors containing parsed taxa as values and corresponding taxonomic ranks as value names.
 #'
 #' @details
-#' The taxonomic path should include both taxa names AND their associated taxonomic rank (full names or abbreviations as in qiime or unite outputs). The function will use it together with separators by decreasing level of taxonomic resolution. The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks.
+#' The taxonomic path should include both taxa names AND their associated taxonomic rank (full names or abbreviations as in qiime or unite outputs). The function will use it together with separators by decreasing level of taxonomic resolution. The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks).
 #'
 #' @seealso \code{\link{ggtaxplot}}
 #'
