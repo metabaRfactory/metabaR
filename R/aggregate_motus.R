@@ -14,11 +14,7 @@
 #'
 #' @details
 #'
-#' The function \code{aggregate_motus} is typically used for aggregating MOTUs at a given taxonomic resolution. The user is free to use its own method of aggregation, but one method is often used and therefore pre-encoded:
-#'
-#' #'\itemize{
-#' \item{\code{"FUN_agg_motus_sum"}: reads of MOTUs in a given group are summed for each pcr.}
-#' }
+#' The function \code{aggregate_motus} is typically used for aggregating MOTUs at a given taxonomic resolution. The user is free to use its own method of aggregation, but the most common aggregation method is to sum reads for each taxa and is therefore pre-encoded in \code{FUN_agg_motus_sum}.
 #'
 #' After aggregation, the information contained in the `motus` table corresponds to the
 #'information of the most abundant MOTU in a given group.
@@ -43,8 +39,8 @@
 #'
 #' @author Lucie Zinger
 #'
+#' @describeIn aggregate_motus Aggregate MOTUs in a \code{metabarlist} object according to a grouping factor or vector for each pcr.
 #' @export aggregate_motus
-#' @export FUN_agg_motus_sum
 
 
 aggregate_motus <- function(metabarlist,
@@ -88,7 +84,9 @@ aggregate_motus <- function(metabarlist,
   }
 }
 
-# sum function
+#' @describeIn aggregate_motus compute the sum of reads according to a grouping factor or vector for each pcr.
+#' @export FUN_agg_motus_sum
+
 FUN_agg_motus_sum <- function(metabarlist, groups) {
   reads.out <- t(rowsum(t(metabarlist$reads), groups))
   return(reads.out)
