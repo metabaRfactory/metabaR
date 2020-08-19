@@ -38,6 +38,7 @@
 #'
 #' @author Lucie Zinger, Anne-Sophie Benoiston
 #' @importFrom seqinr read.fasta
+#' @importFrom utils read.csv
 #' @export silva_annotator
 
 
