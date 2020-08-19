@@ -39,6 +39,8 @@
 #' filter_replicat(sample_subset)
 #' }
 #' @author Frédéric Boyer & Clément Lionnet
+#' @importFrom stats density
+#' @importFrom graphics abline lines
 #' @import ade4
 #' @import vegan
 
