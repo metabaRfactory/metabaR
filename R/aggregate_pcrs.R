@@ -4,29 +4,29 @@
 #'
 #' @param metabarlist   a \code{metabarlist} object
 #' @param replicates    a vector containing the sample names to which each pcr
-#'                      replicates belongs and that should be aggregated.
+#'                      replicate belongs and within which they should be aggregated.
 #'                      Default is the `sample_id` column from the `pcrs` table.
-#' @param FUN           a function of replicates aggregation.
-#'                      Default is the sum of reads per MOTUs across replicates.
+#' @param FUN           a replicate aggregation function.
+#'                      Default is the sum of reads per MOTU across replicates.
 #'
 #' @name aggregate_pcrs
 #'
-#' @return A \code{metabarlist} where the table `reads` contains MOTUs abundances aggregated according to \code{FUN} and where number of rows of tables `reads` and `pcrs` is equal to that of table `samples`.
+#' @return A \code{metabarlist} where the table `reads` contains MOTU abundances aggregated according to \code{FUN}. The number of rows of the produced `reads` and `pcrs` tables are equal to that of the `samples` table.
 #'
 #' @details
 #'
-#' The function \code{aggregate_pcrs} is typically used at the end of the data filtration process and aims at aggregating reads and the pcr related information at the sample level. The user is free to use its own method of aggregation, but the following are often used and therefore pre-encoded:
+#' The function \code{aggregate_pcrs} is typically used at the end of the data filtration process and aims to aggregate reads and the pcr related information at the sample level. The user is free to use their own method of aggregation, but the following are often used and therefore pre-encoded:
 #'
 #' #'\itemize{
-#' \item{\code{"FUN_agg_pcrs_sum"}: reads of pcr replicates are summed for each MOTU}
-#' \item{\code{"FUN_agg_pcrs_mean"}: reads of pcr replicates are averaged for each MOTU.
-#'       Results are rounded so that to obtain genuine count data}
+#' \item{\code{"FUN_agg_pcrs_sum"}: the reads of pcr replicates are summed for each MOTU}
+#' \item{\code{"FUN_agg_pcrs_mean"}: the reads of pcr replicates are averaged for each MOTU.
+#'       Results are rounded so as to obtain genuine count data}
 #' \item{\code{"FUN_agg_pcrs_prob"}: the probability of detection is returned for each MOTU.
 #'       This method is often used in studies dealing with ancient DNA or diet.}
 #' }
 #'
-#' After aggregation, the information contained in the `pcrs` table is averaged if numeric,
-#' or if not, it is dereplicated if equal across replicates, or concatenated if not.
+#' After aggregation, the information contained in the `pcrs` table is averaged if numeric.
+#' If none numeric, information is dereplicated if equal across replicates, or concatenated if not.
 #'
 #'
 #'
@@ -44,10 +44,10 @@
 #' ## With the FUN_agg_prob pre-defined function
 #' soil_euk_ag <- aggregate_pcrs(soil_euk, FUN = FUN_agg_pcrs_prob)
 #' summary_metabarlist(soil_euk)
-#' summary_metabarlist(soil_euk_ag) ## output on reads do not have much sense in this case.
+#' summary_metabarlist(soil_euk_ag) ## output reads produced do not have much sense in this case.
 #'
 #' ## With a custom function (here equivalent to FUN_agg_pcrs_sum,
-#' ## i.e. summing all MOTUs abundance across replicates)
+#' ## i.e. summing abundances of all MOTUs across replicates)
 #' soil_euk_ag <- aggregate_pcrs(soil_euk,
 #'                               FUN = function(metabarlist, replicates){
 #'                                  rowsum(metabarlist$reads, replicates)})

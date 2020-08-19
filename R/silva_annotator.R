@@ -6,7 +6,7 @@
 #' @param metabarlist  a \code{metabarlist} object
 #' @param silva.path   path to a table from the SILVAngs pipeline,
 #'                     typically zipfile > ssu > exports > xxx---ssu---otus.csv
-#' @param clust.path   path to a file from the SilvAngs pipeline indicating otu cluster membership,
+#' @param clust.path   path to a file from the SilvAngs pipeline indicating MOTU cluster membership,
 #'                     typically zipfile > ssu > stats > sequence_cluster_map > data >
 #'                     xxx---ssu---sequence_cluster_map---tmptaxo.clstr
 #' @name silva_annotator

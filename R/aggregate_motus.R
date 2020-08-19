@@ -2,25 +2,26 @@
 #'
 #' Aggregate MOTUs in a \code{metabarlist} object according to a grouping factor or vector
 #'
+#'
 #' @param metabarlist   a \code{metabarlist} object
 #' @param groups        a grouping vector or factor for MOTUs.
 #'                      \code{NA} values treated as a group level
 #' @param FUN           a function of MOTU aggregation.
-#'                      Default is the sum of MOTUs reads abundances for each grouping value.
+#'                      Default is the sum of MOTUs read abundances for each grouping value.
 #'
 #' @name aggregate_motus
 #'
-#' @return A \code{metabarlist} where the table `reads` contains MOTUs abundances aggregated according to a grouping vector/factor (e.g. taxonomic assignment at the phylum level), using a method defined in \code{FUN} and where number of columns of tables `reads` will be equal to that of the number of groups in `groups`.
+#' @return A \code{metabarlist} where the table `reads` contains MOTU abundances aggregated according to a grouping vector/factor (e.g. taxonomic assignment at the phylum level), using a method defined in \code{FUN}. The number of columns in the returned `reads` table will be equal to the number of groups in `groups`.
 #'
 #' @details
 #'
-#' The function \code{aggregate_motus} is typically used for aggregating MOTUs at a given taxonomic resolution. The user is free to use its own method of aggregation, but one method is often used and therefore pre-encoded:
+#' The function \code{aggregate_motus} is typically used for aggregating MOTUs at a given taxonomic resolution. The user is free to use their own method of aggregation, but an often used method is pre-encoded:
 #'
 #' #'\itemize{
 #' \item{\code{"FUN_agg_motus_sum"}: reads of MOTUs in a given group are summed for each pcr.}
 #' }
 #'
-#' After aggregation, the information contained in the `motus` table corresponds to the
+#' After aggregation, the information retained in the `motus` table corresponds to the
 #'information of the most abundant MOTU in a given group.
 #'
 #' @seealso @seealso \code{\link{aggregate_pcrs}}, \code{\link{apply}}, \code{\link{aggregate}}
@@ -29,14 +30,14 @@
 #'
 #' data(soil_euk)
 #'
-#' ## With MOTU phylum assignment as grouping factor and
+#' ## With MOTU phylum assignment as the grouping factor and
 #' ## default grouping aggregation (sum reads across replicates)
 #' soil_euk_ag <- aggregate_motus(soil_euk, groups = soil_euk$motus$phylum_name)
 #' summary_metabarlist(soil_euk)
 #' summary_metabarlist(soil_euk_ag)
 #'
 #' ## With a custom function (here equivalent to FUN_agg_sum,
-#' ## i.e. summing all MOTUs abundance across groups)
+#' ## i.e. summing all MOTU abundances across groups)
 #' soil_euk_ag <- aggregate_motus(soil_euk, groups = soil_euk$motus$phylum_name,
 #'                                FUN = function(metabarlist, groups){
 #'                                        t(rowsum(t(metabarlist$reads), groups))})
