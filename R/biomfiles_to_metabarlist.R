@@ -37,7 +37,7 @@
 #'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
 #'           \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}},
-#'           \code{\link{biomformat}}
+#'           or the \code{biomformat} package
 #'
 #' @references
 #' \url{http://biom-format.org/}

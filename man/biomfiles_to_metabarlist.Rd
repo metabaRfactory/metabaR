@@ -66,7 +66,7 @@ soil_euk <- biomfiles_to_metabarlist(
 \seealso{
 \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
           \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}},
-          \code{\link{biomformat}}
+          or the \code{biomformat} package
 }
 \author{
 Anne-Sophie Benoiston
