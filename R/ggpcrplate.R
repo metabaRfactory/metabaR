@@ -71,9 +71,10 @@ ggpcrplate <- function(metabarlist, legend_title = "well_values",
     plate_design$well_values <- function_values
     plate_design$well_values[plate_design$well_values == 0] <- NA
 
-    ggplot(plate_design, aes(y = match(plate_row, LETTERS[1:8]), x = plate_col, size = well_values)) +
-      geom_raster(aes(fill = control_type), na.rm = TRUE) +
-      facet_wrap(~plate_no, scales = "free") + theme_bw() +
+    ggplot(plate_design, aes(y = match(.data$plate_row, LETTERS[1:8]),
+                             x = .data$plate_col, size = .data$well_values)) +
+      geom_raster(aes(fill = .data$control_type), na.rm = TRUE) +
+      facet_wrap(~ .data$plate_no, scales = "free") + theme_bw() +
       scale_y_reverse(breaks = 1:8, labels = LETTERS[1:8]) +
       scale_x_continuous(breaks = 1:12) +
       scale_fill_manual(values = c("brown", "red", "pink", "cyan4"), na.translate = FALSE) +
