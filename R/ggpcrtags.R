@@ -95,7 +95,7 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
         scale_x_discrete(expand = c(0.02, 0)) +
         scale_y_discrete(expand = c(0.02, 0)) +
         theme(
-          axis.text.x = element_text(angle = 45, h = 1),
+          axis.text.x = element_text(angle = 45, hjust = 1),
           legend.position = "bottom",
           legend.box = "vertical"
         )
