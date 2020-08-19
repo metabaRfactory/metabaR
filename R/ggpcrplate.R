@@ -16,7 +16,7 @@
 #' @details
 #' Visualising PCR attributes in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful for identifying potential problems (e.g. high amount of reads in one control due to cross contaminations with neighboring samples).
 #'
-#' @seealso \code{\link{ggpcrtags}}
+#' @seealso \code{\link{ggpcrtag}}
 #'
 #' @examples
 #'
