@@ -13,7 +13,7 @@ contaslayer(
 )
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 
 \item{method}{a character string specifying the detection method to be used.
 Default: \code{"max"}}
@@ -35,7 +35,7 @@ a metabarlist with a new boolean column vector of name `output_col` in
         identified as contaminants (\code{FALSE})
 }
 \description{
-Uses negative controls to determine whether MOTUs in a \code{\link{metabarlist}} object are more likely to be genuine or contaminants.
+Uses negative controls to determine whether MOTUs in a \code{metabarlist} object are more likely to be genuine or contaminants.
 }
 \details{
 In negative controls, a contaminant should be preferentially amplified since there is no competing DNA. On the other hand, a MOTU detected in negative controls is not necessarily a contaminant, it can be a genuine MOTU detected in negative controls through tag-jump issues.

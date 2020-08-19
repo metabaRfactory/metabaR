@@ -7,7 +7,7 @@
 extract_table(metabarlist, table = extract_table_methods)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 
 \item{table}{the table required for extraction.
 Can be one of `reads`, `motus`, `pcrs`, or `samples`}
@@ -16,7 +16,7 @@ Can be one of `reads`, `motus`, `pcrs`, or `samples`}
 a numeric matrix `reads` or a data frame `motus`, `pcrs`, or `samples`
 }
 \description{
-\code{extract_table} is a generic function which extracts a table from a \code{\link{metabarlist}} object.
+\code{extract_table} is a generic function which extracts a table from a \code{metabarlist} object.
 }
 \details{
 All \code{metabarlist} objects are composed of four different tables that can be extracted as single table with this function.

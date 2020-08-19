@@ -1,6 +1,6 @@
 #' Import BIOM and associated files to create a metabarlist object
 #'
-#' Imports and formats \code{BIOM} and associated files to create a \code{\link{metabarlist}} object.
+#' Imports and formats \code{BIOM} and associated files to create a \code{metabarlist} object.
 #'
 #'
 #' @param file_biom      path for the \code{BIOM} file. This is either a JSON formatted file
@@ -29,11 +29,11 @@
 #'
 #' @name biomfiles_to_metabarlist
 #'
-#' @return a \code{\link{metabarlist}} object
+#' @return a \code{metabarlist} object
 #'
 #' @details
 #'
-#' This function imports a \code{BIOM} file and associated files into \R to create a \code{\link{metabarlist}} object. Two files are required: a \code{BIOM} file, as well as a sample characteristics table. If the \code{BIOM} file does not contain PCRs and MOTUs attributes data, two other files containing these data are required. The files are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+#' This function imports a \code{BIOM} file and associated files into \R to create a \code{metabarlist} object. Two files are required: a \code{BIOM} file, as well as a sample characteristics table. If the \code{BIOM} file does not contain PCRs and MOTUs attributes data, two other files containing these data are required. The files are imported in \R, included into a list of class \code{metabarlist} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 #'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
 #'           \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}},

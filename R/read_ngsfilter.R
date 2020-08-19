@@ -27,6 +27,7 @@
 #'
 #' @author Lucie Zinger
 #' @importFrom utils read.csv2
+#' @export read_ngsfilter
 
 read_ngsfilter <- function(file, additional.sep = "=", ...) {
   input <- read.csv2(file, header = F, check.names = F, stringsAsFactors = F, ...)

@@ -1,6 +1,6 @@
 #' Including SILVAngs pipeline taxonomic annotations
 #'
-#' Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (https://ngs.arb-silva.de/silvangs/) and including it in a \code{\link{metabarlist}} object.
+#' Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (https://ngs.arb-silva.de/silvangs/) and including it in a \code{metabarlist} object.
 #'
 #'
 #' @param metabarlist  a \code{metabarlist} object

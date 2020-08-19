@@ -1,6 +1,6 @@
 #' Create a metabarlist object
 #'
-#' Combining R tables to create a \code{\link{metabarlist}} object.
+#' Combining R tables to create a \code{metabarlist} object.
 #'
 #'
 #' @param reads     MOTU abundance table. Rows and rownames of the table should correspond to PCRs and
@@ -25,11 +25,11 @@
 #'
 #' @name metabarlist_generator
 #'
-#' @return a \code{\link{metabarlist}} object
+#' @return a \code{metabarlist} object
 #'
 #' @details
 #'
-#' This function formats R tables to create a \code{\link{metabarlist}} object. The four objects required are incorporated into a list of class \code{\link{metabarlist}}. Congruencies between all tables are tested internally with the \code{\link{check_metabarlist}} function.
+#' This function formats R tables to create a \code{metabarlist} object. The four objects required are incorporated into a list of class \code{metabarlist}. Congruencies between all tables are tested internally with the \code{\link{check_metabarlist}} function.
 #'
 #' @seealso \code{\link{extract_table}}, \code{\link{check_metabarlist}}
 #' @examples

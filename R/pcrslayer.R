@@ -3,10 +3,10 @@
 #' Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs.
 #'
 #'
-#' @param metabarlist   a \code{\link{metabarlist}} object
+#' @param metabarlist   a \code{metabarlist} object
 #' @param replicates    a vector corresponding to the sample names to which
 #'                      pcr replicates belongs. Default is the `sample_id` column of the `pcrs` table
-#'                      from the \code{\link{metabarlist}} object.
+#'                      from the \code{metabarlist} object.
 #' @param method        a character indicating which method should be used to identify PCR outliers. Can be
 #'                      \code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.
 #' @param FUN           a function for computing distances between replicates.
@@ -97,7 +97,7 @@
 #' @author Lucie Zinger, Clement Lionnet, Fred Boyer
 #' @importFrom vegan vegdist cca
 #' @importFrom stats dist
-#' @describeIn pcrslayer Detect dysfunctional PCRs, i.e. PCR outliers in a \code{\link{metabarlist}} object.
+#' @describeIn pcrslayer Detect dysfunctional PCRs, i.e. PCR outliers in a \code{metabarlist} object.
 #' @export pcrslayer
 
 pcrslayer <- function(metabarlist,

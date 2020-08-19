@@ -11,7 +11,7 @@ ggpcrplate(
 )
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object.}
+\item{metabarlist}{a \code{metabarlist} object.}
 
 \item{legend_title}{the title of legend containing the plotted information.}
 
@@ -23,7 +23,7 @@ rows of the `reads` table.}
 a ggplot
 }
 \description{
-Plots an attribute of PCRs from a \code{\link{metabarlist}} object into the corresponding 96-well PCR plate design
+Plots an attribute of PCRs from a \code{metabarlist} object into the corresponding 96-well PCR plate design
 }
 \details{
 Visualising PCR attributes in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful for identifying potential problems (e.g. high amount of reads in one control due to cross contaminations with neighboring samples).

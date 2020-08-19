@@ -3,7 +3,7 @@
 #' Selecting a given taxonomic annotation between those obtained from two different databases
 #'
 #'
-#' @param metabarlist   a \code{\link{metabarlist}} object
+#' @param metabarlist   a \code{metabarlist} object
 #' @param best.db       a vector of two database names, with the best database in terms of
 #'                      taxonomic information
 #'                      reliability listed first.

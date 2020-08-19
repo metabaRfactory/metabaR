@@ -1,9 +1,9 @@
 #' Plotting a PCR attribute in the PCR plate design
 #'
-#' Plots an attribute of PCRs from a \code{\link{metabarlist}} object into the corresponding 96-well PCR plate design
+#' Plots an attribute of PCRs from a \code{metabarlist} object into the corresponding 96-well PCR plate design
 #'
 #'
-#' @param metabarlist    a \code{\link{metabarlist}} object.
+#' @param metabarlist    a \code{metabarlist} object.
 #' @param FUN            a function which returns a vector containing the information to be plotted.
 #'                       The vector should be numeric and of equal length to the number of
 #'                       rows of the `reads` table.

@@ -1,9 +1,9 @@
 #' Plotting a PCR attribute in the tag pair design
 #'
-#' Plots an attribute of PCRs from a \code{\link{metabarlist}} object in the tag pair design
+#' Plots an attribute of PCRs from a \code{metabarlist} object in the tag pair design
 #'
 #'
-#' @param metabarlist    a \code{\link{metabarlist}} object
+#' @param metabarlist    a \code{metabarlist} object
 #' @param FUN            a function which return a vector containing the information to be plotted.
 #'                       The vector should be a numeric vector which has the same length of table `reads`.
 #' @param legend_title   the title of legend containing the plotted information.

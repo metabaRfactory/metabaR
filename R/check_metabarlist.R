@@ -1,12 +1,12 @@
-#' Checks if a list of tables is a \code{\link{metabarlist}}
+#' Checks if a list of tables is a \code{metabarlist}
 #'
-#' Tests if a list of tables contains correct information on MOTU abundances, MOTU characteristics, PCR characteristics, and sample characteristics to be classed as a \code{\link{metabarlist}} object.
+#' Tests if a list of tables contains correct information on MOTU abundances, MOTU characteristics, PCR characteristics, and sample characteristics to be classed as a \code{metabarlist} object.
 #'
-#' @param metabarlist a \code{\link{metabarlist}} object
+#' @param metabarlist a \code{metabarlist} object
 #'
 #' @name check_metabarlist
 #'
-#' @return \code{check_metabarlist} returns TRUE if \code{metabarlist} fulfills of conditions to be of class \code{\link{metabarlist}}` (see details). If not, the function throws a stop.
+#' @return \code{check_metabarlist} returns TRUE if \code{metabarlist} fulfills of conditions to be of class \code{metabarlist}` (see details). If not, the function throws a stop.
 #'
 #' @details
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fasta_generator.R
 \name{fasta_generator}
 \alias{fasta_generator}
-\title{Generating a fasta file from a \code{\link{metabarlist}} object}
+\title{Generating a fasta file from a \code{metabarlist} object}
 \usage{
 fasta_generator(
   metabarlist,
@@ -13,7 +13,7 @@ fasta_generator(
 )
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object.}
+\item{metabarlist}{a \code{metabarlist} object.}
 
 \item{id}{a character vector containing identifiers for the MOTUs of interest.
 Default is the row names of table `motus`}
@@ -32,7 +32,7 @@ Default: NULL}
 a fasta file
 }
 \description{
-Generates a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
+Generates a fasta file from a \code{metabarlist} object, typically for a subset of MOTUs of interest.
 }
 \details{
 Creates a fasta file from a set of sequences of interest. A single or multiple pieces of sequence information can be added to the sequence header via the `annotation` table. Using the default parameters, the resulting fasta file will have the following format:

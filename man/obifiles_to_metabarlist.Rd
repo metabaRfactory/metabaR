@@ -27,15 +27,15 @@ table should contain the sample names.}
 \item{...}{other arguments to be pasted from \code{read.table}}
 }
 \value{
-a \code{\link{metabarlist}} object
+a \code{metabarlist} object
 }
 \description{
 Importing and formatting OBITools and associated files (i.e. an \code{obitab} output file,
 an \code{ngsfilter} file and table of sample characteristics respectively) to create
-a \code{\link{metabarlist}} object (see Boyer et al. 2016).
+a \code{metabarlist} object (see Boyer et al. 2016).
 }
 \details{
-This function imports OBITools outputs and related files into \R to create a \code{\link{metabarlist}} object. The three files required are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, before congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+This function imports OBITools outputs and related files into \R to create a \code{metabarlist} object. The three files required are imported in \R, included into a list of class \code{metabarlist} with the \code{\link{metabarlist_generator}} function, before congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 }
 \examples{
 

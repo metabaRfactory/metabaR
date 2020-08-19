@@ -1,9 +1,9 @@
 #' Detecting contaminants using negative controls
 #'
-#' Uses negative controls to determine whether MOTUs in a \code{\link{metabarlist}} object are more likely to be genuine or contaminants.
+#' Uses negative controls to determine whether MOTUs in a \code{metabarlist} object are more likely to be genuine or contaminants.
 #'
 #'
-#' @param metabarlist   a \code{\link{metabarlist}} object
+#' @param metabarlist   a \code{metabarlist} object
 #' @param method        a character string specifying the detection method to be used.
 #'                      Default: \code{"max"}
 #' @param control_types a vector of control types contained in the column control_type

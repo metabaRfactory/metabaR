@@ -1,6 +1,6 @@
 #' Import 4 tables to create a metabarlist object
 #'
-#' Importing and formatting four files (corresponding to MOTU abundances, MOTU characteristics, PCR characteristics and sample characteristics respectively) to create a \code{\link{metabarlist}} object.
+#' Importing and formatting four files (corresponding to MOTU abundances, MOTU characteristics, PCR characteristics and sample characteristics respectively) to create a \code{metabarlist} object.
 #'
 #'
 #' @param file_reads    path for the MOTU abundance table. Rows of the table should correspond to PCRs,
@@ -26,11 +26,11 @@
 #'
 #' @name tabfiles_to_metabarlist
 #'
-#' @return a \code{\link{metabarlist}} object
+#' @return a \code{metabarlist} object
 #'
 #' @details
 #'
-#' This function imports tabular data into \R to create a \code{\link{metabarlist}} object. The four files required are imported into \R, included in a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+#' This function imports tabular data into \R to create a \code{metabarlist} object. The four files required are imported into \R, included in a list of class \code{metabarlist} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 #'
 #' @examples
 #'

@@ -38,11 +38,11 @@ pcr_threshold_estimate(wthn.btwn, thresh.method = "intersect")
 check_pcr_repl(metabarlist, replicates = NULL, groups = NULL, funcpcr = NULL)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 
 \item{replicates}{a vector corresponding to the sample names to which
 pcr replicates belongs. Default is the `sample_id` column of the `pcrs` table
-from the \code{\link{metabarlist}} object.}
+from the \code{metabarlist} object.}
 
 \item{method}{a character indicating which method should be used to identify PCR outliers. Can be
 \code{"centroid"} or \code{"pairwise"}. Default is \code{"centroid"}.}
@@ -102,7 +102,7 @@ The \code{check_pcr_repl} function enables visualisation of dissimilarity patter
 }
 \section{Functions}{
 \itemize{
-\item \code{pcrslayer}: Detect dysfunctional PCRs, i.e. PCR outliers in a \code{\link{metabarlist}} object.
+\item \code{pcrslayer}: Detect dysfunctional PCRs, i.e. PCR outliers in a \code{metabarlist} object.
 
 \item \code{pcr_within_between}: Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 

@@ -46,7 +46,7 @@
 #'
 #' @usage data(soil_euk)
 #'
-#' @format An object of class \code{metabarlist}; see \code{\link[metabaR]{metabarlist}}.
+#' @format An object of class \code{metabarlist}; see \code{\link[metabaR]{check_metabarlist}}.
 #'
 #' @keywords dataset
 #'

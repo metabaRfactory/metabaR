@@ -1,8 +1,8 @@
-#' Generating a fasta file from a \code{\link{metabarlist}} object
+#' Generating a fasta file from a \code{metabarlist} object
 #'
-#' Generates a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
+#' Generates a fasta file from a \code{metabarlist} object, typically for a subset of MOTUs of interest.
 #'
-#' @param metabarlist   a \code{\link{metabarlist}} object.
+#' @param metabarlist   a \code{metabarlist} object.
 #' @param id            a character vector containing identifiers for the MOTUs of interest.
 #'                      Default is the row names of table `motus`
 #' @param output_file   the path/name of the output file.

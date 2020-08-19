@@ -12,7 +12,7 @@ ggpcrtag(
 )
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 
 \item{legend_title}{the title of legend containing the plotted information.}
 
@@ -26,7 +26,7 @@ they are used in the PCR plate scheme}
 a ggplot
 }
 \description{
-Plots an attribute of PCRs from a \code{\link{metabarlist}} object in the tag pair design
+Plots an attribute of PCRs from a \code{metabarlist} object in the tag pair design
 }
 \details{
 Vizualizing attributes of the PCRs in their tag pair design context, i.e. according to the tag combination used. This can be useful to identify potential problems (e.g. low amount of reads due to non-functional primer/tag sets).

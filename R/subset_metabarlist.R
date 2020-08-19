@@ -1,9 +1,9 @@
 #' Subsetting metabarlists
 #'
-#' Return subsets of a \code{\link{metabarlist}} object which meet user-defined conditions.
+#' Return subsets of a \code{metabarlist} object which meet user-defined conditions.
 #'
 #'
-#' @param metabarlist       a \code{\link{metabarlist}} object
+#' @param metabarlist       a \code{metabarlist} object
 #' @param table             the table where the information on which the subsetting is based.
 #'                          Can be one of `reads`, `motus`, `pcrs`, or `samples`.
 #' @param indices           a boolean vector indicating the elements,
@@ -12,10 +12,10 @@
 #'
 #' @name subset_metabarlist
 #'
-#' @return a \code{\link{metabarlist}} object similar to the initial `metabarlist` except that it contains only the selected elements.
+#' @return a \code{metabarlist} object similar to the initial `metabarlist` except that it contains only the selected elements.
 #'
 #' @details
-#' Subsetting a \code{\link{metabarlist}} will select specific rows from the `reads`, `motus`, `pcrs`, or `samples` tables. Factor levels that are unused after selection are dropped. Note however that:
+#' Subsetting a \code{metabarlist} will select specific rows from the `reads`, `motus`, `pcrs`, or `samples` tables. Factor levels that are unused after selection are dropped. Note however that:
 #' \itemize{
 #' \item {If the selection is done on `reads`, `pcrs` or `samples`, the MOTUs not occurring in the pcrs or samples selected (i.e. those having a total number of reads of 0) are dropped.}
 #' \item {If the selection is done on `motus`, the pcrs and samples where none of the selected MOTUs are found are kept.}

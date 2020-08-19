@@ -7,7 +7,7 @@
 taxodecider(metabarlist, best.db, sim.scores, lineage, threshold)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 
 \item{best.db}{a vector of two database names, with the best database in terms of
 taxonomic information

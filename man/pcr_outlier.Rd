@@ -29,7 +29,7 @@ pcr_outlier(
 
 \item{FUN}{a function returning a distance matrix. The distance matrix should be a `dist` object which has the same dimensions as the number of rows in the `reads`table, i.e number of PCRs.}
 
-\item{groups}{a vector containing the replicate identifier. The vector must have the same dimensions as the `PCRs` table from a \code{\link{metabarlist}} object. Default = metabarlist$pcrs$sample_id}
+\item{groups}{a vector containing the replicate identifier. The vector must have the same dimensions as the `PCRs` table from a \code{metabarlist} object. Default = metabarlist$pcrs$sample_id}
 
 \item{graphics}{a boolean value to plot the distance densities for each iteration. Default = FALSE}
 }
@@ -37,16 +37,16 @@ pcr_outlier(
 a data frame with the replicate groups and a `replicating`column. If not possible, the function will terminate and return an error message.
 }
 \description{
-Identify the non-conforming sample or control PCR replicates in the PCRs table from a \code{\link{metabarlist}} object.
+Identify the non-conforming sample or control PCR replicates in the PCRs table from a \code{metabarlist} object.
 Process numerous reiterations to compare distance densities within PCR replicates and between PCR replicates.
 }
 \details{
 This function identifies non-conforming sample or control replicates.
 
-The parameter `groups` defines groups of replicates. The vector should be arranged following the format of a `PCRs` table from the \code{\link{metabarlist}}.
+The parameter `groups` defines groups of replicates. The vector should be arranged following the format of a `PCRs` table from the \code{metabarlist}.
 Note: If the distance within replicates is higher than the distance between replicates, the function cannot return any result because all replicates are removed.
 The parameter `FUN` defines the function used to compute the distance matrix. The function will return an object of class `dist` with the same length as the input table.
-The default function use the `decostand` and `vegdist` functions from the `vegan` package to perform a correspondance analysis of the `reads` table from the \code{\link{metabarlist}}, and returns a distance matrix.
+The default function use the `decostand` and `vegdist` functions from the `vegan` package to perform a correspondance analysis of the `reads` table from the \code{metabarlist}, and returns a distance matrix.
 Default function detail:
 bray_function <- function(reads) {
   distance_matrix <- vegdist(decostand(reads, method = 'total'), method='bray')

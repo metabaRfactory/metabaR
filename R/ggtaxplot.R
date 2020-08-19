@@ -1,13 +1,13 @@
 #' Plotting a taxonomic tree
 #'
-#' Plots the taxonomic tree from a \code{\link{metabarlist}} object and maps an attribute onto it
+#' Plots the taxonomic tree from a \code{metabarlist} object and maps an attribute onto it
 #'
 #'
-#' @param metabarlist    a \code{\link{metabarlist}} object.
+#' @param metabarlist    a \code{metabarlist} object.
 #'                       Should contain taxonomic information in the `motus` table.
 #' @param taxo           a character string or vector of strings indicating the name of
 #'                       the column (or group of columns) containing the full taxonomic
-#'                       information in the `motus` table from the \code{\link{metabarlist}}
+#'                       information in the `motus` table from the \code{metabarlist}
 #'                       object.
 #' @param sep.level      an optional character string to separate the terms.
 #'                       Required only if `taxo` is a string. \code{NA} not allowed.

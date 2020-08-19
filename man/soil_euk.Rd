@@ -5,7 +5,7 @@
 \alias{soil_euk}
 \title{Soil eukaryote DNA metabarcoding data from French Guiana}
 \format{
-An object of class \code{metabarlist}; see \code{\link[metabaR]{metabarlist}}.
+An object of class \code{metabarlist}; see \code{\link[metabaR]{check_metabarlist}}.
 }
 \usage{
 data(soil_euk)

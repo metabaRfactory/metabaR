@@ -2,7 +2,7 @@
 #'
 #' Importing and formatting OBITools and associated files (i.e. an \code{obitab} output file,
 #' an \code{ngsfilter} file and table of sample characteristics respectively) to create
-#' a \code{\link{metabarlist}} object (see Boyer et al. 2016).
+#' a \code{metabarlist} object (see Boyer et al. 2016).
 #'
 #'
 #' @param file_obitab       path for the \code{obitab} output file. Rows of the table correspond to MOTUs,
@@ -24,11 +24,11 @@
 #'
 #' @name obifiles_to_metabarlist
 #'
-#' @return a \code{\link{metabarlist}} object
+#' @return a \code{metabarlist} object
 #'
 #' @details
 #'
-#' This function imports OBITools outputs and related files into \R to create a \code{\link{metabarlist}} object. The three files required are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, before congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
+#' This function imports OBITools outputs and related files into \R to create a \code{metabarlist} object. The three files required are imported in \R, included into a list of class \code{metabarlist} with the \code{\link{metabarlist_generator}} function, before congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 #'
 #'
 #' @seealso \code{\link{read_ngsfiler}}, \code{\link{tabfiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}

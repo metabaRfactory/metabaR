@@ -1,9 +1,9 @@
 #' Extract tables from a \code{metabarlist} object
 #'
-#' \code{extract_table} is a generic function which extracts a table from a \code{\link{metabarlist}} object.
+#' \code{extract_table} is a generic function which extracts a table from a \code{metabarlist} object.
 #'
 #'
-#' @param metabarlist       a \code{\link{metabarlist}} object
+#' @param metabarlist       a \code{metabarlist} object
 #' @param table             the table required for extraction.
 #'                          Can be one of `reads`, `motus`, `pcrs`, or `samples`
 #'

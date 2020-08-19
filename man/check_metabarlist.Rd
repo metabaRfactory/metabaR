@@ -2,18 +2,18 @@
 % Please edit documentation in R/check_metabarlist.R
 \name{check_metabarlist}
 \alias{check_metabarlist}
-\title{Checks if a list of tables is a \code{\link{metabarlist}}}
+\title{Checks if a list of tables is a \code{metabarlist}}
 \usage{
 check_metabarlist(metabarlist)
 }
 \arguments{
-\item{metabarlist}{a \code{\link{metabarlist}} object}
+\item{metabarlist}{a \code{metabarlist} object}
 }
 \value{
-\code{check_metabarlist} returns TRUE if \code{metabarlist} fulfills of conditions to be of class \code{\link{metabarlist}}` (see details). If not, the function throws a stop.
+\code{check_metabarlist} returns TRUE if \code{metabarlist} fulfills of conditions to be of class \code{metabarlist}` (see details). If not, the function throws a stop.
 }
 \description{
-Tests if a list of tables contains correct information on MOTU abundances, MOTU characteristics, PCR characteristics, and sample characteristics to be classed as a \code{\link{metabarlist}} object.
+Tests if a list of tables contains correct information on MOTU abundances, MOTU characteristics, PCR characteristics, and sample characteristics to be classed as a \code{metabarlist} object.
 }
 \details{
 The function \code{check_metabarlist} checks if \code{metabarlist} has all the properties required to be a well formed \code{metabarlist} object:
