@@ -2,7 +2,7 @@
 % Please edit documentation in R/biomfiles_to_metabarlist.R
 \name{biomfiles_to_metabarlist}
 \alias{biomfiles_to_metabarlist}
-\title{Import BIOM and associated files to create a \code{\link{metabarlist}} object}
+\title{Import BIOM and associated files to create a metabarlist object}
 \usage{
 biomfiles_to_metabarlist(
   file_biom,
@@ -45,13 +45,12 @@ The first column of this table should contain MOTU names.}
 a \code{\link{metabarlist}} object
 }
 \description{
-Imports and formats BIOM and associated files to create a \code{\link{metabarlist}} object.
+Imports and formats \code{BIOM} and associated files to create a \code{\link{metabarlist}} object.
 }
 \details{
-
+This function imports a \code{BIOM} file and associated files into \R to create a \code{\link{metabarlist}} object. Two files are required: a \code{BIOM} file, as well as a sample characteristics table. If the \code{BIOM} file does not contain PCRs and MOTUs attributes data, two other files containing these data are required. The files are imported in \R, included into a list of class \code{\link{metabarlist}} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 }
 \examples{
-add an example here, such as:
 
 soil_euk <- biomfiles_to_metabarlist(
  file_biom = system.file("extdata", "litiere_euk_reads_hdf5.biom", package = "metabaR"),
@@ -62,11 +61,12 @@ soil_euk <- biomfiles_to_metabarlist(
 
 }
 \references{
-\link{http://biom-format.org/}
+\url{http://biom-format.org/}
 }
 \seealso{
 \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
-          \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}}
+          \code{\link{obifiles_to_metabarlist}}, \code{\link{tabfiles_to_metabarlist}},
+          \code{\link{biomformat}}
 }
 \author{
 Anne-Sophie Benoiston
