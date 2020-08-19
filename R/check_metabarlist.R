@@ -329,7 +329,7 @@ check_metabarlist <- function(metabarlist) {
         "PCR plate design not properly provided: columns ",
         paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)],
               sep = ", "),
-        "are missing in table `pcrs` of ",
+        " is missing in table `pcrs` of ",
         metabarlist.name,
         "!\n"
       )
