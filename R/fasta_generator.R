@@ -1,4 +1,4 @@
-#' Generating a fasta file from a metabarlist object
+#' Generating a fasta file from a \code{\link{metabarlist}} object
 #'
 #' Generates a fasta file from a \code{\link{metabarlist}} object, typically for a subset of MOTUs of interest.
 #'

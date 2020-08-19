@@ -1,4 +1,4 @@
-#' Checks if a list of tables is a metabarlist
+#' Checks if a list of tables is a \code{\link{metabarlist}}
 #'
 #' Tests if a list of tables containing information on MOTUs abundances, MOTUs characteristics, PCRs characteristics, and samples characteristics form an object of class \code{\link{metabarlist}}
 #'

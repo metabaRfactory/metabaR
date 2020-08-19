@@ -2,7 +2,7 @@
 % Please edit documentation in R/fasta_generator.R
 \name{fasta_generator}
 \alias{fasta_generator}
-\title{Generating a fasta file from a metabarlist object}
+\title{Generating a fasta file from a \code{\link{metabarlist}} object}
 \usage{
 fasta_generator(
   metabarlist,

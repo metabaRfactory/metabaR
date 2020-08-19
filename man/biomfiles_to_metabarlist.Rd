@@ -2,7 +2,7 @@
 % Please edit documentation in R/biomfiles_to_metabarlist.R
 \name{biomfiles_to_metabarlist}
 \alias{biomfiles_to_metabarlist}
-\title{Import BIOM and associated files to create a metabarlist object}
+\title{Import BIOM and associated files to create a \code{\link{metabarlist}} object}
 \usage{
 biomfiles_to_metabarlist(
   file_biom,

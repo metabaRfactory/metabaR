@@ -1,4 +1,4 @@
-#' Import BIOM and associated files to create a metabarlist object
+#' Import BIOM and associated files to create a \code{\link{metabarlist}} object
 #'
 #' Imports and formats BIOM and associated files to create a \code{\link{metabarlist}} object.
 #'

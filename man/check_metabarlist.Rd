@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_metabarlist.R
 \name{check_metabarlist}
 \alias{check_metabarlist}
-\title{Checks if a list of tables is a metabarlist}
+\title{Checks if a list of tables is a \code{\link{metabarlist}}}
 \usage{
 check_metabarlist(metabarlist)
 }
