@@ -47,6 +47,7 @@
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}}
 #'
 #' @author Lucie Zinger
+#' @importFrom utils read.csv2
 #' @export obifiles_to_metabarlist
 #'
 

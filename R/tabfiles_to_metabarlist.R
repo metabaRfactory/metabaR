@@ -44,7 +44,8 @@
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
 #'           \code{\link{obifiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
 #'
-#' @author Lucie Zinger & Clément Lionnet & Frédéric boyer
+#' @author Lucie Zinger & Clément Lionnet & Frédéric Boyer
+#' @importFrom utils read.table read.csv2
 #' @export tabfiles_to_metabarlist
 #'
 

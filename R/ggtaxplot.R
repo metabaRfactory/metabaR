@@ -52,7 +52,8 @@
 #'   "family_name", "genus_name", "species_name"
 #' )
 #' ggtaxplot(arthropoda, taxo.col)
-#' ## to do the same on the full soil_euk data, add a column "kingdom_name" with value "Eukaryota" in soil_euk$motus
+#' ## to do the same on the full soil_euk data,
+#' # add a column "kingdom_name" with value "Eukaryota" in soil_euk$motus
 #'
 #' @author Lucie Zinger
 #' @import ggplot2

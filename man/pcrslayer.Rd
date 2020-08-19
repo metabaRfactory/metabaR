@@ -3,7 +3,10 @@
 \name{pcrslayer}
 \alias{pcrslayer}
 \alias{pcr_within_between}
+\alias{FUN_pcrdist_bray_freq}
+\alias{FUN_pcrdist_coa_freq}
 \alias{check_pcr_thresh}
+\alias{pcr_threshold_estimate}
 \alias{check_pcr_repl}
 \title{Detecting PCRs replicates outliers.}
 \usage{
@@ -24,7 +27,13 @@ pcr_within_between(
   method = "centroid"
 )
 
+FUN_pcrdist_bray_freq(reads_table)
+
+FUN_pcrdist_coa_freq(reads_table)
+
 check_pcr_thresh(wthn.btwn, thresh.method = "intersect")
+
+pcr_threshold_estimate(wthn.btwn, thresh.method = "intersect")
 
 check_pcr_repl(metabarlist, replicates = NULL, groups = NULL, funcpcr = NULL)
 }
@@ -97,7 +106,13 @@ Function \code{check_pcr_repl} enables visualization of dissimilarity patterns a
 
 \item \code{pcr_within_between}: Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 
+\item \code{FUN_pcrdist_bray_freq}: Computes Bray-Curtis distances between pcrs standardised by the total number of reads.
+
+\item \code{FUN_pcrdist_coa_freq}: Computes eclidean distances from a PCoA ordination between pcrs standardised by the total number of reads.
+
 \item \code{check_pcr_thresh}: Vizualize \emph{dw} and \emph{db} dissimilarities and the threshold (defined automatically) above which pcr replicates are considered as too dissimilar.
+
+\item \code{pcr_threshold_estimate}: Estimates the cutoff above which a pcr is considered as an outlier.
 
 \item \code{check_pcr_repl}: Vizualize pcrs dissimilarity patterns and pcr replicates centroids.
 }}

@@ -9,22 +9,16 @@
 #' @param FUN           a function of MOTU aggregation.
 #'                      Default is the sum of MOTUs read abundances for each grouping value.
 #'
-#' @name aggregate_motus
-#'
-#' @return A \code{metabarlist} where the table `reads` contains MOTU abundances aggregated according to a grouping vector/factor (e.g. taxonomic assignment at the phylum level), using a method defined in \code{FUN}. The number of columns in the returned `reads` table will be equal to the number of groups in `groups`.
+#' @return A \code{metabarlist} where the table `reads` contains MOTUs abundances aggregated according to a grouping vector/factor (e.g. taxonomic assignment at the phylum level), using a method defined in \code{FUN} and where number of columns of tables `reads` will be equal to that of the number of groups in `groups`.
 #'
 #' @details
 #'
-#' The function \code{aggregate_motus} is typically used for aggregating MOTUs at a given taxonomic resolution. The user is free to use their own method of aggregation, but an often used method is pre-encoded:
-#'
-#' #'\itemize{
-#' \item{\code{"FUN_agg_motus_sum"}: reads of MOTUs in a given group are summed for each pcr.}
-#' }
+#' The function \code{aggregate_motus} is typically used for aggregating MOTUs at a given taxonomic resolution. The user is free to use its own method of aggregation, but the most common aggregation method is to sum reads for each taxa and is therefore pre-encoded in \code{FUN_agg_motus_sum}.
 #'
 #' After aggregation, the information retained in the `motus` table corresponds to the
 #'information of the most abundant MOTU in a given group.
 #'
-#' @seealso @seealso \code{\link{aggregate_pcrs}}, \code{\link{apply}}, \code{\link{aggregate}}
+#' @seealso \code{\link{aggregate_pcrs}}, \code{\link{apply}}, \code{\link{aggregate}}
 #'
 #' @examples
 #'
@@ -44,8 +38,8 @@
 #'
 #' @author Lucie Zinger
 #'
+#' @describeIn aggregate_motus Aggregate MOTUs in a \code{metabarlist} object according to a grouping factor or vector for each pcr.
 #' @export aggregate_motus
-#' @export FUN_agg_motus_sum
 
 
 aggregate_motus <- function(metabarlist,
@@ -89,7 +83,9 @@ aggregate_motus <- function(metabarlist,
   }
 }
 
-# sum function
+#' @describeIn aggregate_motus compute the sum of reads according to a grouping factor or vector for each pcr.
+#' @export FUN_agg_motus_sum
+
 FUN_agg_motus_sum <- function(metabarlist, groups) {
   reads.out <- t(rowsum(t(metabarlist$reads), groups))
   return(reads.out)

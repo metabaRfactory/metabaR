@@ -26,6 +26,7 @@
 #'               additional.sep = "=")
 #'
 #' @author Lucie Zinger
+#' @importFrom utils read.csv2
 
 read_ngsfilter <- function(file, additional.sep = "=", ...) {
   input <- read.csv2(file, h = F, check.names = F, stringsAsFactors = F, ...)

@@ -40,7 +40,9 @@ data(soil_euk)
 soil_euk <- silva_annotator(
    metabarlist = soil_euk,
    silva.path = system.file("extdata", "lit_euk---ssu---otus.csv", package = "metabaR"),
-   clust.path = system.file("extdata", "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr", package = "metabaR"))
+   clust.path = system.file("extdata",
+              "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr",
+               package = "metabaR"))
 
 soil_euk$motus$similarity = soil_euk$motus$similarity/100
 

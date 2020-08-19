@@ -7,8 +7,8 @@
 #' @param FUN a function returning a distance matrix. The distance matrix should be a `dist` object which has the same dimensions as the number of rows in the `reads`table, i.e number of PCRs.
 #' @param groups a vector containing the replicate identifier. The vector must have the same dimensions as the `PCRs` table from a \code{\link{metabarlist}} object. Default = metabarlist$pcrs$sample_id
 #' @param graphics a boolean value to plot the distance densities for each iteration. Default = FALSE
-#'
-#' @name pcr_outlier
+#' @param sub_matrix a distance matrix for replicates comparisons
+#' @param threshold a threshold below which a pcr is considered as outlier
 #'
 #' @return a data frame with the replicate groups and a `replicating`column. If not possible, the function will terminate and return an error message.
 #'
@@ -39,11 +39,14 @@
 #' filter_replicat(sample_subset)
 #' }
 #' @author Frédéric Boyer & Clément Lionnet
+#' @describeIn pcr_outlier Identifying the non-replicating samples or controls in the table PCRs from a \code{metabarlist} object.
+#' @importFrom stats density
+#' @importFrom graphics abline lines
 #' @import ade4
 #' @import vegan
 
 
-# recursive function to find the non replicating samples or controls
+#' @describeIn pcr_outlier recursive function to find the non replicating samples or controls
 filter_replicat <- function(sub_matrix, threshold) {
   replicat_to_remove <- c()
   if (any(sub_matrix > threshold)) {
@@ -65,20 +68,20 @@ filter_replicat <- function(sub_matrix, threshold) {
   return(replicat_to_remove)
 }
 
-# distance function with ade4 package and coa analysis
+#' @describeIn pcr_outlier distance function with ade4 package and coa analysis
 coa_function <- function(reads) {
   correspondence_analysis <- dudi.coa(sqrt(reads), scannf = FALSE, nf = 2)
   distance_matrix <- dist(correspondence_analysis$li)
   return(distance_matrix)
 }
 
-# distance function with vegan package and Bray-Curtis distance
+#' @describeIn pcr_outlier distance function with vegan package and Bray-Curtis distance
 bray_function <- function(reads) {
   distance_matrix <- vegdist(decostand(reads, method = "total"), method = "bray")
   return(distance_matrix)
 }
 
-# main function
+#' @describeIn pcr_outlier main function
 pcr_outlier <- function(metabarlist,
                                FUN = bray_function,
                                groups = metabarlist$pcrs$sample_id,

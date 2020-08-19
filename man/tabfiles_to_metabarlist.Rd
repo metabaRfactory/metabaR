@@ -61,5 +61,5 @@ soil_euk <- tabfiles_to_metabarlist(
           \code{\link{obifiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
 }
 \author{
-Lucie Zinger & Clément Lionnet & Frédéric boyer
+Lucie Zinger & Clément Lionnet & Frédéric Boyer
 }
