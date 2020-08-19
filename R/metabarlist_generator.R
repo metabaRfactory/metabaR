@@ -72,7 +72,8 @@
 #' ## Generate the metabarlist object
 #'
 #' test <- metabarlist_generator(reads = reads, motus = motus, pcrs = pcrs, samples = samples)
-#' ## Warnings are returned because the PCR design (i.e. tags, primers, plate coordinates) is not defined in this example.
+#' ## Warnings are returned because the PCR design (i.e. tags, primers, plate
+#' # coordinates) is not defined in this example.
 #' @seealso \code{\link{check_metabarlist}}
 #'
 #' @author Lucie Zinger & Clément Lionnet & Frédéric boyer
