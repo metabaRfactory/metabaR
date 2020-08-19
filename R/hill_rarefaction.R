@@ -33,7 +33,7 @@
 #' @examples
 #'
 #' data(soil_euk)
-#'
+#' library(ggplot2)
 #' # Create a subset of pcrs: only a subset of samples from the H20 plot
 #'
 #' soil_euk_h20 <- subset_metabarlist(soil_euk,
