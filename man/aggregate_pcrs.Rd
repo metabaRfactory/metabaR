@@ -34,7 +34,7 @@ Aggregate PCR replicates in a \code{metabarlist} object.
 \details{
 The function \code{aggregate_pcrs} is typically used at the end of the data filtration process and aims at aggregating reads and the pcr related information at the sample level. The user is free to use its own method of aggregation, but the following are often used and therefore pre-encoded:
 
-#'\itemize{
+\itemize{
 \item{\code{FUN_agg_pcrs_sum}: reads of pcr replicates are summed for each MOTU}
 \item{\code{FUN_agg_pcrs_mean}: reads of pcr replicates are averaged for each MOTU.
       Results are rounded so that to obtain genuine count data}
@@ -47,6 +47,8 @@ or if not, it is dereplicated if equal across replicates, or concatenated if not
 }
 \section{Functions}{
 \itemize{
+\item \code{aggregate_pcrs}: Aggregate PCR replicates in a \code{metabarlist} object.
+
 \item \code{FUN_agg_pcrs_sum}: Aggregate PCR replicates in a \code{metabarlist} object by summing MOTUs read counts across PCR replicates.
 
 \item \code{FUN_agg_pcrs_mean}: Aggregate PCR replicates in a \code{metabarlist} object by averaging MOTUs read counts across PCR replicates

@@ -9,15 +9,13 @@
 #' @param FUN           a function of replicates aggregation.
 #'                      Default is the sum of reads per MOTUs across replicates.
 #'
-#' @name aggregate_pcrs
-#'
 #' @return A \code{metabarlist} where the table `reads` contains MOTUs abundances aggregated according to \code{FUN} and where number of rows of tables `reads` and `pcrs` is equal to that of table `samples`.
 #'
 #' @details
 #'
 #' The function \code{aggregate_pcrs} is typically used at the end of the data filtration process and aims at aggregating reads and the pcr related information at the sample level. The user is free to use its own method of aggregation, but the following are often used and therefore pre-encoded:
 #'
-#' #'\itemize{
+#' \itemize{
 #' \item{\code{FUN_agg_pcrs_sum}: reads of pcr replicates are summed for each MOTU}
 #' \item{\code{FUN_agg_pcrs_mean}: reads of pcr replicates are averaged for each MOTU.
 #'       Results are rounded so that to obtain genuine count data}
