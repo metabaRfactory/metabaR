@@ -18,7 +18,7 @@
 #'                  Should be either: `NA` for samples, `extraction` for extraction negative controls,
 #'                  `pcr` for PCR negative controls, `sequencing` for sequencing negative controls
 #'                  (e.g. unused tag combinations), or `positive` for positive controls.
-#' @param samples   Samples characteristics table. Rows and rownames of the table should correspond
+#' @param samples   Sample characteristics table. Rows and rownames of the table should correspond
 #'                  to biological samples and their names respectively, and the columns to their
 #'                   environnemental characteristics.
 #'
@@ -75,7 +75,7 @@
 #' ## Warnings are returned because the PCR design (i.e. tags, primers, plate coordinates) is not defined in this example.
 #' @seealso \code{\link{check_metabarlist}}
 #'
-#' @author Lucie Zinger & Clément Lionnet & Frédéric boyer
+#' @author Lucie Zinger & Clément Lionnet & Frédéric Boyer
 #' @export metabarlist_generator
 #'
 
