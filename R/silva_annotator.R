@@ -33,7 +33,9 @@
 #'                "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr",
 #'                 package = "metabaR"))
 #'
-#'ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
+#' library(ggplot2)
+#'
+#' ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
 #'   geom_bar() + coord_polar("y") +
 #'   theme_minimal() + labs(x=NULL, y=NULL) +
 #'   theme(legend.position = "bottom")
