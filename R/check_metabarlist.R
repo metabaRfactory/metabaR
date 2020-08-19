@@ -60,17 +60,17 @@ check_metabarlist <- function(metabarlist) {
     stop(paste("class of", metabarlist.name, "is not 'metabarlist'"))
   }
 
-  if (!(is.list(metabarlist))) {
+  if (!is.list(metabarlist)) {
     stop(paste(metabarlist.name, "is not a list"))
   }
 
   slots <- c("reads", "motus", "pcrs", "samples")
-  if (!(all(slots %in% names(metabarlist)))) {
+  if (!all(slots %in% names(metabarlist))) {
     stop(paste0(
       metabarlist.name,
       " does not contain the following objects: ",
       "'",
-      paste(slots[slots %in% names(metabarlist)], collapse = "', '"),
+      paste(slots[!slots %in% names(metabarlist)], collapse = "', '"),
       "'"
     ))
   }
@@ -78,8 +78,8 @@ check_metabarlist <- function(metabarlist) {
   if (!(
     is.matrix(metabarlist$reads) &&
     is.numeric(metabarlist$reads) &&
-    !any(is.na(metabarlist$reads) &&
-         all(metabarlist$reads >= 0))
+    !any(is.na(metabarlist$reads)) &&
+         all(metabarlist$reads >= 0)
   )) {
     stop(
       paste(
