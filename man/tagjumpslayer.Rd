@@ -34,6 +34,7 @@ Tagjumps are an important bias that lead to the presence of potentially high num
 \examples{
 
 data(soil_euk)
+library(ggplot2)
 soil_euk_clean <- tagjumpslayer(soil_euk, 0.03)
 
 # identify occurrence of the most abundant OTU
@@ -66,7 +67,7 @@ Esling, P., Lejzerowicz, F., & Pawlowski, J. (2015). Accurate multiplexing and f
 
 Schnell, I. B., Bohmann, K., & Gilbert, M. T. P. (2015). Tag jumps illuminated–reducing sequence‐to‐sample misidentifications in metabarcoding studies. Molecular Ecology Resources, 15(6), 1289-1303.
 
-Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... & Réjou‐Méchain, M. (2019). Body size determines soil community assembly in a tropical forest. Molecular Ecology, 28(3), 528-543.
+Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... & Chave, J. (2019). Body size determines soil community assembly in a tropical forest. Molecular Ecology, 28(3), 528-543.
 }
 \seealso{
 \code{\link{contaslayer}}, \code{\link{pcrslayer}}
