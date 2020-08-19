@@ -141,7 +141,7 @@ gghill_rarefaction <- function(hill_rar, group = NULL) {
     ggplot(b, aes(x = reads, y = value, group = pcr_id)) +
       geom_line() +
       geom_ribbon(aes(ymin = value - value.sd, ymax = value + value.sd), alpha = 0.3) +
-      facet_wrap( ~ variable, scale = "free", ncol = 4) +
+      facet_wrap( ~ variable, scales = "free", ncol = 4) +
       labs(x = "#reads", y = "diversity / coverage estimate") +
       theme_bw() +
       theme(panel.grid = element_blank(),
