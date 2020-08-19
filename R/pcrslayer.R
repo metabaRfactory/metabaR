@@ -226,8 +226,6 @@ pcrslayer <- function(metabarlist,
 #' @importFrom utils combn
 #' @importFrom stats xtabs median
 #' @export pcr_within_between
-#' @export FUN_pcrdist_bray_freq
-#' @export FUN_pcrdist_coa_freq
 
 pcr_within_between <- function(metabarlist,
                                replicates = NULL,
@@ -301,9 +299,9 @@ pcr_within_between <- function(metabarlist,
   }
 }
 
-## Distance functions
+#' @describeIn pcrslayer Computes Bray-Curtis distances between pcrs standardised by the total number of reads.
+#' @export FUN_pcrdist_bray_freq
 
-# FUN_pcrdist_bray_freq
 FUN_pcrdist_bray_freq <- function(reads_table) {
   if(any(rowSums(reads_table)==0 )) {
     stop("you have empty rows in table `reads`")}
@@ -312,7 +310,9 @@ FUN_pcrdist_bray_freq <- function(reads_table) {
   return(distance_matrix)
 }
 
-# FUN_pcrdist_coa_freq
+#' @describeIn pcrslayer Computes eclidean distances from a PCoA ordination between pcrs standardised by the total number of reads.
+#' @export FUN_pcrdist_coa_freq
+
 FUN_pcrdist_coa_freq <- function(reads_table) {
   if(any(rowSums(reads_table)==0)) {
     stop("you have empty rows in table `reads`")}
@@ -325,7 +325,6 @@ FUN_pcrdist_coa_freq <- function(reads_table) {
 #' @describeIn pcrslayer Vizualize \emph{dw} and \emph{db} dissimilarities and the threshold (defined automatically) above which pcr replicates are considered as too dissimilar.
 #' @importFrom stats density
 #' @export check_pcr_thresh
-#' @export pcr_threshold_estimate
 
 check_pcr_thresh <- function(wthn.btwn, thresh.method = "intersect") {
 
@@ -355,6 +354,8 @@ check_pcr_thresh <- function(wthn.btwn, thresh.method = "intersect") {
 }
 
 # function pcr_threshold_estimate
+#' @describeIn pcrslayer Estimates the cutoff above which a pcr is considered as an outlier.
+#' @export pcr_threshold_estimate
 pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
   dinter.max <- max(wthn.btwn$bar_dist)
   ddinter <- density(wthn.btwn$bar_dist, from = 0, to = 1)
