@@ -46,47 +46,10 @@
 #' @import ade4
 #' @import vegan
 
-
-#' @describeIn pcr_outlier recursive function to find the non replicating samples or controls
-filter_replicat <- function(sub_matrix, threshold) {
-  replicat_to_remove <- c()
-  if (any(sub_matrix > threshold)) {
-    if (nrow(sub_matrix) == 2) {
-      replicat_to_remove <- c(replicat_to_remove, rownames(sub_matrix))
-    } else {
-      replicat_to_remove <- c(
-        colnames(sub_matrix)[which.max(colSums(sub_matrix))],
-        filter_replicat(
-          sub_matrix[
-            -which.max(colSums(sub_matrix)),
-            -which.max(colSums(sub_matrix))
-          ],
-          threshold
-        )
-      )
-    }
-  }
-  return(replicat_to_remove)
-}
-
-#' @describeIn pcr_outlier distance function with ade4 package and coa analysis
-coa_function <- function(reads) {
-  correspondence_analysis <- dudi.coa(sqrt(reads), scannf = FALSE, nf = 2)
-  distance_matrix <- dist(correspondence_analysis$li)
-  return(distance_matrix)
-}
-
-#' @describeIn pcr_outlier distance function with vegan package and Bray-Curtis distance
-bray_function <- function(reads) {
-  distance_matrix <- vegdist(decostand(reads, method = "total"), method = "bray")
-  return(distance_matrix)
-}
-
-#' @describeIn pcr_outlier main function
 pcr_outlier <- function(metabarlist,
-                               FUN = bray_function,
-                               groups = metabarlist$pcrs$sample_id,
-                               graphics = FALSE) {
+                        FUN = bray_function,
+                        groups = metabarlist$pcrs$sample_id,
+                        graphics = FALSE) {
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     if (length(groups) != nrow(metabarlist$pcrs)) {
       stop("provided groups should equal the number of pcrs")
@@ -128,28 +91,28 @@ pcr_outlier <- function(metabarlist,
 
       replicates <- subset_data[rownames(distance_matrix), "groups"]
       within_replicates <- outer(replicates,
-        replicates,
-        FUN = "=="
+                                 replicates,
+                                 FUN = "=="
       ) & upper.tri(distance_matrix)
       between_replicates <- outer(replicates,
-        replicates,
-        FUN = "!="
+                                  replicates,
+                                  FUN = "!="
       ) & upper.tri(distance_matrix)
 
       if (length(distance_matrix[within_replicates]) < 2) {
         stop("Too many replicates have been remove!")
       }
       within_replicate_density <- density(distance_matrix[within_replicates],
-        from = 0, to = max(distance_matrix),
-        n = 1000
+                                          from = 0, to = max(distance_matrix),
+                                          n = 1000
       )
 
       if (length(distance_matrix[between_replicates]) < 2) {
         stop("Too many replicates have been remove!")
       }
       between_replicate_density <- density(distance_matrix[between_replicates],
-        from = 0, to = max(distance_matrix),
-        n = 1000
+                                           from = 0, to = max(distance_matrix),
+                                           n = 1000
       )
 
       #jamais dans les 10 premier %
@@ -161,8 +124,8 @@ pcr_outlier <- function(metabarlist,
 
       if (graphics) {
         plot(within_replicate_density$x, within_replicate_density$y,
-          type = "l", xlab = "Distances", ylab = "Density",
-          main = paste("Distances densities iteration", iteration)
+             type = "l", xlab = "Distances", ylab = "Density",
+             main = paste("Distances densities iteration", iteration)
         )
         lines(between_replicate_density, col = "blue")
         abline(v = threshold_distance, col = "red")
@@ -206,3 +169,44 @@ pcr_outlier <- function(metabarlist,
     return(subset_data)
   }
 }
+
+
+#' @describeIn pcr_outlier recursive function to find the non replicating samples or controls
+filter_replicat <- function(sub_matrix, threshold) {
+  replicat_to_remove <- c()
+  if (any(sub_matrix > threshold)) {
+    if (nrow(sub_matrix) == 2) {
+      replicat_to_remove <- c(replicat_to_remove, rownames(sub_matrix))
+    } else {
+      replicat_to_remove <- c(
+        colnames(sub_matrix)[which.max(colSums(sub_matrix))],
+        filter_replicat(
+          sub_matrix[
+            -which.max(colSums(sub_matrix)),
+            -which.max(colSums(sub_matrix))
+          ],
+          threshold
+        )
+      )
+    }
+  }
+  return(replicat_to_remove)
+}
+
+
+#' @describeIn pcr_outlier distance function with ade4 package and coa analysis
+coa_function <- function(reads) {
+  correspondence_analysis <- dudi.coa(sqrt(reads), scannf = FALSE, nf = 2)
+  distance_matrix <- dist(correspondence_analysis$li)
+  return(distance_matrix)
+}
+
+
+#' @describeIn pcr_outlier distance function with vegan package and Bray-Curtis distance
+bray_function <- function(reads) {
+  distance_matrix <- vegdist(decostand(reads, method = "total"), method = "bray")
+  return(distance_matrix)
+}
+
+
+
