@@ -58,7 +58,7 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
     if (!all(cols_tag_design %in% colnames(metabarlist$pcrs))) {
       stop(
         "Tag pair design not provided properly: columns ",
-        paste(cols_plate_design[!cols_plate_design %in% colnames(metabarlist$pcrs)], sep = ", "),
+        paste(cols_tag_design[!cols_tag_design %in% colnames(metabarlist$pcrs)], sep = ", "),
         " are missing in table `pcrs`!\n"
       )
     }
@@ -85,10 +85,12 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
     )
 
     all <-
-      ggplot(tag_design, aes(y = tag_fwd, x = tag_rev, size = well_values)) +
-        geom_raster(aes(fill = control_type), na.rm = TRUE) +
+      ggplot(tag_design, aes(y = .data$tag_fwd, x = .data$tag_rev,
+                             size = .data$well_values)) +
+        geom_raster(aes(fill = .data$control_type), na.rm = TRUE) +
         theme_bw() +
-        scale_fill_manual(values = c("brown", "red", "pink", "cyan4"), na.translate = FALSE) +
+        scale_fill_manual(values = c("brown", "red", "pink", "cyan4"),
+                          na.translate = FALSE) +
         geom_point(na.rm = TRUE) +
         scale_size(range = c(0,3)) +
         labs(size = legend_title) +
@@ -101,7 +103,7 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
         )
 
     fwd <-
-      ggplot(tag_design, aes(x = tag_fwd, y = well_values)) +
+      ggplot(tag_design, aes(x = .data$tag_fwd, y = .data$well_values)) +
         geom_boxplot(lwd = 0.5, na.rm = TRUE) +
         theme_bw() +
         stat_summary(fun = median, geom = "line", aes(group = 1),
@@ -113,7 +115,7 @@ ggpcrtag <- function(metabarlist, legend_title = "well_values",
         theme(axis.text.y = element_blank())
 
     rev <-
-      ggplot(tag_design, aes(x = tag_rev, y = well_values)) +
+      ggplot(tag_design, aes(x = .data$tag_rev, y = .data$well_values)) +
         geom_boxplot(lwd = 0.5, na.rm = TRUE) +
         theme_bw() +
         stat_summary(fun = median, geom = "line", aes(group = 1),
