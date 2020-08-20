@@ -46,7 +46,7 @@
 
 taxoparser <- function(taxopath, sep.level, sep.info) {
   if (!is.character(taxopath)) {
-    stop("`taxo` should be a character string or vector")
+    stop("`taxopath` should be a character vector")
   }
   if (is.null(sep.level) | is.null(sep.info)) {
     stop("`sep.level` and `sep.info` are required to parse the taxonomic information")
