@@ -15,7 +15,7 @@
 #'                      which the result will be stored.
 #'                      Default is "functional_pcr"
 #' @param thresh.method a character indicating which method should be used to define the filtering
-#'                      threshold. Can be \code{"interesect"} or \code{"mode"}.
+#'                      threshold. Can be \code{"intersect"} or \code{"mode"}.
 #' @param plot          a boolean vector indicating whether dissimilarity distribution should be plotted.
 #'                      Default is \code{TRUE}
 #' @param wthn.btwn     an ouput from \code{pcr_within_between}
