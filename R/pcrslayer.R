@@ -161,7 +161,7 @@ pcrslayer <- function(metabarlist,
       thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
       if (plot == T) {
         p = check_pcr_thresh(wthn_btwn, thresh.method)
-        print(p)
+        print(p + ggtitle(paste("Check PCR threshold - Iteration #", iteration)))
       }
 
       #get names of pcrs not meeting quality criterion (max distance and distance > thresh_pcr)
@@ -189,11 +189,14 @@ pcrslayer <- function(metabarlist,
       metabarlist <- metabarlist0
       replicates <- replicates0
 
-      wthn_btwn <- pcr_within_between(metabarlist, replicates, method)
+      wthn_btwn <-pcr_within_between(metabarlist,
+                                     replicates = replicates,
+                                     method = method,
+                                     FUN = FUN)
       thresh_pcr <- pcr_threshold_estimate(wthn_btwn, thresh.method)
       if (plot == T) {
         p = check_pcr_thresh(wthn_btwn, thresh.method)
-        print(p)
+        print(p + ggtitle(paste("Check PCR threshold - Iteration #", iteration)))
       }
 
       ### pb names of comparisons
@@ -236,6 +239,9 @@ pcr_within_between <- function(metabarlist,
   if (suppressWarnings(check_metabarlist(metabarlist))) {
 
     reads_table <- metabarlist$reads
+
+  if(any(rowSums(reads_table)==0 )) {
+      stop("you have empty rows in table `reads`")}
 
     if (is.null(replicates)) {
       replicates <- metabarlist$pcrs$sample_id
@@ -304,8 +310,6 @@ pcr_within_between <- function(metabarlist,
 #' @export FUN_pcrdist_bray_freq
 
 FUN_pcrdist_bray_freq <- function(reads_table) {
-  if(any(rowSums(reads_table)==0 )) {
-    stop("you have empty rows in table `reads`")}
   reads_std <- (reads_table)/rowSums(reads_table)
   distance_matrix <- vegdist(reads_std, method = "bray")
   return(distance_matrix)
@@ -315,8 +319,6 @@ FUN_pcrdist_bray_freq <- function(reads_table) {
 #' @export FUN_pcrdist_coa_freq
 
 FUN_pcrdist_coa_freq <- function(reads_table) {
-  if(any(rowSums(reads_table)==0)) {
-    stop("you have empty rows in table `reads`")}
   reads_std <- cca((reads_table)/rowSums(reads_table))
   distance_matrix <- dist(scores(reads_std)$sites)
   return(distance_matrix)
