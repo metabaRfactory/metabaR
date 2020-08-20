@@ -40,7 +40,7 @@
 #'
 #' The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in MOTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"} methods.
 #'
-#' The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Alternatively, it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
+#' The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="intersect"}). Alternatively, it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
 #'
 #' The \code{check_pcr_thresh} function enables visualisation of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 #'
