@@ -31,5 +31,6 @@ Imports: ggplot2, vegan, reshape2, ade4, cowplot, seqinr, igraph, biomformat
 Depends: R (>= 2.10)
 Suggests: knitr,
     rmarkdown,
+    prettydoc,
     pkgdown
 VignetteBuilder: knitr
