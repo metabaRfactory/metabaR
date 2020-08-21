@@ -1,6 +1,7 @@
 language: r
-r: bioc-devel
 cache: packages
+
+use_bioc: true
 
 after_success:
   - Rscript -e 'pkgdown::build_site()'
