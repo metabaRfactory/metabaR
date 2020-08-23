@@ -380,20 +380,20 @@ These are the value of <span class="math inline">\(q\)</span> for which <code>me
 <p>Now lets construct the rarefaction curves with the <code>hill_rarefaction</code> function. The number of sequencing depths used to build these curves is defined by the <code>nsteps</code> argument. For each sequencing depth, the <code>reads</code> table is resampled randomly <code>nboot</code> times so that to obtain an estimate of <span class="math inline">\(^{q}D\)</span> and <span class="math inline">\(Coverage\)</span>. <code>nboot</code> is low in the example below to limit the computing time.</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">soil_euk_h20.raref</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/metabaR/man/hill_rarefaction.html">hill_rarefaction</a></span>(<span class="no">soil_euk_h20</span>, <span class="kw">nboot</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">nsteps</span> <span class="kw">=</span> <span class="fl">10</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">soil_euk_h20.raref</span>$<span class="no">hill_table</span>)
-<span class="co">#&gt;      pcr_id reads     D0    D0.sd        D1    D1.sd        D2     D2.sd</span>
-<span class="co">#&gt; 1 H20-As_r1     5   4.60 0.598243  4.451770 1.199029  4.435065 0.8366563</span>
-<span class="co">#&gt; 2 H20-As_r1    10   9.15 0.875094  8.818937 1.142378  8.583333 1.4204027</span>
-<span class="co">#&gt; 3 H20-As_r1   100  53.00 4.316431 38.687790 1.126391 27.794148 4.8002541</span>
-<span class="co">#&gt; 4 H20-As_r1   200  79.95 5.661272 48.527541 1.081688 30.420548 2.5707008</span>
-<span class="co">#&gt; 5 H20-As_r1   500 139.85 6.830851 64.371342 1.075086 34.103108 3.3208132</span>
-<span class="co">#&gt; 6 H20-As_r1  1000 201.95 9.156390 72.963544 1.062357 35.126621 1.9055861</span>
+<span class="co">#&gt;      pcr_id reads     D0     D0.sd        D1    D1.sd        D2     D2.sd</span>
+<span class="co">#&gt; 1 H20-As_r1     5   4.65 0.5871429  4.537596 1.176790  4.531746 0.7524388</span>
+<span class="co">#&gt; 2 H20-As_r1    10   9.30 0.7326951  9.075192 1.106911  8.904762 1.0935478</span>
+<span class="co">#&gt; 3 H20-As_r1   100  51.25 4.0114966 37.238458 1.117569 27.022478 3.6506249</span>
+<span class="co">#&gt; 4 H20-As_r1   200  81.05 5.4529084 49.509507 1.093183 30.808417 2.9273821</span>
+<span class="co">#&gt; 5 H20-As_r1   500 138.25 6.8815161 62.715492 1.060236 33.391754 2.0118522</span>
+<span class="co">#&gt; 6 H20-As_r1  1000 201.20 7.1935644 73.316953 1.055629 35.530710 2.3918004</span>
 <span class="co">#&gt;   coverage coverage.sd</span>
-<span class="co">#&gt; 1  0.15000  0.21398475</span>
-<span class="co">#&gt; 2  0.15500  0.15719582</span>
-<span class="co">#&gt; 3  0.64150  0.05631444</span>
-<span class="co">#&gt; 4  0.75350  0.03513508</span>
-<span class="co">#&gt; 5  0.84190  0.01518275</span>
-<span class="co">#&gt; 6  0.89745  0.00900570</span></pre></body></html></div>
+<span class="co">#&gt; 1  0.14000 0.234857179</span>
+<span class="co">#&gt; 2  0.14000 0.146539019</span>
+<span class="co">#&gt; 3  0.66000 0.046566308</span>
+<span class="co">#&gt; 4  0.74675 0.026171248</span>
+<span class="co">#&gt; 5  0.84130 0.013981567</span>
+<span class="co">#&gt; 6  0.89900 0.006688561</span></pre></body></html></div>
 <p>The <code>hill_rarefaction</code> function produces an object with several elements. The most relevant one is the <code>hill_table</code> a table indicating the <code>pcr_id</code>, the sequencing depth at which the <em>pcr</em> was resampled, and the corresponding diversity / coverage indices. The output of <code>hill_rarefaction</code> can be used to draw rarefaction curves.</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/metabaR/man/hill_rarefaction.html">gghill_rarefaction</a></span>(<span class="no">soil_euk_h20.raref</span>)</pre></body></html></div>
 <p><img src="metabaRF-vignette_files/figure-html/gghill-1.png" width="672" style="display: block; margin: auto;"></p>
