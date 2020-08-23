@@ -23,7 +23,8 @@ Authors@R: c(
     comment = c(ORCID = "https://orcid.org/0000-0001-6900-3777")),
     person(family = "Mercier", given = "Céline", 
     email = "celine.mercier.bioinfo@gmail.com", 
-    role = c("ctb")))
+    role = c("ctb"), 
+    comment = c(ORCID = "https://orcid.org/0000-0002-4782-1530")))
 Description: metabaR is an R package that provides a comprehensive suite of tools to effectively curate DNA metabarcoding data after basic bioinformatics analyses. It uses experimental negative or positive controls to identify different types of artifactual sequences such as reagent contaminants or tag-jumps. It also allows the detection of potentially dysfunctional PCRs based on PCR replicate similarities when those are available. Finally, it provides tools for visualising pre- and post-processed DNA metabarcoding data characteristics in their experimental context as well as their distribution, hence enabling assessing the appropriateness of certain data curation filtering thresholds.
 License: GPL (>= 2)
 Encoding: UTF-8
