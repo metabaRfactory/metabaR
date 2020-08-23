@@ -158,16 +158,19 @@ ggtaxplot <- function(metabarlist, taxo, sep.level, sep.info, thresh = NULL) {
       geom_point() +
       scale_color_viridis_c() +
       theme_void() +
-      theme(legend.position = "bottom", legend.direction = "horizontal") +
+      theme(legend.position = "bottom",
+            legend.direction = "horizontal") +
       labs(color = "%reads", size = "%motus")
 
     if (is.null(thresh)) {
-      gp <- gp + geom_text(aes(label = .data$name2), color = "darkgrey", show.legend = FALSE)
+      gp <- gp + geom_text(aes(label = .data$name2),
+                           color = "darkgrey", show.legend = FALSE,
+                           angle = 45, hjust = 1)
     } else {
       gp <- gp + geom_text(
         data = vdf[which(vdf$reads > thresh), ], aes(label = .data$name2),
-        color = "darkgrey", show.legend = FALSE
-      )
+        color = "darkgrey", show.legend = FALSE,
+        angle = 45, hjust = 1)
     }
 
     return(gp)
