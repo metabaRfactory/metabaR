@@ -89,7 +89,7 @@
             <address class="author_afil">
       Evolution et Diversité Biologique (EDB UMR5174), Université Toulouse 3 Paul Sabatier, CNRS, IRD - Toulouse, France.<br><h4 class="author">Clément Lionnet, Frédéric Boyer</h4>
             <address class="author_afil">
-      Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France.<br><h4 class="date">2020-08-22</h4>
+      Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France.<br><h4 class="date">2020-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/metabaRfactory/metabaR/blob/master/vignettes/metabaRF-vignette.Rmd"><code>vignettes/metabaRF-vignette.Rmd</code></a></small>
       <div class="hidden name"><code>metabaRF-vignette.Rmd</code></div>
@@ -380,20 +380,20 @@ These are the value of <span class="math inline">\(q\)</span> for which <code>me
 <p>Now lets construct the rarefaction curves with the <code>hill_rarefaction</code> function. The number of sequencing depths used to build these curves is defined by the <code>nsteps</code> argument. For each sequencing depth, the <code>reads</code> table is resampled randomly <code>nboot</code> times so that to obtain an estimate of <span class="math inline">\(^{q}D\)</span> and <span class="math inline">\(Coverage\)</span>. <code>nboot</code> is low in the example below to limit the computing time.</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">soil_euk_h20.raref</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/metabaR/man/hill_rarefaction.html">hill_rarefaction</a></span>(<span class="no">soil_euk_h20</span>, <span class="kw">nboot</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">nsteps</span> <span class="kw">=</span> <span class="fl">10</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">soil_euk_h20.raref</span>$<span class="no">hill_table</span>)
-<span class="co">#&gt;      pcr_id reads     D0      D0.sd        D1    D1.sd        D2     D2.sd</span>
-<span class="co">#&gt; 1 H20-As_r1     5   4.65  0.5871429  4.513915 1.196177  4.506494 0.8198564</span>
-<span class="co">#&gt; 2 H20-As_r1    10   9.25  0.6386664  9.012505 1.092576  8.797619 0.9724545</span>
-<span class="co">#&gt; 3 H20-As_r1   100  51.45  3.6051863 37.679049 1.120422 27.267500 4.2480494</span>
-<span class="co">#&gt; 4 H20-As_r1   200  81.65  4.9019330 49.830318 1.109403 30.861671 4.3840467</span>
-<span class="co">#&gt; 5 H20-As_r1   500 137.60  4.9353718 62.965798 1.063110 33.249584 2.6624653</span>
-<span class="co">#&gt; 6 H20-As_r1  1000 203.10 10.4674935 74.142962 1.065414 35.745471 2.3349537</span>
+<span class="co">#&gt;      pcr_id reads     D0    D0.sd        D1    D1.sd        D2     D2.sd</span>
+<span class="co">#&gt; 1 H20-As_r1     5   4.60 0.598243  4.451770 1.199029  4.435065 0.8366563</span>
+<span class="co">#&gt; 2 H20-As_r1    10   9.15 0.875094  8.818937 1.142378  8.583333 1.4204027</span>
+<span class="co">#&gt; 3 H20-As_r1   100  53.00 4.316431 38.687790 1.126391 27.794148 4.8002541</span>
+<span class="co">#&gt; 4 H20-As_r1   200  79.95 5.661272 48.527541 1.081688 30.420548 2.5707008</span>
+<span class="co">#&gt; 5 H20-As_r1   500 139.85 6.830851 64.371342 1.075086 34.103108 3.3208132</span>
+<span class="co">#&gt; 6 H20-As_r1  1000 201.95 9.156390 72.963544 1.062357 35.126621 1.9055861</span>
 <span class="co">#&gt;   coverage coverage.sd</span>
-<span class="co">#&gt; 1  0.13000  0.20799798</span>
-<span class="co">#&gt; 2  0.15000  0.12773327</span>
-<span class="co">#&gt; 3  0.66650  0.04158378</span>
-<span class="co">#&gt; 4  0.74725  0.02825984</span>
-<span class="co">#&gt; 5  0.84650  0.01291062</span>
-<span class="co">#&gt; 6  0.89665  0.00989564</span></pre></body></html></div>
+<span class="co">#&gt; 1  0.15000  0.21398475</span>
+<span class="co">#&gt; 2  0.15500  0.15719582</span>
+<span class="co">#&gt; 3  0.64150  0.05631444</span>
+<span class="co">#&gt; 4  0.75350  0.03513508</span>
+<span class="co">#&gt; 5  0.84190  0.01518275</span>
+<span class="co">#&gt; 6  0.89745  0.00900570</span></pre></body></html></div>
 <p>The <code>hill_rarefaction</code> function produces an object with several elements. The most relevant one is the <code>hill_table</code> a table indicating the <code>pcr_id</code>, the sequencing depth at which the <em>pcr</em> was resampled, and the corresponding diversity / coverage indices. The output of <code>hill_rarefaction</code> can be used to draw rarefaction curves.</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/metabaR/man/hill_rarefaction.html">gghill_rarefaction</a></span>(<span class="no">soil_euk_h20.raref</span>)</pre></body></html></div>
 <p><img src="metabaRF-vignette_files/figure-html/gghill-1.png" width="672" style="display: block; margin: auto;"></p>
