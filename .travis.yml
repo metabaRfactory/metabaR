@@ -1,7 +1,7 @@
 language: r
 cache: packages
 
-install: skip
+use_bioc: true
 
 after_success:
   - Rscript -e 'pkgdown::build_site()'
