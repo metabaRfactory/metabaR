@@ -136,8 +136,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-import-format" class="hasAnchor"><a href="#section-import-format" class="anchor"></a>Import / Format</h2>
+          <p class="section-desc"><p>Generate <code>metabarlist objects</code> from files of various formats or directly from R objects</p></p>
         </th>
       </tr>
       
@@ -148,15 +148,15 @@
       <tr>
         
         <td>
-          <p><code><a href="aggregate_motus.html">aggregate_motus()</a></code> <code><a href="aggregate_motus.html">FUN_agg_motus_sum()</a></code> </p>
+          <p><code><a href="tabfiles_to_metabarlist.html">tabfiles_to_metabarlist()</a></code> </p>
         </td>
-        <td><p>Aggregate MOTUs</p></td>
+        <td><p>Import 4 tables to create a metabarlist object</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="aggregate_pcrs.html">aggregate_pcrs()</a></code> <code><a href="aggregate_pcrs.html">FUN_agg_pcrs_sum()</a></code> <code><a href="aggregate_pcrs.html">FUN_agg_pcrs_mean()</a></code> <code><a href="aggregate_pcrs.html">FUN_agg_pcrs_prob()</a></code> </p>
+          <p><code><a href="obifiles_to_metabarlist.html">obifiles_to_metabarlist()</a></code> </p>
         </td>
-        <td><p>Aggregate PCR replicates</p></td>
+        <td><p>Import OBITools and associated files to create a metabarlist object</p></td>
       </tr><tr>
         
         <td>
@@ -166,27 +166,46 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="read_ngsfilter.html">read_ngsfilter()</a></code> </p>
+        </td>
+        <td><p>Import an ngsfilter file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="metabarlist_generator.html">metabarlist_generator()</a></code> </p>
+        </td>
+        <td><p>Create a metabarlist object</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="check_metabarlist.html">check_metabarlist()</a></code> </p>
         </td>
         <td><p>Checks if a list of tables is a <code>metabarlist</code></p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="contaslayer.html">contaslayer()</a></code> </p>
+          <p><code><a href="silva_annotator.html">silva_annotator()</a></code> </p>
         </td>
-        <td><p>Detecting contaminants using negative controls</p></td>
-      </tr><tr>
+        <td><p>Including SILVAngs pipeline taxonomic annotations</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-visualise" class="hasAnchor"><a href="#section-visualise" class="anchor"></a>Visualise</h2>
+          <p class="section-desc"><p>Visualise data under both ecological and experimental perspectives</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
-          <p><code><a href="extract_table.html">extract_table()</a></code> </p>
+          <p><code><a href="summary_metabarlist.html">summary_metabarlist()</a></code> </p>
         </td>
-        <td><p>Extract tables from a <code>metabarlist</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fasta_generator.html">fasta_generator()</a></code> </p>
-        </td>
-        <td><p>Generating a fasta file from a <code>metabarlist</code> object</p></td>
+        <td><p>Metabarlist summary</p></td>
       </tr><tr>
         
         <td>
@@ -214,46 +233,23 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="metabarlist_generator.html">metabarlist_generator()</a></code> </p>
-        </td>
-        <td><p>Create a metabarlist object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="obifiles_to_metabarlist.html">obifiles_to_metabarlist()</a></code> </p>
-        </td>
-        <td><p>Import OBITools and associated files to create a metabarlist object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pcr_outlier.html">pcr_outlier()</a></code> <code><a href="pcr_outlier.html">filter_replicat()</a></code> <code><a href="pcr_outlier.html">coa_function()</a></code> <code><a href="pcr_outlier.html">bray_function()</a></code> </p>
-        </td>
-        <td><p>Identify non-conforming PCR replicates</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="pcrslayer.html">pcrslayer()</a></code> <code><a href="pcrslayer.html">pcr_within_between()</a></code> <code><a href="pcrslayer.html">FUN_pcrdist_bray_freq()</a></code> <code><a href="pcrslayer.html">FUN_pcrdist_coa_freq()</a></code> <code><a href="pcrslayer.html">check_pcr_thresh()</a></code> <code><a href="pcrslayer.html">pcr_threshold_estimate()</a></code> <code><a href="pcrslayer.html">check_pcr_repl()</a></code> </p>
         </td>
         <td><p>Detecting PCRs replicate outliers.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_ngsfilter.html">read_ngsfilter()</a></code> </p>
-        </td>
-        <td><p>Import an ngsfilter file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="silva_annotator.html">silva_annotator()</a></code> </p>
-        </td>
-        <td><p>Including SILVAngs pipeline taxonomic annotations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="soil_euk.html">soil_euk</a></code> </p>
-        </td>
-        <td><p>Soil eukaryote DNA metabarcoding data from French Guiana</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-manipulate" class="hasAnchor"><a href="#section-manipulate" class="anchor"></a>Manipulate</h2>
+          <p class="section-desc"><p>Manipulate <code>metabarlist</code> objects</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="subset_metabarlist.html">subset_metabarlist()</a></code> </p>
@@ -262,15 +258,52 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="summary_metabarlist.html">summary_metabarlist()</a></code> </p>
+          <p><code><a href="extract_table.html">extract_table()</a></code> </p>
         </td>
-        <td><p>Metabarlist summary</p></td>
+        <td><p>Extract tables from a <code>metabarlist</code> object</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="tabfiles_to_metabarlist.html">tabfiles_to_metabarlist()</a></code> </p>
+          <p><code><a href="aggregate_pcrs.html">aggregate_pcrs()</a></code> <code><a href="aggregate_pcrs.html">FUN_agg_pcrs_sum()</a></code> <code><a href="aggregate_pcrs.html">FUN_agg_pcrs_mean()</a></code> <code><a href="aggregate_pcrs.html">FUN_agg_pcrs_prob()</a></code> </p>
         </td>
-        <td><p>Import 4 tables to create a metabarlist object</p></td>
+        <td><p>Aggregate PCR replicates</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="aggregate_motus.html">aggregate_motus()</a></code> <code><a href="aggregate_motus.html">FUN_agg_motus_sum()</a></code> </p>
+        </td>
+        <td><p>Aggregate MOTUs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="taxoparser.html">taxoparser()</a></code> </p>
+        </td>
+        <td><p>Parse taxonomic information</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="taxodecider.html">taxodecider()</a></code> </p>
+        </td>
+        <td><p>Selecting the correct taxonomy</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-flag-spurious-signal" class="hasAnchor"><a href="#section-flag-spurious-signal" class="anchor"></a>Flag spurious signal</h2>
+          <p class="section-desc"><p>Detect and enable the tagging of potential molecular artifacts such as contaminants or dysfunctional PCR reactions</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="contaslayer.html">contaslayer()</a></code> </p>
+        </td>
+        <td><p>Detecting contaminants using negative controls</p></td>
       </tr><tr>
         
         <td>
@@ -280,15 +313,53 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="taxodecider.html">taxodecider()</a></code> </p>
+          <p><code><a href="pcrslayer.html">pcrslayer()</a></code> <code><a href="pcrslayer.html">pcr_within_between()</a></code> <code><a href="pcrslayer.html">FUN_pcrdist_bray_freq()</a></code> <code><a href="pcrslayer.html">FUN_pcrdist_coa_freq()</a></code> <code><a href="pcrslayer.html">check_pcr_thresh()</a></code> <code><a href="pcrslayer.html">pcr_threshold_estimate()</a></code> <code><a href="pcrslayer.html">check_pcr_repl()</a></code> </p>
         </td>
-        <td><p>Selecting the correct taxonomy</p></td>
+        <td><p>Detecting PCRs replicate outliers.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="taxoparser.html">taxoparser()</a></code> </p>
+          <p><code><a href="pcr_outlier.html">pcr_outlier()</a></code> <code><a href="pcr_outlier.html">filter_replicat()</a></code> <code><a href="pcr_outlier.html">coa_function()</a></code> <code><a href="pcr_outlier.html">bray_function()</a></code> </p>
         </td>
-        <td><p>Parse taxonomic information</p></td>
+        <td><p>Identify non-conforming PCR replicates</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-export" class="hasAnchor"><a href="#section-export" class="anchor"></a>Export</h2>
+          <p class="section-desc"><p>Export data in fasta format</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="fasta_generator.html">fasta_generator()</a></code> </p>
+        </td>
+        <td><p>Generating a fasta file from a <code>metabarlist</code> object</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-example-data-set" class="hasAnchor"><a href="#section-example-data-set" class="anchor"></a>Example data set</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="soil_euk.html">soil_euk</a></code> </p>
+        </td>
+        <td><p>Soil eukaryote DNA metabarcoding data from French Guiana</p></td>
       </tr>
     </tbody>
     </table>
