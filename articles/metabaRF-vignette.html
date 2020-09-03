@@ -79,7 +79,8 @@
 
       
 
-      </header><script src="metabaRF-vignette_files/kePrint-0.0.1/kePrint.js"></script><div class="row">
+      </header><script src="metabaRF-vignette_files/kePrint-0.0.1/kePrint.js"></script><link href="metabaRF-vignette_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Let’s metabaR!</h1>
@@ -89,7 +90,7 @@
             <address class="author_afil">
       Evolution et Diversité Biologique (EDB UMR5174), Université Toulouse 3 Paul Sabatier, CNRS, IRD - Toulouse, France.<br><h4 class="author">Clément Lionnet, Frédéric Boyer</h4>
             <address class="author_afil">
-      Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France.<br><h4 class="date">2020-08-23</h4>
+      Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France.<br><h4 class="date">2020-09-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/metabaRfactory/metabaR/blob/master/vignettes/metabaRF-vignette.Rmd"><code>vignettes/metabaRF-vignette.Rmd</code></a></small>
       <div class="hidden name"><code>metabaRF-vignette.Rmd</code></div>
@@ -126,7 +127,7 @@
 </ul>
 <p>To install <code>metabaR</code>, use :</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"metabaRactory/metabaR"</span>)</pre></body></html></div>
+<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"metabaRactory/metabaR"</span>)</pre></body></html></div>
 <p>And then load the package</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">metabaR</span>) <span class="co"># modify the name once we'll all agree on that</span></pre></body></html></div>
 </div>
@@ -381,19 +382,19 @@ These are the value of <span class="math inline">\(q\)</span> for which <code>me
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">soil_euk_h20.raref</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/metabaR/man/hill_rarefaction.html">hill_rarefaction</a></span>(<span class="no">soil_euk_h20</span>, <span class="kw">nboot</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">nsteps</span> <span class="kw">=</span> <span class="fl">10</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">soil_euk_h20.raref</span>$<span class="no">hill_table</span>)
 <span class="co">#&gt;      pcr_id reads     D0     D0.sd        D1    D1.sd        D2     D2.sd</span>
-<span class="co">#&gt; 1 H20-As_r1     5   4.65 0.5871429  4.537596 1.176790  4.531746 0.7524388</span>
-<span class="co">#&gt; 2 H20-As_r1    10   9.30 0.7326951  9.075192 1.106911  8.904762 1.0935478</span>
-<span class="co">#&gt; 3 H20-As_r1   100  51.25 4.0114966 37.238458 1.117569 27.022478 3.6506249</span>
-<span class="co">#&gt; 4 H20-As_r1   200  81.05 5.4529084 49.509507 1.093183 30.808417 2.9273821</span>
-<span class="co">#&gt; 5 H20-As_r1   500 138.25 6.8815161 62.715492 1.060236 33.391754 2.0118522</span>
-<span class="co">#&gt; 6 H20-As_r1  1000 201.20 7.1935644 73.316953 1.055629 35.530710 2.3918004</span>
+<span class="co">#&gt; 1 H20-As_r1     5   4.85 0.3663475  4.796321 1.106911  4.785714 0.5233536</span>
+<span class="co">#&gt; 2 H20-As_r1    10   8.70 1.0809353  8.285592 1.174801  8.040675 1.5124624</span>
+<span class="co">#&gt; 3 H20-As_r1   100  52.50 3.5168766 38.834288 1.104965 28.386305 3.8977531</span>
+<span class="co">#&gt; 4 H20-As_r1   200  78.45 4.6845210 48.304097 1.088265 31.174549 3.4821922</span>
+<span class="co">#&gt; 5 H20-As_r1   500 138.70 5.6577846 64.861087 1.064478 34.839245 2.7249144</span>
+<span class="co">#&gt; 6 H20-As_r1  1000 200.05 6.3035078 71.950104 1.053275 34.555516 2.3278296</span>
 <span class="co">#&gt;   coverage coverage.sd</span>
-<span class="co">#&gt; 1  0.14000 0.234857179</span>
-<span class="co">#&gt; 2  0.14000 0.146539019</span>
-<span class="co">#&gt; 3  0.66000 0.046566308</span>
-<span class="co">#&gt; 4  0.74675 0.026171248</span>
-<span class="co">#&gt; 5  0.84130 0.013981567</span>
-<span class="co">#&gt; 6  0.89900 0.006688561</span></pre></body></html></div>
+<span class="co">#&gt; 1   0.0600 0.146539019</span>
+<span class="co">#&gt; 2   0.2450 0.198613616</span>
+<span class="co">#&gt; 3   0.6550 0.040065735</span>
+<span class="co">#&gt; 4   0.7605 0.026252819</span>
+<span class="co">#&gt; 5   0.8461 0.014385300</span>
+<span class="co">#&gt; 6   0.8978 0.008010519</span></pre></body></html></div>
 <p>The <code>hill_rarefaction</code> function produces an object with several elements. The most relevant one is the <code>hill_table</code> a table indicating the <code>pcr_id</code>, the sequencing depth at which the <em>pcr</em> was resampled, and the corresponding diversity / coverage indices. The output of <code>hill_rarefaction</code> can be used to draw rarefaction curves.</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/metabaR/man/hill_rarefaction.html">gghill_rarefaction</a></span>(<span class="no">soil_euk_h20.raref</span>)</pre></body></html></div>
 <p><img src="metabaRF-vignette_files/figure-html/gghill-1.png" width="672" style="display: block; margin: auto;"></p>
