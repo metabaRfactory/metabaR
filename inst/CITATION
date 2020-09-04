@@ -1,0 +1,14 @@
+citHeader("To cite metabaR in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "metabaR : an R package for the evaluation and improvement of DNA metabarcoding data quality",
+  author   =  "Lucie Zinger, Clément Lionnet, Anne-Sophie Benoiston, Julian Donald, Céline Mercier, Frédéric Boyer",
+  journal  = "bioRxiv",
+  year     = "2020",
+  url      = "https://www.biorxiv.org/content/10.1101/2020.08.28.271817v1",
+  doi      = "10.1101/2020.08.28.271817",
+  textVersion = paste("Lucie Zinger, Clément Lionnet, Anne-Sophie Benoiston, Julian Donald, Céline Mercier, Frédéric Boyer (2020).
+metabaR : an R package for the evaluation and improvement of DNA metabarcoding data quality. bioRxiv; doi: https://doi.org/10.1101/2020.08.28.271817"
+  )
+)
