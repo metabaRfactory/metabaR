@@ -60,6 +60,8 @@
 #'
 #' @examples
 #'
+#'\donttest{
+#'
 #' library(ggplot2)
 #' data(soil_euk)
 #'
@@ -94,6 +96,8 @@
 #'                       groups = soil_euk_sub2$pcrs$habitat_material,
 #'                       funcpcr = soil_euk_sub2$pcrs$functional_pcr)
 #' mds + guides(color = FALSE)
+#'
+#' }
 #'
 #' @author Lucie Zinger, Clement Lionnet, Fred Boyer
 #' @importFrom vegan vegdist cca

@@ -31,6 +31,8 @@ Users can be interested in using the SILVAngs pipeline for assigning a taxon to 
 }
 \examples{
 
+\donttest{
+
 data(soil_euk)
 soil_euk <- silva_annotator(
    metabarlist = soil_euk,
@@ -45,6 +47,8 @@ ggplot(soil_euk$motus, aes(x=factor(1), fill=phylum_silva)) +
   geom_bar() + coord_polar("y") +
   theme_minimal() + labs(x=NULL, y=NULL) +
   theme(legend.position = "bottom")
+
+}
 
 }
 \seealso{

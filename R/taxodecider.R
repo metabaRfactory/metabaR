@@ -28,6 +28,8 @@
 #'
 #' @examples
 #'
+#' \donttest{
+#'
 #' data(soil_euk)
 #'
 #' soil_euk <- silva_annotator(
@@ -47,6 +49,7 @@
 #'    threshold = 0.9
 #' )
 #'
+#' }
 #'
 #' @author Anne-Sophie Benoiston, Lucie Zinger
 #' @export taxodecider

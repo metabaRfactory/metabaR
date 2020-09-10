@@ -31,11 +31,15 @@
 #'
 #' # Using a taxonomic path
 #'
+#' \donttest{
+#'
 #' ## on all data. can take a while
 #' ggtaxplot(soil_euk, "path", sep.level = ":", sep.info = "@")
 #'
 #' ## show only taxonomic labels if taxon has a relative abundance > 1e-3
 #' ggtaxplot(soil_euk, "path", sep.level = ":", sep.info = "@", thresh = 1e-3)
+#' 
+#'}
 #'
 #' ## run on a particular clade e.g. here arthropoda, otherwise difficult to read
 #' arthropoda <- subset_metabarlist(soil_euk,

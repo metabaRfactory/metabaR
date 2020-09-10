@@ -35,6 +35,9 @@
 #'
 #' data(soil_euk)
 #' library(ggplot2)
+#'
+#' \donttest{
+#'
 #' soil_euk_clean <- tagjumpslayer(soil_euk, 0.03)
 #'
 #' # identify occurrence of the most abundant OTU
@@ -58,6 +61,8 @@
 #' )
 #' p2 + scale_size(limits = c(1, max(soil_euk_clean$reads[, idx]))) +
 #'   ggtitle("Distribution of the most abundant MOTU after curation")
+#'
+#' }
 #'
 #' @author Lucie Zinger
 #' @export tagjumpslayer

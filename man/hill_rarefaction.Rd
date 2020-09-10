@@ -63,6 +63,8 @@ soil_euk_h20 <- subset_metabarlist(soil_euk,
    table = "pcrs",
    indices = grepl("H20-[A-B]", rownames(soil_euk$pcrs)))
 
+\donttest{
+
 # run rarefaction (use boot = 20 to limit computation time)
 soil_euk_h20.raref <- hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
 
@@ -78,6 +80,8 @@ p
 p + scale_fill_manual(values = c("goldenrod4", "brown4", "grey")) +
   scale_color_manual(values = c("goldenrod4", "brown4", "grey")) +
   labs(color = "Material type")
+
+}
 
 }
 \references{

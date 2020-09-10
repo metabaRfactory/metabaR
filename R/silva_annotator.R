@@ -24,6 +24,8 @@
 #' @seealso \code{\link{taxodecider}}
 #'
 #' @examples
+#' 
+#' \donttest{
 #'
 #' data(soil_euk)
 #' soil_euk <- silva_annotator(
@@ -39,6 +41,8 @@
 #'   geom_bar() + coord_polar("y") +
 #'   theme_minimal() + labs(x=NULL, y=NULL) +
 #'   theme(legend.position = "bottom")
+#'
+#' }
 #'
 #' @author Lucie Zinger, Anne-Sophie Benoiston
 #' @importFrom seqinr read.fasta

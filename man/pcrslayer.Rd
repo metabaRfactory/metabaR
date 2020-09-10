@@ -51,7 +51,7 @@ from the \code{metabarlist} object.}
 Default is Bray-Curtis distances on MOTU relative abundance table.}
 
 \item{thresh.method}{a character indicating which method should be used to define the filtering
-threshold. Can be \code{"interesect"} or \code{"mode"}.}
+threshold. Can be \code{"intersect"} or \code{"mode"}.}
 
 \item{output_col}{a character string for the column name in the `pcrs` table, in
 which the result will be stored.
@@ -96,7 +96,7 @@ For both methods, the user is free to chose their own distance metric and whethe
 
 The \code{pcr_within_between} function is part of \code{pcrslayer}, and computes dissimilarities in MOTU composition within a biological sample \emph{dw} and between biological samples \emph{db} following either \code{method="centroid"} or \code{method="pairwise"} methods.
 
-The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="interesect"}). Alternatively, it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
+The threshold \emph{tresh} is defined automatically with two alternative methods. Either it is the intersection of \emph{dw} and \emph{db} distributions (\code{tresh.method="intersect"}). Alternatively, it is the mode of the \emph{db} distribution (\code{tresh.method="mode"}).
 
 The \code{check_pcr_thresh} function enables visualisation of \emph{dw} and \emph{db} distributions. Function \code{check_pcr_repl} enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.
 
@@ -120,6 +120,8 @@ The \code{check_pcr_repl} function enables visualisation of dissimilarity patter
 }}
 
 \examples{
+
+\donttest{
 
 library(ggplot2)
 data(soil_euk)
@@ -155,6 +157,8 @@ mds <- check_pcr_repl(soil_euk_sub2,
                       groups = soil_euk_sub2$pcrs$habitat_material,
                       funcpcr = soil_euk_sub2$pcrs$functional_pcr)
 mds + guides(color = FALSE)
+
+}
 
 }
 \seealso{
