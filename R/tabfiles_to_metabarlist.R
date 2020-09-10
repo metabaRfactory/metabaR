@@ -33,6 +33,8 @@
 #' This function imports tabular data into \R to create a \code{metabarlist} object. The four files required are imported into \R, included in a list of class \code{metabarlist} with the \code{\link{metabarlist_generator}} function, and congruencies between all tables are tested with the \code{\link{check_metabarlist}} function.
 #'
 #' @examples
+#' 
+#' \donttest{
 #'
 #' soil_euk <- tabfiles_to_metabarlist(
 #'   file_reads = system.file("extdata", "litiere_euk_reads.txt", package = "metabaR"),
@@ -40,6 +42,8 @@
 #'   file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaR"),
 #'   file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaR")
 #' )
+#'
+#' }
 #'
 #' @seealso \code{\link{check_metabarlist}}, \code{\link{metabarlist_generator}},
 #'           \code{\link{obifiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}

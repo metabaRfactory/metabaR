@@ -35,6 +35,8 @@ The function \code{taxodecider} allows users to choose between two taxonomic ann
 }
 \examples{
 
+\donttest{
+
 data(soil_euk)
 
 soil_euk <- silva_annotator(
@@ -54,6 +56,7 @@ soil_euk2 <- taxodecider(
    threshold = 0.9
 )
 
+}
 
 }
 \seealso{
