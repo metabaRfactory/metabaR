@@ -9,3 +9,5 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+.travis.yml
+travis-config.sh
