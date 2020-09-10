@@ -31,11 +31,13 @@
 #' @examples
 #'
 #' data(soil_euk)
+#' dir <- tempdir()
+#' fasta_file_path <- file.path(dir, "Dominants.fasta")
 #'
 #' ## Export in fasta format the 10 most abundant MOTUs
 #' idx <- order(soil_euk$motus$count, decreasing = TRUE)[1:10]
 #' fasta_generator(soil_euk, rownames(soil_euk$motus)[idx],
-#'   "Dominants.fasta"
+#'   fasta_file_path
 #' )
 #'
 #' ## Export in fasta format the 10 most abundant MOTUs, their abundance and the GC content
@@ -46,13 +48,16 @@
 #'   row.names = rownames(soil_euk$motus)[idx]
 #' )
 #'
-#' dir <- tempdir()
-#'
 #' fasta_generator(
 #'   soil_euk, rownames(soil_euk$motus)[idx],
-#'    file.path(dir, "Dominants.fasta"),
+#'    fasta_file_path,
 #'   annotation
 #' )
+#'
+#' ## Clean example output file
+#' if (file.exists(fasta_file_path))
+#'   file.remove(fasta_file_path)
+#'
 #' @author Lucie Zinger, Clément Lionnet
 #' @export fasta_generator
 
