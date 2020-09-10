@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Checks if a list of tables is a <code>metabarlist</code> — check_metabarlist • metabaR</title>
+<title>Checks if a list of tables is a metabarlist — check_metabarlist • metabaR</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Checks if a list of tables is a <code>metabarlist</code> — check_metabarlist" />
+<meta property="og:title" content="Checks if a list of tables is a metabarlist — check_metabarlist" />
 <meta property="og:description" content="Tests if a list of tables contains correct information on MOTU abundances, MOTU characteristics, PCR characteristics, and sample characteristics to be classed as a metabarlist object." />
 
 
@@ -132,7 +132,7 @@
     <p>Tests if a list of tables contains correct information on MOTU abundances, MOTU characteristics, PCR characteristics, and sample characteristics to be classed as a <code>metabarlist</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_metabarlist</span>(<span class='no'>metabarlist</span>)</pre>
+    <pre class="usage"><span class='fu'>check_metabarlist</span>(<span class='kw'>metabarlist</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,7 +167,7 @@
 </ul>
 
 <p>The function will stop if these basic criteria are not met.</p>
-<p><code>check_metabarlist</code> also issues warnings if tables lack columns which are non-mandatory for the <code>metabaR</code> package to run, but that are mandatory (or have a mandatory format) for specific functions (e.g., <code>ggpcrplate</code>)</p><ul>
+<p><code>check_metabarlist</code> also issues warnings if tables lack columns which are non-mandatory for the <code>metabaR</code> package to run, but that are mandatory (or have a mandatory format) for specific functions (e.g., <code><a href='ggpcrplate.html'>ggpcrplate</a></code>)</p><ul>
 <li><p>the column `sequence` for the `motus` table.</p></li>
 <li><p>the columns `tag_fwd`, `tag_rev`, `primer_fwd`, `primer_rev`,
        `plate_no`, `plate_col`, and `plate_row` for the `pcrs` table.</p></li>
@@ -177,12 +177,16 @@
 <p>In addition, the function issues a warning if any PCR or MOTU has a total count of 0 across the entire dataset.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>metabarlist_generator</code></p></div>
+    <div class='dont-index'><p><code><a href='metabarlist_generator.html'>metabarlist_generator</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Clément Lionnet &amp; Frédéric Boyer &amp; Lucie Zinger</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
-<span class='fu'>check_metabarlist</span>(<span class='no'>soil_euk</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in soil_euk have a number of reads of zero in table `reads`!</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='fu'>check_metabarlist</span>(<span class='kw'>soil_euk</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in soil_euk have a number of reads of zero in table `reads`!</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -199,7 +203,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

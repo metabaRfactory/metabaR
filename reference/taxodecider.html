@@ -132,7 +132,7 @@
     <p>Selecting a given taxonomic annotation between those obtained from two different databases</p>
     </div>
 
-    <pre class="usage"><span class='fu'>taxodecider</span>(<span class='no'>metabarlist</span>, <span class='no'>best.db</span>, <span class='no'>sim.scores</span>, <span class='no'>lineage</span>, <span class='no'>threshold</span>)</pre>
+    <pre class="usage"><span class='fu'>taxodecider</span>(<span class='kw'>metabarlist</span>, <span class='kw'>best.db</span>, <span class='kw'>sim.scores</span>, <span class='kw'>lineage</span>, <span class='kw'>threshold</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,27 +174,35 @@ best database is kept if both databases yields high similarity scores.</p></td>
     <p>The function <code>taxodecider</code> allows users to choose between two taxonomic annotations based on their best similarity scores and on a preference for a given database (e.g. with more reliable taxonomy). All taxonomic information should be stored in the `motus` table.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>silva_annotator</code></p></div>
+    <div class='dont-index'><p><code><a href='silva_annotator.html'>silva_annotator</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Anne-Sophie Benoiston, Lucie Zinger</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
+<span class='co'># \donttest{</span>
 
-<span class='no'>soil_euk</span> <span class='kw'>&lt;-</span> <span class='fu'>silva_annotator</span>(
-   <span class='kw'>metabarlist</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>,
-   <span class='kw'>silva.path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"lit_euk---ssu---otus.csv"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
-   <span class='kw'>clust.path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>,
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+
+<span class='kw'>soil_euk</span> <span class='op'>&lt;-</span> <span class='fu'><a href='silva_annotator.html'>silva_annotator</a></span>(
+   metabarlist = <span class='kw'>soil_euk</span>,
+   silva.path = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"lit_euk---ssu---otus.csv"</span>, package = <span class='st'>"metabaR"</span>),
+   clust.path = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>,
               <span class='st'>"lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr"</span>,
-               <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in metabarlist have a number of reads of zero in table `reads`!</span></div><div class='input'>
-<span class='no'>soil_euk</span>$<span class='no'>motus</span>$<span class='no'>similarity</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>$<span class='no'>motus</span>$<span class='no'>similarity</span>/<span class='fl'>100</span>
+               package = <span class='st'>"metabaR"</span>))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in metabarlist have a number of reads of zero in table `reads`!</span></div><div class='input'>
+<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>similarity</span> <span class='op'>=</span> <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>similarity</span><span class='op'>/</span><span class='fl'>100</span>
 
-<span class='no'>soil_euk2</span> <span class='kw'>&lt;-</span> <span class='fu'>taxodecider</span>(
-   <span class='kw'>metabarlist</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>,
-   <span class='kw'>best.db</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"silva"</span>, <span class='st'>"embl"</span>),
-   <span class='kw'>sim.scores</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"similarity"</span>, <span class='st'>"best_identity.order_filtered_embl_r136_noenv_EUK"</span>),
-   <span class='kw'>lineage</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lineage_silva"</span>, <span class='st'>"path"</span>),
-   <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.9</span>
-)</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in metabarlist have a number of reads of zero in table `reads`!</span></div><div class='input'>
+<span class='kw'>soil_euk2</span> <span class='op'>&lt;-</span> <span class='fu'>taxodecider</span>(
+   metabarlist = <span class='kw'>soil_euk</span>,
+   best.db = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"silva"</span>, <span class='st'>"embl"</span>),
+   sim.scores = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"similarity"</span>, <span class='st'>"best_identity.order_filtered_embl_r136_noenv_EUK"</span>),
+   lineage = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lineage_silva"</span>, <span class='st'>"path"</span>),
+   threshold = <span class='fl'>0.9</span>
+)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in metabarlist have a number of reads of zero in table `reads`!</span></div><div class='input'>
+<span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -212,7 +220,7 @@ best database is kept if both databases yields high similarity scores.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -132,9 +132,9 @@
     <p>These functions generate and plot rarefaction curves from a <code>metabarlist</code> object using the hill numbers framework (i.e. \(^{q}D\)), as well as Good's coverage index.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hill_rarefaction</span>(<span class='no'>metabarlist</span>, <span class='kw'>nboot</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>nsteps</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+    <pre class="usage"><span class='fu'>hill_rarefaction</span>(<span class='kw'>metabarlist</span>, nboot = <span class='fl'>10</span>, nsteps = <span class='fl'>10</span>)
 
-<span class='fu'>gghill_rarefaction</span>(<span class='no'>hill_rar</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>gghill_rarefaction</span>(<span class='kw'>hill_rar</span>, group = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,7 +180,7 @@ the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no gro
 
 <p>The function also returns Good's coverage index (1-singletons/#reads). Note however that this index should be interpreted carefully in metabarcoding data:
 #'</p><ul>
-<li><p>absolute singletons (across the whole metabarcoding dataset) are usually filtered out during bioinformatic process (which is the case for the <code>soil_euk</code> data). The Good's coverage estimate returned here is only based on the number of singletons per PCR after this filtering process, so the true number of singletons is underestimated here.</p></li>
+<li><p>absolute singletons (across the whole metabarcoding dataset) are usually filtered out during bioinformatic process (which is the case for the <code><a href='soil_euk.html'>soil_euk</a></code> data). The Good's coverage estimate returned here is only based on the number of singletons per PCR after this filtering process, so the true number of singletons is underestimated here.</p></li>
 <li><p>This coverage index gives an assessment of the coverage of the amplicon diversity within a pcr: it includes remaining errors, etc.. The coverage of the genuine DNA fragment diversity in the biological sample is likely to be misestimated with this index.</p></li>
 </ul>
 
@@ -194,30 +194,40 @@ the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no gro
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Chao, A., Chiu, C. H., &amp; Jost, L. (2014). Unifying species diversity, phylogenetic diversity, functional diversity, and related similarity and differentiation measures through Hill numbers. Annual review of ecology, evolution, and systematics, 45, 297-324.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
 <span class='co'># Create a subset of pcrs: only a subset of samples from the H20 plot</span>
 
-<span class='no'>soil_euk_h20</span> <span class='kw'>&lt;-</span> <span class='fu'>subset_metabarlist</span>(<span class='no'>soil_euk</span>,
-   <span class='kw'>table</span> <span class='kw'>=</span> <span class='st'>"pcrs"</span>,
-   <span class='kw'>indices</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"H20-[A-B]"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>soil_euk</span>$<span class='no'>pcrs</span>)))
+<span class='kw'>soil_euk_h20</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subset_metabarlist.html'>subset_metabarlist</a></span>(<span class='kw'>soil_euk</span>,
+   table = <span class='st'>"pcrs"</span>,
+   indices = <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"H20-[A-B]"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>pcrs</span>)))
+
+<span class='co'># \donttest{</span>
 
 <span class='co'># run rarefaction (use boot = 20 to limit computation time)</span>
-<span class='no'>soil_euk_h20.raref</span> <span class='kw'>&lt;-</span> <span class='fu'>hill_rarefaction</span>(<span class='no'>soil_euk_h20</span>, <span class='kw'>nboot</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>nsteps</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='kw'>soil_euk_h20.raref</span> <span class='op'>&lt;-</span> <span class='fu'>hill_rarefaction</span>(<span class='kw'>soil_euk_h20</span>, nboot = <span class='fl'>20</span>, nsteps = <span class='fl'>10</span>)
 
 <span class='co'># plot the results</span>
-<span class='fu'>gghill_rarefaction</span>(<span class='no'>soil_euk_h20.raref</span>)</div><div class='img'><img src='hill_rarefaction-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>gghill_rarefaction</span>(<span class='kw'>soil_euk_h20.raref</span>)
+</div><div class='img'><img src='hill_rarefaction-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot the results while differenciating litter vs. soil samples</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>gghill_rarefaction</span>(
-         <span class='no'>soil_euk_h20.raref</span>,
-         <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>soil_euk_h20</span>$<span class='no'>samples</span>$<span class='no'>Material</span>[<span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='no'>soil_euk_h20</span>$<span class='no'>pcrs</span>$<span class='no'>sample_id</span>,
-                                               <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>soil_euk_h20</span>$<span class='no'>samples</span>))])
-<span class='no'>p</span></div><div class='img'><img src='hill_rarefaction-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"goldenrod4"</span>, <span class='st'>"brown4"</span>, <span class='st'>"grey"</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"goldenrod4"</span>, <span class='st'>"brown4"</span>, <span class='st'>"grey"</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Material type"</span>)</div><div class='img'><img src='hill_rarefaction-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>gghill_rarefaction</span>(
+         <span class='kw'>soil_euk_h20.raref</span>,
+         group = <span class='kw'>soil_euk_h20</span><span class='op'>$</span><span class='kw'>samples</span><span class='op'>$</span><span class='kw'>Material</span>[<span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='kw'>soil_euk_h20</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>sample_id</span>,
+                                               <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>soil_euk_h20</span><span class='op'>$</span><span class='kw'>samples</span>))])
+<span class='kw'>p</span>
+</div><div class='img'><img src='hill_rarefaction-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span>(values = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"goldenrod4"</span>, <span class='st'>"brown4"</span>, <span class='st'>"grey"</span>)) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span>(values = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"goldenrod4"</span>, <span class='st'>"brown4"</span>, <span class='st'>"grey"</span>)) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(color = <span class='st'>"Material type"</span>)
+</div><div class='img'><img src='hill_rarefaction-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># }</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -234,7 +244,7 @@ the pcrs included in the `hill_rar$samples` object. Default is `NULL` for no gro
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

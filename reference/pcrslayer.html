@@ -133,31 +133,31 @@
     </div>
 
     <pre class="usage"><span class='fu'>pcrslayer</span>(
-  <span class='no'>metabarlist</span>,
-  <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"centroid"</span>,
-  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>FUN_pcrdist_bray_freq</span>,
-  <span class='kw'>thresh.method</span> <span class='kw'>=</span> <span class='st'>"intersect"</span>,
-  <span class='kw'>output_col</span> <span class='kw'>=</span> <span class='st'>"functional_pcr"</span>,
-  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='no'>T</span>
+  <span class='kw'>metabarlist</span>,
+  replicates = <span class='kw'>NULL</span>,
+  method = <span class='st'>"centroid"</span>,
+  FUN = <span class='kw'>FUN_pcrdist_bray_freq</span>,
+  thresh.method = <span class='st'>"intersect"</span>,
+  output_col = <span class='st'>"functional_pcr"</span>,
+  plot = <span class='kw'>T</span>
 )
 
 <span class='fu'>pcr_within_between</span>(
-  <span class='no'>metabarlist</span>,
-  <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>FUN_pcrdist_bray_freq</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"centroid"</span>
+  <span class='kw'>metabarlist</span>,
+  replicates = <span class='kw'>NULL</span>,
+  FUN = <span class='kw'>FUN_pcrdist_bray_freq</span>,
+  method = <span class='st'>"centroid"</span>
 )
 
-<span class='fu'>FUN_pcrdist_bray_freq</span>(<span class='no'>reads_table</span>)
+<span class='fu'>FUN_pcrdist_bray_freq</span>(<span class='kw'>reads_table</span>)
 
-<span class='fu'>FUN_pcrdist_coa_freq</span>(<span class='no'>reads_table</span>)
+<span class='fu'>FUN_pcrdist_coa_freq</span>(<span class='kw'>reads_table</span>)
 
-<span class='fu'>check_pcr_thresh</span>(<span class='no'>wthn.btwn</span>, <span class='kw'>thresh.method</span> <span class='kw'>=</span> <span class='st'>"intersect"</span>)
+<span class='fu'>check_pcr_thresh</span>(<span class='kw'>wthn.btwn</span>, thresh.method = <span class='st'>"intersect"</span>)
 
-<span class='fu'>pcr_threshold_estimate</span>(<span class='no'>wthn.btwn</span>, <span class='kw'>thresh.method</span> <span class='kw'>=</span> <span class='st'>"intersect"</span>)
+<span class='fu'>pcr_threshold_estimate</span>(<span class='kw'>wthn.btwn</span>, thresh.method = <span class='st'>"intersect"</span>)
 
-<span class='fu'>check_pcr_repl</span>(<span class='no'>metabarlist</span>, <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>funcpcr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>check_pcr_repl</span>(<span class='kw'>metabarlist</span>, replicates = <span class='kw'>NULL</span>, groups = <span class='kw'>NULL</span>, funcpcr = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,7 +185,7 @@ Default is Bray-Curtis distances on MOTU relative abundance table.</p></td>
     <tr>
       <th>thresh.method</th>
       <td><p>a character indicating which method should be used to define the filtering
-threshold. Can be <code>"interesect"</code> or <code>"mode"</code>.</p></td>
+threshold. Can be <code>"intersect"</code> or <code>"mode"</code>.</p></td>
     </tr>
     <tr>
       <th>output_col</th>
@@ -235,7 +235,7 @@ from which the graphical colorscheme is drawn.</p></td>
 <li><p>FUN_pcrdist_coa_freq computes Euclidean distances between PCRs from a Correspondance Analysis on MOTU relative abundances</p></li>
 </ul><p>.</p>
 <p>The <code>pcr_within_between</code> function is part of <code>pcrslayer</code>, and computes dissimilarities in MOTU composition within a biological sample <em>dw</em> and between biological samples <em>db</em> following either <code>method="centroid"</code> or <code>method="pairwise"</code> methods.</p>
-<p>The threshold <em>tresh</em> is defined automatically with two alternative methods. Either it is the intersection of <em>dw</em> and <em>db</em> distributions (<code>tresh.method="interesect"</code>). Alternatively, it is the mode of the <em>db</em> distribution (<code>tresh.method="mode"</code>).</p>
+<p>The threshold <em>tresh</em> is defined automatically with two alternative methods. Either it is the intersection of <em>dw</em> and <em>db</em> distributions (<code>tresh.method="intersect"</code>). Alternatively, it is the mode of the <em>db</em> distribution (<code>tresh.method="mode"</code>).</p>
 <p>The <code>check_pcr_thresh</code> function enables visualisation of <em>dw</em> and <em>db</em> distributions. Function <code>check_pcr_repl</code> enables visualization of PCR replicate dissimilarity patterns in a NMDS ordination and distance from their average OTU community.</p>
 <p>The <code>check_pcr_repl</code> function enables visualisation of dissimilarity patterns across all PCRs while showing PCR replicate centroids through a Principal Coordinate Analysis (PCoA) based on Bray-Curtis dissimilarities.</p>
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
@@ -252,40 +252,53 @@ from which the graphical colorscheme is drawn.</p></td>
 </ul>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>tagjumpslayer</code>, <code>contaslayer</code> for other data curation procedures.</p></div>
+    <div class='dont-index'><p><code><a href='tagjumpslayer.html'>tagjumpslayer</a></code>, <code><a href='contaslayer.html'>contaslayer</a></code> for other data curation procedures.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger, Clement Lionnet, Fred Boyer</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
+<span class='co'># \donttest{</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
 
 <span class='co'>## Consider only biological samples with # reads &gt; 0</span>
-<span class='no'>soil_euk_sub</span> <span class='kw'>&lt;-</span> <span class='fu'>subset_metabarlist</span>(<span class='no'>soil_euk</span>,
+<span class='kw'>soil_euk_sub</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subset_metabarlist.html'>subset_metabarlist</a></span>(<span class='kw'>soil_euk</span>,
                                    <span class='st'>"pcrs"</span>,
-                                   <span class='no'>soil_euk</span>$<span class='no'>pcrs</span>$<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"sample"</span> <span class='kw'>&amp;</span>
-                                   <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='no'>soil_euk</span>$<span class='no'>reads</span><span class='kw'>&gt;</span><span class='fl'>0</span>))
+                                   <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>type</span> <span class='op'>==</span> <span class='st'>"sample"</span> <span class='op'>&amp;</span>
+                                   <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>reads</span><span class='op'>&gt;</span><span class='fl'>0</span>))
 
 <span class='co'>## Visualisation of within vs. between sample dissimilarities</span>
-<span class='no'>soil_euk_sub_wb</span> <span class='kw'>&lt;-</span> <span class='fu'>pcr_within_between</span>(<span class='no'>soil_euk_sub</span>)
-<span class='fu'>check_pcr_thresh</span>(<span class='no'>soil_euk_sub_wb</span>, <span class='kw'>thresh.method</span> <span class='kw'>=</span> <span class='st'>"intersect"</span>)</div><div class='img'><img src='pcrslayer-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>soil_euk_sub_wb</span> <span class='op'>&lt;-</span> <span class='fu'>pcr_within_between</span>(<span class='kw'>soil_euk_sub</span>)
+<span class='fu'>check_pcr_thresh</span>(<span class='kw'>soil_euk_sub_wb</span>, thresh.method = <span class='st'>"intersect"</span>)
+</div><div class='img'><img src='pcrslayer-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Visualisation of replicates through PCoA</span>
 <span class='co'># create grouping factor according to habitat and material</span>
-<span class='no'>soil_euk_sub</span>$<span class='no'>pcrs</span>$<span class='no'>habitat_material</span> <span class='kw'>&lt;-</span> <span class='no'>soil_euk_sub</span>$<span class='no'>pcrs</span>$<span class='no'>sample_id</span>
-<span class='no'>idx</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span>(<span class='no'>soil_euk_sub</span>$<span class='no'>pcrs</span>$<span class='no'>habitat_material</span>), <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>soil_euk_sub</span>$<span class='no'>samples</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span>(<span class='no'>soil_euk_sub</span>$<span class='no'>pcrs</span>$<span class='no'>habitat_material</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>soil_euk_sub</span>$<span class='no'>samples</span>$<span class='no'>Habitat</span>[<span class='no'>idx</span>],
-                                                    <span class='no'>soil_euk_sub</span>$<span class='no'>samples</span>$<span class='no'>Material</span>[<span class='no'>idx</span>],
-                                                    <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>" | "</span>)
+<span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>habitat_material</span> <span class='op'>&lt;-</span> <span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>sample_id</span>
+<span class='kw'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span>(<span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>habitat_material</span>), <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>samples</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span>(<span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>habitat_material</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>samples</span><span class='op'>$</span><span class='kw'>Habitat</span>[<span class='kw'>idx</span>],
+                                                    <span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>samples</span><span class='op'>$</span><span class='kw'>Material</span>[<span class='kw'>idx</span>],
+                                                    sep = <span class='st'>" | "</span>)
 <span class='co'># visualise dissimilarity patterns</span>
-<span class='no'>mds</span> <span class='kw'>&lt;-</span> <span class='fu'>check_pcr_repl</span>(<span class='no'>soil_euk_sub</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>soil_euk_sub</span>$<span class='no'>pcrs</span>$<span class='no'>habitat_material</span>)
-<span class='no'>mds</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"sample type"</span>)</div><div class='img'><img src='pcrslayer-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>mds</span> <span class='op'>&lt;-</span> <span class='fu'>check_pcr_repl</span>(<span class='kw'>soil_euk_sub</span>, groups = <span class='kw'>soil_euk_sub</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>habitat_material</span>)
+<span class='kw'>mds</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(color = <span class='st'>"sample type"</span>)
+</div><div class='img'><img src='pcrslayer-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># identify dysfunctional PCRs</span>
-<span class='no'>soil_euk_sub2</span> <span class='kw'>&lt;-</span> <span class='fu'>pcrslayer</span>(<span class='no'>soil_euk_sub</span>)</div><div class='output co'>#&gt; [1] "Iteration 1"</div><div class='img'><img src='pcrslayer-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "Iteration 2"</div><div class='img'><img src='pcrslayer-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>soil_euk_sub2</span>$<span class='no'>pcrs</span>))</div><div class='output co'>#&gt; [1] "project"          "sample_id"        "type"             "control_type"    
-#&gt; [5] "habitat_material" "functional_pcr"  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='no'>soil_euk_sub2</span>$<span class='no'>pcrs</span>$<span class='no'>functional_pcr</span> <span class='kw'>==</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; [1] 4</div><div class='input'>
+<span class='kw'>soil_euk_sub2</span> <span class='op'>&lt;-</span> <span class='fu'>pcrslayer</span>(<span class='kw'>soil_euk_sub</span>)
+</div><div class='output co'>#&gt; [1] "Iteration 1"</div><div class='img'><img src='pcrslayer-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "Iteration 2"</div><div class='img'><img src='pcrslayer-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>soil_euk_sub2</span><span class='op'>$</span><span class='kw'>pcrs</span>))
+</div><div class='output co'>#&gt; [1] "project"          "sample_id"        "type"             "control_type"    
+#&gt; [5] "habitat_material" "functional_pcr"  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span>(<span class='kw'>soil_euk_sub2</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>functional_pcr</span> <span class='op'>==</span> <span class='fl'>FALSE</span>))
+</div><div class='output co'>#&gt; [1] 4</div><div class='input'>
 <span class='co'># define a color vector that corresponds to the different habitat types. Should be named.</span>
-<span class='no'>mds</span> <span class='kw'>&lt;-</span> <span class='fu'>check_pcr_repl</span>(<span class='no'>soil_euk_sub2</span>,
-                      <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>soil_euk_sub2</span>$<span class='no'>pcrs</span>$<span class='no'>habitat_material</span>,
-                      <span class='kw'>funcpcr</span> <span class='kw'>=</span> <span class='no'>soil_euk_sub2</span>$<span class='no'>pcrs</span>$<span class='no'>functional_pcr</span>)
-<span class='no'>mds</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='pcrslayer-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>mds</span> <span class='op'>&lt;-</span> <span class='fu'>check_pcr_repl</span>(<span class='kw'>soil_euk_sub2</span>,
+                      groups = <span class='kw'>soil_euk_sub2</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>habitat_material</span>,
+                      funcpcr = <span class='kw'>soil_euk_sub2</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>functional_pcr</span>)
+<span class='kw'>mds</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/guides.html'>guides</a></span>(color = <span class='fl'>FALSE</span>)
+</div><div class='img'><img src='pcrslayer-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># }</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -302,7 +315,7 @@ from which the graphical colorscheme is drawn.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

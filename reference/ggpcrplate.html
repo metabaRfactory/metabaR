@@ -133,9 +133,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>ggpcrplate</span>(
-  <span class='no'>metabarlist</span>,
-  <span class='kw'>legend_title</span> <span class='kw'>=</span> <span class='st'>"well_values"</span>,
-  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>metabarlist</span>) {     <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='no'>metabarlist</span>$<span class='no'>reads</span>) }
+  <span class='kw'>metabarlist</span>,
+  legend_title = <span class='st'>"well_values"</span>,
+  FUN = <span class='fu'>function</span>(<span class='kw'>metabarlist</span>) {     <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='kw'>metabarlist</span><span class='op'>$</span><span class='kw'>reads</span>) }
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -165,22 +165,27 @@ rows of the `reads` table.</p></td>
     <p>Visualising PCR attributes in their plate design context, i.e. their location in one or a set of 96-well PCR plates. This can be useful for identifying potential problems (e.g. high amount of reads in one control due to cross contaminations with neighboring samples).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>ggpcrtag</code></p></div>
+    <div class='dont-index'><p><code><a href='ggpcrtag.html'>ggpcrtag</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger, Clément Lionnet</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
 
 <span class='co'>## Plot the number of reads per pcr</span>
-<span class='fu'>ggpcrplate</span>(<span class='no'>soil_euk</span>)</div><div class='img'><img src='ggpcrplate-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggpcrplate</span>(<span class='kw'>soil_euk</span>)
+</div><div class='img'><img src='ggpcrplate-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'>## Plot the number of reads of the most abundant MOTU</span>
-<span class='fu'>ggpcrplate</span>(<span class='no'>soil_euk</span>,
-  <span class='kw'>legend_title</span> <span class='kw'>=</span> <span class='st'>"#reads of most \nabundant MOTU"</span>,
-  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>m</span>) {
-    <span class='no'>m</span>$<span class='no'>reads</span>[, <span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span>(<span class='no'>m</span>$<span class='no'>reads</span>))]
+<span class='fu'>ggpcrplate</span>(<span class='kw'>soil_euk</span>,
+  legend_title = <span class='st'>"#reads of most \nabundant MOTU"</span>,
+  FUN = <span class='fu'>function</span>(<span class='kw'>m</span>) {
+    <span class='kw'>m</span><span class='op'>$</span><span class='kw'>reads</span>[, <span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span>(<span class='kw'>m</span><span class='op'>$</span><span class='kw'>reads</span>))]
   }
-)</div><div class='img'><img src='ggpcrplate-2.png' alt='' width='700' height='433' /></div></pre>
+)
+</div><div class='img'><img src='ggpcrplate-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -196,7 +201,7 @@ rows of the `reads` table.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

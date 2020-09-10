@@ -132,7 +132,7 @@
     <p>Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (https://ngs.arb-silva.de/silvangs/) and including it in a <code>metabarlist</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>silva_annotator</span>(<span class='no'>metabarlist</span>, <span class='no'>silva.path</span>, <span class='no'>clust.path</span>)</pre>
+    <pre class="usage"><span class='fu'>silva_annotator</span>(<span class='kw'>metabarlist</span>, <span class='kw'>silva.path</span>, <span class='kw'>clust.path</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,23 +166,32 @@ xxx---ssu---sequence_cluster_map---tmptaxo.clstr</p></td>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>taxodecider</code></p></div>
+    <div class='dont-index'><p><code><a href='taxodecider.html'>taxodecider</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger, Anne-Sophie Benoiston</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
-<span class='no'>soil_euk</span> <span class='kw'>&lt;-</span> <span class='fu'>silva_annotator</span>(
-   <span class='kw'>metabarlist</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>,
-   <span class='kw'>silva.path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"lit_euk---ssu---otus.csv"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
-   <span class='kw'>clust.path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>,
-               <span class='st'>"lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr"</span>,
-                <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in metabarlist have a number of reads of zero in table `reads`!</span></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='co'># \donttest{</span>
 
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>soil_euk</span>$<span class='no'>motus</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fl'>1</span>), <span class='kw'>fill</span><span class='kw'>=</span><span class='no'>phylum_silva</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span>() + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_polar.html'>coord_polar</a></span>(<span class='st'>"y"</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span>() + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='kw'>NULL</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>)</div><div class='img'><img src='silva_annotator-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='kw'>soil_euk</span> <span class='op'>&lt;-</span> <span class='fu'>silva_annotator</span>(
+   metabarlist = <span class='kw'>soil_euk</span>,
+   silva.path = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"lit_euk---ssu---otus.csv"</span>, package = <span class='st'>"metabaR"</span>),
+   clust.path = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>,
+               <span class='st'>"lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr"</span>,
+                package = <span class='st'>"metabaR"</span>))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in metabarlist have a number of reads of zero in table `reads`!</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(x=<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fl'>1</span>), fill=<span class='kw'>phylum_silva</span>)) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span>() <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_polar.html'>coord_polar</a></span>(<span class='st'>"y"</span>) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span>() <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(x=<span class='kw'>NULL</span>, y=<span class='kw'>NULL</span>) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span>(legend.position = <span class='st'>"bottom"</span>)
+</div><div class='img'><img src='silva_annotator-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># }</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -199,7 +208,7 @@ xxx---ssu---sequence_cluster_map---tmptaxo.clstr</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -132,7 +132,7 @@
     <p>Import an ngsfilter file formatted for the <code>OBITools</code> package (Boyer et al. 2016).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_ngsfilter</span>(<span class='no'>file</span>, <span class='kw'>additional.sep</span> <span class='kw'>=</span> <span class='st'>"="</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>read_ngsfilter</span>(<span class='kw'>file</span>, additional.sep = <span class='st'>"="</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,14 +163,19 @@ the ngsfilter filter file.</p></td>
     <p>Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., &amp; Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>obifiles_to_metabarlist</code></p></div>
+    <div class='dont-index'><p><code><a href='obifiles_to_metabarlist.html'>obifiles_to_metabarlist</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>ngsfilter</span> <span class='kw'>&lt;-</span> <span class='fu'>read_ngsfilter</span>(
-              <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"ngsfilter_GWM-768.new_2.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
-              <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\t"</span>,
-              <span class='kw'>additional.sep</span> <span class='kw'>=</span> <span class='st'>"="</span>)</div></pre>
+<span class='kw'>ngsfilter</span> <span class='op'>&lt;-</span> <span class='fu'>read_ngsfilter</span>(
+              file = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"ngsfilter_GWM-768.new_2.txt"</span>, package = <span class='st'>"metabaR"</span>),
+              sep = <span class='st'>"\t"</span>,
+              additional.sep = <span class='st'>"="</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -186,7 +191,7 @@ the ngsfilter filter file.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

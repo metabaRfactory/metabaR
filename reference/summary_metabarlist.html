@@ -132,7 +132,7 @@
     <p>summary_metabarlist is a generic function used to produce summary statistics of a <code>metabarlist</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summary_metabarlist</span>(<span class='no'>metabarlist</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"dataset"</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>summary_metabarlist</span>(<span class='kw'>metabarlist</span>, method = <span class='st'>"dataset"</span>, groups = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,13 +166,17 @@ for which the summary should be done. Default is NULL</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/summary.html'>summary</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
 
 <span class='co'>## Dataset summary</span>
-<span class='fu'>summary_metabarlist</span>(<span class='no'>soil_euk</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"dataset"</span>)</div><div class='output co'>#&gt; $dataset_dimension
+<span class='fu'>summary_metabarlist</span>(<span class='kw'>soil_euk</span>, method = <span class='st'>"dataset"</span>)
+</div><div class='output co'>#&gt; $dataset_dimension
 #&gt;         n_row n_col
 #&gt; reads     384 12647
 #&gt; motus   12647    15
@@ -185,8 +189,9 @@ for which the summary should be done. Default is NULL</p></td>
 #&gt; samples  2797294    12382 10926.930 10346.66  489.5117  239.685
 #&gt; </div><div class='input'>
 <span class='co'>## Data summary per control type (NA = samples)</span>
-<span class='fu'>summary_metabarlist</span>(<span class='no'>soil_euk</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pcrs"</span>,
-    <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>$<span class='no'>pcrs</span>$<span class='no'>control_type</span>)</div><div class='output co'>#&gt;            nb_elements nb_reads nb_motus  avg_reads  sd_reads avg_motus
+<span class='fu'>summary_metabarlist</span>(<span class='kw'>soil_euk</span>, method = <span class='st'>"pcrs"</span>,
+    groups = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>control_type</span>)
+</div><div class='output co'>#&gt;            nb_elements nb_reads nb_motus  avg_reads  sd_reads avg_motus
 #&gt; extraction          16    73393      200  4587.0625  5738.397  12.50000
 #&gt; NA                 256  2797294   125315 10926.9297 10346.656 489.51172
 #&gt; pcr                 32   323516      323 10109.8750 12491.037  10.09375
@@ -199,8 +204,9 @@ for which the summary should be done. Default is NULL</p></td>
 #&gt; positive    24.44711
 #&gt; sequencing  35.95411</div><div class='input'>
 <span class='co'>## Data summary per phyla</span>
-<span class='fu'>summary_metabarlist</span>(<span class='no'>soil_euk</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"motus"</span>,
-    <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>$<span class='no'>motus</span>$<span class='no'>phylum_name</span>)</div><div class='output co'>#&gt;                    nb_reads nb_motus  avg_reads     sd_reads avg_motus
+<span class='fu'>summary_metabarlist</span>(<span class='kw'>soil_euk</span>, method = <span class='st'>"motus"</span>,
+    groups = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>phylum_name</span>)
+</div><div class='output co'>#&gt;                    nb_reads nb_motus  avg_reads     sd_reads avg_motus
 #&gt; Annelida             247553      338  732.40533  6595.131372 12.147929
 #&gt; Apicomplexa            1587       41   38.70732    77.264883  4.878049
 #&gt; Arthropoda           474922     1566  303.27075  2297.171727 12.102810
@@ -262,9 +268,10 @@ for which the summary should be done. Default is NULL</p></td>
 #&gt; Zoopagomycota      10.607191</div><div class='input'>
 <span class='co'>## Data summary per Habitat (i.e. to get from soil_euk$samples).</span>
 <span class='co'># Here, NA values correspond to technical controls</span>
-<span class='fu'>summary_metabarlist</span>(<span class='no'>soil_euk</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pcrs"</span>,
-    <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>$<span class='no'>samples</span>$<span class='no'>Habitat</span>[<span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='no'>soil_euk</span>$<span class='no'>pcrs</span>$<span class='no'>sample_id</span>,
-                                            <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>soil_euk</span>$<span class='no'>samples</span>))])</div><div class='output co'>#&gt;             nb_elements nb_reads nb_motus avg_reads  sd_reads avg_motus
+<span class='fu'>summary_metabarlist</span>(<span class='kw'>soil_euk</span>, method = <span class='st'>"pcrs"</span>,
+    groups = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>samples</span><span class='op'>$</span><span class='kw'>Habitat</span>[<span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>sample_id</span>,
+                                            <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>samples</span>))])
+</div><div class='output co'>#&gt;             nb_elements nb_reads nb_motus avg_reads  sd_reads avg_motus
 #&gt; NA                  128   741619     2820  5793.898  9287.649  22.03125
 #&gt; Terra firme         128  1410057    69372 11016.070 11067.993 541.96875
 #&gt; White sands         128  1387237    55943 10837.789  9614.209 437.05469
@@ -288,7 +295,7 @@ for which the summary should be done. Default is NULL</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

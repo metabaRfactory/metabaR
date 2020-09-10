@@ -136,7 +136,7 @@ an <code>ngsfilter</code> file and table of sample characteristics respectively)
 a <code>metabarlist</code> object (see Boyer et al. 2016).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>obifiles_to_metabarlist</span>(<span class='no'>file_obitab</span>, <span class='no'>file_ngsfilter</span>, <span class='no'>file_samples</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>obifiles_to_metabarlist</span>(<span class='kw'>file_obitab</span>, <span class='kw'>file_ngsfilter</span>, <span class='kw'>file_samples</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,23 +175,27 @@ table should contain the sample names.</p></td>
     <p>a <code>metabarlist</code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function imports OBITools outputs and related files into <span style="R">R</span> to create a <code>metabarlist</code> object. The three files required are imported in <span style="R">R</span>, included into a list of class <code>metabarlist</code> with the <code>metabarlist_generator</code> function, before congruencies between all tables are tested with the <code>check_metabarlist</code> function.</p>
+    <p>This function imports OBITools outputs and related files into <span style="R">R</span> to create a <code>metabarlist</code> object. The three files required are imported in <span style="R">R</span>, included into a list of class <code>metabarlist</code> with the <code><a href='metabarlist_generator.html'>metabarlist_generator</a></code> function, before congruencies between all tables are tested with the <code><a href='check_metabarlist.html'>check_metabarlist</a></code> function.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., &amp; Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>tabfiles_to_metabarlist</code>, <code>biomfiles_to_metabarlist</code></p>
-<p><code>check_metabarlist</code>, <code>metabarlist_generator</code></p></div>
+    <div class='dont-index'><p><code><a href='tabfiles_to_metabarlist.html'>tabfiles_to_metabarlist</a></code>, <code><a href='biomfiles_to_metabarlist.html'>biomfiles_to_metabarlist</a></code></p>
+<p><code><a href='check_metabarlist.html'>check_metabarlist</a></code>, <code><a href='metabarlist_generator.html'>metabarlist_generator</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>soil_euk</span> <span class='kw'>&lt;-</span> <span class='fu'>obifiles_to_metabarlist</span>(
-  <span class='kw'>file_obitab</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_cl97_agg_filt_tax.tab"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
-  <span class='kw'>file_ngsfilter</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"ngsfilter_GWM-768.new_2.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
-  <span class='kw'>file_samples</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Litiere_sample_list_2.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\t"</span>
-)</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'>
+<span class='kw'>soil_euk</span> <span class='op'>&lt;-</span> <span class='fu'>obifiles_to_metabarlist</span>(
+  file_obitab = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_cl97_agg_filt_tax.tab"</span>, package = <span class='st'>"metabaR"</span>),
+  file_ngsfilter = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"ngsfilter_GWM-768.new_2.txt"</span>, package = <span class='st'>"metabaR"</span>),
+  file_samples = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Litiere_sample_list_2.txt"</span>, package = <span class='st'>"metabaR"</span>),
+  sep = <span class='st'>"\t"</span>
+)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -208,7 +212,7 @@ table should contain the sample names.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

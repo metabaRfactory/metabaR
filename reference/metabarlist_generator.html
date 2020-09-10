@@ -132,7 +132,7 @@
     <p>Combining R tables to create a <code>metabarlist</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metabarlist_generator</span>(<span class='no'>reads</span>, <span class='no'>motus</span>, <span class='no'>pcrs</span>, <span class='no'>samples</span>)</pre>
+    <pre class="usage"><span class='fu'>metabarlist_generator</span>(<span class='kw'>reads</span>, <span class='kw'>motus</span>, <span class='kw'>pcrs</span>, <span class='kw'>samples</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,59 +174,63 @@ to biological samples and their names respectively, and the columns to their
     <p>a <code>metabarlist</code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function formats R tables to create a <code>metabarlist</code> object. The four objects required are incorporated into a list of class <code>metabarlist</code>. Congruencies between all tables are tested internally with the <code>check_metabarlist</code> function.</p>
+    <p>This function formats R tables to create a <code>metabarlist</code> object. The four objects required are incorporated into a list of class <code>metabarlist</code>. Congruencies between all tables are tested internally with the <code><a href='check_metabarlist.html'>check_metabarlist</a></code> function.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>extract_table</code>, <code>check_metabarlist</code></p>
-<p><code>check_metabarlist</code></p></div>
+    <div class='dont-index'><p><code><a href='extract_table.html'>extract_table</a></code>, <code><a href='check_metabarlist.html'>check_metabarlist</a></code></p>
+<p><code><a href='check_metabarlist.html'>check_metabarlist</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger &amp; Clément Lionnet &amp; Frédéric Boyer</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Create fake data</span>
 <span class='co'>## MOTUs abundance table</span>
 
-<span class='no'>reads</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>1000</span>, <span class='fl'>200</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>20</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>reads</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='st'>"ex"</span>, <span class='st'>"pcr"</span>, <span class='st'>"seq"</span>, <span class='st'>"pos"</span>),
+<span class='kw'>reads</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>1000</span>, <span class='fl'>200</span>, replace = <span class='fl'>TRUE</span>), nrow = <span class='fl'>10</span>, ncol = <span class='fl'>20</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>reads</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>), each = <span class='fl'>2</span>), <span class='st'>"ex"</span>, <span class='st'>"pcr"</span>, <span class='st'>"seq"</span>, <span class='st'>"pos"</span>),
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"r1"</span>, <span class='st'>"r2"</span>), <span class='fl'>3</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fl'>4</span>)),
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"_"</span>
+  sep = <span class='st'>"_"</span>
 )
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>reads</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"MOTU_%03d"</span>, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>reads</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>reads</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"MOTU_%03d"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='kw'>reads</span>))
 
 <span class='co'>## MOTUs characteristics table</span>
-<span class='no'>motus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>fake_taxon</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>reads</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-  <span class='kw'>sequence</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(
-    <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>reads</span>),
-    <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"t"</span>, <span class='st'>"c"</span>, <span class='st'>"g"</span>), <span class='fl'>20</span>, <span class='fl'>TRUE</span>), <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>)
+<span class='kw'>motus</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  fake_taxon = <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='kw'>letters</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='kw'>reads</span>), replace = <span class='fl'>TRUE</span>),
+  sequence = <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(
+    <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='kw'>reads</span>),
+    <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"t"</span>, <span class='st'>"c"</span>, <span class='st'>"g"</span>), <span class='fl'>20</span>, <span class='fl'>TRUE</span>), collapse = <span class='st'>""</span>)
   ),
-  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>reads</span>), <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  row.names = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>reads</span>), stringsAsFactors = <span class='fl'>FALSE</span>
 )
 
 <span class='co'>## PCR characteristics table</span>
-<span class='no'>pcrs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>sample_id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>reads</span>), <span class='st'>"_"</span>), <span class='st'>"[["</span>, <span class='fl'>1</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"sample"</span>, <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"control"</span>, <span class='fl'>4</span>)),
-  <span class='kw'>control_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fl'>6</span>), <span class='st'>"extraction"</span>, <span class='st'>"pcr"</span>, <span class='st'>"sequencing"</span>, <span class='st'>"positive"</span>),
-  <span class='kw'>fake_pcrplate</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>reads</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>reads</span>)
+<span class='kw'>pcrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  sample_id = <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>reads</span>), <span class='st'>"_"</span>), <span class='st'>"[["</span>, <span class='fl'>1</span>),
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"sample"</span>, <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"control"</span>, <span class='fl'>4</span>)),
+  control_type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fl'>6</span>), <span class='st'>"extraction"</span>, <span class='st'>"pcr"</span>, <span class='st'>"sequencing"</span>, <span class='st'>"positive"</span>),
+  fake_pcrplate = <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>reads</span>), replace = <span class='fl'>TRUE</span>),
+  row.names = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>reads</span>)
 )
 
 <span class='co'>## Sample characteristics table</span>
-<span class='no'>samples</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>fake_latitude</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>fake_longitude</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>,
-  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>pcrs</span>$<span class='no'>sample_id</span>[<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>pcrs</span>$<span class='no'>control_type</span>)])
+<span class='kw'>samples</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  fake_latitude = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, fake_longitude = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
+  row.names = <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>sample_id</span>[<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>control_type</span>)])
 )
 
 <span class='co'>## Generate the metabarlist object</span>
 
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='fu'>metabarlist_generator</span>(<span class='kw'>reads</span> <span class='kw'>=</span> <span class='no'>reads</span>, <span class='kw'>motus</span> <span class='kw'>=</span> <span class='no'>motus</span>, <span class='kw'>pcrs</span> <span class='kw'>=</span> <span class='no'>pcrs</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='no'>samples</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: PCR plate design not properly provided: columns tag_fwd is missing in table `pcrs` of out!</span>
+<span class='kw'>test</span> <span class='op'>&lt;-</span> <span class='fu'>metabarlist_generator</span>(reads = <span class='kw'>reads</span>, motus = <span class='kw'>motus</span>, pcrs = <span class='kw'>pcrs</span>, samples = <span class='kw'>samples</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: PCR plate design not properly provided: columns tag_fwd is missing in table `pcrs` of out!</span>
 #&gt; <span class='warning'>PCR plate design not properly provided: columns tag_rev is missing in table `pcrs` of out!</span>
 #&gt; <span class='warning'>PCR plate design not properly provided: columns primer_fwd is missing in table `pcrs` of out!</span>
 #&gt; <span class='warning'>PCR plate design not properly provided: columns primer_rev is missing in table `pcrs` of out!</span>
 #&gt; <span class='warning'>PCR plate design not properly provided: columns plate_no is missing in table `pcrs` of out!</span>
 #&gt; <span class='warning'>PCR plate design not properly provided: columns plate_col is missing in table `pcrs` of out!</span>
-#&gt; <span class='warning'>PCR plate design not properly provided: columns plate_row is missing in table `pcrs` of out!</span></div><div class='input'>## Warnings are returned because the PCR design (i.e. tags, primers, plate
-# coordinates) is not defined in this example.
+#&gt; <span class='warning'>PCR plate design not properly provided: columns plate_row is missing in table `pcrs` of out!</span></div><div class='input'><span class='co'>## Warnings are returned because the PCR design (i.e. tags, primers, plate</span>
+<span class='co'># coordinates) is not defined in this example.</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -243,7 +247,7 @@ to biological samples and their names respectively, and the columns to their
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

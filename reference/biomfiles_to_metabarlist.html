@@ -133,11 +133,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>biomfiles_to_metabarlist</span>(
-  <span class='no'>file_biom</span>,
-  <span class='no'>file_samples</span>,
-  <span class='kw'>file_pcrs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>file_motus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>file_biom</span>,
+  <span class='kw'>file_samples</span>,
+  file_pcrs = <span class='kw'>NULL</span>,
+  file_motus = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -188,24 +188,29 @@ The first column of this table should contain MOTU names.</p></td>
     <p>a <code>metabarlist</code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function imports a <code>BIOM</code> file and associated files into <span style="R">R</span> to create a <code>metabarlist</code> object. Two files are required: a <code>BIOM</code> file, as well as a sample characteristics table. If the <code>BIOM</code> file does not contain PCRs and MOTUs attributes data, two other files containing these data are required. The files are imported in <span style="R">R</span>, included into a list of class <code>metabarlist</code> with the <code>metabarlist_generator</code> function, and congruencies between all tables are tested with the <code>check_metabarlist</code> function.</p>
+    <p>This function imports a <code>BIOM</code> file and associated files into <span style="R">R</span> to create a <code>metabarlist</code> object. Two files are required: a <code>BIOM</code> file, as well as a sample characteristics table. If the <code>BIOM</code> file does not contain PCRs and MOTUs attributes data, two other files containing these data are required. The files are imported in <span style="R">R</span>, included into a list of class <code>metabarlist</code> with the <code><a href='metabarlist_generator.html'>metabarlist_generator</a></code> function, and congruencies between all tables are tested with the <code><a href='check_metabarlist.html'>check_metabarlist</a></code> function.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p><a href='http://biom-format.org/'>http://biom-format.org/</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>check_metabarlist</code>, <code>metabarlist_generator</code>,
-          <code>obifiles_to_metabarlist</code>, <code>tabfiles_to_metabarlist</code>,
+    <div class='dont-index'><p><code><a href='check_metabarlist.html'>check_metabarlist</a></code>, <code><a href='metabarlist_generator.html'>metabarlist_generator</a></code>,
+          <code><a href='obifiles_to_metabarlist.html'>obifiles_to_metabarlist</a></code>, <code><a href='tabfiles_to_metabarlist.html'>tabfiles_to_metabarlist</a></code>,
           or the <code>biomformat</code> package</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Anne-Sophie Benoiston</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>soil_euk</span> <span class='kw'>&lt;-</span> <span class='fu'>biomfiles_to_metabarlist</span>(
- <span class='kw'>file_biom</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_reads_hdf5.biom"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
- <span class='kw'>file_motus</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_motus.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
- <span class='kw'>file_pcrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_pcrs.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
- <span class='kw'>file_samples</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_samples.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"metabaR"</span>),
- <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\t"</span>)</div></pre>
+<span class='kw'>soil_euk</span> <span class='op'>&lt;-</span> <span class='fu'>biomfiles_to_metabarlist</span>(
+ file_biom = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_reads_hdf5.biom"</span>, package = <span class='st'>"metabaR"</span>),
+ file_motus = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_motus.txt"</span>, package = <span class='st'>"metabaR"</span>),
+ file_pcrs = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_pcrs.txt"</span>, package = <span class='st'>"metabaR"</span>),
+ file_samples = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"litiere_euk_samples.txt"</span>, package = <span class='st'>"metabaR"</span>),
+ sep = <span class='st'>"\t"</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -221,7 +226,7 @@ The first column of this table should contain MOTU names.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

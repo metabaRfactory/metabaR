@@ -132,7 +132,7 @@
     <p>Plots the taxonomic tree from a <code>metabarlist</code> object and maps an attribute onto it</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ggtaxplot</span>(<span class='no'>metabarlist</span>, <span class='no'>taxo</span>, <span class='no'>sep.level</span>, <span class='no'>sep.info</span>, <span class='kw'>thresh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>ggtaxplot</span>(<span class='kw'>metabarlist</span>, <span class='kw'>taxo</span>, <span class='kw'>sep.level</span>, <span class='kw'>sep.info</span>, thresh = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,32 +174,44 @@ taxon labels won't be plotted</p></td>
     <p>This function allows users to visualise the full taxonomic tree for a set of samples and to map attributes onto the produced tree (e.g. number of reads per node/branches, nb of MOTUs, etc.). The taxonomic information should follow a standard structure across samples (e.g. standard taxonomy as in Genbank, SILVA or BOLD or with defined taxonomic levels if `taxo` is a vector) by decreasing level of taxonomic resolution: the function does not infer missing taxonomic ranks. The taxonomic information should contain a level that is common to all MOTU taxonomic assignments (common ancestor).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>taxoparser</code></p></div>
+    <div class='dont-index'><p><code><a href='taxoparser.html'>taxoparser</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
 
 <span class='co'># Using a taxonomic path</span>
 
+<span class='co'># \donttest{</span>
+
 <span class='co'>## on all data. can take a while</span>
-<span class='fu'>ggtaxplot</span>(<span class='no'>soil_euk</span>, <span class='st'>"path"</span>, <span class='kw'>sep.level</span> <span class='kw'>=</span> <span class='st'>":"</span>, <span class='kw'>sep.info</span> <span class='kw'>=</span> <span class='st'>"@"</span>)</div><div class='img'><img src='ggtaxplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggtaxplot</span>(<span class='kw'>soil_euk</span>, <span class='st'>"path"</span>, sep.level = <span class='st'>":"</span>, sep.info = <span class='st'>"@"</span>)
+</div><div class='img'><img src='ggtaxplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## show only taxonomic labels if taxon has a relative abundance &gt; 1e-3</span>
-<span class='fu'>ggtaxplot</span>(<span class='no'>soil_euk</span>, <span class='st'>"path"</span>, <span class='kw'>sep.level</span> <span class='kw'>=</span> <span class='st'>":"</span>, <span class='kw'>sep.info</span> <span class='kw'>=</span> <span class='st'>"@"</span>, <span class='kw'>thresh</span> <span class='kw'>=</span> <span class='fl'>1e-3</span>)</div><div class='img'><img src='ggtaxplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggtaxplot</span>(<span class='kw'>soil_euk</span>, <span class='st'>"path"</span>, sep.level = <span class='st'>":"</span>, sep.info = <span class='st'>"@"</span>, thresh = <span class='fl'>1e-3</span>)
+</div><div class='img'><img src='ggtaxplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># }</span>
+
 <span class='co'>## run on a particular clade e.g. here arthropoda, otherwise difficult to read</span>
-<span class='no'>arthropoda</span> <span class='kw'>&lt;-</span> <span class='fu'>subset_metabarlist</span>(<span class='no'>soil_euk</span>,
-  <span class='kw'>table</span> <span class='kw'>=</span> <span class='st'>"motus"</span>,
-  <span class='kw'>indices</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"Arthropoda"</span>, <span class='no'>soil_euk</span>$<span class='no'>motus</span>$<span class='no'>path</span>)
-)</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='co'>### plot</span>
-<span class='fu'>ggtaxplot</span>(<span class='no'>arthropoda</span>, <span class='st'>"path"</span>, <span class='kw'>sep.level</span> <span class='kw'>=</span> <span class='st'>":"</span>, <span class='kw'>sep.info</span> <span class='kw'>=</span> <span class='st'>"@"</span>)</div><div class='img'><img src='ggtaxplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>arthropoda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subset_metabarlist.html'>subset_metabarlist</a></span>(<span class='kw'>soil_euk</span>,
+  table = <span class='st'>"motus"</span>,
+  indices = <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"Arthropoda"</span>, <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>path</span>)
+)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='co'>### plot</span>
+<span class='fu'>ggtaxplot</span>(<span class='kw'>arthropoda</span>, <span class='st'>"path"</span>, sep.level = <span class='st'>":"</span>, sep.info = <span class='st'>"@"</span>)
+</div><div class='img'><img src='ggtaxplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Using a taxonomic table</span>
-<span class='no'>taxo.col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+<span class='kw'>taxo.col</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
   <span class='st'>"phylum_name"</span>, <span class='st'>"class_name"</span>, <span class='st'>"order_name"</span>,
   <span class='st'>"family_name"</span>, <span class='st'>"genus_name"</span>, <span class='st'>"species_name"</span>
 )
-<span class='fu'>ggtaxplot</span>(<span class='no'>arthropoda</span>, <span class='no'>taxo.col</span>)</div><div class='img'><img src='ggtaxplot-4.png' alt='' width='700' height='433' /></div><div class='input'>## to do the same on the full soil_euk data,
-# add a column "kingdom_name" with value "Eukaryota" in soil_euk$motus
+<span class='fu'>ggtaxplot</span>(<span class='kw'>arthropoda</span>, <span class='kw'>taxo.col</span>)
+</div><div class='img'><img src='ggtaxplot-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## to do the same on the full soil_euk data,</span>
+<span class='co'># add a column "kingdom_name" with value "Eukaryota" in soil_euk$motus</span>
 
 </div></pre>
   </div>
@@ -217,7 +229,7 @@ taxon labels won't be plotted</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

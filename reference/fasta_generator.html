@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generating a fasta file from a <code>metabarlist</code> object — fasta_generator • metabaR</title>
+<title>Generating a fasta file from a metabarlist object — fasta_generator • metabaR</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Generating a fasta file from a <code>metabarlist</code> object — fasta_generator" />
+<meta property="og:title" content="Generating a fasta file from a metabarlist object — fasta_generator" />
 <meta property="og:description" content="Generates a fasta file from a metabarlist object, typically for a subset of MOTUs of interest." />
 
 
@@ -133,11 +133,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>fasta_generator</span>(
-  <span class='no'>metabarlist</span>,
-  <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>metabarlist</span>$<span class='no'>motus</span>),
-  <span class='kw'>output_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>annotation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>annot_sep</span> <span class='kw'>=</span> <span class='st'>";"</span>
+  <span class='kw'>metabarlist</span>,
+  id = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>metabarlist</span><span class='op'>$</span><span class='kw'>motus</span>),
+  output_file = <span class='kw'>NULL</span>,
+  annotation = <span class='kw'>NULL</span>,
+  annot_sep = <span class='st'>";"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -182,33 +182,42 @@ tcaatctcgtgtgactaaacgccacttgtccctctaagaagttacgccgacagaatgcgatcggcgaactatttagcagg
 ctcaaacttccttggcctggaaggccatagtccctctaagaagctggccgcggagggtcacctccgcatagctagttagcaggctgaggtctcgttcgttaa</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>metabarlist_generator</code></p></div>
+    <div class='dont-index'><p><code><a href='metabarlist_generator.html'>metabarlist_generator</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Lucie Zinger, Clément Lionnet</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='kw'>dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()
+<span class='kw'>fasta_file_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>dir</span>, <span class='st'>"Dominants.fasta"</span>)
 
 <span class='co'>## Export in fasta format the 10 most abundant MOTUs</span>
-<span class='no'>idx</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='no'>soil_euk</span>$<span class='no'>motus</span>$<span class='no'>count</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>]
-<span class='fu'>fasta_generator</span>(<span class='no'>soil_euk</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>soil_euk</span>$<span class='no'>motus</span>)[<span class='no'>idx</span>],
-  <span class='st'>"Dominants.fasta"</span>
+<span class='kw'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>count</span>, decreasing = <span class='fl'>TRUE</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>]
+<span class='fu'>fasta_generator</span>(<span class='kw'>soil_euk</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span>)[<span class='kw'>idx</span>],
+  <span class='kw'>fasta_file_path</span>
 )
 
 <span class='co'>## Export in fasta format the 10 most abundant MOTUs, their abundance and the GC content</span>
 <span class='co'># of the corresponding sequence</span>
-<span class='no'>annotation</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>abundance</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>$<span class='no'>motus</span>$<span class='no'>count</span>[<span class='no'>idx</span>],
-  <span class='kw'>GC_content</span> <span class='kw'>=</span> <span class='no'>soil_euk</span>$<span class='no'>motus</span>$<span class='no'>GC_content</span>[<span class='no'>idx</span>],
-  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>soil_euk</span>$<span class='no'>motus</span>)[<span class='no'>idx</span>]
+<span class='kw'>annotation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  abundance = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>count</span>[<span class='kw'>idx</span>],
+  GC_content = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>GC_content</span>[<span class='kw'>idx</span>],
+  row.names = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span>)[<span class='kw'>idx</span>]
 )
 
-<span class='no'>dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()
-
 <span class='fu'>fasta_generator</span>(
-  <span class='no'>soil_euk</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>soil_euk</span>$<span class='no'>motus</span>)[<span class='no'>idx</span>],
-   <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>dir</span>, <span class='st'>"Dominants.fasta"</span>),
-  <span class='no'>annotation</span>
-)</div></pre>
+  <span class='kw'>soil_euk</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span>)[<span class='kw'>idx</span>],
+   <span class='kw'>fasta_file_path</span>,
+  <span class='kw'>annotation</span>
+)
+
+<span class='co'>## Clean example output file</span>
+<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span>(<span class='kw'>fasta_file_path</span>))
+  <span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='kw'>fasta_file_path</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -224,7 +233,7 @@ ctcaaacttccttggcctggaaggccatagtccctctaagaagctggccgcggagggtcacctccgcatagctagttagc
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -1,8 +1,8 @@
 pandoc: '2.2'
-pkgdown: 1.5.1
+pkgdown: 1.6.0
 pkgdown_sha: ~
 articles: []
-last_built: 2020-09-04T16:10Z
+last_built: 2020-09-10T17:37Z
 urls:
   reference: https://metabarfactory.github.io/metabaR//reference
   article: https://metabarfactory.github.io/metabaR//articles
