@@ -54,10 +54,6 @@
 #'   annotation
 #' )
 #'
-#' ## Clean example output file
-#' if (file.exists(fasta_file_path))
-#'   file.remove(fasta_file_path)
-#'
 #' @author Lucie Zinger, Clément Lionnet
 #' @export fasta_generator
 

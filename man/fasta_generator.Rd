@@ -68,10 +68,6 @@ fasta_generator(
   annotation
 )
 
-## Clean example output file
-if (file.exists(fasta_file_path))
-  file.remove(fasta_file_path)
-
 }
 \seealso{
 \code{\link{metabarlist_generator}}
