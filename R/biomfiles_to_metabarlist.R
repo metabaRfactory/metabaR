@@ -43,13 +43,40 @@
 #' \url{http://biom-format.org/}
 #'
 #' @examples
+#' 
+#' \donttest{
 #'
-#'soil_euk <- biomfiles_to_metabarlist(
-#'  file_biom = system.file("extdata", "litiere_euk_reads_hdf5.biom", package = "metabaR"),
-#'  file_motus = system.file("extdata", "litiere_euk_motus.txt", package = "metabaR"),
-#'  file_pcrs = system.file("extdata", "litiere_euk_pcrs.txt", package = "metabaR"),
-#'  file_samples = system.file("extdata", "litiere_euk_samples.txt", package = "metabaR"),
+#' dir <- tempdir()
+#' url = "https://raw.githubusercontent.com/metabaRfactory/metabaR_external_data/master/"
+#' 
+#' litiere_euk_reads_hdf5_file = "litiere_euk_reads_hdf5.biom"
+#' litiere_euk_reads_hdf5_url = paste(url, litiere_euk_reads_hdf5_file, sep="")
+#' litiere_euk_reads_hdf5_path <- file.path(dir, litiere_euk_reads_hdf5_file)
+#' download.file(litiere_euk_reads_hdf5_url, litiere_euk_reads_hdf5_path)
+#' 
+#' litiere_euk_motus_file = "litiere_euk_motus.txt"
+#' litiere_euk_motus_url = paste(url, litiere_euk_motus_file, sep="")
+#' litiere_euk_motus_path <- file.path(dir, litiere_euk_motus_file)
+#' download.file(litiere_euk_motus_url, litiere_euk_motus_path)
+#'
+#' litiere_euk_pcrs_file = "litiere_euk_pcrs.txt"
+#' litiere_euk_pcrs_url = paste(url, litiere_euk_pcrs_file, sep="")
+#' litiere_euk_pcrs_path = file.path(dir, litiere_euk_pcrs_file)
+#' download.file(litiere_euk_pcrs_url, litiere_euk_pcrs_path)
+#'
+#' litiere_euk_samples_file = "litiere_euk_samples.txt"
+#' litiere_euk_samples_url = paste(url, litiere_euk_samples_file, sep="")
+#' litiere_euk_samples_path = file.path(dir, litiere_euk_samples_file)
+#' download.file(litiere_euk_samples_url, litiere_euk_samples_path)
+#'
+#' soil_euk <- biomfiles_to_metabarlist(
+#'  file_biom = litiere_euk_reads_hdf5_path,
+#'  file_motus = litiere_euk_motus_path,
+#'  file_pcrs = litiere_euk_pcrs_path,
+#'  file_samples = litiere_euk_samples_path,
 #'  sep = "\t")
+#' 
+#' }
 #'
 #' @author Anne-Sophie Benoiston
 #'

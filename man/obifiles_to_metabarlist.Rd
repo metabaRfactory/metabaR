@@ -39,16 +39,38 @@ This function imports OBITools outputs and related files into \R to create a \co
 }
 \examples{
 
+\donttest{
+
+dir <- tempdir()
+url = "https://raw.githubusercontent.com/metabaRfactory/metabaR_external_data/master/"
+
+obitab_file = "litiere_euk_cl97_agg_filt_tax.tab"
+obitab_url = paste(url, obitab_file, sep="")
+obitab_path <- file.path(dir, obitab_file)
+download.file(obitab_url, obitab_path)
+
+ngsfilter_file = "ngsfilter_GWM-768.new_2.txt"
+ngsfilter_url = paste(url, ngsfilter_file, sep="")
+ngsfilter_path <- file.path(dir, "ngsfilter_GWM-768.new_2.txt")
+download.file(ngsfilter_url, ngsfilter_path)
+
+samples_file = "Litiere_sample_list_2.txt"
+samples_url = paste(url, samples_file, sep="")
+samples_path <- file.path(dir, samples_file)
+download.file(samples_url, samples_path)
+
 soil_euk <- obifiles_to_metabarlist(
-  file_obitab = system.file("extdata", "litiere_euk_cl97_agg_filt_tax.tab", package = "metabaR"),
-  file_ngsfilter = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaR"),
-  file_samples = system.file("extdata", "Litiere_sample_list_2.txt", package = "metabaR"),
+  file_obitab = obitab_path,
+  file_ngsfilter = ngsfilter_path,
+  file_samples = samples_path,
   sep = "\t"
 )
 
 }
+
+}
 \references{
-Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
+Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix-inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 }
 \seealso{
 \code{\link{tabfiles_to_metabarlist}}, \code{\link{biomfiles_to_metabarlist}}
