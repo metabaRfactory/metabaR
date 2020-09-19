@@ -42,7 +42,7 @@
 #' @author Frédéric Boyer & Clément Lionnet
 #' @describeIn pcr_outlier Identifying the non-replicating samples or controls in the table PCRs from a \code{metabarlist} object.
 #' @importFrom stats density
-#' @importFrom graphics abline lines
+#' @importFrom graphics abline lines plot
 #' @import ade4
 #' @import vegan
 
