@@ -16,14 +16,26 @@
 #'
 #' @seealso \code{\link{obifiles_to_metabarlist}}
 #'
-#' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
+#' @references Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix-inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 #'
 #' @examples
 #'
+#' \donttest{
+#'
+#' dir <- tempdir()
+#' url = "https://raw.githubusercontent.com/metabaRfactory/metabaR_external_data/master/"
+#'
+#' ngsfilter_file = "ngsfilter_GWM-768.new_2.txt"
+#' ngsfilter_url = paste(url, ngsfilter_file, sep="")
+#' ngsfilter_path <- file.path(dir, ngsfilter_file)
+#' download.file(ngsfilter_url, ngsfilter_path)
+#'
 #' ngsfilter <- read_ngsfilter(
-#'               file = system.file("extdata", "ngsfilter_GWM-768.new_2.txt", package = "metabaR"),
+#'               file = ngsfilter_path,
 #'               sep = "\t",
 #'               additional.sep = "=")
+#'
+#' }
 #'
 #' @author Lucie Zinger
 #' @importFrom utils read.csv2

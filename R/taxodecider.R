@@ -32,12 +32,23 @@
 #'
 #' data(soil_euk)
 #'
+#' dir <- tempdir()
+#' url = "https://raw.githubusercontent.com/metabaRfactory/metabaR_external_data/master/"
+#'
+#' silva_file = "lit_euk---ssu---otus.csv"
+#' silva_url = paste(url, silva_file, sep="")
+#' silva_path <- file.path(dir, silva_file)
+#' download.file(silva_url, silva_path)
+#'
+#' clust_file = "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr"
+#' clust_url = paste(url, clust_file, sep="")
+#' clust_path <- file.path(dir, clust_file)
+#' download.file(clust_url, clust_path)
+#'
 #' soil_euk <- silva_annotator(
 #'    metabarlist = soil_euk,
-#'    silva.path = system.file("extdata", "lit_euk---ssu---otus.csv", package = "metabaR"),
-#'    clust.path = system.file("extdata",
-#'               "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr",
-#'                package = "metabaR"))
+#'    silva.path = silva_path,
+#'    clust.path = clust_path)
 #'
 #' soil_euk$motus$similarity = soil_euk$motus$similarity/100
 #'

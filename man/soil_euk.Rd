@@ -41,7 +41,7 @@ The total experiment hence resulted in 384 PCR products consisting of:
   \item{}{32 PCR products corresponding to PCR positive controls, i.e. PCR amplifications of a DNA template composed of a mixture of DNA from 16 plant species (8 pcr positive controls at different dilutions x 4 pcr replicates).}
 }
 
-The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining sequences were clustered into molecular operational taxonomic units (MOTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each MOTU (the most abundant one) was assigned a taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010). Taxonomic assignments obtained from the SILVAngs pipeline (Quast et al. 2013; using default parameters for the taxonomic identification) are also available in /inst/extdata (lit_euk---ssu* files) .
+The retrieved data were then processed using the OBITools (Boyer et al. 2016) and SUMACLUST (Mercier et al. 2013) packages. Briefly, paired-end reads were assembled, assigned to their respective samples/marker and dereplicated. Low-quality sequences (containing Ns, shorter than 50 bp or singletons) were excluded; the remaining sequences were clustered into molecular operational taxonomic units (MOTUs) using SUMACLUST at a sequence similarity threshold of 0.97. The representative sequence of each MOTU (the most abundant one) was assigned a taxonomic clade using a databased built from the EMBL (release 136) with the ecoPCR program (Ficetola et al., 2010). Taxonomic assignments obtained from the SILVAngs pipeline (Quast et al. 2013; using default parameters for the taxonomic identification) are also available at https://github.com/metabaRfactory/metabaR_external_data (lit_euk---ssu* files) .
 
 
 The data `soil_euk` is a \code{metabarlist} containing four tables
@@ -58,7 +58,7 @@ data(soil_euk)
 summary_metabarlist(soil_euk)
 }
 \references{
-Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix‐inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
+Boyer, F., Mercier, C., Bonin, A., Le Bras, Y., Taberlet, P., & Coissac, E. (2016). obitools: a unix-inspired software package for DNA metabarcoding. Molecular Ecology Resources, 16(1), 176-182.
 
 Ficetola, G. F., Coissac, E., Zundel, S., Riaz, T., Shehzad, W., Bessière, J., ... & Pompanon, F. (2010). An in silico approach for the evaluation of DNA barcodes. BMC Genomics, 11(1), 434.
 

@@ -52,7 +52,7 @@
 #'
 #' @author Lucie Zinger, Frédéric Boyer
 #' @references Deagle, B. E., Thomas, A. C., McInnes, J. C., Clarke, L. J., Vesterinen, E. J., Clare, E. L., ... & Eveson, J. P. (2019). Counting with DNA in metabarcoding studies: How should we convert sequence reads to dietary data?. Molecular Ecology, 28(2), 391-406.
-#' @references Pansu, J., Giguet‐Covex, C., Ficetola, G. F., Gielly, L., Boyer, F., Zinger, L., ... & Choler, P. (2015). Reconstructing long‐term human impacts on plant communities: An ecological approach based on lake sediment DNA. Molecular Ecology, 24(7), 1485-1498.
+#' @references Pansu, J., Giguet-Covex, C., Ficetola, G. F., Gielly, L., Boyer, F., Zinger, L., ... & Choler, P. (2015). Reconstructing long-term human impacts on plant communities: An ecological approach based on lake sediment DNA. Molecular Ecology, 24(7), 1485-1498.
 #' @describeIn aggregate_pcrs Aggregate PCR replicates in a \code{metabarlist} object.
 #' @export aggregate_pcrs
 

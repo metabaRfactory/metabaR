@@ -80,7 +80,7 @@ soil_euk_ag <- aggregate_pcrs(soil_euk,
 \references{
 Deagle, B. E., Thomas, A. C., McInnes, J. C., Clarke, L. J., Vesterinen, E. J., Clare, E. L., ... & Eveson, J. P. (2019). Counting with DNA in metabarcoding studies: How should we convert sequence reads to dietary data?. Molecular Ecology, 28(2), 391-406.
 
-Pansu, J., Giguet‐Covex, C., Ficetola, G. F., Gielly, L., Boyer, F., Zinger, L., ... & Choler, P. (2015). Reconstructing long‐term human impacts on plant communities: An ecological approach based on lake sediment DNA. Molecular Ecology, 24(7), 1485-1498.
+Pansu, J., Giguet-Covex, C., Ficetola, G. F., Gielly, L., Boyer, F., Zinger, L., ... & Choler, P. (2015). Reconstructing long-term human impacts on plant communities: An ecological approach based on lake sediment DNA. Molecular Ecology, 24(7), 1485-1498.
 }
 \seealso{
 \code{\link{aggregate_motus}}, \code{\link{apply}}, \code{\link{aggregate}}
