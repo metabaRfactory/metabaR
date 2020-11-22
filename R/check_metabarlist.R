@@ -337,7 +337,8 @@ check_metabarlist <- function(metabarlist) {
     )
   } else {
     if (all(c("plate_no", "plate_col", "plate_row") %in% colnames(metabarlist$pcrs))) {
-      if (!(is.numeric(metabarlist$pcrs$plate_no))) {
+      if (!(is.numeric(ifelse(grepl("\\|", metabarlist$pcrs$plate_no), 1,
+                              metabarlist$pcrs$plate_no)))) {
         warning(paste(
           "column `plate_no` of table `pcrs` in",
           metabarlist.name,
@@ -345,7 +346,8 @@ check_metabarlist <- function(metabarlist) {
         ))
       }
 
-      if (!(all(as.numeric(metabarlist$pcrs$plate_col) %in% 1:12))) {
+      if (!(all(as.numeric(ifelse(grepl("\\|", metabarlist$pcrs$plate_col), 1,
+                                  metabarlist$pcrs$plate_col)) %in% 1:12))) {
         stop(
           paste(
             "column `plate_col` of table `pcrs` in",
@@ -355,8 +357,8 @@ check_metabarlist <- function(metabarlist) {
         )
       }
 
-      if (!(all(
-        metabarlist$pcrs$plate_row %in% c("A", "B", "C", "D", "E", "F", "G", "H")
+      if (!(all(ifelse(grepl("\\|", as.vector(metabarlist$pcrs$plate_row)), "A",
+                       as.vector(metabarlist$pcrs$plate_row)) %in% c("A", "B", "C", "D", "E", "F", "G", "H")
       ))) {
         stop(
           paste(
