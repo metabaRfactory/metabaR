@@ -373,7 +373,7 @@ pcr_threshold_estimate <- function(wthn.btwn, thresh.method = "intersect") {
   dinter.mode <- ddinter$x[which.max(ddinter$y)]
 
   if (thresh.method == "intersect") {
-    p <- which(ddintra$y - ddinter$y > 0 & ddinter$y > dintra.mode)
+    p <- which(ddintra$y - ddinter$y > 0 & ddinter$x > dintra.mode)
     out <- ddinter$x[p[length(p)]]
   } else {
     out <- dinter.mode
