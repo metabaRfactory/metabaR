@@ -1,8 +1,7 @@
 language: r
 cache: packages
 
-before_install:
-  - chmod +x ./travis-config.sh && ./travis-config.sh
+use_bioc: true
 
 after_success:
   - Rscript -e 'pkgdown::build_site()'
