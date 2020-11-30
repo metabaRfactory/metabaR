@@ -2,6 +2,7 @@ language: r
 cache: packages
 
 before_install:
+  - sudo apt-get -y install libharfbuzz-dev libfribidi-dev
   - chmod +x ./travis-config.sh && ./travis-config.sh
 
 after_success:
