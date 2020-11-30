@@ -29,4 +29,4 @@ echo 'R repos:'
 Rscript -e "getOption('repos')"
 
 # Bioconductor
-Rscript -e "BiocManager::install(version='${R_BIOC_VERSION}')"
+Rscript -e "BiocManager::install(version='${R_BIOC_VERSION}', ask=FALSE)"
