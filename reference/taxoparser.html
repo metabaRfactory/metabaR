@@ -132,7 +132,7 @@
     <p>Parse taxonomic information from full taxonomic paths</p>
     </div>
 
-    <pre class="usage"><span class='fu'>taxoparser</span>(<span class='kw'>taxopath</span>, <span class='kw'>sep.level</span>, <span class='kw'>sep.info</span>)</pre>
+    <pre class="usage"><span class='fu'>taxoparser</span><span class='op'>(</span><span class='va'>taxopath</span>, <span class='va'>sep.level</span>, <span class='va'>sep.info</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,29 +166,29 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 
 <span class='co'># Parse taxonomic path</span>
 
 <span class='co'>## a ncbi-like type of full taxonomic path</span>
-<span class='kw'>taxoparsed</span> <span class='op'>&lt;-</span> <span class='fu'>taxoparser</span>(taxopath = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>path</span>,
-                         sep.info = <span class='st'>"@"</span>,
-                         sep.level= <span class='st'>":"</span>)
+<span class='va'>taxoparsed</span> <span class='op'>&lt;-</span> <span class='fu'>taxoparser</span><span class='op'>(</span>taxopath <span class='op'>=</span> <span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>$</span><span class='va'>path</span>,
+                         sep.info <span class='op'>=</span> <span class='st'>"@"</span>,
+                         sep.level<span class='op'>=</span> <span class='st'>":"</span><span class='op'>)</span>
 
 <span class='co'>## a qiime/unite-like type of full taxonomic path.</span>
-<span class='kw'>arthropoda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subset_metabarlist.html'>subset_metabarlist</a></span>(<span class='kw'>soil_euk</span>,
-                                 table = <span class='st'>"motus"</span>,
-                                 indices = <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"Arthropoda"</span>, <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>path</span>))
+<span class='va'>arthropoda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subset_metabarlist.html'>subset_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk</span>,
+                                 table <span class='op'>=</span> <span class='st'>"motus"</span>,
+                                 indices <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"Arthropoda"</span>, <span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>$</span><span class='va'>path</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'>
-<span class='kw'>qiimepath</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='kw'>arthropoda</span><span class='op'>$</span><span class='kw'>motus</span>[,<span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span>(<span class='st'>"[msry]_name"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span>))], <span class='fl'>1</span>,
-                  <span class='fu'>function</span>(<span class='kw'>x</span>) {
-                     <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>x</span>), <span class='fu'>function</span>(<span class='kw'>y</span>) {
-                       <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"p"</span>, <span class='st'>"c"</span>, <span class='st'>"o"</span>, <span class='st'>"f"</span>, <span class='st'>"g"</span>, <span class='st'>"s"</span>)[<span class='kw'>y</span>], <span class='kw'>x</span>[<span class='kw'>y</span>], sep=<span class='st'>"_"</span>)
-                       }), collapse =<span class='st'>";"</span>)})
+<span class='va'>qiimepath</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>arthropoda</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"[msry]_name"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span>, <span class='fl'>1</span>,
+                  <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+                     <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span>
+                       <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"p"</span>, <span class='st'>"c"</span>, <span class='st'>"o"</span>, <span class='st'>"f"</span>, <span class='st'>"g"</span>, <span class='st'>"s"</span><span class='op'>)</span><span class='op'>[</span><span class='va'>y</span><span class='op'>]</span>, <span class='va'>x</span><span class='op'>[</span><span class='va'>y</span><span class='op'>]</span>, sep<span class='op'>=</span><span class='st'>"_"</span><span class='op'>)</span>
+                       <span class='op'>}</span><span class='op'>)</span>, collapse <span class='op'>=</span><span class='st'>";"</span><span class='op'>)</span><span class='op'>}</span><span class='op'>)</span>
 
-<span class='kw'>taxoparsed</span> <span class='op'>&lt;-</span> <span class='fu'>taxoparser</span>(taxopath = <span class='kw'>qiimepath</span>,
-                         sep.info = <span class='st'>"_"</span>,
-                         sep.level= <span class='st'>";"</span>)
+<span class='va'>taxoparsed</span> <span class='op'>&lt;-</span> <span class='fu'>taxoparser</span><span class='op'>(</span>taxopath <span class='op'>=</span> <span class='va'>qiimepath</span>,
+                         sep.info <span class='op'>=</span> <span class='st'>"_"</span>,
+                         sep.level<span class='op'>=</span> <span class='st'>";"</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -205,7 +205,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

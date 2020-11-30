@@ -132,9 +132,9 @@
     <p>Aggregate MOTUs in a <code>metabarlist</code> object according to a grouping factor or vector</p>
     </div>
 
-    <pre class="usage"><span class='fu'>aggregate_motus</span>(<span class='kw'>metabarlist</span>, groups = <span class='kw'>NULL</span>, FUN = <span class='kw'>FUN_agg_motus_sum</span>)
+    <pre class="usage"><span class='fu'>aggregate_motus</span><span class='op'>(</span><span class='va'>metabarlist</span>, groups <span class='op'>=</span> <span class='cn'>NULL</span>, FUN <span class='op'>=</span> <span class='va'>FUN_agg_motus_sum</span><span class='op'>)</span>
 
-<span class='fu'>FUN_agg_motus_sum</span>(<span class='kw'>metabarlist</span>, <span class='kw'>groups</span>)</pre>
+<span class='fu'>FUN_agg_motus_sum</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>groups</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,12 +179,12 @@ information of the most abundant MOTU in a given group.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 
 <span class='co'>## With MOTU phylum assignment as the grouping factor and</span>
 <span class='co'>## default grouping aggregation (sum reads across replicates)</span>
-<span class='kw'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_motus</span>(<span class='kw'>soil_euk</span>, groups = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>phylum_name</span>)
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span>(<span class='kw'>soil_euk</span>)
+<span class='va'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_motus</span><span class='op'>(</span><span class='va'>soil_euk</span>, groups <span class='op'>=</span> <span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>$</span><span class='va'>phylum_name</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $dataset_dimension
 #&gt;         n_row n_col
 #&gt; reads     384 12647
@@ -196,7 +196,7 @@ information of the most abundant MOTU in a given group.</p>
 #&gt;         nb_reads nb_motus avg_reads sd_reads avg_motus sd_motus
 #&gt; pcrs     3538913    12647  9215.919 10283.45  333.6849  295.440
 #&gt; samples  2797294    12382 10926.930 10346.66  489.5117  239.685
-#&gt; </div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span>(<span class='kw'>soil_euk_ag</span>)
+#&gt; </div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk_ag</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $dataset_dimension
 #&gt;         n_row n_col
 #&gt; reads     384    29
@@ -211,9 +211,9 @@ information of the most abundant MOTU in a given group.</p>
 #&gt; </div><div class='input'>
 <span class='co'>## With a custom function (here equivalent to FUN_agg_sum,</span>
 <span class='co'>## i.e. summing all MOTU abundances across groups)</span>
-<span class='kw'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_motus</span>(<span class='kw'>soil_euk</span>, groups = <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>phylum_name</span>,
-                               FUN = <span class='fu'>function</span>(<span class='kw'>metabarlist</span>, <span class='kw'>groups</span>){
-                                       <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rowsum.html'>rowsum</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='kw'>metabarlist</span><span class='op'>$</span><span class='kw'>reads</span>), <span class='kw'>groups</span>))})
+<span class='va'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_motus</span><span class='op'>(</span><span class='va'>soil_euk</span>, groups <span class='op'>=</span> <span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>$</span><span class='va'>phylum_name</span>,
+                               FUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>groups</span><span class='op'>)</span><span class='op'>{</span>
+                                       <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rowsum.html'>rowsum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>metabarlist</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>)</span>, <span class='va'>groups</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'>
 </div></pre>
   </div>
@@ -231,7 +231,7 @@ information of the most abundant MOTU in a given group.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -132,7 +132,7 @@
     <p>Removes reads of potential tagjumps in a <code>metabarlist</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tagjumpslayer</span>(<span class='kw'>metabarlist</span>, threshold = <span class='fl'>0.03</span>, method = <span class='st'>"cut"</span>)</pre>
+    <pre class="usage"><span class='fu'>tagjumpslayer</span><span class='op'>(</span><span class='va'>metabarlist</span>, threshold <span class='op'>=</span> <span class='fl'>0.03</span>, method <span class='op'>=</span> <span class='st'>"cut"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,7 +170,7 @@ Default: <code>"cut"</code></p></td>
 
     <p>Carlsen, T., Aas, A. B., Lindner, D., Vrålstad, T., Schumacher, T., &amp; Kauserud, H. (2012). Don't make a mista (g) ke: is tag switching an overlooked source of error in amplicon pyrosequencing studies?. Fungal Ecology, 5(6), 747-749.</p>
 <p>Esling, P., Lejzerowicz, F., &amp; Pawlowski, J. (2015). Accurate multiplexing and filtering for high-throughput amplicon-sequencing. Nucleic Acids Research, 43(5), 2513-2524.</p>
-<p>Schnell, I. B., Bohmann, K., &amp; Gilbert, M. T. P. (2015). Tag jumps illuminated–reducing sequence‐to‐sample misidentifications in metabarcoding studies. Molecular Ecology Resources, 15(6), 1289-1303.</p>
+<p>Schnell, I. B., Bohmann, K., &amp; Gilbert, M. T. P. (2015). Tag jumps illuminated–reducing sequence-to-sample misidentifications in metabarcoding studies. Molecular Ecology Resources, 15(6), 1289-1303.</p>
 <p>Zinger, L., Taberlet, P., Schimann, H., Bonin, A., Boyer, F., De Barba, M., ... &amp; Chave, J. (2019). Body size determines soil community assembly in a tropical forest. Molecular Ecology, 28(3), 528-543.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -182,34 +182,34 @@ Default: <code>"cut"</code></p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 
 <span class='co'># \donttest{</span>
 
-<span class='kw'>soil_euk_clean</span> <span class='op'>&lt;-</span> <span class='fu'>tagjumpslayer</span>(<span class='kw'>soil_euk</span>, <span class='fl'>0.03</span>)
+<span class='va'>soil_euk_clean</span> <span class='op'>&lt;-</span> <span class='fu'>tagjumpslayer</span><span class='op'>(</span><span class='va'>soil_euk</span>, <span class='fl'>0.03</span><span class='op'>)</span>
 
 <span class='co'># identify occurrence of the most abundant OTU</span>
-<span class='kw'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>count</span>)
-<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggpcrplate.html'>ggpcrplate</a></span>(<span class='kw'>soil_euk</span>,
-  legend_title = <span class='st'>"# reads"</span>,
-  FUN = <span class='fu'>function</span>(<span class='kw'>m</span>) {
-    <span class='kw'>m</span><span class='op'>$</span><span class='kw'>reads</span>[, <span class='kw'>idx</span>]
-  }
-)
+<span class='va'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>$</span><span class='va'>count</span><span class='op'>)</span>
+<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggpcrplate.html'>ggpcrplate</a></span><span class='op'>(</span><span class='va'>soil_euk</span>,
+  legend_title <span class='op'>=</span> <span class='st'>"# reads"</span>,
+  FUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>m</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>[</span>, <span class='va'>idx</span><span class='op'>]</span>
+  <span class='op'>}</span>
+<span class='op'>)</span>
 
-<span class='kw'>p1</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_size.html'>scale_size</a></span>(limits = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>reads</span>[, <span class='kw'>idx</span>]))) <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"Distribution of the most abundant MOTU"</span>)
+<span class='va'>p1</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_size.html'>scale_size</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>[</span>, <span class='va'>idx</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"Distribution of the most abundant MOTU"</span><span class='op'>)</span>
 </div><div class='img'><img src='tagjumpslayer-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># same on clean data</span>
-<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggpcrplate.html'>ggpcrplate</a></span>(<span class='kw'>soil_euk_clean</span>,
-  legend_title = <span class='st'>"# reads"</span>,
-  FUN = <span class='fu'>function</span>(<span class='kw'>m</span>) {
-    <span class='kw'>m</span><span class='op'>$</span><span class='kw'>reads</span>[, <span class='kw'>idx</span>]
-  }
-)
-<span class='kw'>p2</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_size.html'>scale_size</a></span>(limits = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='kw'>soil_euk_clean</span><span class='op'>$</span><span class='kw'>reads</span>[, <span class='kw'>idx</span>]))) <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"Distribution of the most abundant MOTU after curation"</span>)
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggpcrplate.html'>ggpcrplate</a></span><span class='op'>(</span><span class='va'>soil_euk_clean</span>,
+  legend_title <span class='op'>=</span> <span class='st'>"# reads"</span>,
+  FUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>m</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>[</span>, <span class='va'>idx</span><span class='op'>]</span>
+  <span class='op'>}</span>
+<span class='op'>)</span>
+<span class='va'>p2</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_size.html'>scale_size</a></span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>soil_euk_clean</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>[</span>, <span class='va'>idx</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"Distribution of the most abundant MOTU after curation"</span><span class='op'>)</span>
 </div><div class='img'><img src='tagjumpslayer-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># }</span>
 
@@ -229,7 +229,7 @@ Default: <code>"cut"</code></p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

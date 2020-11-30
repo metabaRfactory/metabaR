@@ -132,12 +132,12 @@
     <p>Plots an attribute of PCRs from a <code>metabarlist</code> object in the tag pair design</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ggpcrtag</span>(
-  <span class='kw'>metabarlist</span>,
-  legend_title = <span class='st'>"well_values"</span>,
-  FUN = <span class='fu'>function</span>(<span class='kw'>metabarlist</span>) {     <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='kw'>metabarlist</span><span class='op'>$</span><span class='kw'>reads</span>) },
-  taglist = <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>metabarlist</span><span class='op'>$</span><span class='kw'>pcrs</span><span class='op'>$</span><span class='kw'>tag_rev</span>))
-)</pre>
+    <pre class="usage"><span class='fu'>ggpcrtag</span><span class='op'>(</span>
+  <span class='va'>metabarlist</span>,
+  legend_title <span class='op'>=</span> <span class='st'>"well_values"</span>,
+  FUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>metabarlist</span><span class='op'>)</span> <span class='op'>{</span>     <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>metabarlist</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>)</span> <span class='op'>}</span>,
+  taglist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>metabarlist</span><span class='op'>$</span><span class='va'>pcrs</span><span class='op'>$</span><span class='va'>tag_rev</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,18 +177,18 @@ they are used in the PCR plate scheme</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 
 <span class='co'># Plot the number of reads per pcrs</span>
-<span class='fu'>ggpcrtag</span>(<span class='kw'>soil_euk</span>)
+<span class='fu'>ggpcrtag</span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 </div><div class='img'><img src='ggpcrtag-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot the number of reads of the most abundant MOTU</span>
-<span class='fu'>ggpcrtag</span>(<span class='kw'>soil_euk</span>,
-  legend_title = <span class='st'>"#reads of most\nabundant MOTU"</span>,
-  FUN = <span class='fu'>function</span>(<span class='kw'>m</span>) {
-    <span class='kw'>m</span><span class='op'>$</span><span class='kw'>reads</span>[,<span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span>(<span class='kw'>m</span><span class='op'>$</span><span class='kw'>reads</span>))]
-  }
-)
+<span class='fu'>ggpcrtag</span><span class='op'>(</span><span class='va'>soil_euk</span>,
+  legend_title <span class='op'>=</span> <span class='st'>"#reads of most\nabundant MOTU"</span>,
+  FUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>m</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>$</span><span class='va'>reads</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span>
+  <span class='op'>}</span>
+<span class='op'>)</span>
 </div><div class='img'><img src='ggpcrtag-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -205,7 +205,7 @@ they are used in the PCR plate scheme</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

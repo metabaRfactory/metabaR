@@ -132,7 +132,7 @@
     <p>Plots the taxonomic tree from a <code>metabarlist</code> object and maps an attribute onto it</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ggtaxplot</span>(<span class='kw'>metabarlist</span>, <span class='kw'>taxo</span>, <span class='kw'>sep.level</span>, <span class='kw'>sep.info</span>, thresh = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>ggtaxplot</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>taxo</span>, <span class='va'>sep.level</span>, <span class='va'>sep.info</span>, thresh <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,35 +181,35 @@ taxon labels won't be plotted</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 
 <span class='co'># Using a taxonomic path</span>
 
 <span class='co'># \donttest{</span>
 
 <span class='co'>## on all data. can take a while</span>
-<span class='fu'>ggtaxplot</span>(<span class='kw'>soil_euk</span>, <span class='st'>"path"</span>, sep.level = <span class='st'>":"</span>, sep.info = <span class='st'>"@"</span>)
+<span class='fu'>ggtaxplot</span><span class='op'>(</span><span class='va'>soil_euk</span>, <span class='st'>"path"</span>, sep.level <span class='op'>=</span> <span class='st'>":"</span>, sep.info <span class='op'>=</span> <span class='st'>"@"</span><span class='op'>)</span>
 </div><div class='img'><img src='ggtaxplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## show only taxonomic labels if taxon has a relative abundance &gt; 1e-3</span>
-<span class='fu'>ggtaxplot</span>(<span class='kw'>soil_euk</span>, <span class='st'>"path"</span>, sep.level = <span class='st'>":"</span>, sep.info = <span class='st'>"@"</span>, thresh = <span class='fl'>1e-3</span>)
+<span class='fu'>ggtaxplot</span><span class='op'>(</span><span class='va'>soil_euk</span>, <span class='st'>"path"</span>, sep.level <span class='op'>=</span> <span class='st'>":"</span>, sep.info <span class='op'>=</span> <span class='st'>"@"</span>, thresh <span class='op'>=</span> <span class='fl'>1e-3</span><span class='op'>)</span>
 </div><div class='img'><img src='ggtaxplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># }</span>
 
 <span class='co'>## run on a particular clade e.g. here arthropoda, otherwise difficult to read</span>
-<span class='kw'>arthropoda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subset_metabarlist.html'>subset_metabarlist</a></span>(<span class='kw'>soil_euk</span>,
-  table = <span class='st'>"motus"</span>,
-  indices = <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='st'>"Arthropoda"</span>, <span class='kw'>soil_euk</span><span class='op'>$</span><span class='kw'>motus</span><span class='op'>$</span><span class='kw'>path</span>)
-)
+<span class='va'>arthropoda</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subset_metabarlist.html'>subset_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk</span>,
+  table <span class='op'>=</span> <span class='st'>"motus"</span>,
+  indices <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"Arthropoda"</span>, <span class='va'>soil_euk</span><span class='op'>$</span><span class='va'>motus</span><span class='op'>$</span><span class='va'>path</span><span class='op'>)</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='co'>### plot</span>
-<span class='fu'>ggtaxplot</span>(<span class='kw'>arthropoda</span>, <span class='st'>"path"</span>, sep.level = <span class='st'>":"</span>, sep.info = <span class='st'>"@"</span>)
+<span class='fu'>ggtaxplot</span><span class='op'>(</span><span class='va'>arthropoda</span>, <span class='st'>"path"</span>, sep.level <span class='op'>=</span> <span class='st'>":"</span>, sep.info <span class='op'>=</span> <span class='st'>"@"</span><span class='op'>)</span>
 </div><div class='img'><img src='ggtaxplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Using a taxonomic table</span>
-<span class='kw'>taxo.col</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+<span class='va'>taxo.col</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
   <span class='st'>"phylum_name"</span>, <span class='st'>"class_name"</span>, <span class='st'>"order_name"</span>,
   <span class='st'>"family_name"</span>, <span class='st'>"genus_name"</span>, <span class='st'>"species_name"</span>
-)
-<span class='fu'>ggtaxplot</span>(<span class='kw'>arthropoda</span>, <span class='kw'>taxo.col</span>)
+<span class='op'>)</span>
+<span class='fu'>ggtaxplot</span><span class='op'>(</span><span class='va'>arthropoda</span>, <span class='va'>taxo.col</span><span class='op'>)</span>
 </div><div class='img'><img src='ggtaxplot-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## to do the same on the full soil_euk data,</span>
 <span class='co'># add a column "kingdom_name" with value "Eukaryota" in soil_euk$motus</span>
 
@@ -229,7 +229,7 @@ taxon labels won't be plotted</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

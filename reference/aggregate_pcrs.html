@@ -132,13 +132,13 @@
     <p>Aggregate PCR replicates in a <code>metabarlist</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>aggregate_pcrs</span>(<span class='kw'>metabarlist</span>, replicates = <span class='kw'>NULL</span>, FUN = <span class='kw'>FUN_agg_pcrs_sum</span>)
+    <pre class="usage"><span class='fu'>aggregate_pcrs</span><span class='op'>(</span><span class='va'>metabarlist</span>, replicates <span class='op'>=</span> <span class='cn'>NULL</span>, FUN <span class='op'>=</span> <span class='va'>FUN_agg_pcrs_sum</span><span class='op'>)</span>
 
-<span class='fu'>FUN_agg_pcrs_sum</span>(<span class='kw'>metabarlist</span>, <span class='kw'>replicates</span>)
+<span class='fu'>FUN_agg_pcrs_sum</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>replicates</span><span class='op'>)</span>
 
-<span class='fu'>FUN_agg_pcrs_mean</span>(<span class='kw'>metabarlist</span>, <span class='kw'>replicates</span>)
+<span class='fu'>FUN_agg_pcrs_mean</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>replicates</span><span class='op'>)</span>
 
-<span class='fu'>FUN_agg_pcrs_prob</span>(<span class='kw'>metabarlist</span>, <span class='kw'>replicates</span>)</pre>
+<span class='fu'>FUN_agg_pcrs_prob</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>replicates</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,7 +188,7 @@ If none numeric, information is dereplicated if equal across replicates, or conc
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Deagle, B. E., Thomas, A. C., McInnes, J. C., Clarke, L. J., Vesterinen, E. J., Clare, E. L., ... &amp; Eveson, J. P. (2019). Counting with DNA in metabarcoding studies: How should we convert sequence reads to dietary data?. Molecular Ecology, 28(2), 391-406.</p>
-<p>Pansu, J., Giguet‐Covex, C., Ficetola, G. F., Gielly, L., Boyer, F., Zinger, L., ... &amp; Choler, P. (2015). Reconstructing long‐term human impacts on plant communities: An ecological approach based on lake sediment DNA. Molecular Ecology, 24(7), 1485-1498.</p>
+<p>Pansu, J., Giguet-Covex, C., Ficetola, G. F., Gielly, L., Boyer, F., Zinger, L., ... &amp; Choler, P. (2015). Reconstructing long-term human impacts on plant communities: An ecological approach based on lake sediment DNA. Molecular Ecology, 24(7), 1485-1498.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='aggregate_motus.html'>aggregate_motus</a></code>, <code><a href='https://rdrr.io/r/base/apply.html'>apply</a></code>, <code><a href='https://rdrr.io/r/stats/aggregate.html'>aggregate</a></code></p></div>
@@ -198,11 +198,11 @@ If none numeric, information is dereplicated if equal across replicates, or conc
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>soil_euk</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 
 <span class='co'>## With default function (sum reads across replicates)</span>
-<span class='kw'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_pcrs</span>(<span class='kw'>soil_euk</span>)
-</div><div class='output co'>#&gt; <span class='warning'>Warning: column `plate_no` of table `pcrs` in out is not numeric</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span>(<span class='kw'>soil_euk</span>)
+<span class='va'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_pcrs</span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $dataset_dimension
 #&gt;         n_row n_col
 #&gt; reads     384 12647
@@ -214,7 +214,7 @@ If none numeric, information is dereplicated if equal across replicates, or conc
 #&gt;         nb_reads nb_motus avg_reads sd_reads avg_motus sd_motus
 #&gt; pcrs     3538913    12647  9215.919 10283.45  333.6849  295.440
 #&gt; samples  2797294    12382 10926.930 10346.66  489.5117  239.685
-#&gt; </div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span>(<span class='kw'>soil_euk_ag</span>)
+#&gt; </div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk_ag</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $dataset_dimension
 #&gt;         n_row n_col
 #&gt; reads      96 12647
@@ -228,8 +228,8 @@ If none numeric, information is dereplicated if equal across replicates, or conc
 #&gt; samples  2797294    12382  43707.72 24514.09 1115.1406 376.4573
 #&gt; </div><div class='input'>
 <span class='co'>## With the FUN_agg_prob pre-defined function</span>
-<span class='kw'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_pcrs</span>(<span class='kw'>soil_euk</span>, FUN = <span class='kw'>FUN_agg_pcrs_prob</span>)
-</div><div class='output co'>#&gt; <span class='warning'>Warning: column `plate_no` of table `pcrs` in out is not numeric</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span>(<span class='kw'>soil_euk</span>)
+<span class='va'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_pcrs</span><span class='op'>(</span><span class='va'>soil_euk</span>, FUN <span class='op'>=</span> <span class='va'>FUN_agg_pcrs_prob</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $dataset_dimension
 #&gt;         n_row n_col
 #&gt; reads     384 12647
@@ -241,7 +241,7 @@ If none numeric, information is dereplicated if equal across replicates, or conc
 #&gt;         nb_reads nb_motus avg_reads sd_reads avg_motus sd_motus
 #&gt; pcrs     3538913    12647  9215.919 10283.45  333.6849  295.440
 #&gt; samples  2797294    12382 10926.930 10346.66  489.5117  239.685
-#&gt; </div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span>(<span class='kw'>soil_euk_ag</span>) <span class='co'>## output reads produced do not have much sense in this case.</span>
+#&gt; </div><div class='input'><span class='fu'><a href='summary_metabarlist.html'>summary_metabarlist</a></span><span class='op'>(</span><span class='va'>soil_euk_ag</span><span class='op'>)</span> <span class='co'>## output reads produced do not have much sense in this case.</span>
 </div><div class='output co'>#&gt; $dataset_dimension
 #&gt;         n_row n_col
 #&gt; reads      96 12647
@@ -256,10 +256,10 @@ If none numeric, information is dereplicated if equal across replicates, or conc
 #&gt; </div><div class='input'>
 <span class='co'>## With a custom function (here equivalent to FUN_agg_pcrs_sum,</span>
 <span class='co'>## i.e. summing abundances of all MOTUs across replicates)</span>
-<span class='kw'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_pcrs</span>(<span class='kw'>soil_euk</span>,
-                              FUN = <span class='fu'>function</span>(<span class='kw'>metabarlist</span>, <span class='kw'>replicates</span>){
-                                 <span class='fu'><a href='https://rdrr.io/r/base/rowsum.html'>rowsum</a></span>(<span class='kw'>metabarlist</span><span class='op'>$</span><span class='kw'>reads</span>, <span class='kw'>replicates</span>)})
-</div><div class='output co'>#&gt; <span class='warning'>Warning: column `plate_no` of table `pcrs` in out is not numeric</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'>
+<span class='va'>soil_euk_ag</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_pcrs</span><span class='op'>(</span><span class='va'>soil_euk</span>,
+                              FUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>replicates</span><span class='op'>)</span><span class='op'>{</span>
+                                 <span class='fu'><a href='https://rdrr.io/r/base/rowsum.html'>rowsum</a></span><span class='op'>(</span><span class='va'>metabarlist</span><span class='op'>$</span><span class='va'>reads</span>, <span class='va'>replicates</span><span class='op'>)</span><span class='op'>}</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Some PCRs in out have a number of reads of zero in table `reads`!</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -276,7 +276,7 @@ If none numeric, information is dereplicated if equal across replicates, or conc
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
