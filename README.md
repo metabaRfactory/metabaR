@@ -1,54 +1,49 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ![Metabar banner](man/figures/metabaR.png)
 
-`metabaR` is an R package enabling the import, handling and processing
-of DNA metabarcoding data that have been already processed through
-bioinformatic pipelines. It provides functions to reveal and filter
-common molecular artifacts produced during the experimental workflow.
+`metabaR` is an R package enabling the import, handling and processing of DNA metabarcoding data that have been already processed through bioinformatic pipelines. It provides functions to reveal and filter common molecular artifacts produced during the experimental workflow.
 
-This package can be easily used in combination with others R packages
-commonly used in ecology (`vegan`, `ade4`, `ape`, `picante`, etc.), and
-provides flexible graphic systems based on `ggplot2` to visualise the
-data under both ecological and experimental perspectives.
+This package can be easily used in combination with others R packages commonly used in ecology (`vegan`, `ade4`, `ape`, `picante`, etc.), and provides flexible graphic systems based on `ggplot2` to visualise the data under both ecological and experimental perspectives.
 
 More specifically, `metabaR` provides:
 
-  - Import functions of DNA metabarcoding data from different
-    bioinformatics pipelines  
-  - Functions to manipulate the different types of tables one usually
-    deals with when working with DNA metabarcoding.
-  - Functions of data curation that are absent from the above pipelines
-    and detect/flag potential molecular artifacts such as contaminants,
-    dysfynctional PCRs, etc.  
-  - Functions to visualise the data under both ecological (e.g. type of
-    samples, rarefaction curves) and experimental (e.g. type of
-    controls, distribution across the PCR plate design) perspectives.
+-   Import functions of DNA metabarcoding data from different bioinformatics pipelines
+-   Functions to manipulate the different types of tables one usually deals with when working with DNA metabarcoding.
+-   Functions of data curation that are absent from the above pipelines and detect/flag potential molecular artifacts such as contaminants, dysfynctional PCRs, etc.
+-   Functions to visualise the data under both ecological (e.g. type of samples, rarefaction curves) and experimental (e.g. type of controls, distribution across the PCR plate design) perspectives.
 
 `metabaR` is developed on GitHub:
 
 <https://github.com/metabaRfactory/metabaR>
 
-## Overall overview
+Overall overview
+----------------
 
 ![Metabar over](man/figures/metabaR_overview.png)
 
-## Installation
+Installation
+------------
 
 `metabaR` can be installed from GitHub using:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("metabaRfactory/metabaR")
+# install bioconductor dependencies
+install.packages("BiocManager")
+BiocManager::install("biomformat")
+
+# install metabaR package
+install.packages("remotes")
+remotes::install_github("metabaRfactory/metabaR")
 ```
 
-Package dependencies:  
-\- for graphical purposes: `igraph`, `ggplot2` and `cowplot`  
-\- for formatting purposes: `reshape2`, `seqinr`, `biomformat`  
-\- for analysis purposes: `vegan`, `ade4`
+Package dependencies:
+- for graphical purposes: `igraph`, `ggplot2` and `cowplot`
+- for formatting purposes: `reshape2`, `seqinr`, `biomformat`
+- for analysis purposes: `vegan`, `ade4`
 
-## Example
+Example
+-------
 
 This is a basic example of use:
 
