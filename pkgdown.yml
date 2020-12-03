@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   metabaRF-vignette: metabaRF-vignette.html
-last_built: 2020-12-03T08:26Z
+last_built: 2020-12-03T10:20Z
 urls:
   reference: https://metabarfactory.github.io/metabaR//reference
   article: https://metabarfactory.github.io/metabaR//articles
