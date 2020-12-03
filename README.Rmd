@@ -38,8 +38,13 @@ https://github.com/metabaRfactory/metabaR
 `metabaR` can be installed from GitHub using:
 
 ```{r gh-installation, eval = FALSE}
-install.packages("devtools")
-devtools::install_github("metabaRfactory/metabaR")
+# install bioconductor dependencies
+install.packages("BiocManager")
+BiocManager::install("biomformat")
+
+# install metabaR package
+install.packages("remotes")
+remotes::install_github("metabaRfactory/metabaR")
 ```
 
 Package dependencies:   
