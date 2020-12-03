@@ -87,11 +87,9 @@
 <p>This package can be easily used in combination with others R packages commonly used in ecology (<code>vegan</code>, <code>ade4</code>, <code>ape</code>, <code>picante</code>, etc.), and provides flexible graphic systems based on <code>ggplot2</code> to visualise the data under both ecological and experimental perspectives.</p>
 <p>More specifically, <code>metabaR</code> provides:</p>
 <ul>
-<li>Import functions of DNA metabarcoding data from different bioinformatics pipelines<br>
-</li>
+<li>Import functions of DNA metabarcoding data from different bioinformatics pipelines</li>
 <li>Functions to manipulate the different types of tables one usually deals with when working with DNA metabarcoding.</li>
-<li>Functions of data curation that are absent from the above pipelines and detect/flag potential molecular artifacts such as contaminants, dysfynctional PCRs, etc.<br>
-</li>
+<li>Functions of data curation that are absent from the above pipelines and detect/flag potential molecular artifacts such as contaminants, dysfynctional PCRs, etc.</li>
 <li>Functions to visualise the data under both ecological (e.g. type of samples, rarefaction curves) and experimental (e.g. type of controls, distribution across the PCR plate design) perspectives.</li>
 </ul>
 <p><code>metabaR</code> is developed on GitHub:</p>
@@ -106,12 +104,22 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p><code>metabaR</code> can be installed from GitHub using:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"metabaRfactory/metabaR"</span><span class="op">)</span></code></pre></div>
-<p>Package dependencies:<br>
-- for graphical purposes: <code>igraph</code>, <code>ggplot2</code> and <code>cowplot</code><br>
-- for formatting purposes: <code>reshape2</code>, <code>seqinr</code>, <code>biomformat</code><br>
-- for analysis purposes: <code>vegan</code>, <code>ade4</code></p>
+<code class="sourceCode R"><span class="co"># install bioconductor dependencies</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"biomformat"</span><span class="op">)</span>
+
+<span class="co"># install metabaR package</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"metabaRfactory/metabaR"</span><span class="op">)</span></code></pre></div>
+<p>Package dependencies:</p>
+<ul>
+<li>for graphical purposes: <code>igraph</code>, <code>ggplot2</code> and <code>cowplot</code>
+</li>
+<li>for formatting purposes: <code>reshape2</code>, <code>seqinr</code>, <code>biomformat</code>
+</li>
+<li>for analysis purposes: <code>vegan</code>, <code>ade4</code>
+</li>
+</ul>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
