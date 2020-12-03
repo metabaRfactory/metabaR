@@ -50,7 +50,7 @@ To install `metabaR`, use :
 
 ```{r install, eval=FALSE}
 install.packages("devtools")
-devtools::install_github("metabaRactory/metabaR")
+devtools::install_github("metabaRfactory/metabaR")
 ```
 
 And then load the package   
