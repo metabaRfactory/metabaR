@@ -1,12 +1,5 @@
 ---
 title: "Let's metabaR!"
-author: 
-  - name: "Lucie Zinger, Anne-Sophie Benoiston"
-    affiliation: "Institut de Biologie de l’ENS (IBENS), Département de biologie, École normale supérieure, CNRS, INSERM, Université PSL, 75005 Paris, France."
-  - name: "Julian Donald"
-    affiliation: "Evolution et Diversité Biologique (EDB UMR5174), Université Toulouse 3 Paul Sabatier, CNRS, IRD - Toulouse, France."
-  - name: "Clément Lionnet, Frédéric Boyer"
-    affiliation: "Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France."
 date: "`r Sys.Date()`"
 output:
   prettydoc::html_pretty:
