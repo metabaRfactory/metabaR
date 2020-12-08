@@ -42,8 +42,13 @@ Due to its simple structure, `metabaR` can easily be used in combination with ot
 To install `metabaR`, use : 
 
 ```{r install, eval=FALSE}
-install.packages("devtools")
-devtools::install_github("metabaRfactory/metabaR")
+# install bioconductor dependencies
+install.packages("BiocManager")
+BiocManager::install("biomformat")
+
+# install metabaR package
+install.packages("remotes")
+remotes::install_github("metabaRfactory/metabaR")
 ```
 
 And then load the package   
@@ -81,7 +86,7 @@ The basic data format used in `metabaR` is a `metabarlist`, a list of four table
 `metabaR` provides a range of function types:
 
 - Import and formating functions to import DNA metabarcoding data from common bioinformatic pipelines (e.g. OBITools, data in the biom format) or more generally from any data formatted as described above in 4 tables corresponding to the `reads`, `motus`, `pcrs`, `samples`.   
-- Functions for data curation. These are often absent from most bioinformatic pipelines. They aim to detect and enable the tagging of potential molecular artifacts such as contaminants or dysfunctional PCR reactions.    
+- Functions for data curation. These are often absent from most bioinformatic pipelines. They aim to detect and enable the tagging of potential molecular artifacts such as contaminants or failed PCR reactions.    
 - Functions for visualizing the data under both ecological (e.g. sample types similarity, rarefaction curves) and experimental (e.g. control types, distribution across the PCR plate design) perspectives.     
 - Functions to manipulate the `metabarlist` object, such as selection of a subset, data aggregation by PCRs or MOTUs, taxonomy information formatting, etc.   
 
@@ -211,7 +216,7 @@ ggplot(soil_euk$pcrs, aes(x=nb_reads, y=nb_motus, color = control_type)) +
   scale_color_manual(values = c("brown", "red", "cyan4","pink"), na.value = "darkgrey")
 ```
  
-In general, we observe a positive correlation between the number of reads and MOTUs per `pcr`. The strength of this relationship for the different *pcrs* types (i.e. from *samples* or controls) can reveal important information about the dataset. A strong correlation suggests that the sequencing effort is not sufficient to cover the *pcr* diversity. In other words, the number of MOTUs increases linearly with the sequencing depth, which is not a desired property when working with diversity. On the contrary, an absence of correlation suggests that the diversity is well covered by sequencing. The latter is the case in our example above with extraction or pcr negative control *pcrs* harbouring high number of reads but low numbers of MOTUs: these are most likely contaminants. The read / MOTU number relationship is steepest for sequencing negative controls, which indicates that although tag-jumps  do occur at low rates in the `soil_euk` dataset (low number of reads), it occurs for many MOTUs [@schnell:2015:00]. For *pcrs* obtained from *samples*, the number of reads and MOTUs is only slightly correlated. Of note is that some *pcrs* exhibit features more similar to controls and are likely dysfunctional.    
+In general, we observe a positive correlation between the number of reads and MOTUs per `pcr`. The strength of this relationship for the different *pcrs* types (i.e. from *samples* or controls) can reveal important information about the dataset. A strong correlation suggests that the sequencing effort is not sufficient to cover the *pcr* diversity. In other words, the number of MOTUs increases linearly with the sequencing depth, which is not a desired property when working with diversity. On the contrary, an absence of correlation suggests that the diversity is well covered by sequencing. The latter is the case in our example above with extraction or pcr negative control *pcrs* harbouring high number of reads but low numbers of MOTUs: these are most likely contaminants. The read / MOTU number relationship is steepest for sequencing negative controls, which indicates that although tag-jumps  do occur at low rates in the `soil_euk` dataset (low number of reads), it occurs for many MOTUs [@schnell:2015:00]. For *pcrs* obtained from *samples*, the number of reads and MOTUs is only slightly correlated. Of note is that some *pcrs* exhibit features more similar to controls and are likely failed.    
 
 ### Visualisation in the PCR design context   
 
@@ -394,14 +399,14 @@ ggplot(a, aes(x=control_type, y=conta.relab, color=control_type)) +
   scale_y_log10()
 ```
 
-Overall, *samples* yield much less amounts of extraction contaminants than experimental negative controls. Some *pcrs* corresponding to *samples* have, however, > 10% of their reads corresponding to contaminants and could be dysfunctional. Based on this criteria *pcrs* could be flagged as follows for potential downstream filtering:   
+Overall, *samples* yield much less amounts of extraction contaminants than experimental negative controls. Some *pcrs* corresponding to *samples* have, however, > 10% of their reads corresponding to contaminants and could be unusable. Based on this criteria *pcrs* could be flagged as follows for potential downstream filtering:   
 
 ```{r contaslayer5, message=F, warning=F}
 # flag pcrs with total contaminant relative abundance > 10% of reads)
 soil_euk$pcrs$low_contamination_level <- 
   ifelse(a$conta.relab[match(rownames(soil_euk$pcrs), rownames(a))]>1e-1,  F, T)
 
-# Proportion of potentially functional (TRUE) vs. dysfunctional (FALSE) pcrs
+# Proportion of potentially functional (TRUE) vs. failed (FALSE) pcrs
 # (controls included) based on this criterion
 table(soil_euk$pcrs$low_contamination_level) / nrow(soil_euk$pcrs)
 ```
@@ -477,7 +482,7 @@ Here, we find that 7 non-target MOTUs are also extraction contaminants and poten
 
 ### Detecting PCR outliers
 
-A first way to identify dysfunctional PCRs is to flag them based on the *pcr* sequencing depth 
+A first way to identify failed PCRs is to flag them based on the *pcr* sequencing depth 
 
 ```{r dysfuncPCR1, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
 ggplot(soil_euk$pcrs, aes(nb_reads)) +
@@ -593,7 +598,7 @@ ggplot(tmp2, aes(x=as.factor(threshold), y=value)) +
 
 A threshold of 0.01 leads to a drop in both the number of reads and of MOTUs in sequencing negative controls. This drop is also noticeable in terms of the number of MOTUs in *pcrs* obtained from other controls as compared to those obtained from *samples*. The former are expected to be void of environmental MOTUs, and tag-jumps  should be more visible/important in these *pcrs*. Note that this procedure primarily affects MOTU diversity in *pcrs*, and poorly the number of reads in *pcrs*.      
 
-As for above, *pcrs* containing large amounts of MOTUs identified as potentially artifactual or where tag-jumps filtering strongly affects the number of reads in *pcrs* can be flagged as potentially dysfunctional. 
+As for above, *pcrs* containing large amounts of MOTUs identified as potentially artifactual or where tag-jumps filtering strongly affects the number of reads in *pcrs* can be flagged as potentially failed. 
 
 ## Summarizing the noise in the `soil_euk` dataset
 
@@ -667,7 +672,7 @@ ggplot(tmp.pcrs, aes(x=1, fill=artefact_type)) +
     ggtitle("PCR artefacts overview")
 ```
 
-The *pcrs* flagged as potentially dysfunctional account for ca. 10% of the *pcrs*, most of these corresponding to *pcrs* yiedling a high amount of contaminants. 
+The *pcrs* flagged as potentially failed account for ca. 10% of the *pcrs*, most of these corresponding to *pcrs* yiedling a high amount of contaminants. 
 
 ## Data cleaning and aggregation
 
