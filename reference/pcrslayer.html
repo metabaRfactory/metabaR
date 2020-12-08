@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Detecting PCRs replicate outliers. — pcrslayer" />
-<meta property="og:description" content="Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs." />
+<meta property="og:description" content="Detecting failed PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs." />
 
 
 
@@ -129,7 +129,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs.</p>
+    <p>Detecting failed PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pcrslayer</span><span class='op'>(</span>
@@ -221,15 +221,15 @@ from which the graphical colorscheme is drawn.</p></td>
 
     <p>The <code>pcrslayer</code> function returns a metabarlist with a new boolean column vector of name
 `output_col` in the `pcrs` table indicating whether the PCR is functional (<code>TRUE</code>) or
-        or dysfunctional (<code>FALSE</code>).</p>
+        or failed (<code>FALSE</code>).</p>
 <p>The <code>pcr_within_between</code> function returns a list of <em>dw</em> and <em>db</em> dissimilarities.</p>
 <p>The <code>check_pcr_thresh</code> and <code>check_pcr_repl</code> functions return <code>ggplot</code> objects.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>pcrslayer</code> function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in MOTU composition within a biological sample (i.e. between PCR replicates, hereafter <em>dw</em>) vs. between biological samples (hereafter <em>db</em>). It relies on the assumption that PCR replicates from the same biological sample should be more similar than two different biological samples (<em>dw</em> &lt; <em>db</em>). Two methods for computing <em>dw</em> and <em>db</em> are available.</p>
 <ul>
-<li><p>With method <code>"centroid"</code>, both <em>dw</em> and <em>db</em> distances are based on the centroid of samples. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then <em>dw</em> is defined as the distance between pcr replicates and their corresponding centroid, while <em>db</em> is defined as the distances between centroids of different samples. A PCR replicate having a <em>dw</em> above a given dissimilarity threshold <em>tresh</em> is considered as an outlier, i.e. too distant from its associated average MOTU community (<code>method="centroid"</code>). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as <em>dw</em> and <em>db</em> until no more PCRs are excluded from the analysis.</p></li>
-<li><p>With method <code>"pairwise"</code>, pairwise distances between all PCR replicates are computed and then classified into <em>dw</em> or <em>db</em> depending on the pair considered. A PCR replicate having a an average <em>dw</em> above a given dissimilarity threshold <em>tresh</em> is considered as an outlier, i.e. too distant from its associated replicates (<code>method="pairwise"</code>). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. In this case, no iterations are done.</p></li>
+<li><p>With method <code>"centroid"</code>, both <em>dw</em> and <em>db</em> distances are based on the centroid of samples. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then <em>dw</em> is defined as the distance between pcr replicates and their corresponding centroid, while <em>db</em> is defined as the distances between centroids of different samples. A PCR replicate having a <em>dw</em> above a given dissimilarity threshold <em>tresh</em> is considered as an outlier, i.e. too distant from its associated average MOTU community (<code>method="centroid"</code>). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a failed PCR. The process is repeated iteratively to recompute the sample centroid, as well as <em>dw</em> and <em>db</em> until no more PCRs are excluded from the analysis.</p></li>
+<li><p>With method <code>"pairwise"</code>, pairwise distances between all PCR replicates are computed and then classified into <em>dw</em> or <em>db</em> depending on the pair considered. A PCR replicate having a an average <em>dw</em> above a given dissimilarity threshold <em>tresh</em> is considered as an outlier, i.e. too distant from its associated replicates (<code>method="pairwise"</code>). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a failed PCR. In this case, no iterations are done.</p></li>
 </ul><p>For both methods, the user is free to chose their own distance metric and whether distances should be computed on relative abundances or true abundances, through the argument <code>FUN</code>. Two methods are currently pre-encoded:</p><ul>
 <li><p>FUN_pcrdist_bray_freq computes Bray-Curtis distances on MOTU relative abundances</p></li>
 <li><p>FUN_pcrdist_coa_freq computes Euclidean distances between PCRs from a Correspondance Analysis on MOTU relative abundances</p></li>
@@ -242,7 +242,7 @@ from which the graphical colorscheme is drawn.</p></td>
 
     
 <ul>
-<li><p><code>pcrslayer</code>: Detect dysfunctional PCRs, i.e. PCR outliers in a <code>metabarlist</code> object.</p></li>
+<li><p><code>pcrslayer</code>: Detect failed PCRs, i.e. PCR outliers in a <code>metabarlist</code> object.</p></li>
 <li><p><code>pcr_within_between</code>: Computes a list of dissimilarities in OTU composition within a biological sample <em>dw</em> and between biological samples <em>db</em>.</p></li>
 <li><p><code>FUN_pcrdist_bray_freq</code>: Computes Bray-Curtis distances between pcrs standardised by the total number of reads.</p></li>
 <li><p><code>FUN_pcrdist_coa_freq</code>: Computes eclidean distances from a PCoA ordination between pcrs standardised by the total number of reads.</p></li>
@@ -285,7 +285,7 @@ from which the graphical colorscheme is drawn.</p></td>
 <span class='va'>mds</span> <span class='op'>&lt;-</span> <span class='fu'>check_pcr_repl</span><span class='op'>(</span><span class='va'>soil_euk_sub</span>, groups <span class='op'>=</span> <span class='va'>soil_euk_sub</span><span class='op'>$</span><span class='va'>pcrs</span><span class='op'>$</span><span class='va'>habitat_material</span><span class='op'>)</span>
 <span class='va'>mds</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"sample type"</span><span class='op'>)</span>
 </div><div class='img'><img src='pcrslayer-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># identify dysfunctional PCRs</span>
+<span class='co'># identify failed PCRs</span>
 <span class='va'>soil_euk_sub2</span> <span class='op'>&lt;-</span> <span class='fu'>pcrslayer</span><span class='op'>(</span><span class='va'>soil_euk_sub</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "Iteration 1"</div><div class='img'><img src='pcrslayer-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "Iteration 2"</div><div class='img'><img src='pcrslayer-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>soil_euk_sub2</span><span class='op'>$</span><span class='va'>pcrs</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "project"          "sample_id"        "type"             "control_type"    

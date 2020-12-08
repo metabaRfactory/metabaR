@@ -91,7 +91,7 @@
             <address class="author_afil">
       Evolution et Diversité Biologique (EDB UMR5174), Université Toulouse 3 Paul Sabatier, CNRS, IRD - Toulouse, France.<br><h4 class="author">Clément Lionnet, Frédéric Boyer</h4>
             <address class="author_afil">
-      Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France.<br><h4 class="date">2020-12-03</h4>
+      Univ. Grenoble Alpes, CNRS, Univ. Savoie Mont Blanc, LECA, Laboratoire d’Ecologie Alpine, F-38000 Grenoble, France.<br><h4 class="date">2020-12-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/metabaRfactory/metabaR/blob/master/vignettes/metabaRF-vignette.Rmd"><code>vignettes/metabaRF-vignette.Rmd</code></a></small>
       <div class="hidden name"><code>metabaRF-vignette.Rmd</code></div>
@@ -184,7 +184,7 @@
 <ul>
 <li>Import and formating functions to import DNA metabarcoding data from common bioinformatic pipelines (e.g. OBITools, data in the biom format) or more generally from any data formatted as described above in 4 tables corresponding to the <code>reads</code>, <code>motus</code>, <code>pcrs</code>, <code>samples</code>.<br>
 </li>
-<li>Functions for data curation. These are often absent from most bioinformatic pipelines. They aim to detect and enable the tagging of potential molecular artifacts such as contaminants or dysfunctional PCR reactions.<br>
+<li>Functions for data curation. These are often absent from most bioinformatic pipelines. They aim to detect and enable the tagging of potential molecular artifacts such as contaminants or failed PCR reactions.<br>
 </li>
 <li>Functions for visualizing the data under both ecological (e.g. sample types similarity, rarefaction curves) and experimental (e.g. control types, distribution across the PCR plate design) perspectives.<br>
 </li>
@@ -328,7 +328,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"brown"</span>, <span class="st">"red"</span>, <span class="st">"cyan4"</span>,<span class="st">"pink"</span><span class="op">)</span>, na.value <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_files/figure-html/diag2_readsMOTUs-1.png" width="480" style="display: block; margin: auto;"></p>
-<p>In general, we observe a positive correlation between the number of reads and MOTUs per <code>pcr</code>. The strength of this relationship for the different <em>pcrs</em> types (i.e. from <em>samples</em> or controls) can reveal important information about the dataset. A strong correlation suggests that the sequencing effort is not sufficient to cover the <em>pcr</em> diversity. In other words, the number of MOTUs increases linearly with the sequencing depth, which is not a desired property when working with diversity. On the contrary, an absence of correlation suggests that the diversity is well covered by sequencing. The latter is the case in our example above with extraction or pcr negative control <em>pcrs</em> harbouring high number of reads but low numbers of MOTUs: these are most likely contaminants. The read / MOTU number relationship is steepest for sequencing negative controls, which indicates that although tag-jumps do occur at low rates in the <code>soil_euk</code> dataset (low number of reads), it occurs for many MOTUs <span class="citation">(Schnell, Bohmann, and Gilbert 2015)</span>. For <em>pcrs</em> obtained from <em>samples</em>, the number of reads and MOTUs is only slightly correlated. Of note is that some <em>pcrs</em> exhibit features more similar to controls and are likely dysfunctional.</p>
+<p>In general, we observe a positive correlation between the number of reads and MOTUs per <code>pcr</code>. The strength of this relationship for the different <em>pcrs</em> types (i.e. from <em>samples</em> or controls) can reveal important information about the dataset. A strong correlation suggests that the sequencing effort is not sufficient to cover the <em>pcr</em> diversity. In other words, the number of MOTUs increases linearly with the sequencing depth, which is not a desired property when working with diversity. On the contrary, an absence of correlation suggests that the diversity is well covered by sequencing. The latter is the case in our example above with extraction or pcr negative control <em>pcrs</em> harbouring high number of reads but low numbers of MOTUs: these are most likely contaminants. The read / MOTU number relationship is steepest for sequencing negative controls, which indicates that although tag-jumps do occur at low rates in the <code>soil_euk</code> dataset (low number of reads), it occurs for many MOTUs <span class="citation">(Schnell, Bohmann, and Gilbert 2015)</span>. For <em>pcrs</em> obtained from <em>samples</em>, the number of reads and MOTUs is only slightly correlated. Of note is that some <em>pcrs</em> exhibit features more similar to controls and are likely failed.</p>
 </div>
 <div id="visualisation-in-the-pcr-design-context" class="section level3">
 <h3 class="hasAnchor">
@@ -398,19 +398,19 @@ These are the value of <span class="math inline">\(q\)</span> for which <code>me
 <code class="sourceCode R"><span class="va">soil_euk_h20.raref</span> <span class="op">=</span> <span class="fu"><a href="../reference/hill_rarefaction.html">hill_rarefaction</a></span><span class="op">(</span><span class="va">soil_euk_h20</span>, nboot <span class="op">=</span> <span class="fl">20</span>, nsteps <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">soil_euk_h20.raref</span><span class="op">$</span><span class="va">hill_table</span><span class="op">)</span>
 <span class="co">#&gt;      pcr_id reads     D0     D0.sd        D1    D1.sd        D2     D2.sd</span>
-<span class="co">#&gt; 1 H20-As_r1     5   4.75 0.5501196  4.665165 1.164772  4.674603 0.6860665</span>
-<span class="co">#&gt; 2 H20-As_r1    10   9.15 0.9333020  8.842040 1.146772  8.660714 1.4761425</span>
-<span class="co">#&gt; 3 H20-As_r1   100  50.95 4.4659531 36.951391 1.135125 26.827820 3.9741197</span>
-<span class="co">#&gt; 4 H20-As_r1   200  79.95 5.3555186 49.654405 1.101993 32.060239 4.0172927</span>
-<span class="co">#&gt; 5 H20-As_r1   500 139.00 5.6101412 63.481309 1.061821 33.741703 2.7668990</span>
-<span class="co">#&gt; 6 H20-As_r1  1000 198.50 8.6602540 72.150354 1.043185 35.227959 1.3920085</span>
+<span class="co">#&gt; 1 H20-As_r1     5   4.80 0.4103913  4.730288 1.120511  4.714286 0.5862733</span>
+<span class="co">#&gt; 2 H20-As_r1    10   9.30 0.8013147  9.075192 1.117491  8.919643 1.1211445</span>
+<span class="co">#&gt; 3 H20-As_r1   100  52.30 4.0794737 38.734198 1.113743 28.393325 4.0896729</span>
+<span class="co">#&gt; 4 H20-As_r1   200  78.85 4.8479513 47.871118 1.099440 30.156859 3.7180029</span>
+<span class="co">#&gt; 5 H20-As_r1   500 139.00 6.4888568 62.974732 1.073099 33.345122 2.7182632</span>
+<span class="co">#&gt; 6 H20-As_r1  1000 200.30 9.4818386 72.986699 1.058563 35.630951 1.9754578</span>
 <span class="co">#&gt;   coverage coverage.sd</span>
-<span class="co">#&gt; 1  0.10000 0.220047842</span>
-<span class="co">#&gt; 2  0.16000 0.175918641</span>
-<span class="co">#&gt; 3  0.66250 0.049828654</span>
-<span class="co">#&gt; 4  0.75725 0.028583902</span>
-<span class="co">#&gt; 5  0.84310 0.013572030</span>
-<span class="co">#&gt; 6  0.89935 0.008579504</span></code></pre></div>
+<span class="co">#&gt; 1   0.0800  0.16415654</span>
+<span class="co">#&gt; 2   0.1400  0.16026294</span>
+<span class="co">#&gt; 3   0.6590  0.05729885</span>
+<span class="co">#&gt; 4   0.7595  0.02416500</span>
+<span class="co">#&gt; 5   0.8405  0.01251315</span>
+<span class="co">#&gt; 6   0.8994  0.01076251</span></code></pre></div>
 <p>The <code>hill_rarefaction</code> function produces an object with several elements. The most relevant one is the <code>hill_table</code> a table indicating the <code>pcr_id</code>, the sequencing depth at which the <em>pcr</em> was resampled, and the corresponding diversity / coverage indices. The output of <code>hill_rarefaction</code> can be used to draw rarefaction curves.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/hill_rarefaction.html">gghill_rarefaction</a></span><span class="op">(</span><span class="va">soil_euk_h20.raref</span><span class="op">)</span> </code></pre></div>
@@ -644,13 +644,13 @@ ctcaaacttccgtggcctaaacggccatagtccctctaagaagctggccgcggagggatgcctccgtgtagctagttagc
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_files/figure-html/contaslayer4-1.png" width="384" style="display: block; margin: auto;"></p>
-<p>Overall, <em>samples</em> yield much less amounts of extraction contaminants than experimental negative controls. Some <em>pcrs</em> corresponding to <em>samples</em> have, however, &gt; 10% of their reads corresponding to contaminants and could be dysfunctional. Based on this criteria <em>pcrs</em> could be flagged as follows for potential downstream filtering:</p>
+<p>Overall, <em>samples</em> yield much less amounts of extraction contaminants than experimental negative controls. Some <em>pcrs</em> corresponding to <em>samples</em> have, however, &gt; 10% of their reads corresponding to contaminants and could be unusable. Based on this criteria <em>pcrs</em> could be flagged as follows for potential downstream filtering:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># flag pcrs with total contaminant relative abundance &gt; 10% of reads)</span>
 <span class="va">soil_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">$</span><span class="va">low_contamination_level</span> <span class="op">&lt;-</span> 
   <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">conta.relab</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">soil_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">&gt;</span><span class="fl">1e-1</span>,  <span class="cn">F</span>, <span class="cn">T</span><span class="op">)</span>
 
-<span class="co"># Proportion of potentially functional (TRUE) vs. dysfunctional (FALSE) pcrs</span>
+<span class="co"># Proportion of potentially functional (TRUE) vs. failed (FALSE) pcrs</span>
 <span class="co"># (controls included) based on this criterion</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">soil_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">$</span><span class="va">low_contamination_level</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">soil_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">)</span>
 <span class="co">#&gt; </span>
@@ -742,7 +742,7 @@ ctcaaacttccgtggcctaaacggccatagtccctctaagaagctggccgcggagggatgcctccgtgtagctagttagc
 <div id="detecting-pcr-outliers" class="section level3">
 <h3 class="hasAnchor">
 <a href="#detecting-pcr-outliers" class="anchor"></a>Detecting PCR outliers</h3>
-<p>A first way to identify dysfunctional PCRs is to flag them based on the <em>pcr</em> sequencing depth</p>
+<p>A first way to identify failed PCRs is to flag them based on the <em>pcr</em> sequencing depth</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">soil_euk</span><span class="op">$</span><span class="va">pcrs</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">nb_reads</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins<span class="op">=</span><span class="fl">40</span>, color<span class="op">=</span><span class="st">"grey"</span>, fill<span class="op">=</span><span class="st">"white"</span><span class="op">)</span> <span class="op">+</span> 
@@ -856,7 +856,7 @@ ctcaaacttccgtggcctaaacggccatagtccctctaagaagctggccgcggagggatgcctccgtgtagctagttagc
         legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_files/figure-html/tagjump1-1.png" width="960" style="display: block; margin: auto;"></p>
 <p>A threshold of 0.01 leads to a drop in both the number of reads and of MOTUs in sequencing negative controls. This drop is also noticeable in terms of the number of MOTUs in <em>pcrs</em> obtained from other controls as compared to those obtained from <em>samples</em>. The former are expected to be void of environmental MOTUs, and tag-jumps should be more visible/important in these <em>pcrs</em>. Note that this procedure primarily affects MOTU diversity in <em>pcrs</em>, and poorly the number of reads in <em>pcrs</em>.</p>
-<p>As for above, <em>pcrs</em> containing large amounts of MOTUs identified as potentially artifactual or where tag-jumps filtering strongly affects the number of reads in <em>pcrs</em> can be flagged as potentially dysfunctional.</p>
+<p>As for above, <em>pcrs</em> containing large amounts of MOTUs identified as potentially artifactual or where tag-jumps filtering strongly affects the number of reads in <em>pcrs</em> can be flagged as potentially failed.</p>
 </div>
 </div>
 <div id="summarizing-the-noise-in-the-soil_euk-dataset" class="section level2">
@@ -943,7 +943,7 @@ ctcaaacttccgtggcctaaacggccatagtccctctaagaagctggccgcggagggatgcctccgtgtagctagttagc
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.direction <span class="op">=</span> <span class="st">"vertical"</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"PCR artefacts overview"</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_files/figure-html/noisePCRs-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>The <em>pcrs</em> flagged as potentially dysfunctional account for ca. 10% of the <em>pcrs</em>, most of these corresponding to <em>pcrs</em> yiedling a high amount of contaminants.</p>
+<p>The <em>pcrs</em> flagged as potentially failed account for ca. 10% of the <em>pcrs</em>, most of these corresponding to <em>pcrs</em> yiedling a high amount of contaminants.</p>
 </div>
 <div id="data-cleaning-and-aggregation" class="section level2">
 <h2 class="hasAnchor">
