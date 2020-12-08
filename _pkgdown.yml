@@ -36,7 +36,7 @@ reference:
       - '`taxodecider`'
 
   - title: Flag spurious signal
-    desc: Detect and enable the tagging of potential molecular artifacts such as contaminants or dysfunctional PCR reactions
+    desc: Detect and enable the tagging of potential molecular artifacts such as contaminants or failed PCR reactions
     contents:
       - '`contaslayer`'
       - '`tagjumpslayer`'

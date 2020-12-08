@@ -72,21 +72,21 @@ from which the graphical colorscheme is drawn.}
 \value{
 The \code{pcrslayer} function returns a metabarlist with a new boolean column vector of name
 `output_col` in the `pcrs` table indicating whether the PCR is functional (\code{TRUE}) or
-        or dysfunctional (\code{FALSE}).
+        or failed (\code{FALSE}).
 
 The \code{pcr_within_between} function returns a list of \emph{dw} and \emph{db} dissimilarities.
 
 The \code{check_pcr_thresh} and \code{check_pcr_repl} functions return \code{ggplot} objects.
 }
 \description{
-Detecting dysfunctional PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs.
+Detecting failed PCRs, i.e. PCR replicate outliers based on PCR similarity in composition of MOTUs.
 }
 \details{
 The \code{pcrslayer} function identifies potential non-functional PCR reactions based on their reproducibility. It compares the dissimilarities in MOTU composition within a biological sample (i.e. between PCR replicates, hereafter \emph{dw}) vs. between biological samples (hereafter \emph{db}). It relies on the assumption that PCR replicates from the same biological sample should be more similar than two different biological samples (\emph{dw} < \emph{db}). Two methods for computing \emph{dw} and \emph{db} are available.
 
 \itemize{
-\item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the centroid of samples. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average MOTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
-\item{With method \code{"pairwise"}, pairwise distances between all PCR replicates are computed and then classified into \emph{dw} or \emph{db} depending on the pair considered. A PCR replicate having a an average \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated replicates (\code{method="pairwise"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a dysfunctional PCR. In this case, no iterations are done.}
+\item{With method \code{"centroid"}, both \emph{dw} and \emph{db} distances are based on the centroid of samples. More specifically, a centroid community of each sample is built by computing the average MOTU abundances of the sample's pcr replicates. Then \emph{dw} is defined as the distance between pcr replicates and their corresponding centroid, while \emph{db} is defined as the distances between centroids of different samples. A PCR replicate having a \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated average MOTU community (\code{method="centroid"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a failed PCR. The process is repeated iteratively to recompute the sample centroid, as well as \emph{dw} and \emph{db} until no more PCRs are excluded from the analysis.}
+\item{With method \code{"pairwise"}, pairwise distances between all PCR replicates are computed and then classified into \emph{dw} or \emph{db} depending on the pair considered. A PCR replicate having a an average \emph{dw} above a given dissimilarity threshold \emph{tresh} is considered as an outlier, i.e. too distant from its associated replicates (\code{method="pairwise"}). If only one single PCR replicate is representative of a biological sample after this trimming, it is also considered as a failed PCR. In this case, no iterations are done.}
 }
 For both methods, the user is free to chose their own distance metric and whether distances should be computed on relative abundances or true abundances, through the argument \code{FUN}. Two methods are currently pre-encoded:
 \itemize{
@@ -104,7 +104,7 @@ The \code{check_pcr_repl} function enables visualisation of dissimilarity patter
 }
 \section{Functions}{
 \itemize{
-\item \code{pcrslayer}: Detect dysfunctional PCRs, i.e. PCR outliers in a \code{metabarlist} object.
+\item \code{pcrslayer}: Detect failed PCRs, i.e. PCR outliers in a \code{metabarlist} object.
 
 \item \code{pcr_within_between}: Computes a list of dissimilarities in OTU composition within a biological sample \emph{dw} and between biological samples \emph{db}.
 
@@ -147,7 +147,7 @@ levels(soil_euk_sub$pcrs$habitat_material) <- paste(soil_euk_sub$samples$Habitat
 mds <- check_pcr_repl(soil_euk_sub, groups = soil_euk_sub$pcrs$habitat_material)
 mds + labs(color = "sample type")
 
-# identify dysfunctional PCRs
+# identify failed PCRs
 soil_euk_sub2 <- pcrslayer(soil_euk_sub)
 tail(colnames(soil_euk_sub2$pcrs))
 length(which(soil_euk_sub2$pcrs$functional_pcr == FALSE))
