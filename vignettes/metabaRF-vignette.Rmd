@@ -443,7 +443,7 @@ a <-
   geom_vline(xintercept = 0.8, col="orange", lty=2) + 
   theme_bw() + 
   theme(panel.grid = element_blank()) + 
-  labs(x="% similarity against best match", y="# OTUs")
+  labs(x="% similarity against best match", y="# MOTUs")
 
 # Same for the weighted distribution
 b <- 
@@ -489,7 +489,7 @@ ggplot(soil_euk$pcrs, aes(nb_reads)) +
     geom_histogram(bins=40, color="grey", fill="white") + 
     geom_vline(xintercept = 1e3, lty=2, color="orange") + # threshold
     scale_x_log10() + 
-    labs(x="# Reads (with all OTUs and PCRs)", 
+    labs(x="# Reads (with all MOTUs and PCRs)", 
         y="# PCRs") +
     theme_bw() + 
     theme(panel.grid = element_blank())
@@ -710,7 +710,7 @@ if(sum(colSums(soil_euk_clean$reads)==0)>0){print("empty motus present")}
 if(sum(colSums(soil_euk_clean$reads)==0)>0){print("empty pcrs present")}
 ```
 
-Since we have now removed certain OTUs or reduced their read counts, we need to update some parameters in the metabarlist (e.g. counts, etc.).  
+Since we have now removed certain MOTUs or reduced their read counts, we need to update some parameters in the metabarlist (e.g. counts, etc.).  
 
 ```{r cleaning4,  message=F, warning=F}
 soil_euk_clean$motus$count = colSums(soil_euk_clean$reads)
