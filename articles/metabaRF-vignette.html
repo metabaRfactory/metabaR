@@ -398,19 +398,19 @@ These are the value of <span class="math inline">\(q\)</span> for which <code>me
 <code class="sourceCode R"><span class="va">soil_euk_h20.raref</span> <span class="op">=</span> <span class="fu"><a href="../reference/hill_rarefaction.html">hill_rarefaction</a></span><span class="op">(</span><span class="va">soil_euk_h20</span>, nboot <span class="op">=</span> <span class="fl">20</span>, nsteps <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">soil_euk_h20.raref</span><span class="op">$</span><span class="va">hill_table</span><span class="op">)</span>
 <span class="co">#&gt;      pcr_id reads     D0     D0.sd        D1    D1.sd        D2     D2.sd</span>
-<span class="co">#&gt; 1 H20-As_r1     5   4.85 0.3663475  4.796321 1.106911  4.785714 0.5233536</span>
-<span class="co">#&gt; 2 H20-As_r1    10   8.85 1.0399899  8.481851 1.167075  8.263889 1.4124464</span>
-<span class="co">#&gt; 3 H20-As_r1   100  51.70 3.2134585 37.461012 1.108609 26.784794 3.9988946</span>
-<span class="co">#&gt; 4 H20-As_r1   200  78.75 5.7112539 47.863953 1.097518 29.793471 3.4725097</span>
-<span class="co">#&gt; 5 H20-As_r1   500 135.95 7.3015860 61.896509 1.077136 32.876438 2.7738763</span>
-<span class="co">#&gt; 6 H20-As_r1  1000 199.65 7.0283261 72.040320 1.041831 34.828108 2.0401554</span>
+<span class="co">#&gt; 1 H20-As_r1     5   4.70 0.5712406  4.600938 1.171613  4.603175 0.7237377</span>
+<span class="co">#&gt; 2 H20-As_r1    10   8.90 1.1652874  8.504071 1.201537  8.345238 1.6847612</span>
+<span class="co">#&gt; 3 H20-As_r1   100  52.95 4.1861300 38.510393 1.120176 27.353667 4.2083963</span>
+<span class="co">#&gt; 4 H20-As_r1   200  81.95 2.8186410 50.966470 1.057755 32.261448 2.9351486</span>
+<span class="co">#&gt; 5 H20-As_r1   500 139.40 6.6046236 64.412290 1.081002 34.437952 3.1333687</span>
+<span class="co">#&gt; 6 H20-As_r1  1000 203.85 9.2182599 74.042489 1.061264 35.469988 2.2298214</span>
 <span class="co">#&gt;   coverage coverage.sd</span>
-<span class="co">#&gt; 1   0.0600 0.146539019</span>
-<span class="co">#&gt; 2   0.2200 0.190843005</span>
-<span class="co">#&gt; 3   0.6560 0.035451969</span>
-<span class="co">#&gt; 4   0.7640 0.035857907</span>
-<span class="co">#&gt; 5   0.8490 0.015169221</span>
-<span class="co">#&gt; 6   0.8971 0.008837123</span></code></pre></div>
+<span class="co">#&gt; 1  0.12000 0.228496228</span>
+<span class="co">#&gt; 2  0.20500 0.206410424</span>
+<span class="co">#&gt; 3  0.64200 0.055402831</span>
+<span class="co">#&gt; 4  0.74750 0.021429198</span>
+<span class="co">#&gt; 5  0.84300 0.010652403</span>
+<span class="co">#&gt; 6  0.89685 0.007855772</span></code></pre></div>
 <p>The <code>hill_rarefaction</code> function produces an object with several elements. The most relevant one is the <code>hill_table</code> a table indicating the <code>pcr_id</code>, the sequencing depth at which the <em>pcr</em> was resampled, and the corresponding diversity / coverage indices. The output of <code>hill_rarefaction</code> can be used to draw rarefaction curves.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/hill_rarefaction.html">gghill_rarefaction</a></span><span class="op">(</span><span class="va">soil_euk_h20.raref</span><span class="op">)</span> </code></pre></div>
