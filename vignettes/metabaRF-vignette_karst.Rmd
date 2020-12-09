@@ -24,18 +24,18 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-What if the sampler had an effect on DNA metabarcoding results? What is the extent of technical variability in DNA metabarcoding experiments? To further illustrate how one can further use `metabaR` to manipulate DNA metabarcoding data, we will address these questions with an new dataset, available in the `metabaR` companion data repository: https://github.com/metabaRfactory/metabaR_external_data.
+What if the sampler had an effect on DNA metabarcoding results? What is the extent of technical variability in DNA metabarcoding experiments? To further illustrate how one can further use `metabaR` to manipulate DNA metabarcoding data, we will address these questions with a new dataset, available in the `metabaR` companion data repository: https://github.com/metabaRfactory/metabaR_external_data.
 
 
 # The `karst_euk` dataset
 
-The `karst_euk` dataset is an object of class `metabarlist`. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the turnover of soil eukaryotes in karsts ecosystems, often seen as "terrestrial islands". In these ecosystems, dispersal is stronly limited by the singular topology of the area and genetic/ecological drifts are expected to be important processes locally. 
+The `karst_euk` dataset is an object of class `metabarlist`. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the turnover of soil eukaryotes in karsts ecosystems, often seen as "terrestrial islands". In these ecosystems, dispersal is strongly limited by the singular topology of the area, and genetic/ecological drifts are expected to be important processes locally. 
 
-A sampling was conducted across several kast mountains in Laos, as shown in the figure below. At each sampling site, two composite soil samples were made by two different samplers, one by Jean and one by Yvette. These composite samples are a mix of soil cores collected along a transect, as indicated in the figure. Each of these composite soils were then subjected to DNA extraction in duplicates, using an extracellular DNA extraction protocol [@taberlet2018environmental]. On each DNA extact, the v7 region of the 18S rRNA gene was then amplified by PCR in duplicates following previously described protocols [@zinger2019body] and the Euka02 primer pair [@taberlet2018environmental], and finally sequenced on an HiSeq Illumina platform with the paired-end technology. The retrieved data were then processed using the OBITools [@boyer:2016:00] package, including denoising using the `obiclean` command. Each entry in this table is the equivalent of an ASV (amplicon sequence variant) or the representative sequence of a MOTU.   
+Sampling was conducted across several kast mountains in Laos, as shown in the figure below. At each sampling site, two composite soil samples were made by two different samplers, one by Jean and one by Yvette. These composite samples are a mix of soil cores collected along a transect, as indicated in the figure. Each of these composite soils was then subjected to DNA extraction in duplicates, using an extracellular DNA extraction protocol [@taberlet2018environmental]. On each DNA extract, the v7 region of the 18S rRNA gene was then amplified by PCR in duplicates following previously described protocols [@zinger2019body] and the Euka02 primer pair [@taberlet2018environmental], and finally sequenced on an HiSeq Illumina platform with the paired-end technology. The retrieved data were then processed using the OBITools [@boyer:2016:00] package, including denoising using the `obiclean` command. Each entry in this table is the equivalent of an ASV (amplicon sequence variant) or the representative sequence of a MOTU.   
 
 ![](karst_euk.jpeg){width=100%}
 
-Given this set up, one expect strong differences in community composition across sites, caused by dispersal limitation, and - hopefully - minimal technical variation caused either by the extraction, PCR, and sampler.
+Given this setup, one expects strong differences in community composition across sites, caused by dispersal limitation, and - hopefully - minimal technical variation caused either by the extraction, PCR, and sampler.
 
 # Data import 
 
@@ -58,7 +58,7 @@ library(metabaR)
 summary_metabarlist(karst_euk)
 ```
 
-The `karst_euk` dataset consists of 48 PCR products corresponding to 12 composite, biological samples in total. It does not contains experimental negative or positive controls, which is why the summary statistics are the same between *pcrs* and *samples*.
+The `karst_euk` dataset consists of 48 PCR products corresponding to 12 composite, biological samples in total. It does not contain experimental negative or positive controls, which is why the summary statistics are the same between *pcrs* and *samples*.
 
 
 ```{r karst_euk_data1}
@@ -79,7 +79,7 @@ colnames(karst_euk$samples)
 
 The columns of the `samples` correspond to:
 - `"Site"`: the sampling site.    
-- `"avg_N"`: the latitude (decimal degrees) averaged across each sampling points of the same site.     
+- `"avg_N"`: the latitude (decimal degrees) averaged across each sampling point of the same site.     
 - `"avg_E"`: the longitude (decimal degrees), averaged as for latitudes. 
 - `"avg_alt"`: the elevation (m.a.s.l.), averaged as above.   
 - `"sampler"`: the name of the sampler.
@@ -89,7 +89,7 @@ The columns of the `samples` correspond to:
 
 ## Basic visualisation
 
-As the dataset does not contain neither negative / positive controls, nor information on the pcr design (i.e. PCR plates and wells), several functions of the `metabaR` package cannot be used. Still, it enables handling this multi-layer data for more basic visualisation purposes. For example, the distribution of sequencing depth and number of MOTUs per samples can be visualized as follows
+As the dataset contains neither negative / positive controls, nor information on the pcr design (i.e. PCR plates and wells), several functions of the `metabaR` package cannot be used. Still, it enables handling this multi-layer data for more basic visualisation purposes. For example, the distribution of sequencing depth and number of MOTUs per samples can be visualized as follows
 
 ```{r diag1, message=F, warning=F, fig.width=6, fig.height=3, fig.align="center"}
 # Compute the number of reads per pcr
@@ -124,7 +124,7 @@ ggdraw() +
   draw_plot(b, x=0.5, y=0, width = 0.5)
 ```
 
-This very basics plots already suggest that 3 *pcrs* have a very low diversity. They somehow behave like negative controls where some contaminants have been amplified. 
+These very basics plots already suggest that 3 *pcrs* have very low diversity. They somehow behave like negative controls where some contaminants have been amplified. 
 
 
 ## Sequencing depth and coverage 
@@ -197,7 +197,7 @@ ggplot(tmp, aes(x=Var2, y=Var1, size=ifelse(value==0, NA, value))) +
     theme(axis.text.x = element_text(angle=45, hjust = 1))
 ```
 
-The most abundant contaminant identified in the table above is present in all samples, and is therefore most likely a contaminant indeed. In addition other potential contaminant sequences are present in 7-8 successive samples, which are likely in the same column of a PCR plate. These features strongly suggest that these sequences are indeed artefactual and should be excluded from the dataset. 
+The most abundant contaminant identified in the table above is present in all samples and is, therefore, most likely a contaminant. In addition, other potential contaminant sequences are present in 7-8 successive samples, which are likely in the same column in the PCR plate. These features strongly suggest that these sequences are indeed artefactual and should be excluded from the dataset. 
 
 ## Flagging spurious MOTUs and non-target MOTUs
 
@@ -256,7 +256,6 @@ Here, one can assess the signal reproducibility at different levels:
 - the composite sample level   
 - the site level.
 
-Because the functions in `metabaR` rely on
 
 ```{r pcrsalyer1, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
 # DNA extraction
@@ -292,7 +291,7 @@ ggdraw() +
   draw_plot(c, x=0, y=0,  height = 0.3)
 ```
 
-These plots suggest that the PCR and extraction reproducibility is high. By contrast, reproducibility per sample is very low, which means that biological difference between samples are stronger than a potential effect introduced by the sampler per se. 
+These plots suggest that the PCR and extraction reproducibility is high. By contrast, reproducibility per sampler is low, which means that the biological differences between samples are stronger than potential effects introduced by the sampler identity per se. 
 
 Let's verify this with an ordination visualisation by hijacking the `check_pcr_repl` function:
 
@@ -310,10 +309,10 @@ mds +
   scale_shape(labels=c("Jean", "Yvette"))
 ```
 
-The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not totally negligible. 
+The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. 
 
 # Data final cleaning and aggregation
 
-We refer to the `soil_euk` tutorial for these last steps.
+We refer to the tutorial using the `soil_euk` dataset for these last steps.
 
 # References
