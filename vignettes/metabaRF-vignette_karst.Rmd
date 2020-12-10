@@ -1,12 +1,12 @@
 ---
-title: "The karst dataset: sampler effect and technical reproducibility"
+title: "The karst_euk dataset: sampler effect and technical reproducibility"
 date: "`r Sys.Date()`"
 output:
   prettydoc::html_pretty:
     theme: cayman
     toc: true
 vignette: >
-  %\VignetteIndexEntry{The karst dataset: sampler effect and technical reproducibility}
+  %\VignetteIndexEntry{The karst_euk dataset: sampler effect and technical reproducibility}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
