@@ -309,10 +309,10 @@ mds +
   scale_shape(labels=c("Jean", "Yvette"))
 ```
 
-The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. 
+The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. One can observe, however, some PCR outliers (site D1-2 sampled by Jean, or site C sampled by Yvette) that can be flagged with the function `pcrslayer`. We refer to the ["Let's metabaR" tutorial](https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html) for further usage description for this function.
 
 # Data final cleaning and aggregation
 
-We refer to the tutorial using the `soil_euk` dataset for these last steps.
+We presented here a succinct description of the data cleaning process for the `karst_euk` dataset. Note that not all steps are shown here, and we refer the user to the ["Let's metabaR" tutorial](https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html), based on the `soil_euk` dataset for a complete process of signal flagging and cleaning, including the last steps of the process, i.e. removal of flagged MOTUs/pcrs and data aggregation.
 
 # References
