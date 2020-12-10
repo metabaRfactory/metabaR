@@ -89,7 +89,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>The karst dataset: sampler effect and technical reproducibility</h1>
             
-            <h4 class="date">2020-12-09</h4>
+            <h4 class="date">2020-12-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/metabaRfactory/metabaR/blob/master/vignettes/metabaRF-vignette_karst.Rmd"><code>vignettes/metabaRF-vignette_karst.Rmd</code></a></small>
       <div class="hidden name"><code>metabaRF-vignette_karst.Rmd</code></div>
@@ -570,12 +570,12 @@ ctcaaacttccatgtgattacatcacatagtccctctaagaagtgattcaaatttgaaataagaacactagttagcaggt
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Sites"</span>, shape<span class="op">=</span><span class="st">"Sampler"</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_shape.html">scale_shape</a></span><span class="op">(</span>labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jean"</span>, <span class="st">"Yvette"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_karst_files/figure-html/pcrsalyer3-1.png" width="480" style="display: block; margin: auto;"></p>
-<p>The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible.</p>
+<p>The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. One can observe, however, some PCR outliers (site D1-2 sampled by Jean, or site C sampled by Yvette) that can be flagged with the function <code>pcrslayer</code>. We refer to the <a href="https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html">“Let’s metabaR” tutorial</a> for further usage description for this function.</p>
 </div>
 <div id="data-final-cleaning-and-aggregation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#data-final-cleaning-and-aggregation" class="anchor"></a>Data final cleaning and aggregation</h1>
-<p>We refer to the tutorial using the <code>soil_euk</code> dataset for these last steps.</p>
+<p>We presented here a succinct description of the data cleaning process for the <code>karst_euk</code> dataset. Note that not all steps are shown here, and we refer the user to the <a href="https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html">“Let’s metabaR” tutorial</a>, based on the <code>soil_euk</code> dataset for a complete process of signal flagging and cleaning, including the last steps of the process, i.e. removal of flagged MOTUs/pcrs and data aggregation.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
