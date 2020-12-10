@@ -24,14 +24,14 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-What if the sampler had an effect on DNA metabarcoding results? What is the extent of technical variability in DNA metabarcoding experiments? To further illustrate how one can further use `metabaR` to manipulate DNA metabarcoding data, we will address these questions with a new dataset, available in the `metabaR` companion data repository: https://github.com/metabaRfactory/metabaR_external_data.
+What if the individual collecting the samples affects DNA metabarcoding results? What is the extent of technical variability in DNA metabarcoding experiments? To further illustrate how one can use `metabaR` to manipulate DNA metabarcoding data, we will address these questions with a new dataset, available in the `metabaR` companion data repository: https://github.com/metabaRfactory/metabaR_external_data.
 
 
 # The `karst_euk` dataset
 
-The `karst_euk` dataset is an object of class `metabarlist`. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the turnover of soil eukaryotes in karsts ecosystems, often seen as "terrestrial islands". In these ecosystems, dispersal is strongly limited by the singular topology of the area, and genetic/ecological drifts are expected to be important processes locally. 
+The `karst_euk` dataset is an object of class `metabarlist`. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the turnover of soil eukaryotes in karsts ecosystems, often referred to as "terrestrial islands". In these ecosystems, dispersal is strongly limited by the unique topology of the area, and genetic/ecological drifts are expected to be important processes locally. 
 
-Sampling was conducted across several kast mountains in Laos, as shown in the figure below. At each sampling site, two composite soil samples were made by two different samplers, one by Jean and one by Yvette. These composite samples are a mix of soil cores collected along a transect, as indicated in the figure. Each of these composite soils was then subjected to DNA extraction in duplicates, using an extracellular DNA extraction protocol [@taberlet2018environmental]. On each DNA extract, the v7 region of the 18S rRNA gene was then amplified by PCR in duplicates following previously described protocols [@zinger2019body] and the Euka02 primer pair [@taberlet2018environmental], and finally sequenced on an HiSeq Illumina platform with the paired-end technology. The retrieved data were then processed using the OBITools [@boyer:2016:00] package, including denoising using the `obiclean` command. Each entry in this table is the equivalent of an ASV (amplicon sequence variant) or the representative sequence of a MOTU.   
+Sampling was conducted across several kast mountains in Laos, as shown in the figure below. At each sample site, two composite soil samples were taken by two different samplers, one by Jean and one by Yvette. These composite samples are a mix of soil cores collected along a transect, as indicated in the figure. Each of these composite soils was then subjected to DNA extraction in duplicate, using an extracellular DNA extraction protocol [@taberlet2018environmental]. On each DNA extract, the v7 region of the 18S rRNA gene was then amplified by PCR in duplicates following previously described protocols [@zinger2019body], using the Euka02 primer pair [@taberlet2018environmental], and sequenced on an HiSeq Illumina platform with the paired-end technology. The retrieved data were then processed using the OBITools [@boyer:2016:00] package, including denoising using the `obiclean` command. Each entry in this table is the equivalent of an ASV (amplicon sequence variant) or the representative sequence of a MOTU.   
 
 ![](karst_euk.jpeg){width=100%}
 
@@ -89,7 +89,7 @@ The columns of the `samples` correspond to:
 
 ## Basic visualisation
 
-As the dataset contains neither negative / positive controls, nor information on the pcr design (i.e. PCR plates and wells), several functions of the `metabaR` package cannot be used. Still, it enables handling this multi-layer data for more basic visualisation purposes. For example, the distribution of sequencing depth and number of MOTUs per samples can be visualized as follows
+As the dataset contains neither negative / positive controls, nor information on the pcr design (i.e. PCR plates and wells), several functions of the `metabaR` package cannot be used. Nevertheless, `metabaR` can still be used to handle this multi-layer data for more basic visualisation purposes. For example, the distribution of sequencing depth and number of MOTUs per samples can be visualized as follows
 
 ```{r diag1, message=F, warning=F, fig.width=6, fig.height=3, fig.align="center"}
 # Compute the number of reads per pcr
@@ -124,12 +124,12 @@ ggdraw() +
   draw_plot(b, x=0.5, y=0, width = 0.5)
 ```
 
-These very basics plots already suggest that 3 *pcrs* have very low diversity. They somehow behave like negative controls where some contaminants have been amplified. 
+These very basics plots already suggest that 3 *pcrs* have very low diversity. They appear to behave in the same way as negative controls, potentially amplifying only contaminants and few sample site derived sequences. 
 
 
 ## Sequencing depth and coverage 
 
-Let's construct the rarefaction curves with the `hill_rarefaction` function so that to obtain an estimate of $^{q}D$ and $Coverage$. `nboot` is low in the example below to limit the computing time.
+Let's construct the rarefaction curves with the `hill_rarefaction` function so as to obtain an estimate of $^{q}D$ and $Coverage$. `nboot` is low in the example below to limit the computing time.
 
 ```{r hill, message=F, warning=F, fig.width=7, fig.height=4, fig.align="center"}
 #build rarefaction curves
@@ -157,7 +157,7 @@ At a first glance, it seems that Jean's samples are more diverse in abundant/int
 
 ## Potential contaminants
 
-This dataset does not include negative controls to enable detecting potential contaminants objectively. Still, we identified above some *pcrs* with very low diversity that may correspond to *pcrs* without DNA template and where reagents contaminants were amplified. Let's see if these have a particular composition as compared to the other samples. This can be done by hijacking the `contaslayer` function as follows:
+This dataset does not include negative controls to enable the detection of potential contaminants objectively. Still, we identified above some *pcrs* with very low diversity that may correspond to *pcrs* reactions where addition of DNA template somehow failed, and where reagents contaminants were amplified. Let's see if these have a particular composition when compared with the other samples. This can be done by hijacking the `contaslayer` function as follows:
 
 ```{r conta1, message=F, warning=F, fig.width=6, fig.height=3, fig.align="center"}
 # set low-diversity pcrs as controls of e.g. pcrs
@@ -186,7 +186,7 @@ kable(dt[order(dt[,1], decreasing = TRUE)[1:10],], row.names=T) %>%
                 font_size = 8, full_width = F)
 ```
 
-From the taxonomy of these potential contaminant sequences, it is difficult to say whether these sequences are actual contaminants. One way to further investigate this is to see how these sequences are distributed across *pcrs*. 
+From the taxonomy of these potential contaminant sequences, it is difficult to say whether these sequences are true contaminants. One way to further investigate this is to see how these sequences are distributed across *pcrs*. 
 
 ```{r conta3, message=F, warning=F, fig.width=7, fig.height=4, fig.align="center"}
 library(reshape2)
@@ -203,7 +203,7 @@ The most abundant contaminant identified in the table above is present in all sa
 
 Non-target MOTUs cannot be detected in this particular dataset, because the taxonomic assignments have been made using a reference database that only contains eukaryotic sequences.    
 
-One can, however, still identify MOTUs whose sequence is too dissimilar from references, by drawing the distribution of MOTU similarity scores, weighted and unweighted by their relative abundance.   
+One can, however, still identify MOTUs whose sequence is too dissimilar from references, by plotting the distribution of MOTU similarity scores, weighted and unweighted by their relative abundance.   
 
 ```{r nontarget3, message=F, warning=F, fig.width=6, fig.height=3, fig.align="center"}
 # Plot the unweighted distribution of MOTUs similarity scores 
@@ -247,11 +247,11 @@ table(karst_euk$motus$not_a_pcr_conta,
       karst_euk$motus$not_degraded)
 ```
 
-No intersection is found between degraded MOTUs and potential contaminants. 
+In this case, no intersection is found between degraded MOTUs and potential contaminants. 
 
 # Assessing signal reproducibility
 
-Here, one can assess the signal reproducibility at different levels:    
+Using the characteristics of the `karst_euk` dataset, one can assess the signal reproducibility at different levels:    
 - the DNA extract level   
 - the composite sample level   
 - the site level.
@@ -291,12 +291,12 @@ ggdraw() +
   draw_plot(c, x=0, y=0,  height = 0.3)
 ```
 
-These plots suggest that the PCR and extraction reproducibility is high. By contrast, reproducibility per sampler is low, which means that the biological differences between samples are stronger than potential effects introduced by the sampler identity per se. 
+These plots suggest that the PCR and extraction reproducibility is high. By contrast, reproducibility per sampler is low, which suggests that the biological differences between samples are stronger than potential effects introduced by the sampler identity. 
 
 Let's verify this with an ordination visualisation by hijacking the `check_pcr_repl` function:
 
 ```{r pcrsalyer3, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
-# Distinguish between pcrs obtained from the different sampling sites
+# Distinguish between pcrs obtained from the different sample sites
 mds = check_pcr_repl(karst_euk, 
                      # display sites with different colors
                      groups = karst_euk$samples$Site[match(karst_euk$pcrs$sample_id,
@@ -309,10 +309,10 @@ mds +
   scale_shape(labels=c("Jean", "Yvette"))
 ```
 
-The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. One can observe, however, some PCR outliers (site D1-2 sampled by Jean, or site C sampled by Yvette) that can be flagged with the function `pcrslayer`. We refer to the ["Let's metabaR" tutorial](https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html) for further usage description for this function.
+The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. One can observe, however, some PCR outliers (site D1-2 sampled by Jean, or site C sampled by Yvette) that can be flagged with the function `pcrslayer`. We invite readers to refer to the ["Let's metabaR" tutorial](https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html) for further advices on the use of this function.
 
 # Data final cleaning and aggregation
 
-We presented here a succinct description of the data cleaning process for the `karst_euk` dataset. Note that not all steps are shown here, and we refer the user to the ["Let's metabaR" tutorial](https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html), based on the `soil_euk` dataset for a complete process of signal flagging and cleaning, including the last steps of the process, i.e. removal of flagged MOTUs/pcrs and data aggregation.
+The above represents a succinct description of the data cleaning process for the `karst_euk` dataset. Note that not all steps are shown here, and we refer the user to the ["Let's metabaR" tutorial](https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html), based on the `soil_euk` dataset for a complete process of signal flagging and cleaning, including the last steps of the process, i.e. removal of flagged MOTUs/pcrs and data aggregation.
 
 # References
