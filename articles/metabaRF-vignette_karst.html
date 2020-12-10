@@ -101,13 +101,13 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>What if the sampler had an effect on DNA metabarcoding results? What is the extent of technical variability in DNA metabarcoding experiments? To further illustrate how one can further use <code>metabaR</code> to manipulate DNA metabarcoding data, we will address these questions with a new dataset, available in the <code>metabaR</code> companion data repository: <a href="https://github.com/metabaRfactory/metabaR_external_data" class="uri">https://github.com/metabaRfactory/metabaR_external_data</a>.</p>
+<p>What if the individual collecting the samples affects DNA metabarcoding results? What is the extent of technical variability in DNA metabarcoding experiments? To further illustrate how one can use <code>metabaR</code> to manipulate DNA metabarcoding data, we will address these questions with a new dataset, available in the <code>metabaR</code> companion data repository: <a href="https://github.com/metabaRfactory/metabaR_external_data" class="uri">https://github.com/metabaRfactory/metabaR_external_data</a>.</p>
 </div>
 <div id="the-karst_euk-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-karst_euk-dataset" class="anchor"></a>The <code>karst_euk</code> dataset</h1>
-<p>The <code>karst_euk</code> dataset is an object of class <code>metabarlist</code>. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the turnover of soil eukaryotes in karsts ecosystems, often seen as “terrestrial islands”. In these ecosystems, dispersal is strongly limited by the singular topology of the area, and genetic/ecological drifts are expected to be important processes locally.</p>
-<p>Sampling was conducted across several kast mountains in Laos, as shown in the figure below. At each sampling site, two composite soil samples were made by two different samplers, one by Jean and one by Yvette. These composite samples are a mix of soil cores collected along a transect, as indicated in the figure. Each of these composite soils was then subjected to DNA extraction in duplicates, using an extracellular DNA extraction protocol <span class="citation">(Taberlet et al. 2018)</span>. On each DNA extract, the v7 region of the 18S rRNA gene was then amplified by PCR in duplicates following previously described protocols <span class="citation">(Zinger et al. 2019)</span> and the Euka02 primer pair <span class="citation">(Taberlet et al. 2018)</span>, and finally sequenced on an HiSeq Illumina platform with the paired-end technology. The retrieved data were then processed using the OBITools <span class="citation">(Boyer et al. 2016)</span> package, including denoising using the <code>obiclean</code> command. Each entry in this table is the equivalent of an ASV (amplicon sequence variant) or the representative sequence of a MOTU.</p>
+<p>The <code>karst_euk</code> dataset is an object of class <code>metabarlist</code>. The data were obtained from an environmental DNA (eDNA) metabarcoding experiment aiming to assess the turnover of soil eukaryotes in karsts ecosystems, often referred to as “terrestrial islands”. In these ecosystems, dispersal is strongly limited by the unique topology of the area, and genetic/ecological drifts are expected to be important processes locally.</p>
+<p>Sampling was conducted across several kast mountains in Laos, as shown in the figure below. At each sample site, two composite soil samples were taken by two different samplers, one by Jean and one by Yvette. These composite samples are a mix of soil cores collected along a transect, as indicated in the figure. Each of these composite soils was then subjected to DNA extraction in duplicate, using an extracellular DNA extraction protocol <span class="citation">(Taberlet et al. 2018)</span>. On each DNA extract, the v7 region of the 18S rRNA gene was then amplified by PCR in duplicates following previously described protocols <span class="citation">(Zinger et al. 2019)</span>, using the Euka02 primer pair <span class="citation">(Taberlet et al. 2018)</span>, and sequenced on an HiSeq Illumina platform with the paired-end technology. The retrieved data were then processed using the OBITools <span class="citation">(Boyer et al. 2016)</span> package, including denoising using the <code>obiclean</code> command. Each entry in this table is the equivalent of an ASV (amplicon sequence variant) or the representative sequence of a MOTU.</p>
 <p><img src="karst_euk.jpeg" style="width:100.0%"></p>
 <p>Given this setup, one expects strong differences in community composition across sites, caused by dispersal limitation, and - hopefully - minimal technical variation caused either by the extraction, PCR, and sampler.</p>
 </div>
@@ -171,7 +171,7 @@
 <div id="basic-visualisation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-visualisation" class="anchor"></a>Basic visualisation</h2>
-<p>As the dataset contains neither negative / positive controls, nor information on the pcr design (i.e. PCR plates and wells), several functions of the <code>metabaR</code> package cannot be used. Still, it enables handling this multi-layer data for more basic visualisation purposes. For example, the distribution of sequencing depth and number of MOTUs per samples can be visualized as follows</p>
+<p>As the dataset contains neither negative / positive controls, nor information on the pcr design (i.e. PCR plates and wells), several functions of the <code>metabaR</code> package cannot be used. Nevertheless, <code>metabaR</code> can still be used to handle this multi-layer data for more basic visualisation purposes. For example, the distribution of sequencing depth and number of MOTUs per samples can be visualized as follows</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Compute the number of reads per pcr</span>
 <span class="va">karst_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">$</span><span class="va">nb_reads</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">karst_euk</span><span class="op">$</span><span class="va">reads</span><span class="op">)</span>
@@ -204,12 +204,12 @@
   <span class="fu"><a href="https://wilkelab.org/cowplot/reference/draw_plot.html">draw_plot</a></span><span class="op">(</span><span class="va">a</span>, x<span class="op">=</span><span class="fl">0</span>, y<span class="op">=</span><span class="fl">0</span>, width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://wilkelab.org/cowplot/reference/draw_plot.html">draw_plot</a></span><span class="op">(</span><span class="va">b</span>, x<span class="op">=</span><span class="fl">0.5</span>, y<span class="op">=</span><span class="fl">0</span>, width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_karst_files/figure-html/diag1-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>These very basics plots already suggest that 3 <em>pcrs</em> have very low diversity. They somehow behave like negative controls where some contaminants have been amplified.</p>
+<p>These very basics plots already suggest that 3 <em>pcrs</em> have very low diversity. They appear to behave in the same way as negative controls, potentially amplifying only contaminants and few sample site derived sequences.</p>
 </div>
 <div id="sequencing-depth-and-coverage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sequencing-depth-and-coverage" class="anchor"></a>Sequencing depth and coverage</h2>
-<p>Let’s construct the rarefaction curves with the <code>hill_rarefaction</code> function so that to obtain an estimate of <span class="math inline">\(^{q}D\)</span> and <span class="math inline">\(Coverage\)</span>. <code>nboot</code> is low in the example below to limit the computing time.</p>
+<p>Let’s construct the rarefaction curves with the <code>hill_rarefaction</code> function so as to obtain an estimate of <span class="math inline">\(^{q}D\)</span> and <span class="math inline">\(Coverage\)</span>. <code>nboot</code> is low in the example below to limit the computing time.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#build rarefaction curves</span>
 <span class="va">karst_euk.raref</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hill_rarefaction.html">hill_rarefaction</a></span><span class="op">(</span><span class="va">karst_euk</span>, nboot <span class="op">=</span> <span class="fl">20</span>, nsteps <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
@@ -238,7 +238,7 @@
 <div id="potential-contaminants" class="section level2">
 <h2 class="hasAnchor">
 <a href="#potential-contaminants" class="anchor"></a>Potential contaminants</h2>
-<p>This dataset does not include negative controls to enable detecting potential contaminants objectively. Still, we identified above some <em>pcrs</em> with very low diversity that may correspond to <em>pcrs</em> without DNA template and where reagents contaminants were amplified. Let’s see if these have a particular composition as compared to the other samples. This can be done by hijacking the <code>contaslayer</code> function as follows:</p>
+<p>This dataset does not include negative controls to enable the detection of potential contaminants objectively. Still, we identified above some <em>pcrs</em> with very low diversity that may correspond to <em>pcrs</em> reactions where addition of DNA template somehow failed, and where reagents contaminants were amplified. Let’s see if these have a particular composition when compared with the other samples. This can be done by hijacking the <code>contaslayer</code> function as follows:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># set low-diversity pcrs as controls of e.g. pcrs</span>
 <span class="va">karst_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">$</span><span class="va">control_type</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">karst_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">$</span><span class="va">nb_motus</span><span class="op">&lt;</span><span class="fl">100</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"pcr"</span>
@@ -451,7 +451,7 @@ ctcaaacttccatgtgattacatcacatagtccctctaagaagtgattcaaatttgaaataagaacactagttagcaggt
 </tr>
 </tbody>
 </table>
-<p>From the taxonomy of these potential contaminant sequences, it is difficult to say whether these sequences are actual contaminants. One way to further investigate this is to see how these sequences are distributed across <em>pcrs</em>.</p>
+<p>From the taxonomy of these potential contaminant sequences, it is difficult to say whether these sequences are true contaminants. One way to further investigate this is to see how these sequences are distributed across <em>pcrs</em>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape">reshape2</a></span><span class="op">)</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html">melt</a></span><span class="op">(</span><span class="va">karst_euk</span><span class="op">$</span><span class="va">reads</span><span class="op">[</span>,<span class="op">!</span><span class="va">karst_euk</span><span class="op">$</span><span class="va">motus</span><span class="op">$</span><span class="va">not_a_pcr_conta</span><span class="op">]</span><span class="op">)</span>
@@ -466,7 +466,7 @@ ctcaaacttccatgtgattacatcacatagtccctctaagaagtgattcaaatttgaaataagaacactagttagcaggt
 <h2 class="hasAnchor">
 <a href="#flagging-spurious-motus-and-non-target-motus" class="anchor"></a>Flagging spurious MOTUs and non-target MOTUs</h2>
 <p>Non-target MOTUs cannot be detected in this particular dataset, because the taxonomic assignments have been made using a reference database that only contains eukaryotic sequences.</p>
-<p>One can, however, still identify MOTUs whose sequence is too dissimilar from references, by drawing the distribution of MOTU similarity scores, weighted and unweighted by their relative abundance.</p>
+<p>One can, however, still identify MOTUs whose sequence is too dissimilar from references, by plotting the distribution of MOTU similarity scores, weighted and unweighted by their relative abundance.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Plot the unweighted distribution of MOTUs similarity scores </span>
 <span class="va">a</span> <span class="op">&lt;-</span> 
@@ -512,13 +512,13 @@ ctcaaacttccatgtgattacatcacatagtccctctaagaagtgattcaaatttgaaataagaacactagttagcaggt
 <span class="co">#&gt;         FALSE TRUE</span>
 <span class="co">#&gt;   FALSE     0   40</span>
 <span class="co">#&gt;   TRUE    174 7656</span></code></pre></div>
-<p>No intersection is found between degraded MOTUs and potential contaminants.</p>
+<p>In this case, no intersection is found between degraded MOTUs and potential contaminants.</p>
 </div>
 </div>
 <div id="assessing-signal-reproducibility" class="section level1">
 <h1 class="hasAnchor">
 <a href="#assessing-signal-reproducibility" class="anchor"></a>Assessing signal reproducibility</h1>
-<p>Here, one can assess the signal reproducibility at different levels:<br>
+<p>Using the characteristics of the <code>karst_euk</code> dataset, one can assess the signal reproducibility at different levels:<br>
 - the DNA extract level<br>
 - the composite sample level<br>
 - the site level.</p>
@@ -555,10 +555,10 @@ ctcaaacttccatgtgattacatcacatagtccctctaagaagtgattcaaatttgaaataagaacactagttagcaggt
   <span class="fu"><a href="https://wilkelab.org/cowplot/reference/draw_plot.html">draw_plot</a></span><span class="op">(</span><span class="va">b</span>, x<span class="op">=</span><span class="fl">0</span>, y<span class="op">=</span><span class="fl">0.3</span>,  height <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://wilkelab.org/cowplot/reference/draw_plot.html">draw_plot</a></span><span class="op">(</span><span class="va">c</span>, x<span class="op">=</span><span class="fl">0</span>, y<span class="op">=</span><span class="fl">0</span>,  height <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_karst_files/figure-html/pcrsalyer1-1.png" width="480" style="display: block; margin: auto;"></p>
-<p>These plots suggest that the PCR and extraction reproducibility is high. By contrast, reproducibility per sampler is low, which means that the biological differences between samples are stronger than potential effects introduced by the sampler identity per se.</p>
+<p>These plots suggest that the PCR and extraction reproducibility is high. By contrast, reproducibility per sampler is low, which suggests that the biological differences between samples are stronger than potential effects introduced by the sampler identity.</p>
 <p>Let’s verify this with an ordination visualisation by hijacking the <code>check_pcr_repl</code> function:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Distinguish between pcrs obtained from the different sampling sites</span>
+<code class="sourceCode R"><span class="co"># Distinguish between pcrs obtained from the different sample sites</span>
 <span class="va">mds</span> <span class="op">=</span> <span class="fu"><a href="../reference/pcrslayer.html">check_pcr_repl</a></span><span class="op">(</span><span class="va">karst_euk</span>, 
                      <span class="co"># display sites with different colors</span>
                      groups <span class="op">=</span> <span class="va">karst_euk</span><span class="op">$</span><span class="va">samples</span><span class="op">$</span><span class="va">Site</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">karst_euk</span><span class="op">$</span><span class="va">pcrs</span><span class="op">$</span><span class="va">sample_id</span>,
@@ -570,12 +570,12 @@ ctcaaacttccatgtgattacatcacatagtccctctaagaagtgattcaaatttgaaataagaacactagttagcaggt
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Sites"</span>, shape<span class="op">=</span><span class="st">"Sampler"</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_shape.html">scale_shape</a></span><span class="op">(</span>labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jean"</span>, <span class="st">"Yvette"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="metabaRF-vignette_karst_files/figure-html/pcrsalyer3-1.png" width="480" style="display: block; margin: auto;"></p>
-<p>The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. One can observe, however, some PCR outliers (site D1-2 sampled by Jean, or site C sampled by Yvette) that can be flagged with the function <code>pcrslayer</code>. We refer to the <a href="https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html">“Let’s metabaR” tutorial</a> for further usage description for this function.</p>
+<p>The variability across sites is hence far larger than between samplers and technical replicates. But the sampler effect is not negligible. One can observe, however, some PCR outliers (site D1-2 sampled by Jean, or site C sampled by Yvette) that can be flagged with the function <code>pcrslayer</code>. We invite readers to refer to the <a href="https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html">“Let’s metabaR” tutorial</a> for further advices on the use of this function.</p>
 </div>
 <div id="data-final-cleaning-and-aggregation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#data-final-cleaning-and-aggregation" class="anchor"></a>Data final cleaning and aggregation</h1>
-<p>We presented here a succinct description of the data cleaning process for the <code>karst_euk</code> dataset. Note that not all steps are shown here, and we refer the user to the <a href="https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html">“Let’s metabaR” tutorial</a>, based on the <code>soil_euk</code> dataset for a complete process of signal flagging and cleaning, including the last steps of the process, i.e. removal of flagged MOTUs/pcrs and data aggregation.</p>
+<p>The above represents a succinct description of the data cleaning process for the <code>karst_euk</code> dataset. Note that not all steps are shown here, and we refer the user to the <a href="https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html">“Let’s metabaR” tutorial</a>, based on the <code>soil_euk</code> dataset for a complete process of signal flagging and cleaning, including the last steps of the process, i.e. removal of flagged MOTUs/pcrs and data aggregation.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
