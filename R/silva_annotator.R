@@ -233,7 +233,6 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
     heads <- which(tmp1$X..sequences > 1)
     if (length(heads) > 0) {
       clust <- read.fasta(clust.path, as.string = T, forceDNAtolower = F)
-      clust <- read.fasta(clust.path, as.string = T, forceDNAtolower = F)
       clust <- clust[match(tmp1$cluster.acc, names(clust))]
 
       tmp2 <- do.call("rbind", lapply(heads, function(x) {
