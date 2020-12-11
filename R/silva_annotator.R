@@ -24,7 +24,7 @@
 #' @seealso \code{\link{taxodecider}}
 #'
 #' @examples
-#' 
+#'
 #' \donttest{
 #'
 #' dir <- tempdir()
@@ -181,7 +181,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
           out["phylum_silva"] <- ifelse(length(x) != grep("^SAR$", x),
                                         x[grep("^SAR$", x) + 1], NA
           )
-          if (out["phylum_silva"] == "Alveolata") {
+          if (!is.na(out["phylum_silva"]) & out["phylum_silva"] == "Alveolata") {
             out["phylum_silva"] <- ifelse(x[grep("Alveolata", x) + 1] == "uncultured", NA,
                                           x[grep("Alveolata", x) + 1]
             )
