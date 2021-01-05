@@ -1,3 +1,3 @@
-# metabaR 0.1.0
+# metabaR 1.0.0
 
 * This is the first release of metabaR.
