@@ -24,7 +24,7 @@
 #' @seealso \code{\link{taxodecider}}
 #'
 #' @examples
-#' 
+#'
 #' \donttest{
 #'
 #' dir <- tempdir()
@@ -181,7 +181,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
           out["phylum_silva"] <- ifelse(length(x) != grep("^SAR$", x),
                                         x[grep("^SAR$", x) + 1], NA
           )
-          if (out["phylum_silva"] == "Alveolata") {
+          if (!is.na(out["phylum_silva"]) & out["phylum_silva"] == "Alveolata") {
             out["phylum_silva"] <- ifelse(x[grep("Alveolata", x) + 1] == "uncultured", NA,
                                           x[grep("Alveolata", x) + 1]
             )
@@ -232,7 +232,6 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
     # propagate
     heads <- which(tmp1$X..sequences > 1)
     if (length(heads) > 0) {
-      clust <- read.fasta(clust.path, as.string = T, forceDNAtolower = F)
       clust <- read.fasta(clust.path, as.string = T, forceDNAtolower = F)
       clust <- clust[match(tmp1$cluster.acc, names(clust))]
 
