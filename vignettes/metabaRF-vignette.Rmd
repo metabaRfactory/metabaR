@@ -290,8 +290,15 @@ Note that subsetting of a `metabarlist` object can be done with `subset_metabarl
 
 Now lets construct the rarefaction curves with the `hill_rarefaction` function. The number of sequencing depths used to build these curves is defined by the `nsteps` argument. For each sequencing depth, the `reads` table is resampled randomly `nboot` times so that to obtain an estimate of $^{q}D$ and $Coverage$. `nboot` is low in the example below to limit the computing time.
 
-```{r hillraref, message=F, warning=F}
+```{r hillraref, message=F, warning=F, eval=F}
 soil_euk_h20.raref = hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
+head(soil_euk_h20.raref$hill_table)
+```
+
+```{r hillraref hidden, message=F, warning=F, echo=F}
+# soil_euk_h20.raref = hill_rarefaction(soil_euk_h20, nboot = 20, nsteps = 10)
+# saveRDS(soil_euk_h20.raref, file = "soil_euk_h20.raref.rds")
+soil_euk_h20.raref = readRDS("soil_euk_h20.raref.rds")
 head(soil_euk_h20.raref$hill_table)
 ```
 
@@ -538,7 +545,7 @@ table(soil_euk_sub$pcrs$seqdepth_ok,
 
 Here, 3 *pcrs* out of the 5 detected as outliers had low sequencing depth. One can also visualise the replicates and outliers behaviour in a Principal Coordinate Analysis with the function `check_pcr_repl`.
 
-```{r pcrsalyer3, message=F, warning=F, fig.width=5, fig.height=4, fig.align="center"}
+```{r pcrsalyer3, message=F, warning=F, eval=F, fig.width=5, fig.height=4, fig.align="center"}
 # Distinguish between pcrs obtained from samples from positive controls
 mds = check_pcr_repl(soil_euk_sub, 
                      groups = soil_euk_sub$pcrs$type, 
@@ -556,12 +563,54 @@ soil_euk$pcrs[rownames(soil_euk_sub$pcrs),"replicating_pcr"] <- soil_euk_sub$pcr
 
 Tag-jumps  are frequency-dependent, i.e. abundant genuine MOTUs are more likely to be found in low abundance in samples were they are not supposed to be than rare genuine MOTUs. To reduce the amount of such false positives, the function `tagjumpslayer` considers each MOTU separately and corrects its abundance in *pcrs* (see `tagjumpslayer` help for more information on possible correction methods) when the MOTU relative abundance over the entire dataset is below a given threshold. Such data a curation strategy is similar to what has been proposed by @esling:2015:00. Effect of this threshold can be evaluated by testing how this filtration procedure affects basic dataset characteristics (e.g. # MOTUs or reads) at different levels, as exemplified below.
 
-```{r tagjump1, message=F, warning=F, fig.width=10, fig.height=5, fig.align="center"}
+```{r tagjump1, message=F, warning=F, eval=F, fig.width=10, fig.height=5, fig.align="center"}
 # Define a vector of thresholds to test
 thresholds <- c(0,1e-4,1e-3, 1e-2, 3e-2, 5e-2) 
 
 # Run the tests and stores the results in a list
 tests <- lapply(thresholds, function(x) tagjumpslayer(soil_euk,x))
+names(tests) <- paste("t_", thresholds, sep="")
+
+# Format the data for ggplot with amount of reads at each threshold
+tmp <- melt(as.matrix(do.call("rbind", lapply(tests, function(x) rowSums(x$reads)))))
+colnames(tmp) <- c("threshold", "sample", "abundance")
+
+# Add richness in MOTUs at each threshold
+tmp$richness <-
+  melt(as.matrix(do.call("rbind", lapply(tests, function(x) {
+    rowSums(x$reads > 0)
+  }))))$value
+
+# Add control type information on pcrs and make data curation threshold numeric
+tmp$controls <- soil_euk$pcrs$control_type[match(tmp$sample, rownames(soil_euk$pcrs))]
+tmp$threshold <- as.numeric(gsub("t_", "", tmp$threshold))
+
+# New table formatting for ggplot
+tmp2 <- melt(tmp, id.vars=colnames(tmp)[-grep("abundance|richness", colnames(tmp))])
+
+ggplot(tmp2, aes(x=as.factor(threshold), y=value)) + 
+  geom_boxplot(color="grey40") + 
+  geom_vline(xintercept = which(levels(as.factor(tmp2$threshold)) == "0.01"), col="orange", lty=2) + 
+  geom_jitter(aes(color=controls), width = 0.2, alpha=0.5) + 
+  scale_color_manual(values = c("brown", "red", "cyan4","pink"), na.value = "darkgrey") +
+  facet_wrap(~variable+controls, scale="free_y", ncol=5) + 
+  theme_bw() + 
+  scale_y_log10() +
+  labs(x="MOTU pcr : total abundance filtering threshold", y="# Reads/MOTUs") + 
+  theme(panel.grid = element_blank(), 
+        strip.background = element_blank(), 
+        axis.text.x = element_text(angle=40, h=1), 
+        legend.position = "none")
+```
+
+```{r tagjump1 hidden, message=F, warning=F, echo=F, fig.width=10, fig.height=5, fig.align="center"}
+# Define a vector of thresholds to test
+thresholds <- c(0,1e-4,1e-3, 1e-2, 3e-2, 5e-2)
+# Run the tests and stores the results in a list
+# tests <- lapply(thresholds, function(x) tagjumpslayer(soil_euk,x))
+# saveRDS(tests, file = "tests_tagjumps.rds")
+tests = readRDS("tests_tagjumps.rds")
+
 names(tests) <- paste("t_", thresholds, sep="")
 
 # Format the data for ggplot with amount of reads at each threshold
@@ -846,8 +895,22 @@ By considering a subset of our dataset, and aggregating at specific taxonomic le
 ### Rarefaction curves
 
 To finish, lets take a final look at the diversity coverage of *samples*  with rarefaction curves (rather than our previous look at the *pcrs* level).   
-```{r raref,  message=F, warning=F, fig.width=8, fig.height=3, fig.align="center"}
+```{r raref,  message=F, warning=F, eval=F, fig.width=8, fig.height=3, fig.align="center"}
 soil_euk_agg.raref = hill_rarefaction(soil_euk_agg, nboot = 20, nsteps = 10)
+material <- paste(soil_euk_agg$samples$Habitat, soil_euk_agg$samples$Material)
+material <- setNames(material,rownames(soil_euk_agg$samples))
+
+#plot
+p <- gghill_rarefaction(soil_euk_agg.raref, group=material)
+p + scale_fill_manual(values = c("brown4", "brown1", "goldenrod4", "goldenrod1")) +
+  scale_color_manual(values = c("brown4", "brown1", "goldenrod4", "goldenrod1")) +
+  labs(color="Habitat | Material type")
+```
+
+```{r raref hidden, message=F, warning=F, echo=F, fig.width=8, fig.height=3, fig.align="center"}
+# soil_euk_agg.raref = hill_rarefaction(soil_euk_agg, nboot = 20, nsteps = 10)
+# saveRDS(soil_euk_agg.raref, file = "soil_euk_agg.raref.rds")
+soil_euk_agg.raref = readRDS("soil_euk_agg.raref.rds")
 material <- paste(soil_euk_agg$samples$Habitat, soil_euk_agg$samples$Material)
 material <- setNames(material,rownames(soil_euk_agg$samples))
 
