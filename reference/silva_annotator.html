@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">metabaR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -132,7 +132,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (https://ngs.arb-silva.de/silvangs/) and including it in a <code>metabarlist</code> object.</p>
+    <p>Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (<a href='https://ngs.arb-silva.de/silvangs/'>https://ngs.arb-silva.de/silvangs/</a>) and including it in a <code>metabarlist</code> object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>silva_annotator</span><span class='op'>(</span><span class='va'>metabarlist</span>, <span class='va'>silva.path</span>, <span class='va'>clust.path</span><span class='op'>)</span></pre>
@@ -162,11 +162,12 @@ xxx---ssu---sequence_cluster_map---tmptaxo.clstr</p></td>
     <p>a <code>metabarlist</code> object with table `motus` including the taxonomic assignments from silva</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Users can be interested in using the SILVAngs pipeline for assigning a taxon to DNA sequences/ MOTUs. Assuming that it is done on data already filtered (i.e. dereplicated, clustering etc.), resulting in one sequence per sequence or MOTU, one can then use the SILVAngs pipeline by setting all filtering parameters to "null" (i.e. returning to no filtration) and the taxonomic assignments parameters by default (or following the user's preferences). These taxonomic assignments are compiled in the data archives provided by SILVAngs, in which two files are important for the function `silva_annotator`:</p><ul>
+    <p>Users can be interested in using the SILVAngs pipeline for assigning a taxon to DNA sequences/MOTUs. Assuming that it is done on data already filtered (i.e. dereplicated, clustering etc.), resulting in one sequence per sequence or MOTU, one can then use the SILVAngs pipeline by setting all filtering parameters to "null" (i.e. returning to no filtration) and the taxonomic assignments parameters by default (or following the user's preferences). These taxonomic assignments are compiled in the data archives provided by SILVAngs, in which two files are important for the function `silva_annotator`:</p><ul>
 <li><p>`zipfile&gt;ssu&gt;exports&gt;xxx---ssu---otus.csv`: a csv file containing the taxonomic assignment for each OTU</p></li>
 <li><p>`zipfile&gt;ssu&gt;stats&gt;sequence_cluster_map&gt;data&gt;xxx---ssu---sequence_cluster_map---tmptaxo.clstr`: a file containing the mapping informations of sequences to their respective MOTUs. Even though the clustering is done before using the SILVAngs pipeline and that the clustering parameters in this pipeline are settled to 100% identity of clustering, SILVAngs uses CDHit, which can group together OTUs sharing the same prefix/suffix. So it is common to retrieve less assignations than what was expected.</p></li>
 </ul>
 
+<p>Please note that this function works only with SILVA taxonomies prior to the SILVA release 138 for the moment.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='taxodecider.html'>taxodecider</a></code></p></div>
