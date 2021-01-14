@@ -1,7 +1,7 @@
 Package: metabaR
 Type: Package
 Title: Evaluation and Improvement of DNA Metabarcoding Data Quality
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
     person(family = "Zinger", given = "Lucie", 
     email = "lucie@zinger.fr", 
