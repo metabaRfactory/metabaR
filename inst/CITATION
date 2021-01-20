@@ -4,11 +4,11 @@ citEntry(
   entry    = "Article",
   title    = "metabaR : an R package for the evaluation and improvement of DNA metabarcoding data quality",
   author   =  "Lucie Zinger, Clément Lionnet, Anne-Sophie Benoiston, Julian Donald, Céline Mercier, Frédéric Boyer",
-  journal  = "bioRxiv",
-  year     = "2020",
-  url      = "https://www.biorxiv.org/content/10.1101/2020.08.28.271817v1",
-  doi      = "10.1101/2020.08.28.271817",
-  textVersion = paste("Lucie Zinger, Clément Lionnet, Anne-Sophie Benoiston, Julian Donald, Céline Mercier, Frédéric Boyer (2020).
-metabaR : an R package for the evaluation and improvement of DNA metabarcoding data quality. bioRxiv; doi: https://doi.org/10.1101/2020.08.28.271817"
+  journal  = "Methods in Ecology and Evolution",
+  year     = "2021",
+  url      = "https://doi.org/10.1111/2041-210X.13552",
+  doi      = "10.1111/2041-210X.13552",
+  textVersion = paste("Lucie Zinger, Clément Lionnet, Anne-Sophie Benoiston, Julian Donald, Céline Mercier, Frédéric Boyer (2021).
+metabaR : an R package for the evaluation and improvement of DNA metabarcoding data quality. Methods in Ecology and Evolution; doi: https://doi.org/10.1111/2041-210X.13552"
   )
 )
