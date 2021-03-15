@@ -48,7 +48,7 @@ read_ngsfilter <- function(file, additional.sep = "=", ...) {
   tags <- do.call("rbind", strsplit(as.vector(input$tag_combo), "\\:"))
   colnames(tags) <- c("tag_fwd", "tag_rev")
 
-  additional <- gsub("F @ ", "", as.vector(input$additional))
+  additional <- gsub("F @ |T @ ", "", as.vector(input$additional))
   tmp <- strsplit(additional, ";")
   tmp2 <- lapply(tmp, function(x) {
     out0 <- unlist(strsplit(x, additional.sep))
