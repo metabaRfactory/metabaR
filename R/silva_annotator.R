@@ -1,6 +1,6 @@
 #' Including SILVAngs pipeline taxonomic annotations
 #'
-#' Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (https://ngs.arb-silva.de/silvangs/) and including it in a \code{metabarlist} object.
+#' Importing and formatting taxonomic annotations obtained with the SILVAngs pipeline (\href{https://ngs.arb-silva.de/silvangs/}{https://ngs.arb-silva.de/silvangs/}) and including it in a \code{metabarlist} object.
 #'
 #'
 #' @param metabarlist  a \code{metabarlist} object
@@ -16,7 +16,7 @@
 #'
 #' @details
 #'
-#' Users can be interested in using the SILVAngs pipeline for assigning a taxon to DNA sequences/ MOTUs. Assuming that it is done on data already filtered (i.e. dereplicated, clustering etc.), resulting in one sequence per sequence or MOTU, one can then use the SILVAngs pipeline by setting all filtering parameters to "null" (i.e. returning to no filtration) and the taxonomic assignments parameters by default (or following the user's preferences). These taxonomic assignments are compiled in the data archives provided by SILVAngs, in which two files are important for the function `silva_annotator`:
+#' Users can be interested in using the SILVAngs pipeline for assigning a taxon to DNA sequences/MOTUs. Assuming that it is done on data already filtered (i.e. dereplicated, clustering etc.), resulting in one sequence per sequence or MOTU, one can then use the SILVAngs pipeline by setting all filtering parameters to "null" (i.e. returning to no filtration) and the taxonomic assignments parameters by default (or following the user's preferences). These taxonomic assignments are compiled in the data archives provided by SILVAngs, in which two files are important for the function `silva_annotator`:
 #' \itemize{
 #' \item{}{`zipfile>ssu>exports>xxx---ssu---otus.csv`: a csv file containing the taxonomic assignment for each OTU}
 #' \item{}{`zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr`: a file containing the mapping informations of sequences to their respective MOTUs. Even though the clustering is done before using the SILVAngs pipeline and that the clustering parameters in this pipeline are settled to 100\% identity of clustering, SILVAngs uses CDHit, which can group together OTUs sharing the same prefix/suffix. So it is common to retrieve less assignations than what was expected.}
@@ -88,11 +88,6 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     tmp.uniq <- unique(tmp)
 
 
-    taxorank <- c(
-      "superkingdom_silva", "kingdom_silva", "phylum_silva", "class_silva",
-      "order_silva", "family_silva", "genus_silva"
-    )
-
     ### set taxonomy stuff
     # dictionnary of taxo ranks
     # ncbi-like
@@ -109,7 +104,6 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
       "varietas", "forma",
       "no rank"
     )
-
     #load old version (incomplete)
 
     taxonomy <- read.csv(taxonomy.path, header = F, sep = "\t", row.names = NULL)
@@ -151,7 +145,6 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     # propagate
     heads <- which(tmp1$X..sequences > 1)
     if (length(heads) > 0) {
-      clust <- read.fasta(clust.path, as.string = T, forceDNAtolower = F)
       clust <- read.fasta(clust.path, as.string = T, forceDNAtolower = F)
       clust <- clust[match(tmp1$cluster.acc, names(clust))]
 

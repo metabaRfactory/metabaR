@@ -63,3 +63,7 @@ summary_metabarlist(soil_euk)
 #> pcrs     3538913    12647  9215.919 10283.45  333.6849  295.440
 #> samples  2797294    12382 10926.930 10346.66  489.5117  239.685
 ```
+
+Citation
+--------
+Zinger, L., Lionnet, C., Benoiston, A.‐S., Donald, J., Mercier, C. and Boyer, F. (2021), Metabar: an R package for the evaluation and improvement of DNA metabarcoding data quality. Methods Ecol Evol. https://doi.org/10.1111/2041-210X.13552
