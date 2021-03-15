@@ -9,6 +9,7 @@
 #' @param clust.path   path to a file from the SilvAngs pipeline indicating MOTU cluster membership,
 #'                     typically zipfile > ssu > stats > sequence_cluster_map > data >
 #'                     xxx---ssu---sequence_cluster_map---tmptaxo.clstr
+#' @param taxonomy.path   path to a file containing the SILVA taxonomy. See below for the url
 #' @name silva_annotator
 #'
 #' @return a \code{metabarlist} object with table `motus` including the taxonomic assignments from silva
@@ -21,30 +22,38 @@
 #' \item{}{`zipfile>ssu>stats>sequence_cluster_map>data>xxx---ssu---sequence_cluster_map---tmptaxo.clstr`: a file containing the mapping informations of sequences to their respective MOTUs. Even though the clustering is done before using the SILVAngs pipeline and that the clustering parameters in this pipeline are settled to 100\% identity of clustering, SILVAngs uses CDHit, which can group together OTUs sharing the same prefix/suffix. So it is common to retrieve less assignations than what was expected.}
 #' }
 #'
+#' In addition, the function requires the SILVA taxonomy. It is available in the \code{metabaR} companion R package; https://github.com/metabaRfactory/metabaR_external_data.
+#'
 #' @seealso \code{\link{taxodecider}}
 #'
 #' @examples
-#' 
+#'
 #' \donttest{
 #'
 #' dir <- tempdir()
-#' url = "https://raw.githubusercontent.com/metabaRfactory/metabaR_external_data/master/"
+#' url <- "https://raw.githubusercontent.com/metabaRfactory/metabaR_external_data/master/"
 #'
-#' silva_file = "lit_euk---ssu---otus.csv"
-#' silva_url = paste(url, silva_file, sep="")
+#' silva_file <- "lit_euk---ssu---otus.csv"
+#' silva_url <- paste(url, silva_file, sep="")
 #' silva_path <- file.path(dir, silva_file)
 #' download.file(silva_url, silva_path)
 #'
-#' clust_file = "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr"
-#' clust_url = paste(url, clust_file, sep="")
+#' clust_file <- "lit_euk---ssu---sequence_cluster_map---litiere_euk_cl97_agg_filt.clstr"
+#' clust_url <- paste(url, clust_file, sep="")
 #' clust_path <- file.path(dir, clust_file)
 #' download.file(clust_url, clust_path)
+#'
+#' taxonomy_file <- "tax_slv_ssu_138.1.txt"
+#' taxonomy_url <- paste(url, taxonomy_file, sep="")
+#' taxonomy_path <- file.path(dir, taxonomy_file)
+#' download.file(taxonomy_url, taxonomy_path)
 #'
 #' data(soil_euk)
 #' soil_euk <- silva_annotator(
 #'    metabarlist = soil_euk,
 #'    silva.path = silva_path,
-#'    clust.path = clust_path)
+#'    clust.path = clust_path,
+#'    taxonomy.path = taxonomy_path)
 #'
 #' library(ggplot2)
 #'
@@ -60,8 +69,7 @@
 #' @importFrom utils read.csv
 #' @export silva_annotator
 
-
-silva_annotator <- function(metabarlist, silva.path, clust.path) {
+silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) {
 
   if (suppressWarnings(check_metabarlist(metabarlist))) {
     motus <- metabarlist$motus
@@ -69,166 +77,77 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
     silva <- read.csv(silva.path, header = T, sep = "\t", skip = 1, row.names = NULL)
     colnames(silva) <- c(colnames(silva)[-c(1, ncol(silva))], "classif_ncbi", "classif_silva")
 
-    # taxo formating
+    # taxo results formating
     tmp <- sapply(strsplit(as.vector(silva$classif_silva), "\\|"), function(x) x[4])
+
 
     if (dim(table(is.na(tmp))) > 1) {
       tmp[is.na(tmp)] <- "No blast hit" # format according to qiime
     }
+
+    tmp.uniq <- unique(tmp)
+
 
     taxorank <- c(
       "superkingdom_silva", "kingdom_silva", "phylum_silva", "class_silva",
       "order_silva", "family_silva", "genus_silva"
     )
 
-    tmp1 <- do.call("rbind", lapply(strsplit(tmp, ";"), function(x) {
-      out <- rep(NA, length(taxorank))
-      names(out) <- taxorank
-      if (x[1] == "Eukaryota") {
-        out["superkingdom_silva"] <- "Eukaryota"
+    ### set taxonomy stuff
+    # dictionnary of taxo ranks
+    # ncbi-like
+    taxolev.dict1 <- c(
+      "superkingdom","superkingdom2", "superkingdom3", "kingdom", "subkingdom",
+      "superphylum", "phylum", "subphylum", "infraphylum",
+      "superclass", "class", "subclass", "infraclass",
+      "superorder", "order", "cohort", "suborder",
+      "subcohort", "infraorder", "parvorder",
+      "superfamily", "family", "subfamily",
+      "tribe", "subtribe",
+      "genus", "subgenus", "section", "subsection", "series",
+      "species group", "species subgroup", "species", "subspecies",
+      "varietas", "forma",
+      "no rank"
+    )
 
-        if(is.na(x[2])) {
-          out["kingdom_silva"] <- NA
-          } else if (x[2] == "Opisthokonta") {
-          if (length(grep("Aphelidea", x)) != 0) {
-            out["class_silva"] <- ifelse(length(x) != grep("Aphelidea", x), x[grep("Aphelidea", x)], NA)
-            out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                           x[length(x)] == "uncultured", NA, x[length(x)])
-          }
-          if (length(grep("Holozoa", x)) != 0 & length(grep("Metazoa", x)) == 0) {
-            out["order_silva"] <- ifelse(length(x) != grep("Holozoa", x), x[grep("Holozoa", x) + 1], NA)
-            out["family_silva"] <- ifelse(length(grep("dae$", x)) != 0, x[grep("dae$", x)], NA)
-            out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                           x[length(x)] == "uncultured", NA, x[length(x)])
-          }
-          if (length(grep("Metazoa", x)) != 0) {
-            out["kingdom_silva"] <- "Metazoa"
-            out["phylum_silva"] <- ifelse(length(grep("Bilateria", x)) != 0, x[grep("Bilateria", x) + 1],
-                                          ifelse(length(grep("Porifera", x)) != 0, "Porifera",
-                                                 ifelse(length(grep("Cnidaria", x)) != 0, "Cnidaria", NA)
-                                          )
-            )
-            a <- paste("^", out["phylum_silva"], "$", sep = "")
-            if (length(grep("Porifera|Cnidaria", x)) != 0) {
-              out["class_silva"] <- ifelse(length(x) != grep(a, x), x[grep(a, x) + 1], NA)
-              out["order_silva"] <- ifelse(length(x) > (grep(a, x) + 1), x[length(x)], NA)
-              # might be class/subclass or families
-            }
-            if (length(grep("Nematoda|Mollusca|Nemertea|Tardigrada|Rotifera|
-                            Entoprocta|Bryozoa|Platyhelminthes|Annelida", x)) != 0) {
-              out["class_silva"] <- ifelse(length(x) != grep(a, x), x[grep(a, x) + 1], NA)
-              out["order_silva"] <- ifelse(length(x) > (grep(a, x) + 1), x[length(x)], NA)
-              # might be class/subclass or families
-          }
-            if (length(grep("Arthropoda|Brachiopoda", x)) != 0) {
-              out["class_silva"] <- ifelse(length(x) != grep(a, x), x[grep(a, x) + 2], NA)
-              out["order_silva"] <- ifelse(length(x) > (grep(a, x) + 2), x[length(x)], NA)
-              # might be class/subclass for certain groups (e.g. collembola)
-            }
-            if (length(grep("Gastrotricha|Echinodermata", x)) != 0) {
-              out["order_silva"] <- ifelse(length(x) > (grep(a, x) + 1), x[length(x)], NA)
-              # might be families
-            }
-            if (length(grep("Chordata", x)) != 0) {
-              out["class_silva"] <- ifelse(length(x) > (grep(a, x) + 1), x[length(x)], NA)
-            }
-          }
-          if (x[3] == "Nucletmycea") {
-            if (length(grep("Fungi", x)) != 0) {
-              out["kingdom_silva"] <- "Fungi"
-              out["phylum_silva"] <- ifelse(length(grep("mycota$", x)) != 0, x[grep("mycota$", x)], NA)
-              out["class_silva"] <- ifelse(length(grep("mycetes$", x)) != 0, x[grep("mycetes$", x)], NA)
-              out["order_silva"] <- ifelse(length(grep("ales$", x)) != 0, x[grep("ales$", x)], NA)
-              out["family_silva"] <- ifelse(length(grep("ceae$", x)) != 0, x[grep("ceae$", x)], NA)
-              out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                             x[length(x)] == "uncultured", NA, x[length(x)])
-            } else {
-              out["family_silva"] <- ifelse(length(grep("ae$", x)) != 0, x[grep("ae$", x)], NA)
-              out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                             x[length(x)] == "uncultured", NA, x[length(x)])
-            }
-          }
-        } else if (length(grep("Archaeplastida", x) != 0)) {
-          if (length(grep("Chloroplastida", x) != 0)) {
-            out["kingdom_silva"] <- "Viridiplantae"
-            if (length(grep("Streptophyta", x)) != 0) {
-              out["phylum_silva"] <- ifelse(length(grep("Streptophyta", x)) != 0,
-                                            x[grep("Streptophyta", x)], NA
-              )
-              out["order_silva"] <- ifelse(length(grep("ales$", x)) != 0, x[grep("ales$", x)], NA)
-              out["family_silva"] <- ifelse(length(grep("ceae$", x)) != 0, x[grep("ceae$", x)], NA)
-              out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                             x[length(x)] == "uncultured", NA, x[length(x)])
-            } else {
-              out["phylum_silva"] <- ifelse(length(grep("Chlorophyta", x)) != 0,
-                                            x[grep("Chlorophyta", x)], NA
-              )
-              out["class_silva"] <- ifelse(length(grep("ceae$", x)) != 0, x[grep("ceae$", x)], NA)
-              out["order_silva"] <- ifelse(length(grep("ales$", x)) != 0, x[grep("ales$", x)], NA)
-              out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                             x[length(x)] == "uncultured", NA, x[length(x)])
-            }
-          } else {
-            out["class_silva"] <- ifelse(length(grep("ceae$|phyta$", x)) != 0,
-                                         x[grep("ceae$|phyta$", x)], NA
-            )
-            out["order_silva"] <- ifelse(length(grep("ales$", x)) != 0, x[grep("ales$", x)], NA)
-            out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                           x[length(x)] == "uncultured", NA, x[length(x)])
-          }
-        } else if (length(grep("^SAR$", x)) != 0) {
-          out["kingdom_silva"] <- "SAR" # not kingdom but it helps
-          out["phylum_silva"] <- ifelse(length(x) != grep("^SAR$", x),
-                                        x[grep("^SAR$", x) + 1], NA
-          )
-          if (out["phylum_silva"] == "Alveolata") {
-            out["phylum_silva"] <- ifelse(x[grep("Alveolata", x) + 1] == "uncultured", NA,
-                                          x[grep("Alveolata", x) + 1]
-            )
-          }
-          if (is.na(out["phylum_silva"]) == F) {
-            a <- paste("^", out["phylum_silva"], "$", sep = "")
-            # actually no rank, but it helps for SARs
-            out["class_silva"] <- ifelse(length(x) != grep(a, x), x[grep(a, x) + 1], NA)
-            a <- paste("^", out["class_silva"], "$", sep = "")
-            if (length(grep(a, x)) == 0) {
-              out["order_silva"] <- NA
-            } else {
-              out["order_silva"] <- ifelse(length(x) != grep(a, x), x[grep(a, x) + 1], NA)
-            }
-            out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                           x[length(x)] == "uncultured", NA, x[length(x)])
-          }
-        } else if (length(grep("Amoebozoa", x)) != 0) {
-          out["phylum_silva"] <- "Amoebozoa"
-          a <- paste("^", out["phylum_silva"], "$", sep = "")
-          out["class_silva"] <- ifelse(length(x) != grep(a, x), x[grep(a, x) + 1], NA)
-          out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                         x[length(x)] == "uncultured", NA, x[length(x)])
-          # mess
-        } else {
-          out["phylum_silva"] <- x[2]
-          out["genus_silva"] <- ifelse(x[length(x)] %in% out | x[length(x)] == "Incertae Sedis" |
-                                         x[length(x)] == "uncultured", NA, x[length(x)])
-        }
-      } else {
-        out["superkingdom_silva"] <- out["kingdom_silva"] <- x[1]
-        out[3:(2 + length(x) - 1)] <- x[2:length(x)]
-      }
-      out
-      }))
+    #load old version (incomplete)
 
-    tmp1 <- as.data.frame(tmp1)
-    if (length(grep("uncultured", tmp1$genus_silva)) > 1) {
-      tmp1$genus_silva <- as.vector(tmp1$genus_silva)
-      idx <- grep("uncultured", tmp1$genus_silva)
-      tmp1$genus_silva[idx] <- NA
+    taxonomy <- read.csv(taxonomy.path, header = F, sep = "\t", row.names = NULL)
+    taxonomy$V3 <- gsub("major_clade", "superkingdom3",
+                        gsub("domain", "superkingdom",
+                             gsub("superkingdom", "superkingdom2",
+                                                       taxonomy$V3, fixed=T),
+                             fixed=T),
+                        fixed = T)
+    taxonomy$match <- sapply(strsplit(taxonomy$V1, ";"), function(x) x[length(x)])
+    taxonomy <- taxonomy[taxonomy$match != "uncultured",]
+
+    tmp.uniq <- gsub("uncultured;$", "", tmp.uniq, perl=T)
+    tmp.test <- sapply(strsplit(tmp.uniq, ";"), function(x) x[length(x)])
+
+    if (any(gsub("No blast hit", "Bacteria", tmp.test, perl=T) %in% taxonomy$match == FALSE)) {
+      stop(paste(
+        "You probably use the wrong version of the SILVA taxonomy. The following taxa cannot be found:\n",
+        toString(tmp.test[!gsub("No blast hit", "Bacteria", tmp.test, perl=T) %in% taxonomy$match])
+        ),
+        "\n\nPlease use the correct SILVA version, or rerun the SILVAngs pipeline on your data with the current SILVA version")
     }
+
+    tmp1 <- do.call("rbind", lapply(strsplit(tmp.uniq, ";"), function(x) {
+        names(x) <- taxonomy$V3[match(x ,taxonomy$match)]
+        out <- rep(NA, length = length(taxolev.dict1))
+        names(out) <- taxolev.dict1
+        out[match(names(x), names(out))] <- x
+        return(out)
+    }))
+
+    tmp1 <- tmp1[match(tmp, gsub("uncultured;$", "", tmp.uniq, perl=T)),]
+    colnames(tmp1) <- paste(colnames(tmp1), "silva", sep = "_")
 
     tmp1 <- cbind.data.frame(silva[, c("cluster.acc", "cluster.id", "similarity", "X..sequences")],
                              tmp1,
-                             lineage_silva = tmp
-    )
+                             lineage_silva = tmp)
+
     # propagate
     heads <- which(tmp1$X..sequences > 1)
     if (length(heads) > 0) {
@@ -250,6 +169,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
         data.frame(cluster.acc = gp, tax[rep(1, length(gp)), -1])
       }))
 
+      colnames(tmp1) <- gsub(" ", "\\.", colnames(tmp1))
       tmp1 <- rbind.data.frame(tmp1, tmp2)
     }
 
@@ -260,5 +180,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path) {
 
     check_metabarlist(metabarlist)
     return(metabarlist)
-}
-}
+
+  }}
+
+
