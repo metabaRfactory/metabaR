@@ -107,14 +107,16 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     #load old version (incomplete)
 
     taxonomy <- read.csv(taxonomy.path, header = F, sep = "\t", row.names = NULL)
-    taxonomy$V3 <- gsub("major_clade", "superkingdom3",
-                        gsub("domain", "superkingdom",
-                             gsub("superkingdom", "superkingdom2",
-                                  taxonomy$V3, fixed=T),
-                             fixed=T),
-                        fixed = T)
+    taxonomy$V3 <- gsub("superkingdom", "superkingdom2", taxonomy$V3, fixed=T)
+    taxonomy$V3 <- gsub("domain", "superkingdom", taxonomy$V3, fixed=T)
+    taxonomy$V3 <- gsub("major_clade", "superkingdom3", taxonomy$V3, fixed=T)
     taxonomy$match <- sapply(strsplit(taxonomy$V1, ";"), function(x) x[length(x)])
     taxonomy <- taxonomy[taxonomy$match != "uncultured",]
+    #Manual editing to get Metazoa, SARs, etc. info correctly
+    taxonomy$V3[grep("Metazoa;$", taxonomy$V1)] <- "kingdom"
+    taxonomy$V3[grep("Animalia;$", taxonomy$V1)] <- "superkingdom3"
+    taxonomy$V3[grep("Archaeplastida;$", taxonomy$V1)] <- "superkingdom2" # plants
+    taxonomy$V3[grep("Eukaryota;SAR;$", taxonomy$V1)] <- "superkingdom2" # part of protists
 
     tmp.uniq <- gsub("uncultured;$", "", tmp.uniq, perl=T)
     tmp.test <- sapply(strsplit(tmp.uniq, ";"), function(x) x[length(x)])
@@ -128,7 +130,21 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     }
 
     tmp1 <- do.call("rbind", lapply(strsplit(tmp.uniq, ";"), function(x) {
-      names(x) <- taxonomy$V3[match(x ,taxonomy$match)]
+      if("SAR" %in% x){
+        if("Bacteria" %in% x) {
+          idx <- grep("Bacteria", taxonomy$V1, perl = T)
+        } else {
+          idx <- grep("Eukaryota", taxonomy$V1, perl = T)
+        }
+        taxonomy.sub <- taxonomy[idx,]
+        taxonomy.sub$match[grep("Eukaryota;SAR;$", taxonomy.sub$V1)] <- "SARx"
+        names(x) <- taxonomy.sub$V3[match(x ,taxonomy.sub$match)]
+        if(x[which(x=="SAR")-1]=="Eukaryota"){
+          names(x)[x=="SAR"] <- "superkingdom2"
+        }
+      } else {
+        names(x) <- taxonomy$V3[match(x ,taxonomy$match)]
+      }
       out <- rep(NA, length = length(taxolev.dict1))
       names(out) <- taxolev.dict1
       out[match(names(x), names(out))] <- x
