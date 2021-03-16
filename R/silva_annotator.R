@@ -110,7 +110,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     taxonomy$V3 <- gsub("major_clade", "superkingdom3",
                         gsub("domain", "superkingdom",
                              gsub("superkingdom", "superkingdom2",
-                                                       taxonomy$V3, fixed=T),
+                                  taxonomy$V3, fixed=T),
                              fixed=T),
                         fixed = T)
     taxonomy$match <- sapply(strsplit(taxonomy$V1, ";"), function(x) x[length(x)])
@@ -123,16 +123,16 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
       stop(paste(
         "You probably use the wrong version of the SILVA taxonomy. The following taxa cannot be found:\n",
         toString(tmp.test[!gsub("No blast hit", "Bacteria", tmp.test, perl=T) %in% taxonomy$match])
-        ),
-        "\n\nPlease use the correct SILVA version, or rerun the SILVAngs pipeline on your data with the current SILVA version")
+      ),
+      "\n\nPlease use the correct SILVA version, or rerun the SILVAngs pipeline on your data with the current SILVA version")
     }
 
     tmp1 <- do.call("rbind", lapply(strsplit(tmp.uniq, ";"), function(x) {
-        names(x) <- taxonomy$V3[match(x ,taxonomy$match)]
-        out <- rep(NA, length = length(taxolev.dict1))
-        names(out) <- taxolev.dict1
-        out[match(names(x), names(out))] <- x
-        return(out)
+      names(x) <- taxonomy$V3[match(x ,taxonomy$match)]
+      out <- rep(NA, length = length(taxolev.dict1))
+      names(out) <- taxolev.dict1
+      out[match(names(x), names(out))] <- x
+      return(out)
     }))
 
     tmp1 <- tmp1[match(tmp, gsub("uncultured;$", "", tmp.uniq, perl=T)),]
@@ -175,5 +175,4 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     return(metabarlist)
 
   }}
-
 
