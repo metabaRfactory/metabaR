@@ -106,7 +106,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     )
     #load old version (incomplete)
 
-    taxonomy <- read.csv(taxonomy.path, header = F, sep = "\t", row.names = NULL)
+    taxonomy <- read.csv(taxonomy.path, header = F, sep = "\t", row.names = NULL, stringsAsFactors = FALSE)
     taxonomy$V3 <- gsub("superkingdom", "superkingdom2", taxonomy$V3, fixed=T)
     taxonomy$V3 <- gsub("domain", "superkingdom", taxonomy$V3, fixed=T)
     taxonomy$V3 <- gsub("major_clade", "superkingdom3", taxonomy$V3, fixed=T)
