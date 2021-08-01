@@ -151,7 +151,7 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
       return(out)
     }))
 
-    tmp1 <- tmp1[match(tmp, gsub("uncultured;$", "", tmp.uniq, perl=T)),]
+    tmp1 <- tmp1[match(gsub("uncultured;$", "", tmp, perl = T), tmp.uniq),]
     colnames(tmp1) <- paste(colnames(tmp1), "silva", sep = "_")
 
     tmp1 <- cbind.data.frame(silva[, c("cluster.acc", "cluster.id", "similarity", "X..sequences")],
