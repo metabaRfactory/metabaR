@@ -112,8 +112,8 @@ contaslayer <- function(metabarlist,
     } else if (method == "all") {
 
       idx <- NULL
-      for (i in 1:length(contaminants)) {
-        reads_id <- contaminants[i]
+      for (c in contaminants) {
+        i <- which(c == contaminants)
         controls_sum <- sum(reads_matrix.fcol[controls, reads_id])
         samples_sum <-
           sum(reads_matrix.fcol[-match(controls, rownames(reads_matrix)), reads_id])
