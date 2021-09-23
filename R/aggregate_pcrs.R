@@ -88,7 +88,7 @@ aggregate_pcrs <- function(metabarlist,
 
     motus.out <- metabarlist$motus[colnames(reads.out), ]
     sample.out <-
-      metabarlist$samples[rownames(reads.out[pcr.out$type == "sample", ]), ]
+      metabarlist$samples[rownames(reads.out[pcr.out$type == "sample", ]), ,drop=F]
 
     metabarlist.out <-
       metabarlist_generator(
