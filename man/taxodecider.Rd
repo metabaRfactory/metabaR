@@ -52,10 +52,17 @@ clust_url = paste(url, clust_file, sep="")
 clust_path <- file.path(dir, clust_file)
 download.file(clust_url, clust_path)
 
+taxonomy_file <- "tax_slv_ssu_138.1.txt"
+taxonomy_url <- paste(url, taxonomy_file, sep="")
+taxonomy_path <- file.path(dir, taxonomy_file)
+download.file(taxonomy_url, taxonomy_path)
+
+data(soil_euk)
 soil_euk <- silva_annotator(
    metabarlist = soil_euk,
    silva.path = silva_path,
-   clust.path = clust_path)
+   clust.path = clust_path,
+   taxonomy.path = taxonomy_path)
 
 soil_euk$motus$similarity = soil_euk$motus$similarity/100
 
