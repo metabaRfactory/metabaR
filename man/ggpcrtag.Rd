@@ -7,7 +7,9 @@
 ggpcrtag(
   metabarlist,
   legend_title = "well_values",
-  FUN = function(metabarlist) {     rowSums(metabarlist$reads) },
+  FUN = function(metabarlist) {
+     rowSums(metabarlist$reads)
+ },
   taglist = as.character(unique(metabarlist$pcrs$tag_rev))
 )
 }

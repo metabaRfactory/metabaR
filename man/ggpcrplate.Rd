@@ -7,7 +7,9 @@
 ggpcrplate(
   metabarlist,
   legend_title = "well_values",
-  FUN = function(metabarlist) {     rowSums(metabarlist$reads) }
+  FUN = function(metabarlist) {
+     rowSums(metabarlist$reads)
+ }
 )
 }
 \arguments{
