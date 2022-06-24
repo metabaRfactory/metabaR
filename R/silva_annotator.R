@@ -77,6 +77,14 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     silva <- read.csv(silva.path, header = T, sep = "\t", skip = 1, row.names = NULL)
     colnames(silva) <- c(colnames(silva)[-c(1, ncol(silva))], "classif_ncbi", "classif_silva")
 
+    # in SILVA 138.1, there are false paths:
+    #Eukaryota;Amorphea;Amoebozoa;SAR;Stramenopiles;
+    #Eukaryota;Amorphea;Amoebozoa;SAR;Stramenopiles;Labyrinthulomycetes;
+    #Eukaryota;Amorphea;Amoebozoa;SAR;Stramenopiles;Labyrinthulomycetes;Sorodiplophrys;
+
+    # so modify paths from xxx—ssu—otus.csv:
+    silva$classif_silva <- sub(pattern = "Eukaryota;Amorphea;Amoebozoa;SAR;Stramenopiles;", replacement = "Eukaryota;SAR;Stramenopiles;", silva$classif_silva)
+
     # taxo results formating
     tmp <- sapply(strsplit(as.vector(silva$classif_silva), "\\|"), function(x) x[4])
 
@@ -107,6 +115,11 @@ silva_annotator <- function(metabarlist, silva.path, clust.path, taxonomy.path) 
     #load old version (incomplete)
 
     taxonomy <- read.csv(taxonomy.path, header = F, sep = "\t", row.names = NULL, stringsAsFactors = FALSE)
+
+    # delete line with Eukaryota;Amorphea;Amoebozoa;SAR;Stramenopiles; change other paths in taxonomy:
+    taxonomy <- taxonomy[grep("Eukaryota;Amorphea;Amoebozoa;SAR;Stramenopiles;$", taxonomy$V1, invert = TRUE),]
+    taxonomy$V1 <- sub(pattern = "Eukaryota;Amorphea;Amoebozoa;SAR;Stramenopiles;", replacement = "Eukaryota;SAR;Stramenopiles;", taxonomy$V1)
+
     taxonomy$V3 <- gsub("superkingdom", "superkingdom2", taxonomy$V3, fixed=T)
     taxonomy$V3 <- gsub("domain", "superkingdom", taxonomy$V3, fixed=T)
     taxonomy$V3 <- gsub("major_clade", "superkingdom3", taxonomy$V3, fixed=T)
