@@ -1,5 +1,7 @@
 title: metabaR
 url: https://metabarfactory.github.io/metabaR/
+development:
+  mode: auto
 
 reference:
   - title: Import / Format
