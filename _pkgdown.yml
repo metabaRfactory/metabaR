@@ -1,53 +1,56 @@
 title: metabaR
 url: https://metabarfactory.github.io/metabaR/
-
 development:
   mode: auto
-  
+
 reference:
   - title: Import / Format
-desc: Generate `metabarlist objects` from files of various formats or directly from
-R objects
-contents:
-  - '`tabfiles_to_metabarlist`'
-- '`obifiles_to_metabarlist`'
-- '`biomfiles_to_metabarlist`'
-- '`read_ngsfilter`'
-- '`metabarlist_generator`'
-- '`check_metabarlist`'
-- '`silva_annotator`'
-- title: Visualise
-desc: Visualise data under both ecological and experimental perspectives
-contents:
-  - '`summary_metabarlist`'
-- '`ggpcrplate`'
-- '`ggpcrtag`'
-- '`ggtaxplot`'
-- '`hill_rarefaction`'
-- '`gghill_rarefaction`'
-- '`check_pcr_repl`'
-- '`check_pcr_thresh`'
-- title: Manipulate
-desc: Manipulate `metabarlist` objects
-contents:
-  - '`subset_metabarlist`'
-- '`extract_table`'
-- '`aggregate_pcrs`'
-- '`aggregate_motus`'
-- '`taxoparser`'
-- '`taxodecider`'
-- title: Flag spurious signal
-desc: Detect and enable the tagging of potential molecular artifacts such as contaminants
-or failed PCR reactions
-contents:
-  - '`contaslayer`'
-- '`tagjumpslayer`'
-- '`pcrslayer`'
-- '`pcr_outlier`'
-- '`pcr_within_between`'
-- title: Export
-desc: Export data in fasta format
-contents: '`fasta_generator`'
-- title: Example data set
-contents: '`soil_euk`'
+    desc: Generate `metabarlist objects` from files of various formats or directly from R objects
+    contents:
+      - '`tabfiles_to_metabarlist`'
+      - '`obifiles_to_metabarlist`'
+      - '`biomfiles_to_metabarlist`'
+      - '`read_ngsfilter`'
+      - '`metabarlist_generator`'
+      - '`check_metabarlist`'
+      - '`silva_annotator`'
 
+  - title: Visualise
+    desc: Visualise data under both ecological and experimental perspectives
+    contents:
+      - '`summary_metabarlist`'
+      - '`ggpcrplate`'
+      - '`ggpcrtag`'
+      - '`ggtaxplot`'
+      - '`hill_rarefaction`'
+      - '`gghill_rarefaction`'
+      - '`check_pcr_repl`'
+      - '`check_pcr_thresh`'
+
+  - title: Manipulate
+    desc: Manipulate `metabarlist` objects
+    contents:
+      - '`subset_metabarlist`'
+      - '`extract_table`'
+      - '`aggregate_pcrs`'
+      - '`aggregate_motus`'
+      - '`taxoparser`'
+      - '`taxodecider`'
+
+  - title: Flag spurious signal
+    desc: Detect and enable the tagging of potential molecular artifacts such as contaminants or failed PCR reactions
+    contents:
+      - '`contaslayer`'
+      - '`tagjumpslayer`'
+      - '`pcrslayer`'
+      - '`pcr_outlier`'
+      - '`pcr_within_between`'
+
+  - title: Export
+    desc: Export data in fasta format
+    contents:
+      - '`fasta_generator`'
+
+  - title: Example data set
+    contents:
+      - '`soil_euk`'
