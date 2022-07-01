@@ -1,7 +1,9 @@
 title: metabaR
 url: https://metabarfactory.github.io/metabaR/
-  development:
+
+development:
   mode: auto
+  
 reference:
   - title: Import / Format
 desc: Generate `metabarlist objects` from files of various formats or directly from
