@@ -14,6 +14,7 @@ reference:
       - '`metabarlist_generator`'
       - '`check_metabarlist`'
       - '`silva_annotator`'
+      - '`silva_annotator_deprec`'
 
   - title: Visualise
     desc: Visualise data under both ecological and experimental perspectives
