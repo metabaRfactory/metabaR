@@ -29,8 +29,10 @@ Description: A comprehensive suite of tools to effectively curate DNA metabarcod
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
+Config/Needs/website: usethis, pkgdown
 RoxygenNote: 7.2.0
-URL: https://github.com/metabaRfactory/metabaR
+URL: https://github.com/metabaRfactory/metabaR,
+    https://metabarfactory.github.io/metabaR/
 Imports: ggplot2, vegan, reshape2, ade4, cowplot, seqinr, igraph, biomformat
 Depends: R (>= 2.10)
 Suggests: knitr,
