@@ -1,11 +1,11 @@
-pandoc: '2.2'
-pkgdown: 1.6.1
+pandoc: 2.14.2
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   metabaRF-vignette: metabaRF-vignette.html
   metabaRF-vignette_karst: metabaRF-vignette_karst.html
-last_built: 2021-01-20T17:39Z
+last_built: 2022-07-01T12:43Z
 urls:
-  reference: https://metabarfactory.github.io/metabaR//reference
-  article: https://metabarfactory.github.io/metabaR//articles
+  reference: https://metabarfactory.github.io/metabaR/reference
+  article: https://metabarfactory.github.io/metabaR/articles
 
