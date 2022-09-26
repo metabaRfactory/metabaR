@@ -347,7 +347,7 @@ check_metabarlist <- function(metabarlist) {
       }
 
       if (!(all(as.numeric(ifelse(grepl("\\|", metabarlist$pcrs$plate_col), 1,
-                                  metabarlist$pcrs$plate_col)) %in% 1:12))) {
+                                  as.character(metabarlist$pcrs$plate_col))) %in% 1:12))) {
         stop(
           paste(
             "column `plate_col` of table `pcrs` in",
