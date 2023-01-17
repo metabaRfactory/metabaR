@@ -423,8 +423,8 @@ check_pcr_repl <- function(metabarlist,
       funcpcr <- ifelse(funcpcr, "0ok", "dyspcr")
 
       }
-
     reads_stdt <- reads/rowSums(reads)
+    replicates <- paste0("bar_", as.character(replicates))
     bar <- rowsum(reads_stdt, replicates)/as.vector(table(replicates))
     all <- rbind(reads_stdt, bar)
     all.d <- vegdist(all, "bray")
