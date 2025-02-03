@@ -1,102 +1,36 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/404.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette_karst.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/index.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/aggregate_motus.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/aggregate_pcrs.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/biomfiles_to_metabarlist.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/check_metabarlist.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/contaslayer.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/extract_table.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/fasta_generator.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/ggpcrplate.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/ggpcrtag.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/ggtaxplot.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/hill_rarefaction.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/metabarlist_generator.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/obifiles_to_metabarlist.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/pcr_outlier.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/pcrslayer.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/read_ngsfilter.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/silva_annotator.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/silva_annotator_deprec.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/soil_euk.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/subset_metabarlist.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/summary_metabarlist.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/tabfiles_to_metabarlist.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/tagjumpslayer.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/taxodecider.html</loc>
-  </url>
-  <url>
-    <loc>https://metabarfactory.github.io/metabaR/reference/taxoparser.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://metabarfactory.github.io/metabaR/404.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/articles/index.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/articles/metabaRF-vignette_karst.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/authors.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/index.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/news/index.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/aggregate_motus.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/aggregate_pcrs.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/biomfiles_to_metabarlist.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/check_metabarlist.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/contaslayer.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/extract_table.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/fasta_generator.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/ggpcrplate.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/ggpcrtag.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/ggtaxplot.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/hill_rarefaction.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/index.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/metabarlist_generator.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/obifiles_to_metabarlist.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/pcr_outlier.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/pcrslayer.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/read_ngsfilter.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/silva_annotator.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/silva_annotator_deprec.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/soil_euk.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/subset_metabarlist.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/summary_metabarlist.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/tabfiles_to_metabarlist.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/tagjumpslayer.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/taxodecider.html</loc></url>
+<url><loc>https://metabarfactory.github.io/metabaR/reference/taxoparser.html</loc></url>
 </urlset>
+
