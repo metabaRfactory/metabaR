@@ -69,7 +69,7 @@ aggregate_motus <- function(metabarlist,
 
     pcrs.out <- metabarlist$pcrs[rownames(reads.out), ]
     sample.out <-
-      metabarlist$samples[unique(metabarlist$pcrs$sample_id[pcrs.out$type == "sample"]), ]
+      metabarlist$samples[unique(metabarlist$pcrs$sample_id[pcrs.out$type == "sample"]), , drop=FALSE]
 
     metabarlist.out <-
       metabarlist_generator(
