@@ -81,7 +81,7 @@ aggregate_pcrs <- function(metabarlist,
         if (is.numeric(x)) {
           mean(x)
         } else {
-          ifelse(length(unique(x)) == 1, x[1], paste(unique(sort(x)), collapse = "|"))
+          ifelse(length(unique(x)) == 1, x[1], paste(unique(x), collapse = "|"))
         }
       })
     })))
